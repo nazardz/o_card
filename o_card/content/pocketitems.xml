@@ -1,0 +1,360 @@
+<pocketitems>
+	<card 
+		type="special"
+		id="1"		
+		pickup="171" 
+		description="Forget" 
+		hud="01_OblivionCard" 
+		name="Oblivion Card" 
+		mimiccharge="12"
+	/>
+	<card 
+		type="special" 
+		id="2"
+		pickup="8"
+		description="Apoopalypse" 
+		hud="02_ApoopalypseCard" 
+		name="Apocalypse Card" 
+		mimiccharge="6"
+	/>
+	<card 
+		type="object" 
+		id="3"
+		pickup="193"
+		description="Fortify" 
+		hud="X_KingChessW" 
+		name="White King" 
+		mimiccharge="3"
+	/>
+	<card 
+		type="object" 
+		id="4"
+		pickup="177"
+		description="Fortify" 
+		hud="03_KingChess" 
+		name="Black King" 
+		mimiccharge="3"
+	/>
+	<card 
+		type="rune" 
+		id="5"
+		pickup="173"
+		description="???" 
+		hud="04_Trapezohedron" 
+		name="Trapezohedron" 
+		mimiccharge="4"
+	/>
+	<card 
+		type="object" 
+		id="6"
+		pickup="174"
+		description="P3+P4" 
+		hud="X_Domino34" 
+		name="Domino Tile 3 | 4" 
+		mimiccharge="6"
+	/>
+	<card 
+		type="object" 
+		id="7"
+		pickup="174"
+		description="D7+D10" 
+		hud="X_Domino25" 
+		name="Domino Tile 2 | 5" 
+		mimiccharge="6"
+	/>
+	<!--
+	<card 
+		type="object" 
+		id="8"
+		pickup="174"
+		description="Special delivery" 
+		hud="X_Domino12" 
+		name="Domino Tile 1 | 2" 
+		mimiccharge="3"
+	/>
+	-->
+	<card 
+		type="rune" 
+		id="9"
+		pickup="175"
+		description="Wisp unsummoner" 
+		hud="X_SoulUnbidden" 
+		name="Soul of Unbidden" 
+		mimiccharge="6"
+	/>
+	<card 
+		type="rune" 
+		id="10"
+		pickup="178"
+		description="Pyroman" 
+		hud="X_SoulNadabAbihu" 
+		name="Soul of Nadab and Abihu" 
+		mimiccharge="6"
+	/>
+	<card 
+		type="special"
+		id="11"		
+		pickup="176" 
+		description="Ethereal curse" 
+		hud="X_AscenderBane" 
+		name="Ascender's Bane" 
+		mimiccharge="6"
+	/>
+	<card 
+		type="special"
+		id="12"		
+		pickup="176" 
+		description="Evoke your wisps" 
+		hud="X_MultiCast" 
+		name="Multi-Cast" 
+		mimiccharge="6"
+	/>
+	<card 
+		type="special"
+		id="13"		
+		pickup="176" 
+		description="??" 
+		hud="X_Wish" 
+		name="Wish" 
+		mimiccharge="12"
+	/>
+	<card 
+		type="special"
+		id="14"		
+		pickup="176" 
+		description="Goods for blood" 
+		hud="X_Offering" 
+		name="Offering" 
+		mimiccharge="1"
+	/>
+	<card 
+		type="special"
+		id="15"		
+		pickup="176" 
+		description="Rain of blades" 
+		hud="X_InfiniteBlades" 
+		name="Infinite Blades" 
+		mimiccharge="2"
+	/>
+	<card 
+		type="special"
+		id="16"		
+		pickup="176" 
+		description="All at once" 
+		hud="X_Transmutation" 
+		name="Transmutation" 
+		mimiccharge="12"
+	/>
+	<card 
+		type="special"
+		id="17"		
+		pickup="176" 
+		description="The Ritual" 
+		hud="X_RitualDagger" 
+		name="Ritual Dagger" 
+		mimiccharge="6"
+	/>
+	<card 
+		type="special"
+		id="18"		
+		pickup="176" 
+		description="The Orb" 
+		hud="X_Fusion" 
+		name="Fusion" 
+		mimiccharge="4"
+	/>
+	<card 
+		type="special"
+		id="19"		
+		pickup="176" 
+		description="The Miracle" 
+		hud="X_DeuxExMachina" 
+		name="Deus Ex Machina" 
+		mimiccharge="12"
+	/>
+	<card 
+		type="special"
+		id="20"		
+		pickup="176" 
+		description="Power = panic!" 
+		hud="X_Adrenaline" 
+		name="Adrenaline" 
+		mimiccharge="6"
+	/>
+	
+	<card 
+		type="special"
+		id="21"		
+		pickup="176" 
+		description="Power exhaustion!" 
+		hud="X_Corruption" 
+		name="Corruption" 
+		mimiccharge="1"
+	/>
+	
+	<card 
+		type="rune"
+		id="22"		
+		pickup="179" 
+		description="Spectral rune" 
+		hud="X_GhostGem" 
+		name="Ghost Gem" 
+		mimiccharge="2"
+	/>
+	
+	<card
+		type="special"
+		id="23"
+		pickup="171"
+		description="Arena"
+		hud="X_BattlefieldCard"
+		name="Battlefield Card"
+		mimiccharge="12"
+	/>
+	<card
+		type="special"
+		id="24"
+		pickup="171"
+		description="Loot"
+		hud="X_TreasuryCard"
+		name="Treasury Card"
+		mimiccharge="12"
+	/>
+	<card
+		type="special"
+		id="25"
+		pickup="171"
+		description="Library"
+		hud="X_BookeryCard"
+		name="Bookery Card"
+		mimiccharge="12"
+	/>
+	<card 
+		type="special" 
+		id="26"
+		pickup="8"
+		description="What does it do?" 
+		hud="X_BannedCard" 
+		name="Banned Card" 
+		mimiccharge="6"
+	/>
+	<card 
+		type="special" 
+		id="27"
+		pickup="171"
+		description="Devour" 
+		hud="X_BloodGroveCard" 
+		name="Blood Grove Card" 
+		mimiccharge="12"
+	/>
+	<card 
+		type="special" 
+		id="28"
+		pickup="171"
+		description="Worship" 
+		hud="X_StormTempleCard" 
+		name="Storm Temple Card" 
+		mimiccharge="12"
+	/>
+	<card 
+		type="special" 
+		id="29"
+		pickup="171"
+		description="Inventory" 
+		hud="X_ArsenalCard" 
+		name="Arsenal Card" 
+		mimiccharge="12"
+	/>
+	<card 
+		type="special" 
+		id="30"
+		pickup="171"
+		description="Camp" 
+		hud="X_OutpostCard" 
+		name="Outpost Card" 
+		mimiccharge="12"
+	/>
+	<card 
+		type="special" 
+		id="31"
+		pickup="171"
+		description="Dynasty" 
+		hud="X_CryptCard" 
+		name="Ancestral Crypt Card" 
+		mimiccharge="12"
+	/>
+	<card 
+		type="special" 
+		id="32"
+		pickup="171"
+		description="Chaos" 
+		hud="X_MazeMemoryCard" 
+		name="Maze of Memories Card" 
+		mimiccharge="12"
+	/>
+	<card 
+		type="special" 
+		id="33"
+		pickup="171"
+		description="Destination" 
+		hud="X_ZeroMilestoneCard" 
+		name="Zero Milestone Card" 
+		mimiccharge="12"
+	/>
+	<card 
+		type="special" 
+		id="34"
+		pickup="176"
+		description="Rotten Curse" 
+		hud="X_Decay" 
+		name="Decay" 
+		mimiccharge="1"
+	/>
+	<card 
+		type="special" 
+		id="35"
+		pickup="174"
+		description="One of All" 
+		hud="X_Domino16" 
+		name="Domino Tile 1 | 6" 
+		mimiccharge="6"
+	/>
+	<card
+		type="object"
+		id="36"
+		pickup="180"
+		description="Side effects?"
+		hud="X_RedPill"
+		name="Side effects?"
+		mimiccharge="4"
+	/>
+	<card
+		type="object"
+		id="37"
+		pickup="181"
+		description="Side effects??"
+		hud="X_RedPillHorse"
+		name="Side effects?"
+		mimiccharge="8"
+	/>
+	<card 
+		type="object" 
+		id="38"
+		pickup="174"
+		description="Domino theory" 
+		hud="X_Domino00" 
+		name="Domino Tile 0 | 0" 
+		mimiccharge="1"
+	/>
+	<!--
+	<pilleffect
+		id = "8"
+		name="Side effects?" 
+		class="2+" 
+		mimiccharge="4" 
+	/>
+	-->
+	<!--
+	-->
+</pocketitems>
+	

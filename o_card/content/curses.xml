@@ -1,0 +1,14 @@
+<curses>
+	<curse name="Curse of the Void!" />
+	<curse name="Curse of the Jamming!" />
+	<curse name="Curse of the Emperor!" />
+	<curse name="Curse of the Magician!" />
+	<curse name="Curse of Champions!" />
+	<curse name="Curse of the Bell!" />
+	<curse name="Curse of the Envy!" />
+	
+	<!--
+	<curse name="Curse of Retro!" />
+	<curse name="Curse of Tarot!" />
+	-->
+</curses>
