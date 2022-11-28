@@ -2051,6 +2051,7 @@ local function SpawnOptionItems(itemPoolType, optionIndex, position)
 	SpawnMyItem(itemPoolType, righPosition, optionIndex)
 end
 ---Book of Memories
+--[[
 local function MemoryBookManager(rng, player)
 	--- save effect to book of memories dict
 	--- if returns true - removes book and spawn memory fragment and oblivion card
@@ -2072,6 +2073,7 @@ local function MemoryBookManager(rng, player)
 				if value then table.insert(memTable, {70, pill}) end
 			end
 		end
+
 		if #memTable > 0 then
 			local subTable = memTable[rng:RandomInt(#memTable)+1]
 			local var = subTable[1]
@@ -2091,6 +2093,7 @@ local function MemoryBookManager(rng, player)
 	end
 	return true
 end
+--]]
 ---Nadab's Brain
 local function BrainExplosion(player, fam)
 	local bombDamage = 100
@@ -2195,9 +2198,8 @@ function mod:onExit(isContinue)
 		savetable.StateDamaged = {}
 		savetable.RedLotusDamage = {}
 		savetable.KarmaStats = {}
-		savetable.MemoryBoolPool = {}
-		--savetable.UsedLobotomyCount = {}
-		--savetable.HasItemBirthright = {}
+
+		--savetable.MemoryBoolPool = {}
 
 		if mod.OutOfMap then
 			mod.OutOfMap = nil
@@ -2249,9 +2251,11 @@ function mod:onExit(isContinue)
 			if data.KarmaStats then
 				savetable.KarmaStats[idx] = data.KarmaStats
 			end
+			--[[
 			if data.MemoryBoolPool then
 				savetable.MemoryBoolPool[idx] = data.MemoryBoolPool
 			end
+			--]]
 		end
 	end
 	modDataSave()
@@ -2313,6 +2317,7 @@ function mod:onPlayerInit(player)
 			data.HasItemRubberDuck = localtable.DuckCurrentLuck[idx][2]
 			EvaluateDuckLuck(player, localtable.DuckCurrentLuck[idx][1])
 		end
+
 		if localtable.RedPillDamageUp then
 			if localtable.RedPillDamageUp[idx] then
 				data.RedPillDamageUp = localtable.RedPillDamageUp[idx][1]
@@ -2321,6 +2326,7 @@ function mod:onPlayerInit(player)
 				player:EvaluateItems()
 			end
 		end
+
 		if localtable.UsedBG then
 			data.UsedBG = localtable.UsedBG[idx]
 		end
@@ -2342,9 +2348,11 @@ function mod:onPlayerInit(player)
 		if localtable.KarmaStats then
 			data.KarmaStats = localtable.KarmaStats[idx]
 		end
+		--[[
 		if localtable.MemoryBoolPool then
 			data.MemoryBoolPool = localtable.MemoryBoolPool[idx]
 		end
+		--]]
 		--[[
 		if localtable.UsedLobotomyCount then
 			data.UsedLobotomyCount = localtable.UsedLobotomyCount[idx]
@@ -5940,12 +5948,12 @@ end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onZeroMilestoneCard, mod.Pickups.ZeroMilestoneCard)
 
 -- pot of greed
-function mod:onBannedCard(_, player, _) -- card, player, useflag
+function mod:onBannedCard(_, player) -- card, player, useflag
 	for _ = 1, mod.BannedCard.NumCards do
 		--local subtype = itemPool:GetCard(-1, true, true, false)
 		Isaac.Spawn(5, 300, 0, player.Position, RandomVector()*3, nil)
 	end
-	game:GetHUD():ShowFortuneText("POT OF GREED ALLOWS ME","TO DRAW TWO MORE CARDS")
+	game:GetHUD():ShowFortuneText("POT OF GREED ALLOWS ME","TO DRAW TWO MORE CARDS!")
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onBannedCard, mod.Pickups.BannedCard)
 
@@ -5958,10 +5966,8 @@ function mod:onDecay(_, player) -- card, player, useflag
 		player:AddHearts(-redHearts)
 		player:AddRottenHearts(redHearts)
 	end
-	if not data.DecayLevel then
-		data.DecayLevel = true
-		TrinketRemoveAdd(player, TrinketType.TRINKET_APPLE_OF_SODOM)
-	end
+	data.DecayLevel = data.DecayLevel or true
+	TrinketRemoveAdd(player, TrinketType.TRINKET_APPLE_OF_SODOM)
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onDecay, mod.Pickups.Decay)
 
@@ -5986,7 +5992,7 @@ function mod:onDomino16(card, player) -- card, player, useflag
 		--elseif var == 350 then
 		--  subtype = itemPool:GetTrinket()
 		--end
-		DebugSpawn(finalVar, 0, player.Position)
+		DebugSpawn(finalVar, -1, player.Position) -- 0
 	end
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onDomino16, mod.Pickups.Domino16)
@@ -6165,7 +6171,6 @@ if EID then -- External Item Description
 		"Spawn 4 purgatory souls.")
 	EID:addCard(mod.Pickups.BannedCard,
 		"Spawn 2 cards or runes.")
-
 
 	EID:addCard(mod.Pickups.Domino16,
 		"Spawn 6 pickups of same type.")
@@ -8916,6 +8921,7 @@ function mod:onItemUse(_, _, player) --item, rng, player, useFlag, activeSlot, c
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onItemUse)
 
+--- WIP
 function mod:onAbihuFlame(flame)
 	if flame:GetData().AbihuFlame and flame.Parent then
 		local flameData = flame:GetData()
@@ -8996,11 +9002,21 @@ function mod:onAbihuFlameDamage(entity, _, _, source, _)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, mod.onAbihuFlameDamage)
+--- WIP
 
 --[[
 function mod:onTestEffect(effect)
 end
 mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onTestEffect, EffectVariant.BLUE_FLAME)
+--]]
+
+--[[
+function mod:onRender()
+	if debug then
+		Isaac.RenderText(renderText, 50, 30, 1, 1, 1, 255)
+	end
+end
+mod:AddCallback(ModCallbacks.MC_POST_RENDER, mod.onRender)
 --]]
 
 do
@@ -9057,20 +9073,6 @@ function mod:onGaggerUpdate(fam)
 end
 mod:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, mod.onGaggerUpdate, mod.Gagger.Variant)
 --]]
-
---mod.Items.Polycoria = Isaac.GetItemIdByName("Polycoria") -- IDK?? taking damage creates eyes
---mod.Items.DMS = Isaac.GetItemIdByName("Dis Manibus") -- charge and shoot Purgatory souls
---mod.Items.Pizza = Isaac.GetItemIdByName("Pizza Pepperoni") -- active 12 seconds. Shoot Pizza boomerang, apply rotten tomato effect
---mod.Items.ElderSign = Isaac.GetItemIdByName("Elder Sign") -- active 2 room. Spawn Pentagram under nearest enemy
-
---mod.Pickups.AceWands = Isaac.GetCardIdByName("X_AceWands") -- daddy long legs - 4 stomps
---mod.Pickups.AcePentacles = Isaac.GetCardIdByName("X_AcePentacles") -- spawn (random size) pentagrams under you for 15 seconds
---mod.Pickups.AceCups = Isaac.GetCardIdByName("X_AceCups") -- flush effect
---mod.Pickups.AceSwords = Isaac.GetCardIdByName("X_AceSwords") -- rain of swords in current room
-
---mod.Pickups.Domino00 = Isaac.GetCardIdByName("X_Domino00") -- do some random shit IDK (glitched item effect)
-
---mod.Pickups.Domino12 = Isaac.GetCardIdByName("X_Domino12") -- pizza
 
 --[[
 function mod:onCache3(player, cacheFlag)
@@ -9315,6 +9317,7 @@ function mod:onPostPickupInit2(pickup)
 			--else
 			--	pickup:Morph(pickup.Type, pickup.Variant, 0, true, false, true)
 		end
+		modDataSave()
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, mod.onPostPickupInit2)
@@ -9338,7 +9341,7 @@ function mod:onNPCDeath2(npc)
 				CheckCompletionBossKill(savetable.ObliviousCompletionMarks, npc, mod.UnlockText.Oblivious)
 			end
 		end
-
+		modDataSave()
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, mod.onNPCDeath2)
@@ -9363,6 +9366,7 @@ function mod:onRoomClear2()
 				CheckCompletionRoomClear(savetable.ObliviousCompletionMarks, mod.UnlockText.Oblivious)
 			end
 		end
+		modDataSave()
 	end
 end
 mod:AddCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, mod.onRoomClear2)
@@ -9375,15 +9379,17 @@ function mod:onExecuteCommand(command, args)
 	--- console commands ---
 	if command == "ocard" then
 		if args == "help" or args == "" then
-			print('ocard debug -> resets/unlocks all, do not type')
 			print('ocard todo -> list of thing to complete/implement/change')
-			print('ocard reset [all, nadab, abihu, unbid, tunbid]')
-			print('ocard unlock [all, nadab, abihu, unbid, tunbid]')
+			--print('ocard reset [all, nadab, abihu, unbid, tunbid]')
+			--print('ocard unlock [all, nadab, abihu, unbid, tunbid]')
 		elseif args == "todo" then
 			print('VVV costume flip, idk how')
 			print('Lil Gagger sprite')
 			print("finish Wax Hearts")
 			print("finish curses UI")
+			print("Abihu flame synergy")
+			print("Mongo Cells full desc")
+			print("EID russian")
 		elseif args == "debug" then
 			if debug then
 				debug = true
@@ -9391,6 +9397,7 @@ function mod:onExecuteCommand(command, args)
 				debug = false
 			end
 			print('debug:', debug)
+		--[[
 		elseif args == "reset" or args == "reset all" then
 		    savetable.NadabCompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0}
 			savetable.AbihuCompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0}
@@ -9427,42 +9434,13 @@ function mod:onExecuteCommand(command, args)
 		elseif args == "unlock tunbid" then
 			savetable.ObliviousCompletionMarks = {2,2,2,2,2,2,2,2,2,2,2,2,2}
 			print("ok")
+		--]]
 		end
 	end
 end
 mod:AddCallback(ModCallbacks.MC_EXECUTE_CMD, mod.onExecuteCommand)
 ---EXECUTE COMMAND---
 end
-
-
---[[
-function mod:onRender()
-	if debug then
-		Isaac.RenderText(renderText, 50, 30, 1, 1, 1, 255)
-	end
-end
-mod:AddCallback(ModCallbacks.MC_POST_RENDER, mod.onRender)
---]]
-
---[[
-function mod:onLobotomy(_, _, player) --item, rng, player, useFlag, activeSlot, customVarData
-	local entities = Isaac.FindInRadius(player.Position, 5000, EntityPartition.ENEMY)
-	if #entities > 0 then
-		for _, entity in pairs(Isaac.FindInRadius(player.Position, 5000, EntityPartition.ENEMY)) do
-			if not entity:IsBoss() then
-				table.insert(mod.Lobotomy.ErasedEntities, {entity.Type, entity.Variant})
-				Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, entity.Position, Vector.Zero, nil):SetColor(mod.OblivionCard.PoofColor,50,1, false, false)
-				entity:Remove()
-			end
-		end
-		mod.Items.UsedLobotomyCount = mod.Items.UsedLobotomyCount or 0
-		mod.Items.UsedLobotomyCount = mod.Items.UsedLobotomyCount + 1
-		player:AddBrokenHearts(mod.Items.UsedLobotomyCount)
-	end
-	return true 
-end
-mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onLobotomy, mod.Items.Lobotomy)
---]]
 
 --[[
 shaders to flip by screen PositionX
@@ -9494,3 +9472,6 @@ if #mamaMega > 0 then
 	game:GetLevel():SetStateFlag(LevelStateFlag.STATE_BUM_KILLED, true)
 end
 --]]
+
+--5989  check domino 1/6 spawn of pickups -1
+-- banned card check use
