@@ -8915,6 +8915,7 @@ function mod:onItemUse(_, _, player) --item, rng, player, useFlag, activeSlot, c
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onItemUse)
 
+
 --- WIP
 function mod:onAbihuFlame(flame)
 	if flame:GetData().AbihuFlame and flame.Parent then
