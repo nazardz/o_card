@@ -98,12 +98,12 @@ mod.Items.CosmicJam = Isaac.GetItemIdByName("Space Jam") -- "lf it weren't real,
 mod.Items.DMS = Isaac.GetItemIdByName("Death's Sickle")
 mod.Items.MewGen = Isaac.GetItemIdByName("Mew-Gen") 
 mod.Items.ElderSign = Isaac.GetItemIdByName("Elder Sign")
+mod.Items.Eclipse = Isaac.GetItemIdByName("Eclipse") -- "Darkest Basement" grants aura dealing 2 damage. boost player damage if you have curse of darkness
+
 --mod.Items.DiceBombs = Isaac.GetItemIdByName("Dice Bombs") -- "Reroll blast +5 bombs"
 --mod.Items.Pizza = Isaac.GetItemIdByName("Pizza Pepperoni") -- active 12 seconds. Shoot Pizza boomerang, apply rotten tomato effect
 
 --mod.Items.Gagger = Isaac.GetItemIdByName("Little Gagger") -- punching bag subtype ?
-
---mod.Items.ElderSign = Isaac.GetItemIdByName("Elder Sign") -- "Seal of Protection" active 1 room. Spawn Pentagram for 15 seconds at your position. Pentagram spawn worm friends
 end
 --- TRINKETS --
 do
@@ -163,7 +163,7 @@ mod.Pickups.RedPillHorse = Isaac.GetCardIdByName("X_RedPillHorse")
 mod.Pickups.Domino34 = Isaac.GetCardIdByName("X_Domino34")
 mod.Pickups.Domino25 = Isaac.GetCardIdByName("X_Domino25")
 mod.Pickups.Domino16 = Isaac.GetCardIdByName("X_Domino16") -- spawn 6 pickups of same type
-mod.Pickups.Domino00 = Isaac.GetCardIdByName("X_Domino00") -- Domino theory. Apply EntityFlag.FLAG_CONTAGIOUS to all enemies
+mod.Pickups.Domino00 = Isaac.GetCardIdByName("X_Domino00")
 --mod.Pickups.Domino12 = Isaac.GetCardIdByName("X_Domino12") -- shoot pizza 8 pizza around you
 end
 --- CHALLENGES --
@@ -275,6 +275,12 @@ fruit plum			-- neptune
 lil portal
 lil spewer
 --]]
+mod.Eclipse = {}
+mod.Eclipse.AuraRange = 125
+mod.Eclipse.DamageDelay = 12
+mod.Eclipse.DamageBoost = 0.5
+mod.Eclipse.Knockback = 4
+
 mod.MongoCells = {}
 mod.MongoCells.HeadlessCreepFrame = 8
 mod.MongoCells.DryBabyChance = 0.33
@@ -322,7 +328,7 @@ mod.MeltedCandle = {}
 mod.MeltedCandle.TearChance = 0.8 -- random + player.Luck > tearChance
 mod.MeltedCandle.TearFlags = TearFlags.TEAR_FREEZE | TearFlags.TEAR_BURN -- tear effects
 mod.MeltedCandle.TearColor =  Color(2, 2, 2, 1, 0.196, 0.196, 0.196) --spider bite color
-mod.MeltedCandle.FrameCount = 102
+mod.MeltedCandle.FrameCount = 92
 
 mod.VoidKarma = {}
 mod.VoidKarma.DamageUp = 0.25 -- add given values to player each time entering new level
@@ -1241,7 +1247,7 @@ local function GoldenGrid(rng)
 		end
 	end
 end
-local function TurnPickupsGold(pickup, rng) -- midas
+local function TurnPickupsGold(pickup) -- midas
 	--- morph pickup into their golden versions
 	local isChest = false
 	local newSubType = pickup.SubType
@@ -1270,12 +1276,10 @@ local function TurnPickupsGold(pickup, rng) -- midas
 	elseif pickup.Variant == PickupVariant.PICKUP_TRINKET and pickup.SubType < 32768 then -- TrinketType.TRINKET_GOLDEN_FLAG
 		newSubType = pickup.SubType + 32768
 	end
-	if rng:RandomFloat() < mod.MidasCurse.TurnGoldChance then
-		if newSubType ~= pickup.SubType  then
-			pickup:ToPickup():Morph(pickup.Type, pickup.Variant, newSubType, true)
-		elseif isChest then
-			pickup:ToPickup():Morph(pickup.Type, isChest, 0, true)
-		end
+	if newSubType ~= pickup.SubType  then
+		pickup:ToPickup():Morph(pickup.Type, pickup.Variant, newSubType, true)
+	elseif isChest then
+		pickup:ToPickup():Morph(pickup.Type, isChest, 0, true)
 	end
 end
 ---Duckling
@@ -2941,7 +2945,9 @@ function mod:onPEffectUpdate(player)
 						enemy:AddMidasFreeze(EntityRef(player), mod.MidasCurse.FreezeTime)
 					end
 					if entity.Type == EntityType.ENTITY_PICKUP then
-						TurnPickupsGold(entity:ToPickup(), rngMidasCurse)
+						if rngMidasCurse:RandomFloat() < mod.MidasCurse.TurnGoldChance then
+							TurnPickupsGold(entity:ToPickup())
+						end
 					end
 				end
 			elseif player:GetGoldenHearts() > data.GoldenHeartsAmount then
@@ -3714,15 +3720,12 @@ function mod:onNewRoom()
 			if modRNG:RandomFloat() < mod.VoidThreshold then
 				mod.VoidCurseReroll = 0
 				game:ShowHallucination(0, BackdropType.NUM_BACKDROPS)
-
 				game:GetPlayer(0):UseActiveItem(CollectibleType.COLLECTIBLE_D12, myUseFlags)
 			end
 		end
-
 		--[[ curse Emperor
 		if level:GetCurses() & mod.Curses.Emperor > 0 and room:GetType() == RoomType.ROOM_BOSS then
 			--SeedEffect.SEED_NO_BOSS_ROOM_EXITS
-
 			local door = room:GetDoor(level.EnterDoor) --:ToDoor()
 			if door then
 				room:RemoveDoor(door.Slot)
@@ -3730,14 +3733,11 @@ function mod:onNewRoom()
 		end
 		--]]
 	end
-
-
 	-- Apocalypse card
 	if mod.Apocalypse.Room then
 		mod.Apocalypse.Room = nil
 		mod.Apocalypse.RNG = nil
 	end
-
 	--print(level:GetCurrentRoomIndex())
 	if mod.OutOfMap and level:GetCurrentRoomIndex() >= 0 then
 		mod.OutOfMap = nil
@@ -3748,9 +3748,8 @@ function mod:onNewRoom()
 		local player = game:GetPlayer(playerNum)
 		local data = player:GetData()
 		local tempEffects = player:GetEffects()
-
 		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
-
+			--mongo cells
 			if data.MongoSteven then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_SPOON_BENDER, false) end
 			if data.MongoHarlequin then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_THE_WIZ, false) end
 			if data.MongoFreezer then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_URANUS, false) end
@@ -3761,12 +3760,10 @@ function mod:onNewRoom()
 			if data.MongoBallBandage then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_MOMS_EYESHADOW, false) end
 			if data.MongoHaunt then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_MOMS_PERFUME, false) end
 			if data.MongoSissy then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_MOMS_WIG, false) end
-
 			--lililith
 			LililithReset() -- update items
 			-- limb
 			if data.LimbActive then
-				local tempEffects = player:GetEffects()
 				tempEffects:AddNullEffect(NullItemID.ID_LOST_CURSE, true, 1)
 			end
 			--- queen of spades
@@ -3786,7 +3783,6 @@ function mod:onNewRoom()
 					end
 				end
 				--]]
-				local tempEffects = player:GetEffects()
 				--ID_WAVY_CAP_1
 				--ID_WAVY_CAP_2
 				--ID_WAVY_CAP_3
@@ -4370,7 +4366,7 @@ function mod:onProjectileInit(projectile)
 	if not room:HasCurseMist() then
 		if Isaac.GetChallenge() == mod.Challenges.Magician or level:GetCurses() & mod.Curses.Magician > 0 then
 			if projectile.SpawnerEntity then
-				if not projectile.SpawnerEntity:IsBoss() then
+				if not projectile.SpawnerEntity:IsBoss() and Isaac.GetChallenge() ~= mod.Challenges.Magician then
 					projectile:AddProjectileFlags(ProjectileFlags.SMART)
 				end
 			end
@@ -4419,7 +4415,6 @@ function mod:onInputAction(entity, inputHook, buttonAction)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_INPUT_ACTION, mod.onInputAction)
-
 --- PILL INIT --
 function mod:onPostPillInit(pickup) -- pickup
 	for playerNum = 0, game:GetNumPlayers()-1 do
@@ -4460,12 +4455,13 @@ function mod:onPostPickupInit(pickup)
 				end
 			end
 			--local data = player:GetData()
-			-- if player has midas curse, turn all pickups into golden
+			-- if player has midas curse, turn all pickups into golden -> check chance
 			if player:HasCollectible(mod.Items.MidasCurse) then
-				TurnPickupsGold(pickup:ToPickup(), player:GetCollectibleRNG(mod.Items.MidasCurse))
-				break
+				if player:GetCollectibleRNG(mod.Items.MidasCurse):RandomFloat() < mod.MidasCurse.TurnGoldChance then
+					TurnPickupsGold(pickup:ToPickup())
+					break
+				end
 			end
-
 		end
 	end
 end
@@ -6078,18 +6074,23 @@ end
 
 --- EID
 if EID then -- External Item Description
-	local disk_description = "Save your items. (Empty -> Full) #If you have saved items, replace them. (Full -> Empty) #MissingNo if item is missing."
+	EID:addBirthright(mod.Characters.Nadab, "Explosion immunity. #Spawns 3 random items from {{BombBeggar}} Bomb Beggar pool. #Only one can be taken.")
+	EID:addBirthright(mod.Characters.Abihu, "Fire immunity. #Full health. #{{Chargeable}} Charging Blue Flame is always active.")
+	EID:addBirthright(mod.Characters.Unbidden, "Turn all {{BrokenHeart}} broken hearts into {{SoulHeart}} soul hearts. #Give all items from Item Wisps, without removing wisps.")
+	EID:addBirthright(mod.Characters.Oblivious, "Remove and prevent all curses. #No longer discharges {{Collectible"..mod.Items.Threshold.."}} Threshold after death.")
+
+	local disk_description = "Save your items. (Empty -> Full) #If you have saved items, replace them. (Full -> Empty) #{{Warning}} Give {{Collectible258}} MissingNo if item is missing."
 	EID:addCollectible(mod.Items.FloppyDisk, disk_description)
 	EID:addCollectible(mod.Items.FloppyDiskFull, disk_description)
 
 	EID:addCollectible(mod.Items.RedMirror,
-			"Turn nearest trinket into cracked key.")
+			"Turn nearest {{Trinket}} trinket into {{Card78}} cracked key.")
 	EID:addCollectible(mod.Items.RedLotus,
-			"Remove one broken heart and give flat 1.0 damage up at the start of the floor.")
+			"Remove one {{BrokenHeart}} broken heart and give {{Damage}} flat 1.0 damage up at the start of the floor.")
 	EID:addCollectible(mod.Items.MidasCurse,
-			"Add 3 golden hearts. #10% chance to get golden pickups. #When you lose golden heart turn everything into gold. #Curse effect (Can be removed by Black Candle): # - 100% golden pickups. # - All food-related items turn into coins if you try to pick them up.")
+			"Add 3 {{GoldenHeart}} golden hearts. #10% chance to get golden pickups. #When you lose golden heart turn everything into gold. #{{Warning}} Curse effect: # {{Warning}} 100% chance to get golden pickups. # {{Warning}} All food-related items turn into coins if you try to pick them up. #Curse effect can be removed by {{Collectible260}} Black Candle.")
 	EID:addCollectible(mod.Items.RubberDuck,
-			"+20 temporary luck when picked up. #Temporary luck up for entering unvisited room. #Temporary luck down for entering visited room. #Temporary luck can't go below player's original luck.")
+			"↑ {{Luck}} +20 temporary luck up when picked up. #↑ {{Luck}} +1 luck up when entering unvisited room. #↓ {{Luck}} -1 luck down when entering visited room. #Temporary luck can't go below player's original luck.")
 	EID:addCollectible(mod.Items.IvoryOil,
 			"Charge active items when entering an uncleared room for the first time.")
 	EID:addCollectible(mod.Items.BlackKnight,
@@ -6097,26 +6098,25 @@ if EID then -- External Item Description
 	EID:addCollectible(mod.Items.WhiteKnight,
 			"Use to jump to nearest enemy. #Crush and knockback monsters when you land on the ground. #Destroy stone monsters.")
 	EID:addCollectible(mod.Items.KeeperMirror,
-			"Sell chosen item or pickup in room.")
+			"Sell item or pickup in target mark. #Spawn 1 coin if no pickup was targeted")
 	EID:addCollectible(mod.Items.RedBag,
-			"Chance to drop red pickups after clearing room. #Possible pickups: red hearts, dice shards, red pills, cracked keys, red throwable bombs.")
+			"Chance to drop red pickups after clearing room. #Possible pickups: {{Heart}} red hearts, {{Card49}} dice shards, {{Pill}} red pills, {{Card78}} cracked keys, {{Bomb}} red throwable bombs. #{{Warning}} Can spawn Red Poop.")
 	EID:addCollectible(mod.Items.MeltedCandle,
-			"Tears have chance to freeze and burn enemies")
+			"Tears have a chance to wax enemies for 3 seconds. #Waxed enemy {{Freezing}} freezes and {{Burning}} burns. #When a waxed enemy dies, it leaves fire.")
 	EID:addCollectible(mod.Items.MiniPony,
-			"Grants flight and 1.5 speed while held. #On use, grants invincibility for 6 seconds. #Deal 40 contact damage per second while invincible.")
-	--"Grants flight, 2.0 speed and size down while held. #On use, grants invincibility for 6 seconds. #Deal 40 contact damage per second while invincible.")
+			"Grants flight and {{Speed}} 1.5 speed while held. #On use, grants {{Collectible77}} My Little Unicorn effect.")
 	EID:addCollectible(mod.Items.StrangeBox,
-			"Create option choice item for all items, pickups and shop items in the room.")
+			"Create {{Collectible249}} option choice item for all items, pickups and shop items in the room. #Only one can be taken.")
 	EID:addCollectible(mod.Items.RedButton,
-			"Spawn Red Button when entering room. #Activate random effect when pressed. #Can be pressed 66 times in one room.")
+			"Spawn Red Button when entering room. #Activate random pressure plate effect when pressed. #{{Warning}}After pressing 66 times, no longer appear in current room.")
 	EID:addCollectible(mod.Items.LostMirror,
-			"Apply white fireplace effect, without Holy Mantle.")
+			"Turn you into {{Player10}}, without Holy Mantle.")
 	EID:addCollectible(mod.Items.BleedingGrimoire,
-			"Start bleeding. #Your tears add bleeding to enemies.")
+			"Start {{BleedingOut}} bleeding. #Your tears apply {{BleedingOut}} bleeding to enemies.")
 	EID:addCollectible(mod.Items.BlackBook,
-			"Apply random status effects on enemies in room. #Possible effects: Freeze (Mom's Contact); Poison; Slow; Charm; #Confusion; Midas Touch; Fear; Burn; Shrink; #Bleed; Frozen (Uranus); Magnetized; Bait (Rotten Tomato).")
+			"Apply random status effects on enemies in room. #Possible effects: {{Freezing}}Freeze; {{Poison}}Poison; {{Slow}}Slow; {{Charm}}Charm; {{Confusion}}Confusion; {{Collectible202}}Midas Touch; {{Fear}}Fear; {{Burning}}Burn; {{Collectible398}}Shrink; {{BleedingOut}}Bleed; {{Collectible596}}Frozen; {{Magnetize}}Magnetized; {{Bait}}Bait.")
 
-	local description = "In 'solved' state reroll items (similar to D6). #Have a 16% chance to reroll items into glitched items, after which it's 'scrambles', increasing it's charge bar. #In 'scrambled' state it can be used without full charge, but will reroll items into glitched items. #After fully recharging, it returns to 'solved' state."
+	local description = "In 'solved' state {{Collectible105}} reroll items. #Have a 16% chance to reroll items into {{Collectible721}} glitched items, after which it's 'scrambles', increasing it's charge bar. #In 'scrambled' state it can be used without full charge, but will reroll items into {{Collectible721}} glitched items. #After fully recharging, it returns to 'solved' state."
 	EID:addCollectible(mod.Items.RubikDice, description)
 	EID:addCollectible(mod.Items.RubikDiceScrambled0, description)
 	EID:addCollectible(mod.Items.RubikDiceScrambled1, description)
@@ -6125,82 +6125,82 @@ if EID then -- External Item Description
 	EID:addCollectible(mod.Items.RubikDiceScrambled4, description)
 	EID:addCollectible(mod.Items.RubikDiceScrambled5, description)
 
-
 	EID:addCollectible(mod.Items.VHSCassette,
 			"Move to another later floor. #Void - is last possible floor. #On ascension you will be send to Home.")
 	EID:addCollectible(mod.Items.Lililith,
 			"After clearing room, chance to spawn a familiar for current floor. #Possible familiars: demon baby, lil brimstone, lil abaddon, incubus, succubus.")
 	EID:addCollectible(mod.Items.CompoBombs,
-			"+5 bombs when picked up. #Place conjoined bombs. #Second bomb is regular bomb")
+			"+5 bombs when picked up. #Place 2 bombs at once. #Second bomb is red bomb")
 	EID:addCollectible(mod.Items.MirrorBombs,
-			"+5 bombs when picked up. #When you place a bomb, copy it to opposite site of the room.")
+			"+5 bombs when picked up. #When you place a bomb, copy it to opposite side of the room.")
 	EID:addCollectible(mod.Items.GravityBombs,
-			"+3 giga bombs when picked up. #Bombs get Black Hole effect.")
+			"+1 giga bomb when picked up. #Bombs get {{Collectible512}} Black Hole effect.")
 	EID:addCollectible(mod.Items.AbihuFam,
-			"Decoy familiar. #Burn enemies on contact.")
+			"{{Collectible281}} Decoy familiar. #{{Burning}} Burn enemies on contact.")
 	EID:addCollectible(mod.Items.NadabBody,
-			"Can be picked up and thrown. #When thrown explodes on contact.")
+			"{{Throwable}} Can be picked up and thrown. #Blocks enemy tears. #When thrown explodes on contact with enemy. #{{Warning}}The explosion can hurt you!")
 	EID:addCollectible(mod.Items.Limb,
-			"When you die and don't have any extra life, you will be turned into Soul. # - White Fireplace effect.")
+			"When you die and don't have any extra life, you will be turned into {{Player10}} Soul for current level.")
 	EID:addCollectible(mod.Items.LongElk,
-			"Grants flight. #While moving leave bone spurs. #On use dash in movement direction, you will kill next contacted enemy.")
+			"Grants flight. #While moving leave {{Collectible683}} bone spurs. #On use do short dash in movement direction, and kill next contacted enemy.")
 	EID:addCollectible(mod.Items.FrostyBombs,
-			"+5 bombs when picked up. #Bombs freeze and slow down enemies. #Turn killed enemies into ice statues.")
+			"+5 bombs when picked up. #Bombs {{Freezing}} freeze and {{Slow}} slow down enemies. #Turn killed enemies into ice statues.")
 	EID:addCollectible(mod.Items.VoidKarma,
-			"All stats up when entering new level. #Double it's effect if you didn't take damage on previous floor.")
+			"↑ All stats up when entering new level. #{{Damage}} +0.25 damage up #{{Tears}} +0.25 tears up #{{Range}} +2.5 range up #{{Shotspeed}} +0.1 shotspeed up #{{Speed}} +0.05 speed up #{{Luck}} +0.5 luck up #Double it's effect if you didn't take damage on previous floor.")
 	EID:addCollectible(mod.Items.CharonObol,
-			"Use 1 coin to spawn hungry soul. #If you don't have coins - pay with heart. #Remove this item if you die.")
+			"Pay {{Coin}} 1 coin to spawn {{Collectible684}} hungry soul. #Removes itself when you die.")
 	EID:addCollectible(mod.Items.Viridian,
 			"Grants flight. #Flip player's sprite.")
 	EID:addCollectible(mod.Items.BookMemory,
-			"Erase all enemies in room from current run. #Can't erase bosses. #Add broken heart when used.")
+			"Erase all enemies in room from current run. #Can't erase bosses. #Add {{BrokenHeart}} broken heart when used.")
 	--"Use to activate random effect from saved effects pool. #Saved effects pool - set of used active items, cards, runes or pills in current run. #Activated effect will be removed from saved effects pool. #Reuse item, card or pill to return it to saved effects pool. #If there isn't any saved effect, spawn Oblivion Card and turn into Memory Fragment trinket.")
 	EID:addCollectible(mod.Items.MongoCells,
-			"#Copy your familiars.")
+			"Copy your familiars.")
 	EID:addCollectible(mod.Items.CosmicJam,
 			"Add item from 1 wisp. #Add Item Wisp from nearest item to player.")
 	--EID:addCollectible(mod.Items.Lobotomy,
 	--	"Erase all enemies in room from current run. #Can't erase bosses. #Add broken hearts when used. #After each use increases added broken hearts amount to 1")
 	EID:addCollectible(mod.Items.DMS,
-			"Enemies has 25% chance to spawn purgatory soul after death.")
+			"Enemies has 25% chance to spawn {{Collectible634}} purgatory soul after death.")
 	EID:addCollectible(mod.Items.MewGen,
-			"Activates telekinesis if don't shoot more than 5 seconds.")
+			"Grants flight. #If don't shoot more than 5 seconds, activates {{Collectible522}} Telekinesis effect.")
 	EID:addCollectible(mod.Items.ElderSign,
-			"Creates Pentagram for 3 seconds at position where you stand. #Pentagram spawn Purgatory Soul. #Freeze enemies inside pentagram.")
+			"Creates Pentagram for 3 seconds at position where you stand. #Pentagram spawn {{Collectible634}} purgatory Soul. #{{Freezing}} Freeze enemies inside pentagram.")
+	EID:addCollectible(mod.Items.Eclipse,
+		"Grants aura dealing 2 damage per tick. #Get {{Damage}} x1.5 damage boost when you have {{CurseDarkness}} Curse of Darkness.")
 
 	EID:addTrinket(mod.Trinkets.WitchPaper,
-			"Turn back time when you die. #Removes after triggering.")
+			"{{Collectible422}} Turn back time when you die. #Destroys itself after triggering.")
 	EID:addTrinket(mod.Trinkets.QueenSpades,
-			"Opens Boss Rush and Blue Womb doors while you holding this trinket. #Removes after triggering.")
+			"Opens Boss Rush and Blue Womb doors while you holding this trinket. #Destroys itself after triggering.")
 	--"Opens all alternative doors while you holding this trinket. #Removes after triggering.")
 	EID:addTrinket(mod.Trinkets.RedScissors,
-			"Turn troll-bombs into red throwable bombs.")
+			"Turn troll-bombs into red throwable bombs.") -- inferior scissors, nah
 	EID:addTrinket(mod.Trinkets.Duotine,
-			"Replaces all future pills by Red pills while you holding this trinket.")
+			"Replaces all future {{Pill}} pills by Red pills while you holding this trinket.")
 	EID:addTrinket(mod.Trinkets.LostFlower,
-			"Give you full heart container when you get eternal heart. #Remove this trinket when you get hit. #Lost: activate Holy Card effect when you get eternal heart. #Lost: use Lost Mirror while holding this trinket to activate Holy Card effect.")
+			"Give you {{Heart}} full heart container when you get {{EternalHeart}} eternal heart. #Destroys itself when you take damage. #{{Player10}}{{Player31}} Lost: activate {{Card51}} Holy Card effect when you get eternal heart. #{{Player10}}{{Player31}} Lost: use Lost Mirror while holding this trinket to activate {{Card51}} Holy Card effect.")
 	EID:addTrinket(mod.Trinkets.TeaBag,
 			"Remove poison clouds near player.")
 	EID:addTrinket(mod.Trinkets.MilkTeeth,
-			"Enemies have a chance to drop vanishing coins when they die.")
+			"Enemies have a 15% chance to drop vanishing {{Coin}} coins when they die.")
 	EID:addTrinket(mod.Trinkets.BobTongue,
-			"Bombs get toxic aura.")
+			"Bombs get toxic aura, similar to {{Collectible446}} Dead Tooth effect.")
 	EID:addTrinket(mod.Trinkets.BinderClip,
-			"Increase chance to get double hearts, coins, keys and bombs. #Pickups with option choices no longer disappear.")
+			"10% chance to get double hearts, coins, keys and bombs. #Pickups with {{Collectible670}} option choices no longer disappear.")
 	EID:addTrinket(mod.Trinkets.MemoryFragment,
-			"Spawn last 3 used cards, runes, pills at the start of next floor.") -- +1 golden/mombox/stackable
+			"Spawn last 3 used {{Card}}{{Rune}}{{Pill}} cards, runes, pills at the start of next floor.") -- +1 golden/mombox/stackable
 	EID:addTrinket(mod.Trinkets.AbyssCart,
-			"If you have familiar when you die, remove him, drop eternal heart and revive you. #Removes after triggering.")
+			"If you have familiar when you die, remove him, drop {{EternalHeart}} eternal heart and revive you. #Destroys itself after triggering.")
 	EID:addTrinket(mod.Trinkets.RubikCubelet,
-			"Chance to reroll items into glitched items when you take damage")
+			"33% chance to reroll items into {{Collectible721}} glitched items when you take damage.")
 	EID:addTrinket(mod.Trinkets.TeaFungus,
 			"Rooms are flooded.")
 	EID:addTrinket(mod.Trinkets.DeadEgg,
-			"Spawn dead bird for 10 seconds when bomb explodes.")
-
+			"Spawn dead bird familiar for 10 seconds when bomb explodes.")
 
 	EID:addCard(mod.Pickups.OblivionCard,
-			"Throwable eraser card. #Erase enemies for current level")
+			"Throwable eraser card. #Erase enemies for current level.")
 	EID:addCard(mod.Pickups.Apocalypse,
 			"Fills the whole room with red poop.")
 	EID:addCard(mod.Pickups.KingChess,
@@ -6208,76 +6208,74 @@ if EID then -- External Item Description
 	EID:addCard(mod.Pickups.KingChessW,
 			"Poop around you.")
 	EID:addCard(mod.Pickups.Trapezohedron,
-			"Turn all trinkets into cracked keys.")
+			"Turn all {{Trinket}} trinkets into {{Card78}} cracked keys.")
 	EID:addCard(mod.Pickups.Domino34,
 			"Reroll items and pickups on current level.")
 	EID:addCard(mod.Pickups.Domino25,
 			"Respawn and reroll enemies in current room.")
 	EID:addCard(mod.Pickups.SoulUnbidden, -- The End?
-			"Add items from all item wisps to player. #Else, add item wisps from items in room.")
-	--EID:addCard(mod.Pickups.) --
-	--  "Add Items to player from all Item Wisps.")
+			"Add items from all item wisps to player. #If you don't have any item wisps, add item wisps from items in room.")
 
 	EID:addCard(mod.Pickups.SoulNadabAbihu,
-			"Fire and Explosion immunity. #Fire Mind and Hot Bombs effect for current room.")
+			"Fire and Explosion immunity. #{{Collectible257}} Fire Mind and {{Collectible256}} Hot Bombs effect for current room.")
 	EID:addCard(mod.Pickups.AscenderBane,
-			"Remove one broken heart.")
+			"Remove one {{BrokenHeart}} broken heart.")
 	EID:addCard(mod.Pickups.MultiCast,
-			"Spawn 3 wisps based on your active item. #Spawn regular wisps if you don't have an active item")
+			"Spawn 3 wisps based on your active item. #Spawn regular wisps if you don't have an active item.")
 	EID:addCard(mod.Pickups.Wish,
-			"Activate Mystery Gift.")
+			"{{Collectible515}} Mystery Gift effect.")
 	EID:addCard(mod.Pickups.Offering,
-			"Activate Sacrificial Altar.")
+			"{{Collectible536}} Sacrificial Altar effect.")
 	EID:addCard(mod.Pickups.InfiniteBlades,
 			"Shoot 28 knives in firing direction.")
 
 	EID:addCard(mod.Pickups.Transmutation,
 			"Reroll pickups and enemies into random pickups.")
 	EID:addCard(mod.Pickups.RitualDagger,
-			"Grants Mom's Knife for current room.")
+			"{{Collectible114}} Mom's Knife for current room.")
 	EID:addCard(mod.Pickups.Fusion,
-			"Throw a Black Hole")
+			"{{Collectible512}} Throw a Black Hole.")
 	EID:addCard(mod.Pickups.DeuxEx,
-			"Random effects based on room type. #Add 100 luck on regular rooms. #Item reroll on Treasure, Library. #Coupon on Shop, Devil deal. #Full heal on Sacrifice. #Teleport from Error, Cursed. #")
+			"↑ {{Luck}} +100 luck up for current room.")
 	EID:addCard(mod.Pickups.Adrenaline,
-			"Turn all your red health into batteries (full heart = battery). #Adrenaline item effect for current room.")
+			"Turn all your {{Heart}} red health into {{Battery}} batteries. #{{Collectible493}} Adrenaline effect for current room.")
 	EID:addCard(mod.Pickups.Corruption,
-			"You can use your active item unlimited times in current room. #On next room active item on main slot will be removed. #Pocket items can't be removed.")
+			"You can use your active item unlimited times in current room. #On next room, active item on main slot will be removed.") --{{Active1}}
 
 	EID:addCard(mod.Pickups.GhostGem,
-			"Spawn 4 purgatory souls.")
+			"Spawn 4 {{Collectible634}} purgatory souls.")
 	EID:addCard(mod.Pickups.BannedCard,
-			"Spawn 2 cards or runes.")
+			"Spawn 2 {{Card}} cards or {{Rune}} runes.")
 
 	EID:addCard(mod.Pickups.Domino16,
 			"Spawn 6 pickups of same type.")
 	EID:addCard(mod.Pickups.BattlefieldCard,
-			"Teleport to out of map Boss Challenge.")
+			"Teleport to out of map {{ChallengeRoom}} Boss Challenge.")
 	EID:addCard(mod.Pickups.TreasuryCard,
-			"Teleport to out of map Treasury.")
+			"Teleport to out of map {{TreasureRoom}} Treasury.")
 	EID:addCard(mod.Pickups.BookeryCard,
-			"Teleport to out of map Library.")
+			"Teleport to out of map {{Library}} Library.")
 	EID:addCard(mod.Pickups.Decay,
-			"Turn your red hearts into rotten hearts. #Apply Apple of Sodom trinket effect for current room.")
+			"Turn your {{Heart}} red hearts into {{RottenHeart}} rotten hearts. #{{Trinket140}} Apple of Sodom effect for current room.")
 	EID:addCard(mod.Pickups.BloodGroveCard,
-			"Teleport to out of map Curse Room.")
+			"Teleport to out of map {{CursedRoom}} Curse Room.")
 	EID:addCard(mod.Pickups.StormTempleCard,
-			"Teleport to out of map Sacrifice Room.")
+			"Teleport to out of map {{SacrificeRoom}} Sacrifice Room.")
 	EID:addCard(mod.Pickups.ArsenalCard,
-			"Teleport to out of map Chest Room.")
+			"Teleport to out of map {{ChestRoom}} Chest Room.")
 	EID:addCard(mod.Pickups.OutpostCard,
-			"Teleport to out of map Bedroom.")
+			"Teleport to out of map {{IsaacsRoom}}{{BarrenRoom}} Bedroom.")
 	EID:addCard(mod.Pickups.CryptCard,
-			"Teleport to out of map Dungeon.")
+			"Teleport to out of map {{LadderRoom}} Dungeon.")
 	EID:addCard(mod.Pickups.MazeMemoryCard,
-			"Teleport to out of map room with 18 items from random pools. #You can pick up only one. #Apply Curse of Blind for current level.")
+			"Teleport to out of map {{TreasureRoom}} room with 18 items from random pools. #Only one can be taken. #Apply {{CurseBlind}} Curse of Blind for current level.")
 	EID:addCard(mod.Pickups.ZeroMilestoneCard,
-			"Genesis effect. #Next level is Void.")
+			"{{Collectible622}} Genesis effect. #Next level is Void.")
 
 	EID:addCard(mod.Pickups.RedPill,
-			"Grants tmporary 10.8 damage. #Apply 2 layers of Wavy Cap effect.")
+			"Temporary ↑ {{Damage}} +10.8 Damage up. #Damage up slowly fades away similarly to {{Collectible621}} Red Stew. #Apply 2 layers of {{Collectible582}} Wavy Cap effect. #While you have temporary Damage Up, entering a room with enemies increase {Collectible582}} Wavy Cap effect.")
 	EID:addCard(mod.Pickups.RedPillHorse,
-			"Grants tmporary 21.6 damage. #Apply 4 layers of Wavy Cap effect.")
+			"Temporary ↑ {{Damage}} +21.6 Damage up. #Damage up slowly fades away similarly to {{Collectible621}} Red Stew. #Apply 4 layers of {{Collectible582}} Wavy Cap effect. #While you have temporary Damage Up, entering a room with enemies increase {Collectible582}} Wavy Cap effect.")
 
 	--EID:addPill(mod.RedPills.RedEffect,
 	--	"Grants tmporary 10.8 damage. #Apply 2 layers of Wavy Cap effect. #Horse Pill doubles all effects.")
@@ -9252,9 +9250,9 @@ function mod:onExecuteCommand(command, args)
 			print("Mongo Cells effects full desc")
 		elseif args == "debug" then
 			if debug then
-				debug = true
-			else
 				debug = false
+			else
+				debug = true
 			end
 			print('debug:', debug)
 		--[[
@@ -9333,6 +9331,8 @@ end
 --]]
 
 --[[
+check unbidden with maze of memory / battlefield
+
 check binder clip
 
 check a.prism with ludo (4176)
@@ -9341,9 +9341,104 @@ check domino 1/6 spawn of pickups -1 (5989)
 
 banned card check use
 
-
 local room = game:GetRoom()
 if not room:HasCurseMist() then
 
 if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+
+beggars:
+Mongo Beggar - take 1 coin, chance to add familiar for current level (Monster Manual). has a chance to prize: [mongo baby]. if killed spawn blended hearts
+Zealot Beggar (Pandora Box Beggar) - can be interacted for free. on interaction give random curse and item wisps. leaves after 10 interactions. if killed spawn enemy ghost.
+Glitched Beggar - take random pickup [coin, key, bomb]. has a chance to prize: [glitched item (TMTRAINER)] Guaranteed to give prize after 10 interactions. Leaves as Terminator. if killed
+Master Beggar (Dungeon Beggar) - take 1 coin, chance to activate random pressure plate effect. has a chance to prize: [dice items]. Guaranteed to give 3 dice shards after 10 no prize interactions.
+Delirium Beggar - take 1 coin, spawn random friendly charmed enemy.
+
+Delirious beggar - take 1 coin, spawn random friendly charmed monster
+Hunter Beggar - take 1 coin, gives death list mark on next room for each coin. death list marks only for current level.
+
 --]]
+
+--- Eclipse
+local function EclipseAura(player)
+	local data = player:GetData()
+
+	-- delay - firerate analog
+	local maxCharge = math.floor(player.MaxFireDelay) + mod.Eclipse.DamageDelay
+	data.EclipseDamageDelay = data.EclipseDamageDelay or 0
+	if data.EclipseDamageDelay < maxCharge then data.EclipseDamageDelay = data.EclipseDamageDelay + 1 end
+
+	-- damage boosts count (work only with Curse of Darkness)
+	data.EclipseBoost = data.EclipseBoost or 0
+	if data.EclipseBoost > 0 and game:GetLevel():GetCurses() & LevelCurse.CURSE_OF_DARKNESS == 0 then
+		data.EclipseBoost = 0
+	end
+
+	-- dark aura
+	local pos = player.Position
+	local range = mod.Eclipse.AuraRange
+	local glowa = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.HALO, 2, pos, Vector.Zero, player):ToEffect()
+	glowa:GetData().EclipseAura = true
+	glowa.SpriteScale = glowa.SpriteScale * range/100
+	glowa.Color = Color(0,0,0,1)
+
+	-- do pulse damage to enemies in aura range
+	if player:GetFireDirection() == -1 and data.EclipseDamageDelay >= maxCharge then
+		local enemies = Isaac.FindInRadius(pos, range, EntityPartition.ENEMY)
+		local pulse = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.HALO, 8, pos, Vector.Zero, player):ToEffect()
+		pulse.SpriteScale = pulse.SpriteScale * range/100
+		if #enemies > 0 then
+			for _, enemy in pairs(enemies) do
+				if enemy:IsVulnerableEnemy() and enemy:IsActiveEnemy() then
+					enemy:TakeDamage(player.Damage, 0, EntityRef(player), 1)
+					enemy:AddVelocity((enemy.Position - pos):Resized(player.ShotSpeed * mod.Eclipse.Knockback))
+				end
+			end
+		end
+	end
+end
+
+--- Eclipse
+function mod:onEclipseHaloUpdate(effect)
+	-- check if it's right aura and curse of darkness is active
+	if effect:GetData().EclipseAura and game:GetLevel():GetCurses() & LevelCurse.CURSE_OF_DARKNESS > 0 then
+		-- get all players in room/game
+		local players = Isaac.FindByType(EntityType.ENTITY_PLAYER)
+		if #players > 0 then
+			for _, player in pairs(players) do
+				player = player:ToPlayer()
+				local data = player:GetData()
+				-- if they don't have damage boost set it to 0
+				data.EclipseBoost = data.EclipseBoost or 0
+				-- check distance and add/remove boost count
+				if player.Position:Distance(effect.Position) < mod.Eclipse.AuraRange then
+					data.EclipseBoost = data.EclipseBoost + 1
+				elseif data.EclipseBoost > 0 then
+					data.EclipseBoost = data.EclipseBoost - 1
+				end
+				-- call evaluate
+				player:AddCacheFlags(CacheFlag.CACHE_DAMAGE)
+				player:EvaluateItems()
+			end
+		end
+	end
+end
+mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onEclipseHaloUpdate, EffectVariant.HALO)
+
+
+function mod:onCache22(player, cacheFlag)
+	local data = player:GetData()
+    if cacheFlag == CacheFlag.CACHE_DAMAGE and data.EclipseBoost and data.EclipseBoost > 0 then
+	    -- add damage with boost count
+        player.Damage = player.Damage + player.Damage * (mod.Eclipse.DamageBoost * data.EclipseBoost)
+    end
+end
+
+mod:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, mod.onCache22)
+
+
+function mod:onPEffectUpdate(player)
+	if player:HasCollectible(mod.Items.Eclipse) then
+		EclipseAura(player)
+	end
+end
+mod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, mod.onPEffectUpdate22)
