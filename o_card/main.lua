@@ -70,12 +70,12 @@ mod.Items.LostMirror = Isaac.GetItemIdByName("Lost Mirror") --
 mod.Items.BleedingGrimoire = Isaac.GetItemIdByName("Bleeding Grimoire") -- they bleed pixels
 mod.Items.BlackBook = Isaac.GetItemIdByName("Black Book") -- black book
 mod.Items.RubikDice = Isaac.GetItemIdByName("Rubik's Dice")
-mod.Items.RubikDiceScrambled0 = Isaac.GetItemIdByName("Scrambled Rubik's Dice")
-mod.Items.RubikDiceScrambled1 = Isaac.GetItemIdByName("Scrambled Rubik's Dice ")
-mod.Items.RubikDiceScrambled2 = Isaac.GetItemIdByName("Scrambled Rubik's Dice  ")
-mod.Items.RubikDiceScrambled3 = Isaac.GetItemIdByName("Scrambled Rubik's Dice   ")
-mod.Items.RubikDiceScrambled4 = Isaac.GetItemIdByName("Scrambled Rubik's Dice    ")
-mod.Items.RubikDiceScrambled5 = Isaac.GetItemIdByName("Scrambled Rubik's Dice     ")
+mod.Items.RubikDiceScrambled0 = Isaac.GetItemIdByName("Rubik's Dice ")
+mod.Items.RubikDiceScrambled1 = Isaac.GetItemIdByName("Rubik's Dice  ")
+mod.Items.RubikDiceScrambled2 = Isaac.GetItemIdByName("Rubik's Dice   ")
+mod.Items.RubikDiceScrambled3 = Isaac.GetItemIdByName("Rubik's Dice    ")
+mod.Items.RubikDiceScrambled4 = Isaac.GetItemIdByName("Rubik's Dice     ")
+mod.Items.RubikDiceScrambled5 = Isaac.GetItemIdByName("Rubik's Dice      ")
 mod.Items.VHSCassette = Isaac.GetItemIdByName("VHS Cassette")
 mod.Items.Lililith = Isaac.GetItemIdByName("Lililith")
 mod.Items.CompoBombs = Isaac.GetItemIdByName("Compo Bombs")
@@ -94,14 +94,13 @@ mod.Items.Threshold = Isaac.GetItemIdByName("Threshold")
 mod.Items.MongoCells = Isaac.GetItemIdByName("Mongo Cells") -- copy your familiars
 mod.Items.NadabBody = Isaac.GetItemIdByName("Nadab's Body")
 mod.Items.CosmicJam = Isaac.GetItemIdByName("Space Jam") -- "lf it weren't real, could it do this?"
---mod.Items.Lobotomy = Isaac.GetItemIdByName("Lobotomy") -- "Memory Management" erase enemies in room
 mod.Items.DMS = Isaac.GetItemIdByName("Death's Sickle")
 mod.Items.MewGen = Isaac.GetItemIdByName("Mew-Gen") 
 mod.Items.ElderSign = Isaac.GetItemIdByName("Elder Sign")
 mod.Items.Eclipse = Isaac.GetItemIdByName("Eclipse") -- "Darkest Basement" grants aura dealing 2 damage. boost player damage if you have curse of darkness
 
 --mod.Items.DiceBombs = Isaac.GetItemIdByName("Dice Bombs") -- "Reroll blast +5 bombs"
---mod.Items.Pizza = Isaac.GetItemIdByName("Pizza Pepperoni") -- active 12 seconds. Shoot Pizza boomerang, apply rotten tomato effect
+--mod.Items.Pizza = Isaac.GetItemIdByName("Pizza Pepperoni") -- active 12 seconds. Shoot Pizza boomerang
 
 --mod.Items.Gagger = Isaac.GetItemIdByName("Little Gagger") -- punching bag subtype ?
 end
@@ -109,7 +108,7 @@ end
 do
 mod.Trinkets.WitchPaper = Isaac.GetTrinketIdByName("Witch Paper") -- yuppie psycho
 mod.Trinkets.Duotine = Isaac.GetTrinketIdByName("Duotine") -- fran bow
-mod.Trinkets.QueenSpades = Isaac.GetTrinketIdByName("Queen of Spades")
+mod.Trinkets.QueenSpades = Isaac.GetTrinketIdByName("Torn Spades")
 mod.Trinkets.RedScissors = Isaac.GetTrinketIdByName("Red Scissors") -- Fuse Cutter 2.0
 mod.Trinkets.LostFlower = Isaac.GetTrinketIdByName("Lost Flower") -- "Eternal blessing"
 mod.Trinkets.MilkTeeth = Isaac.GetTrinketIdByName("Milk Teeth")
@@ -121,6 +120,7 @@ mod.Trinkets.AbyssCart = Isaac.GetTrinketIdByName("Cartridge") -- Cartridge?
 mod.Trinkets.RubikCubelet = Isaac.GetTrinketIdByName("Rubik's Cubelet") -- TMTRAINER reroll when you take damage
 mod.Trinkets.TeaFungus = Isaac.GetTrinketIdByName("Tea Fungus")
 mod.Trinkets.DeadEgg = Isaac.GetTrinketIdByName("Dead Egg") -- chance to spawn dead bird effect when bomb explodes (soul of eve birds)
+mod.Trinkets.Penance = Isaac.GetTrinketIdByName("Penance")
 end
 --- PICKUPS --
 do
@@ -173,14 +173,14 @@ mod.Challenges.Magician = Isaac.GetChallengeIdByName("Curse of The Magician")
 end
 --- CURSES --
 do
-mod.Curses.Void = 1 << (Isaac.GetCurseIdByName("Curse of the Void!")-1) -- reroll enemies and grid, apply delirium spritesheet, always active on void floors
+mod.Curses.Void = 1 << (Isaac.GetCurseIdByName("Curse of the Void!")-1) -- reroll enemies and grid, apply delirium spritesheet, always active on void floors?
 mod.Curses.Jamming = 1 << (Isaac.GetCurseIdByName("Curse of the Jamming!")-1) -- respawn enemies in room after clearing
---mod.Curses.Emperor = 1 << (Isaac.GetCurseIdByName("Curse of the Emperor!")-1) -- no exit door from boss room
+mod.Curses.Emperor = 1 << (Isaac.GetCurseIdByName("Curse of the Emperor!")-1) -- no exit door from boss room
 mod.Curses.Magician = 1 << (Isaac.GetCurseIdByName("Curse of the Magician!")-1) -- homing enemy tears (except boss)
-mod.Curses.Strength = 1 << (Isaac.GetCurseIdByName("Curse of Champions!")-1) -- chance to champion enemies (except boss)
-mod.Curses.Bell = 1 << (Isaac.GetCurseIdByName("Curse of the Bell!")-1) -- all troll bombs golden
+mod.Curses.Strength = 1 << (Isaac.GetCurseIdByName("Curse of Champions!")-1) -- all enemies is champion (except boss) - without health buff
+mod.Curses.Bell = 1 << (Isaac.GetCurseIdByName("Curse of the Bell!")-1) -- all troll bombs is golden
 mod.Curses.Envy = 1 << (Isaac.GetCurseIdByName("Curse of the Envy!")-1) -- other shop items disappear when you buy one
---mod.Curses.Reaper = 1 << (Isaac.GetCurseIdByName("Curse of the Reaper!")-1) -- spawn death's scythe after 1 min on floor, it will follow you
+--mod.Curses.Reaper = 1 << (Isaac.GetCurseIdByName("Curse of the Reaper!")-1) -- death's scythe will follow you
 end
 --[[
 mod.MyCurses = { -- curse table use it on CURSE_EVAL callback
@@ -3723,12 +3723,12 @@ function mod:onNewRoom()
 				game:GetPlayer(0):UseActiveItem(CollectibleType.COLLECTIBLE_D12, myUseFlags)
 			end
 		end
-		--[[ curse Emperor
-		if level:GetCurses() & mod.Curses.Emperor > 0 and room:GetType() == RoomType.ROOM_BOSS then
+		--[ curse Emperor
+		if level:GetCurses() & mod.Curses.Emperor > 0 and not level:IsAscent() and room:GetType() == RoomType.ROOM_BOSS and not level:GetStage(LevelStage.STAGE3_2) and not level:GetStage(LevelStage.STAGE7) and not level:GetStage(LevelStage.STAGE7_GREED) then
 			--SeedEffect.SEED_NO_BOSS_ROOM_EXITS
 			local door = room:GetDoor(level.EnterDoor) --:ToDoor()
 			if door then
-				room:RemoveDoor(door.Slot)
+				room:RemoveDoor(door:ToDoor().Slot)
 			end
 		end
 		--]]
@@ -3976,7 +3976,7 @@ mod:AddCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, mod.onRoomClear)
 --- CURSE EVAL --
 function mod:onCurseEval(curseFlags)
 	local newCurse = LevelCurse.CURSE_NONE
-	local level = game:GetLevel()
+	--local level = game:GetLevel()
 	--[
 	if curseFlags == LevelCurse.CURSE_NONE then
 		if modRNG:RandomFloat() < mod.CurseChance then
@@ -3990,9 +3990,11 @@ function mod:onCurseEval(curseFlags)
 		end
 	end
 	--]
+	--[[
 	if level:GetStage() == LevelStage.STAGE7 and mod.ChaosVoid then
 		curseFlags = curseFlags | mod.Curses.Void
 	end
+	--]]
 
 	local player = game:GetPlayer(0)
 	if player:GetPlayerType() == mod.Characters.Oblivious and not player:HasCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE) and not player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
@@ -5493,15 +5495,16 @@ mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onRubikDiceScrambled) -- called fo
 ---rubik's dice
 function mod:onRubikDice(_, rng, player) --item, rng, player, useFlag, activeSlot, customVarData
 	--- player use rubik's dice
+	player:UseActiveItem(CollectibleType.COLLECTIBLE_D6, myUseFlags)
 	if rng:RandomFloat() < mod.RubikDice.GlitchReroll then -- and (useFlag & UseFlag.USE_OWNED == 0) and (useFlag & UseFlag.USE_MIMIC == 0) then
 		--player:RemoveCollectible(mod.Items.RubikDice)
 		local Newdice = mod.RubikDice.ScrambledDicesList[rng:RandomInt(#mod.RubikDice.ScrambledDicesList)+1]
 		player:AddCollectible(Newdice) --Newdice / mod.Items.RubikDiceScrambled
-		RerollTMTRAINER(player, Newdice) -- Newdice / mod.Items.RubikDiceScrambled
-	else
-		player:UseActiveItem(CollectibleType.COLLECTIBLE_D6, myUseFlags)
-		return true
+		--RerollTMTRAINER(player, Newdice) -- Newdice / mod.Items.RubikDiceScrambled
+	--else
+		--player:UseActiveItem(CollectibleType.COLLECTIBLE_D6, myUseFlags)
 	end
+	return true
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onRubikDice, mod.Items.RubikDice)
 ---vhs cassette
@@ -6116,7 +6119,7 @@ if EID then -- External Item Description
 	EID:addCollectible(mod.Items.BlackBook,
 			"Apply random status effects on enemies in room. #Possible effects: {{Freezing}}Freeze; {{Poison}}Poison; {{Slow}}Slow; {{Charm}}Charm; {{Confusion}}Confusion; {{Collectible202}}Midas Touch; {{Fear}}Fear; {{Burning}}Burn; {{Collectible398}}Shrink; {{BleedingOut}}Bleed; {{Collectible596}}Frozen; {{Magnetize}}Magnetized; {{Bait}}Bait.")
 
-	local description = "In 'solved' state {{Collectible105}} reroll items. #Have a 16% chance to reroll items into {{Collectible721}} glitched items, after which it's 'scrambles', increasing it's charge bar. #In 'scrambled' state it can be used without full charge, but will reroll items into {{Collectible721}} glitched items. #After fully recharging, it returns to 'solved' state."
+	local description = "In 'solved' state {{Collectible105}} reroll items. #Have a 16% chance to turn into {{Collectible".. mod.Items.RubikDiceScrambled0 .."}} 'scrambled' Rubik's Dice, increasing it's charge bar. #In 'scrambled' state it can be used without full charge, but will reroll items into {{Collectible721}} glitched items. #After fully recharging, it returns to 'solved' state."
 	EID:addCollectible(mod.Items.RubikDice, description)
 	EID:addCollectible(mod.Items.RubikDiceScrambled0, description)
 	EID:addCollectible(mod.Items.RubikDiceScrambled1, description)
@@ -6172,7 +6175,7 @@ if EID then -- External Item Description
 	EID:addTrinket(mod.Trinkets.WitchPaper,
 			"{{Collectible422}} Turn back time when you die. #Destroys itself after triggering.")
 	EID:addTrinket(mod.Trinkets.QueenSpades,
-			"Opens Boss Rush and Blue Womb doors while you holding this trinket. #Destroys itself after triggering.")
+			"Opens Alt.path, Boss Rush and Blue Womb doors while you holding this trinket.")
 	--"Opens all alternative doors while you holding this trinket. #Removes after triggering.")
 	EID:addTrinket(mod.Trinkets.RedScissors,
 			"Turn troll-bombs into red throwable bombs.") -- inferior scissors, nah
@@ -9348,15 +9351,75 @@ if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
 
 beggars:
 Mongo Beggar - take 1 coin, chance to add familiar for current level (Monster Manual). has a chance to prize: [mongo baby]. if killed spawn blended hearts
-Zealot Beggar (Pandora Box Beggar) - can be interacted for free. on interaction give random curse and item wisps. leaves after 10 interactions. if killed spawn enemy ghost.
-Glitched Beggar - take random pickup [coin, key, bomb]. has a chance to prize: [glitched item (TMTRAINER)] Guaranteed to give prize after 10 interactions. Leaves as Terminator. if killed
-Master Beggar (Dungeon Beggar) - take 1 coin, chance to activate random pressure plate effect. has a chance to prize: [dice items]. Guaranteed to give 3 dice shards after 10 no prize interactions.
-Delirium Beggar - take 1 coin, spawn random friendly charmed enemy.
-
+Zealot Beggar (Pandora Box Beggar) - can be interacted for free. on interaction give random curse and item wisps. if killed spawn enemy ghost.
+Glitched Beggar - take random pickup [coin, key, bomb]. has a chance to prize: [glitched item (TMTRAINER)] Guaranteed to give prize after total 10 interactions. Leaves as Terminator.
+Box Beggar (Dungeon Beggar) - take 1 coin, chance to activate random pressure plate effect. has a chance to prize: [dice items]. Guaranteed to give 3 dice shards after total 10 no prize interactions.
 Delirious beggar - take 1 coin, spawn random friendly charmed monster
 Hunter Beggar - take 1 coin, gives death list mark on next room for each coin. death list marks only for current level.
+Suck Beggar - tale hearts, gives random blood clot familiars
 
+slot machines:
+Iron Maiden - 1 time interaction, gives 1 broken heart and cricket's head damage up
+Toilet - take 1 coin, can drop 1-2 dip familiars. chance to gives random poop transformation item.
 --]]
+
+--mod.Trinkets.Penance
+
+mod.Penance = {}
+mod.Penance.Chance = 0.1
+mod.Penance.Effect = EffectVariant.REDEMPTION
+mod.Penance.Color = Color(1.25, 0.05, 0.15, 1, 0, 0, 0)
+
+
+function mod:onNewRoom()
+	--player
+	for playerNum = 0, game:GetNumPlayers()-1 do
+		local player = game:GetPlayer(playerNum)
+		if not player:HasCurseMistEffect() and not player:IsCoopGhost() and not room:IsClear() then
+			if player:HasTrinket(mod.Trinkets.Penance) then
+				local rngTrinket = player:GetTrinketRNG(mod.Trinkets.Penance)
+				for _, entity in pairs(Isaac.GetRoomEntities()) do
+					if entity:ToNPC() and entity:IsActiveEnemy() and entity:IsVulnerableEnemy() and not entity:GetData().PenanceRedCross and rngTrinket:RandomFloat() < mod.Penance.Chance then
+						entity:GetData().PenanceRedCross = true
+						local redCross = Isaac.Spawn(EntityType.ENTITY_EFFECT, mod.Penance.Effect, 0, entity.Position, Vector.Zero, nil):ToEffect()
+						redCross.Color = mod.Penance.Color
+						redCross:GetData().PenanceRedCross = true
+						redCross.Parent = entity
+					end
+				end
+			end
+		end
+	end
+end
+mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, mod.onNewRoom)
+
+function mod:onNPCDeath2(entity)
+	if entity:GetData().PenanceRedCross then
+		local variant = 4
+		local timeout = 30
+		local redLaser = Isaac.Spawn(EntityType.ENTITY_LASER, variant, 0, entity.Position, Vector.Zero, nil):ToEffect()
+		redLaser:SetTimeout(timeout)
+		--.AngleDegrees
+		--:ShootAngle(Variant, SourcePos, AngleDegrees, Timeout, PosOffset, Source)
+		redLaser:ShootAngle(variant, redLaser.Position, 90, timeout, Vector.Zero, nil)
+		redLaser:ShootAngle(variant, redLaser.Position, 180, timeout, Vector.Zero, nil)
+		redLaser:ShootAngle(variant, redLaser.Position, 270, timeout, Vector.Zero, nil)
+	end
+end
+mod:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, mod.onNPCDeath2)
+
+function mod:onRedCrossEffect(effect)
+	if effect:GetData().PenanceRedCross then
+		if effect.Parent then
+			effect:FollowParent(effect.Parent)
+			--effect.Position = effect.Parent.Position
+		else
+			effect:Remove()
+		end
+	end
+end
+mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onRedCrossEffect, mod.Penance.Effect)
+
 
 --- Eclipse
 local function EclipseAura(player)
@@ -9424,7 +9487,6 @@ function mod:onEclipseHaloUpdate(effect)
 end
 mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onEclipseHaloUpdate, EffectVariant.HALO)
 
-
 function mod:onCache22(player, cacheFlag)
 	local data = player:GetData()
     if cacheFlag == CacheFlag.CACHE_DAMAGE and data.EclipseBoost and data.EclipseBoost > 0 then
@@ -9434,7 +9496,6 @@ function mod:onCache22(player, cacheFlag)
 end
 
 mod:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, mod.onCache22)
-
 
 function mod:onPEffectUpdate(player)
 	if player:HasCollectible(mod.Items.Eclipse) then

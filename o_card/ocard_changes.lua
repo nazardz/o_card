@@ -95,6 +95,7 @@ mod.Items.Eclipse = Isaac.GetItemIdByName("Eclipse") -- "Darkest Basement" grant
 mod.Items.PandoraJar = Isaac.GetItemIdByName("Pandora's Jar") -- "Deceptive expectations". 2 charge. 70% chance to add random wisp. 25% chance to add special curse for level. 5% chance to become unusable on current level
 
 mod.PandoraJar = {}
+mod.PandoraJar.ItemWispChance = 0.33
 mod.PandoraJar.CurseChance = 0.2
 mod.PandoraJar.Curses = {}
 
@@ -134,34 +135,31 @@ mod:AddCallback(ModCallbacks.MC_POST_CURSE_EVAL, mod.onCurseEval)
 ---Pandora's Jar
 function mod:onPandoraJar(_, rng, player) --item, rng, player, useFlag, activeSlot, customVarData
 	local data = player:GetData()
-	data.EnableJar = data.EnableJar or true
 	local randNum = rng:RandomFloat()
 
-	if data.EnableJar then
-		if randNum <= mod.PandoraJar.CurseChance and #mod.PandoraJar.Curses > 0 then
-			local curseNum = #mod.PandoraJar.Curses
-			local level = game:GetLevel()
-			local currentCurses = level:GetCurses()
-			local randIndex = rng:RandomInt(curseNum)+1
-			local addCurse = mod.PandoraJar.Curses[randIndex]
-			while currentCurses & addCurse > 0 do
-				randIndex = rng:RandomInt(curseNum)+1
-				addCurse = mod.PandoraJar.Curses[randIndex]
-			end
-			table.remove(mod.PandoraJar.Curses, randIndex)
-			level:AddCurse(addCurse, true)
+	if randNum <= mod.PandoraJar.CurseChance and #mod.PandoraJar.Curses > 0 then
+		local curseNum = #mod.PandoraJar.Curses
+		local level = game:GetLevel()
+		local currentCurses = level:GetCurses()
+		local randIndex = rng:RandomInt(curseNum)+1
+		local addCurse = mod.PandoraJar.Curses[randIndex]
+		while currentCurses & addCurse > 0 do
+			randIndex = rng:RandomInt(curseNum)+1
+			addCurse = mod.PandoraJar.Curses[randIndex]
 		end
-
-		local allItems = Isaac.GetItemConfig():GetCollectibles().Size - 1
-		local pos = player.Position
-		local item = rng:RandomInt(allItems)+1
-		if randNum > 0.65 then
-			player:AddWisp(item, pos)
-		else
-			player:AddItemWisp(item, pos)
-		end
-
+		table.remove(mod.PandoraJar.Curses, randIndex)
+		level:AddCurse(addCurse, true)
 	end
+
+	local allItems = Isaac.GetItemConfig():GetCollectibles().Size - 1
+	local pos = player.Position
+	local item = rng:RandomInt(allItems)+1
+	if randNum > mod.PandoraJar.ItemWispChance then
+		player:AddWisp(item, pos)
+	else
+		player:AddItemWisp(item, pos)
+	end
+
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onPandoraJar, mod.Items.PandoraJar)
 
