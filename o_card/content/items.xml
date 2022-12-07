@@ -33,7 +33,7 @@
 	<passive id="31" quality="2" craftquality="2" description="Popularity up" gfx="Duckling.png" name="Duckling" cache="luck" tags="summonable"/>
 	<passive id="32" quality="2" craftquality="1" description="Please, don't touch the button" gfx="Red_Button.png" name="Red Button" devilprice="2" tags="summonable"/>
 	<passive id="33" quality="1" craftquality="1" description="Combo blast +5 bombs" gfx="cherry_bombs.png" name="Compo Bombs" bombs="5"/>
-	<passive id="34" quality="0" craftquality="0" description="Afterdeath" gfx="Limb.png" name="Limbus"/>
+	<passive id="34" quality="0" craftquality="0" description="Here to stay" gfx="Limb.png" name="Limbus"/>
 	<passive id="35" quality="3" craftquality="3" description="Absorbing blast +1 giga bomb" gfx="gravity_bombs.png" name="Black Hole Bombs" bombs="1"/>
 	<passive id="36" quality="2" craftquality="3" description="Reflected blast +5 bombs" gfx="mirror_bombs.png" name="Glass Bombs" bombs="5"/>
 	<passive id="37" quality="3" craftquality="3" description="Frosty blast +5 bombs" gfx="cube_bombs.png" name="Ice Cube Bombs" bombs="5"/>

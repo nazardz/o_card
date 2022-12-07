@@ -689,7 +689,8 @@ mod.ElderSign.Timeout = 20
 mod.ElderSign.AuraRange = 60
 
 mod.WhiteKnight = {}
-mod.WhiteKnight.Costume = NullItemID.ID_REVERSE_CHARIOT_ALT --Isaac.GetCostumeIdByPath("gfx/characters/whiteknight.anm2")
+mod.WhiteKnight.Costume = Isaac.GetItemConfig():GetNullItem(NullItemID.ID_REVERSE_CHARIOT_ALT)
+--mod.WhiteKnight.Costume = NullItemID.ID_REVERSE_CHARIOT_ALT --Isaac.GetCostumeIdByPath("gfx/characters/whiteknight.anm2")
 
 mod.BlackKnight = {}
 mod.BlackKnight.Costume = Isaac.GetCostumeIdByPath("gfx/characters/knightmare.anm2")
@@ -1435,7 +1436,17 @@ end
 local function RedBombReplace(bomb)
 	--- replace bomb by throwable bomb
 	bomb:Remove()
-	Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_THROWABLEBOMB, 0, bomb.Position, bomb.Velocity, nil)
+	local doLoop
+	if bomb.Variant == BombVariant.BOMB_GIGA then
+		doLoop = true
+	end
+	if doLoop then
+		for _ = 1, 5 do
+			Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_THROWABLEBOMB, 0, bomb.Position, RandomVector()*5, nil)
+		end
+	else
+		Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_THROWABLEBOMB, 0, bomb.Position, bomb.Velocity, nil)
+	end
 	local effect = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, bomb.Position, Vector.Zero, nil)
 	effect:SetColor(mod.RedColor, 50, 1, false, false)
 end
@@ -5754,8 +5765,10 @@ function mod:onMultiCast(_, player) -- card, player, useflag
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onMultiCast, mod.Pickups.MultiCast)
 ---wish
-function mod:onWish(_, player) -- card, player, useflag
-	player:UseActiveItem(CollectibleType.COLLECTIBLE_MYSTERY_GIFT, myUseFlags)
+function mod:onWish(_, player, useFlag) -- card, player, useflag
+	if useFlag & UseFlag.USE_MIMIC == 0 then
+		player:UseActiveItem(CollectibleType.COLLECTIBLE_MYSTERY_GIFT, myUseFlags)
+	end
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onWish, mod.Pickups.Wish)
 ---offering
@@ -6078,13 +6091,13 @@ end
 --- EID
 if EID then -- External Item Description
 	EID:addBirthright(mod.Characters.Nadab, "Explosion immunity. #Spawns 3 random items from {{BombBeggar}} Bomb Beggar pool. #Only one can be taken.")
-	EID:addBirthright(mod.Characters.Abihu, "Fire immunity. #Full health. #{{Chargeable}} Charging Blue Flame is always active.")
+	EID:addBirthright(mod.Characters.Abihu, "Fire immunity. #{{Heart}} Full health. #{{Chargeable}} Charging Blue Flame is always active.")
 	EID:addBirthright(mod.Characters.Unbidden, "Turn all {{BrokenHeart}} broken hearts into {{SoulHeart}} soul hearts. #Give all items from Item Wisps, without removing wisps.")
 	EID:addBirthright(mod.Characters.Oblivious, "Remove and prevent all curses. #No longer discharges {{Collectible"..mod.Items.Threshold.."}} Threshold after death.")
 
-	local disk_description = "Save your items. (Empty -> Full) #If you have saved items, replace them. (Full -> Empty) #{{Warning}} Give {{Collectible258}} MissingNo if item is missing."
-	EID:addCollectible(mod.Items.FloppyDisk, disk_description)
-	EID:addCollectible(mod.Items.FloppyDiskFull, disk_description)
+	local disk_desk = "!!! SINGLE USE !!! #Save your items. #If you have saved items: replace your items by saved items. #{{Warning}} Give {{Collectible258}} MissingNo if saved item is missing."
+	EID:addCollectible(mod.Items.FloppyDisk, disk_desk)
+	EID:addCollectible(mod.Items.FloppyDiskFull, disk_desk)
 
 	EID:addCollectible(mod.Items.RedMirror,
 			"Turn nearest {{Trinket}} trinket into {{Card78}} cracked key.")
@@ -6093,7 +6106,7 @@ if EID then -- External Item Description
 	EID:addCollectible(mod.Items.MidasCurse,
 			"Add 3 {{GoldenHeart}} golden hearts. #10% chance to get golden pickups. #When you lose golden heart turn everything into gold. #{{Warning}} Curse effect: # {{Warning}} 100% chance to get golden pickups. # {{Warning}} All food-related items turn into coins if you try to pick them up. #Curse effect can be removed by {{Collectible260}} Black Candle.")
 	EID:addCollectible(mod.Items.RubberDuck,
-			"↑ {{Luck}} +20 temporary luck up when picked up. #↑ {{Luck}} +1 luck up when entering unvisited room. #↓ {{Luck}} -1 luck down when entering visited room. #Temporary luck can't go below player's original luck.")
+			"↑ {{Luck}} +20 temporary luck up when picked up. #↑{{Luck}} +1 luck up when entering unvisited room. #↓{{Luck}} -1 luck down when entering visited room. #Temporary luck can't go below player's original luck.")
 	EID:addCollectible(mod.Items.IvoryOil,
 			"Charge active items when entering an uncleared room for the first time.")
 	EID:addCollectible(mod.Items.BlackKnight,
@@ -6113,7 +6126,7 @@ if EID then -- External Item Description
 	EID:addCollectible(mod.Items.RedButton,
 			"Spawn Red Button when entering room. #Activate random pressure plate effect when pressed. #{{Warning}}After pressing 66 times, no longer appear in current room.")
 	EID:addCollectible(mod.Items.LostMirror,
-			"Turn you into {{Player10}}, without Holy Mantle.")
+			"Turn you into {{Player10}} soul.")
 	EID:addCollectible(mod.Items.BleedingGrimoire,
 			"Start {{BleedingOut}} bleeding. #Your tears apply {{BleedingOut}} bleeding to enemies.")
 	EID:addCollectible(mod.Items.BlackBook,
@@ -6129,25 +6142,25 @@ if EID then -- External Item Description
 	EID:addCollectible(mod.Items.RubikDiceScrambled5, description)
 
 	EID:addCollectible(mod.Items.VHSCassette,
-			"Move to another later floor. #Void - is last possible floor. #On ascension you will be send to Home.")
+			"Move to later floor. #Void - is last possible floor. #On ascension you will be send to Home.")
 	EID:addCollectible(mod.Items.Lililith,
 			"After clearing room, chance to spawn a familiar for current floor. #Possible familiars: demon baby, lil brimstone, lil abaddon, incubus, succubus.")
 	EID:addCollectible(mod.Items.CompoBombs,
-			"+5 bombs when picked up. #Place 2 bombs at once. #Second bomb is red bomb")
+			"+5 bombs when picked up. #Place 2 bombs at once. #Second bomb is red throwable bomb")
 	EID:addCollectible(mod.Items.MirrorBombs,
-			"+5 bombs when picked up. #When you place a bomb, copy it to opposite side of the room.")
+			"+5 bombs when picked up. #The placed bomb will be copied to the opposite side of the room.")
 	EID:addCollectible(mod.Items.GravityBombs,
 			"+1 giga bomb when picked up. #Bombs get {{Collectible512}} Black Hole effect.")
 	EID:addCollectible(mod.Items.AbihuFam,
-			"{{Collectible281}} Decoy familiar. #{{Burning}} Burn enemies on contact.")
+			"{{Collectible281}}Decoy familiar. #Can {{Burning}} burn enemies on contact.")
 	EID:addCollectible(mod.Items.NadabBody,
-			"{{Throwable}} Can be picked up and thrown. #Blocks enemy tears. #When thrown explodes on contact with enemy. #{{Warning}}The explosion can hurt you!")
+			"{{Throwable}} Can be picked up and thrown. #Blocks enemy tears. #When thrown explodes on contact with enemy. #{{Warning}} The explosion can hurt you!")
 	EID:addCollectible(mod.Items.Limb,
-			"When you die and don't have any extra life, you will be turned into {{Player10}} Soul for current level.")
+			"When you die and don't have any extra life, you will be turned into {{Player10}} soul for current level.")
 	EID:addCollectible(mod.Items.LongElk,
 			"Grants flight. #While moving leave {{Collectible683}} bone spurs. #On use do short dash in movement direction, and kill next contacted enemy.")
 	EID:addCollectible(mod.Items.FrostyBombs,
-			"+5 bombs when picked up. #Bombs {{Freezing}} freeze and {{Slow}} slow down enemies. #Turn killed enemies into ice statues.")
+			"+5 bombs when picked up. #Bombs leave water creep. #Bombs {{Slow}} slow down enemies. #Turn killed enemies into ice statues.")
 	EID:addCollectible(mod.Items.VoidKarma,
 			"↑ All stats up when entering new level. #{{Damage}} +0.25 damage up #{{Tears}} +0.25 tears up #{{Range}} +2.5 range up #{{Shotspeed}} +0.1 shotspeed up #{{Speed}} +0.05 speed up #{{Luck}} +0.5 luck up #Double it's effect if you didn't take damage on previous floor.")
 	EID:addCollectible(mod.Items.CharonObol,
@@ -6160,9 +6173,7 @@ if EID then -- External Item Description
 	EID:addCollectible(mod.Items.MongoCells,
 			"Copy your familiars.")
 	EID:addCollectible(mod.Items.CosmicJam,
-			"Add item from 1 wisp. #Add Item Wisp from nearest item to player.")
-	--EID:addCollectible(mod.Items.Lobotomy,
-	--	"Erase all enemies in room from current run. #Can't erase bosses. #Add broken hearts when used. #After each use increases added broken hearts amount to 1")
+			"Add item from Item wisp to player. #Add Item Wisp from nearest item to player.")
 	EID:addCollectible(mod.Items.DMS,
 			"Enemies has 25% chance to spawn {{Collectible634}} purgatory soul after death.")
 	EID:addCollectible(mod.Items.MewGen,
