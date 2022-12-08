@@ -2194,8 +2194,8 @@ local function AddItemFromWisp(player, add, kill, stop)
 					player:AddCollectible(witem.SubType)
 				end
 				if kill then
-					witem:Kill()
 					witem:Remove()
+					witem:Kill()
 				end
 				if stop then
 					return witem.SubType
@@ -2254,15 +2254,6 @@ function mod:onExit(isContinue)
 		savetable.KarmaStats = {}
 
 		--savetable.MemoryBoolPool = {}
-
-		if mod.OutOfMap then
-			mod.OutOfMap = nil
-			print("[Oblivion Card mod] You was in Out of Map Room. Now you can Exit")
-			Isaac.ExecuteCommand('rewind')
-			--game:GetPlayer(0):UseActiveItem(CollectibleType.COLLECTIBLE_GLOWING_HOUR_GLASS, myUseFlags) -- else it crashes when you in out of map rooms
-			--game:GetPlayer(0):UseCard(1, myUseFlags)
-			--game:GetHUD():ShowFortuneText("You was in Out of Map Room", "Now you can Exit")
-		end
 
 		for playerNum = 0, game:GetNumPlayers()-1 do
 			local player = game:GetPlayer(playerNum)
@@ -2688,7 +2679,6 @@ function mod:onPEffectUpdate(player)
 				data.MazeMemoryUsed[1] = data.MazeMemoryUsed[1] - 1
 			elseif data.MazeMemoryUsed[1] == 0 then
 				data.MazeMemoryUsed[1] = data.MazeMemoryUsed[1] - 1
-				mod.OutOfMap = true
 				Isaac.ExecuteCommand("goto s.treasure.0")
 			elseif data.MazeMemoryUsed[1] < 0 then
 				game:ShowHallucination(0, BackdropType.DARK_CLOSET)
@@ -3748,10 +3738,6 @@ function mod:onNewRoom()
 	if mod.Apocalypse.Room then
 		mod.Apocalypse.Room = nil
 		mod.Apocalypse.RNG = nil
-	end
-	--print(level:GetCurrentRoomIndex())
-	if mod.OutOfMap and level:GetCurrentRoomIndex() >= 0 then
-		mod.OutOfMap = nil
 	end
 
 	--player
@@ -5951,28 +5937,24 @@ end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onGhostGem, mod.Pickups.GhostGem)
 ---battlefield
 function mod:onBattlefieldCard(card, player, _) -- card, player, useflag
-	mod.OutOfMap = true
 	local rng = player:GetCardRNG(card)
 	Isaac.ExecuteCommand("goto s.challenge." .. rng:RandomInt(8)+16)  --0 .. 15 - normal; 16 .. 24 - boss
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onBattlefieldCard, mod.Pickups.BattlefieldCard)
 ---treasury
 function mod:onTreasuryCard(card, player, _) -- card, player, useflag
-	mod.OutOfMap = true
 	local rng = player:GetCardRNG(card)
 	Isaac.ExecuteCommand("goto s.treasure." .. rng:RandomInt(56))
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onTreasuryCard, mod.Pickups.TreasuryCard)
 ---bookery
 function mod:onBookeryCard(card, player, _) -- card, player, useflag
-	mod.OutOfMap = true
 	local rng = player:GetCardRNG(card)
 	Isaac.ExecuteCommand("goto s.library." .. rng:RandomInt(18))
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onBookeryCard, mod.Pickups.BookeryCard)
 ---blood grove
 function mod:onBloodGroveCard(card, player) -- card, player, useflag
-	mod.OutOfMap = true
 	local rng = player:GetCardRNG(card)
 	local num = rng:RandomInt(10)+31 -- 0 .. 30 / 31 .. 40 for voodoo head
 	Isaac.ExecuteCommand("goto s.curse." .. num)
@@ -5980,21 +5962,21 @@ end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onBloodGroveCard, mod.Pickups.BloodGroveCard)
 ---storm temple
 function mod:onStormTempleCard(card, player) -- card, player, useflag
-	mod.OutOfMap = true
+
 	local rng = player:GetCardRNG(card)
 	Isaac.ExecuteCommand("goto s.sacrifice." .. rng:RandomInt(13))
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onStormTempleCard, mod.Pickups.StormTempleCard)
 ---arsenal
 function mod:onArsenalCard(card, player) -- card, player, useflag
-	mod.OutOfMap = true
+
 	local rng = player:GetCardRNG(card)
 	Isaac.ExecuteCommand("goto s.chest." .. rng:RandomInt(49))
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onArsenalCard, mod.Pickups.ArsenalCard)
 ---outport
 function mod:onOutpostCard(card, player) -- card, player, useflag
-	mod.OutOfMap = true
+
 	local rng = player:GetCardRNG(card)
 	if rng:RandomFloat() > 0.5 then
 		Isaac.ExecuteCommand("goto s.isaacs." .. rng:RandomInt(30))
@@ -6006,7 +5988,6 @@ mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onOutpostCard, mod.Pickups.Outpost
 ---ancestral crypt
 function mod:onCryptCard(card, player) -- card, player, useflag
 	local data = player:GetData()
-	mod.OutOfMap = true
 	local level = game:GetLevel()
 	local roomDesc = level:GetCurrentRoomDesc()
 	local rng = player:GetCardRNG(card)
