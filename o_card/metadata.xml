@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-    <name>Oblivion Card</name>
-    <directory>oblivioncard</directory>
-    <id>2877989241</id>
+    <name>Eclipsed</name>
+    <directory>eclipsed</directory>
     <description>WIP</description>
-    <version>1.3</version>
+    <version>1.0</version>
     <visibility>Friends Only</visibility>
     <tag id="Items"/>
     <tag id="Active Items"/>
