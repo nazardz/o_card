@@ -24,12 +24,12 @@
 		<Item Name="Ice Cube Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Space Jam" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Mew-Gen" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Eclipse" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="shop">
 		<Item Name="Moonlighter" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="VHS Cassette" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Charon's Obol" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		
 	</Pool>
 	<Pool Name="devil">
 		<Item Name="Black Knight" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
@@ -40,6 +40,7 @@
 		<Item Name="Lililith" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Death's Sickle" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Charon's Obol" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Eclipse" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="angel">
 		<Item Name="Ivory Oil" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>

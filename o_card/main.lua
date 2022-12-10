@@ -42,14 +42,14 @@ mod.Trinkets = {}
 mod.Pickups = {}
 mod.Challenges = {}
 mod.Curses = {}
---- PLAYERS ---
+--- PLAYERS --
 do
 mod.Characters.Nadab = Isaac.GetPlayerTypeByName("Nadab", false)
 mod.Characters.Abihu = Isaac.GetPlayerTypeByName("Abihu", true)
 mod.Characters.Unbidden = Isaac.GetPlayerTypeByName("Unbidden", false)
 mod.Characters.Oblivious = Isaac.GetPlayerTypeByName("Unbidden", true)
 end
---- COLLECTIBLES ---
+--- COLLECTIBLES --
 do
 mod.Items.FloppyDisk = Isaac.GetItemIdByName("Floppy Disk")
 mod.Items.FloppyDiskFull = Isaac.GetItemIdByName("Floppy Disk ") --
@@ -70,12 +70,12 @@ mod.Items.LostMirror = Isaac.GetItemIdByName("Lost Mirror") --
 mod.Items.BleedingGrimoire = Isaac.GetItemIdByName("Bleeding Grimoire") -- they bleed pixels
 mod.Items.BlackBook = Isaac.GetItemIdByName("Black Book") -- black book
 mod.Items.RubikDice = Isaac.GetItemIdByName("Rubik's Dice")
-mod.Items.RubikDiceScrambled0 = Isaac.GetItemIdByName("Scrambled Rubik's Dice")
-mod.Items.RubikDiceScrambled1 = Isaac.GetItemIdByName("Scrambled Rubik's Dice ")
-mod.Items.RubikDiceScrambled2 = Isaac.GetItemIdByName("Scrambled Rubik's Dice  ")
-mod.Items.RubikDiceScrambled3 = Isaac.GetItemIdByName("Scrambled Rubik's Dice   ")
-mod.Items.RubikDiceScrambled4 = Isaac.GetItemIdByName("Scrambled Rubik's Dice    ")
-mod.Items.RubikDiceScrambled5 = Isaac.GetItemIdByName("Scrambled Rubik's Dice     ")
+mod.Items.RubikDiceScrambled0 = Isaac.GetItemIdByName("Rubik's Dice ")
+mod.Items.RubikDiceScrambled1 = Isaac.GetItemIdByName("Rubik's Dice  ")
+mod.Items.RubikDiceScrambled2 = Isaac.GetItemIdByName("Rubik's Dice   ")
+mod.Items.RubikDiceScrambled3 = Isaac.GetItemIdByName("Rubik's Dice    ")
+mod.Items.RubikDiceScrambled4 = Isaac.GetItemIdByName("Rubik's Dice     ")
+mod.Items.RubikDiceScrambled5 = Isaac.GetItemIdByName("Rubik's Dice      ")
 mod.Items.VHSCassette = Isaac.GetItemIdByName("VHS Cassette")
 mod.Items.Lililith = Isaac.GetItemIdByName("Lililith")
 mod.Items.CompoBombs = Isaac.GetItemIdByName("Compo Bombs")
@@ -94,22 +94,21 @@ mod.Items.Threshold = Isaac.GetItemIdByName("Threshold")
 mod.Items.MongoCells = Isaac.GetItemIdByName("Mongo Cells") -- copy your familiars
 mod.Items.NadabBody = Isaac.GetItemIdByName("Nadab's Body")
 mod.Items.CosmicJam = Isaac.GetItemIdByName("Space Jam") -- "lf it weren't real, could it do this?"
---mod.Items.Lobotomy = Isaac.GetItemIdByName("Lobotomy") -- "Memory Management" erase enemies in room
 mod.Items.DMS = Isaac.GetItemIdByName("Death's Sickle")
 mod.Items.MewGen = Isaac.GetItemIdByName("Mew-Gen") 
 mod.Items.ElderSign = Isaac.GetItemIdByName("Elder Sign")
+mod.Items.Eclipse = Isaac.GetItemIdByName("Eclipse") -- "Darkest Basement" grants aura dealing 2 damage. boost player damage if you have curse of darkness
+
 --mod.Items.DiceBombs = Isaac.GetItemIdByName("Dice Bombs") -- "Reroll blast +5 bombs"
---mod.Items.Pizza = Isaac.GetItemIdByName("Pizza Pepperoni") -- active 12 seconds. Shoot Pizza boomerang, apply rotten tomato effect
+--mod.Items.Pizza = Isaac.GetItemIdByName("Pizza Pepperoni") -- active 12 seconds. Shoot Pizza boomerang
 
 --mod.Items.Gagger = Isaac.GetItemIdByName("Little Gagger") -- punching bag subtype ?
-
---mod.Items.ElderSign = Isaac.GetItemIdByName("Elder Sign") -- "Seal of Protection" active 1 room. Spawn Pentagram for 15 seconds at your position. Pentagram spawn worm friends
 end
---- TRINKETS ---
+--- TRINKETS --
 do
 mod.Trinkets.WitchPaper = Isaac.GetTrinketIdByName("Witch Paper") -- yuppie psycho
 mod.Trinkets.Duotine = Isaac.GetTrinketIdByName("Duotine") -- fran bow
-mod.Trinkets.QueenSpades = Isaac.GetTrinketIdByName("Queen of Spades")
+mod.Trinkets.QueenSpades = Isaac.GetTrinketIdByName("Torn Spades")
 mod.Trinkets.RedScissors = Isaac.GetTrinketIdByName("Red Scissors") -- Fuse Cutter 2.0
 mod.Trinkets.LostFlower = Isaac.GetTrinketIdByName("Lost Flower") -- "Eternal blessing"
 mod.Trinkets.MilkTeeth = Isaac.GetTrinketIdByName("Milk Teeth")
@@ -121,8 +120,9 @@ mod.Trinkets.AbyssCart = Isaac.GetTrinketIdByName("Cartridge") -- Cartridge?
 mod.Trinkets.RubikCubelet = Isaac.GetTrinketIdByName("Rubik's Cubelet") -- TMTRAINER reroll when you take damage
 mod.Trinkets.TeaFungus = Isaac.GetTrinketIdByName("Tea Fungus")
 mod.Trinkets.DeadEgg = Isaac.GetTrinketIdByName("Dead Egg") -- chance to spawn dead bird effect when bomb explodes (soul of eve birds)
+mod.Trinkets.Penance = Isaac.GetTrinketIdByName("Penance")
 end
---- PICKUPS ---
+--- PICKUPS --
 do
 mod.Pickups.OblivionCard = Isaac.GetCardIdByName("01_OblivionCard") -- loop hero
 mod.Pickups.BattlefieldCard = Isaac.GetCardIdByName("X_BattlefieldCard") -- loop hero
@@ -163,26 +163,25 @@ mod.Pickups.RedPillHorse = Isaac.GetCardIdByName("X_RedPillHorse")
 mod.Pickups.Domino34 = Isaac.GetCardIdByName("X_Domino34")
 mod.Pickups.Domino25 = Isaac.GetCardIdByName("X_Domino25")
 mod.Pickups.Domino16 = Isaac.GetCardIdByName("X_Domino16") -- spawn 6 pickups of same type
-mod.Pickups.Domino00 = Isaac.GetCardIdByName("X_Domino00") -- Domino theory. Apply EntityFlag.FLAG_CONTAGIOUS to all enemies
+mod.Pickups.Domino00 = Isaac.GetCardIdByName("X_Domino00")
 --mod.Pickups.Domino12 = Isaac.GetCardIdByName("X_Domino12") -- shoot pizza 8 pizza around you
 end
---- CHALLENGES ---
+--- CHALLENGES --
 do
 mod.Challenges.Potatoes = Isaac.GetChallengeIdByName("When life gives you Potatoes!")
 mod.Challenges.Magician = Isaac.GetChallengeIdByName("Curse of The Magician")
 end
---- CURSES ---
+--- CURSES --
 do
-mod.Curses.Void = 1 << (Isaac.GetCurseIdByName("Curse of the Void!")-1) -- reroll enemies and grid, apply delirium spritesheet, always active on void floors
+mod.Curses.Void = 1 << (Isaac.GetCurseIdByName("Curse of the Void!")-1) -- reroll enemies and grid, apply delirium spritesheet, always active on void floors?
 mod.Curses.Jamming = 1 << (Isaac.GetCurseIdByName("Curse of the Jamming!")-1) -- respawn enemies in room after clearing
---mod.Curses.Emperor = 1 << (Isaac.GetCurseIdByName("Curse of the Emperor!")-1) -- no exit door from boss room
+mod.Curses.Emperor = 1 << (Isaac.GetCurseIdByName("Curse of the Emperor!")-1) -- no exit door from boss room
 mod.Curses.Magician = 1 << (Isaac.GetCurseIdByName("Curse of the Magician!")-1) -- homing enemy tears (except boss)
-mod.Curses.Strength = 1 << (Isaac.GetCurseIdByName("Curse of Champions!")-1) -- chance to champion enemies (except boss)
-mod.Curses.Bell = 1 << (Isaac.GetCurseIdByName("Curse of the Bell!")-1) -- all troll bombs golden
+mod.Curses.Strength = 1 << (Isaac.GetCurseIdByName("Curse of Champions!")-1) -- all enemies is champion (except boss) - without health buff
+mod.Curses.Bell = 1 << (Isaac.GetCurseIdByName("Curse of the Bell!")-1) -- all troll bombs is golden
 mod.Curses.Envy = 1 << (Isaac.GetCurseIdByName("Curse of the Envy!")-1) -- other shop items disappear when you buy one
---mod.Curses.Reaper = 1 << (Isaac.GetCurseIdByName("Curse of the Reaper!")-1) -- spawn death's scythe after 1 min on floor, it will follow you
+--mod.Curses.Reaper = 1 << (Isaac.GetCurseIdByName("Curse of the Reaper!")-1) -- death's scythe will follow you
 end
-
 --[[
 mod.MyCurses = { -- curse table use it on CURSE_EVAL callback
 mod.Curses.Void,
@@ -197,8 +196,7 @@ mod.Curses.Envy,
 --EffectVariant.ULTRA_DEATH_SCYTHE
 }
 --]]
-
---- LOCAL TABLES ---
+--- LOCAL TABLES --
 do
 mod.CurseIcons = Sprite()
 mod.CurseIcons:Load("gfx/ui/oc_curse_icons.anm2", true) -- render it somewhere ?
@@ -252,6 +250,46 @@ mod.ActiveItemWisps = {
 }
 
 ------------PASSIVE------------
+--[[
+lil gish
+rotten baby
+juicy sack
+boiled baby
+lil loki
+multidim baby
+robo baby			-- tech
+robo baby 2			-- tech 2
+seraphim
+lil abaddon
+lil monstro
+demon baby
+bot fly				-- lost contact
+brother bobby
+sister maggy
+mongo baby			-- ?
+cain eye
+fate reward
+bloodshot eye
+buddy box
+fruit plum			-- neptune
+lil portal
+lil spewer
+--]]
+mod.Eclipse = {}
+mod.Eclipse.AuraRange = 125
+mod.Eclipse.DamageDelay = 12
+mod.Eclipse.DamageBoost = 0.5
+mod.Eclipse.Knockback = 4
+
+mod.MongoCells = {}
+mod.MongoCells.HeadlessCreepFrame = 8
+mod.MongoCells.DryBabyChance = 0.33
+mod.MongoCells.FartBabyChance = 0.33
+mod.MongoCells.FartBabyBeans = {CollectibleType.COLLECTIBLE_BEAN, CollectibleType.COLLECTIBLE_BUTTER_BEAN, CollectibleType.COLLECTIBLE_KIDNEY_BEAN}
+mod.MongoCells.DepressionCreepFrame = 8
+mod.MongoCells.DepressionLightChance = 0.33
+mod.MongoCells.BBFDamage = 100
+
 mod.MewGen = {}
 mod.MewGen.ActivationTimer = 150
 mod.MewGen.RechargeTimer = 90
@@ -290,7 +328,7 @@ mod.MeltedCandle = {}
 mod.MeltedCandle.TearChance = 0.8 -- random + player.Luck > tearChance
 mod.MeltedCandle.TearFlags = TearFlags.TEAR_FREEZE | TearFlags.TEAR_BURN -- tear effects
 mod.MeltedCandle.TearColor =  Color(2, 2, 2, 1, 0.196, 0.196, 0.196) --spider bite color
-mod.MeltedCandle.FrameCount = 102
+mod.MeltedCandle.FrameCount = 92
 
 mod.VoidKarma = {}
 mod.VoidKarma.DamageUp = 0.25 -- add given values to player each time entering new level
@@ -559,7 +597,7 @@ mod.DiceBombs.Ban = { -- don't affect this bombs (not used)
 	[BombVariant.BOMB_THROWABLE] = true,
 }
 end
-------------FAMILIARS------------
+--- FAMILIARS --
 do
 mod.NadabBrain = {}
 mod.NadabBrain.Variant = Isaac.GetEntityVariantByName("NadabBrain")
@@ -589,7 +627,7 @@ mod.AbihuFam.BurnTime = 42 -- enemy burn time
 
 mod.RedBag = {}
 mod.RedBag.Variant = Isaac.GetEntityVariantByName("Red Bag")
-mod.RedBag.RedPoopChance = 0.15 -- chance to spawn red poop
+mod.RedBag.RedPoopChance = 0.05 -- chance to spawn red poop
 mod.RedBag.GenChance = 0.33 -- overall chance to generate something
 mod.RedBag.ChanceUp = 0.4 -- increase chance to num if failed to spawn
 mod.RedBag.RedPickups = { -- possible items
@@ -605,7 +643,7 @@ mod.RedBag.RedPickups = { -- possible items
 {PickupVariant.PICKUP_TAROTCARD, mod.Pickups.Trapezohedron}
 }
 end
-------------TRINKETS------------
+--- TRINKETS --
 do
 mod.LostFlower = {}
 mod.LostFlower.DespawnTimer = 35 -- timer after which trinket will be removed (effect similar to A+ trinket)
@@ -643,7 +681,7 @@ mod.BinderClip.DoublerChance = 0.1
 mod.DeadEgg = {}
 mod.DeadEgg.Timeout = 150
 end
-------------ACTIVE------------
+--- ACTIVE --
 do
 mod.ElderSign = {}
 mod.ElderSign.Pentagram = EffectVariant.HERETIC_PENTAGRAM --EffectVariant.PENTAGRAM_BLACKPOWDER
@@ -651,7 +689,8 @@ mod.ElderSign.Timeout = 20
 mod.ElderSign.AuraRange = 60
 
 mod.WhiteKnight = {}
-mod.WhiteKnight.Costume = Isaac.GetCostumeIdByPath("gfx/characters/whiteknight.anm2")
+mod.WhiteKnight.Costume = Isaac.GetItemConfig():GetNullItem(NullItemID.ID_REVERSE_CHARIOT_ALT)
+--mod.WhiteKnight.Costume = NullItemID.ID_REVERSE_CHARIOT_ALT --Isaac.GetCostumeIdByPath("gfx/characters/whiteknight.anm2")
 
 mod.BlackKnight = {}
 mod.BlackKnight.Costume = Isaac.GetCostumeIdByPath("gfx/characters/knightmare.anm2")
@@ -790,7 +829,7 @@ mod.CharonObol.Timeout = 360
 mod.Lobotomy = {}
 mod.Lobotomy.ErasedEntities = {}
 end
-------------CARDS------------
+--- CARDS --
 do
 mod.MultiCast = {}
 mod.MultiCast.NumWisps = 3 -- multi cast card number of wisps to spawn
@@ -844,10 +883,10 @@ mod.RedPills.DamageDownTick = 0.00001 -- increment of DamageDown
 mod.RedPills.WavyCap = 1 -- layers of Wavy Cap effect. will be saved until DamageUp > 0
 mod.RedPills.HorseWavyCap = 2 * mod.RedPills.WavyCap
 end
---- LOCAL TABLES ---
+--- LOCAL TABLES --
 
---- LOCAL FUNCTIONS ---
---globals
+--- LOCAL FUNCTIONS --
+-- globals
 -- check dimension
 local function GetCurrentDimension() -- KingBobson Algorithm: (get room dimension)
 	--- get current dimension of room
@@ -1035,7 +1074,6 @@ local function InitDebugCall()
 	--level:AddCurse(mod.Curses.Void, false)
 	--level:AddCurse( mod.Curses.Jamming | mod.Curses.Void, false)
 end
-
 -- init some variables
 local function InitCall()
 	--- init call on new game start
@@ -1134,7 +1172,6 @@ local function RedPillManager(player, newDamage, wavyNum)
 	player:AddCacheFlags(CacheFlag.CACHE_DAMAGE) -- | CacheFlag.CACHE_FIREDELAY)
 	player:EvaluateItems()
 end
-
 ---Mew-Gen
 local function MewGenManager(player)
 	local data = player:GetData()
@@ -1152,7 +1189,6 @@ local function MewGenManager(player)
 		data.CheckTimer = mod.MewGen.ActivationTimer
 	end
 end
-
 ---Floppy Disk
 local function StorePlayerItems(player)
 	--- store player items in savetable; FD is full
@@ -1212,7 +1248,7 @@ local function GoldenGrid(rng)
 		end
 	end
 end
-local function TurnPickupsGold(pickup, rng) -- midas
+local function TurnPickupsGold(pickup) -- midas
 	--- morph pickup into their golden versions
 	local isChest = false
 	local newSubType = pickup.SubType
@@ -1241,12 +1277,10 @@ local function TurnPickupsGold(pickup, rng) -- midas
 	elseif pickup.Variant == PickupVariant.PICKUP_TRINKET and pickup.SubType < 32768 then -- TrinketType.TRINKET_GOLDEN_FLAG
 		newSubType = pickup.SubType + 32768
 	end
-	if rng:RandomFloat() < mod.MidasCurse.TurnGoldChance then
-		if newSubType ~= pickup.SubType  then
-			pickup:ToPickup():Morph(pickup.Type, pickup.Variant, newSubType, true)
-		elseif isChest then
-			pickup:ToPickup():Morph(pickup.Type, isChest, 0, true)
-		end
+	if newSubType ~= pickup.SubType  then
+		pickup:ToPickup():Morph(pickup.Type, pickup.Variant, newSubType, true)
+	elseif isChest then
+		pickup:ToPickup():Morph(pickup.Type, isChest, 0, true)
 	end
 end
 ---Duckling
@@ -1402,11 +1436,21 @@ end
 local function RedBombReplace(bomb)
 	--- replace bomb by throwable bomb
 	bomb:Remove()
-	Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_THROWABLEBOMB, 0, bomb.Position, bomb.Velocity, nil)
+	local doLoop
+	if bomb.Variant == BombVariant.BOMB_GIGA then
+		doLoop = true
+	end
+	if doLoop then
+		for _ = 1, 5 do
+			Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_THROWABLEBOMB, 0, bomb.Position, RandomVector()*5, nil)
+		end
+	else
+		Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_THROWABLEBOMB, 0, bomb.Position, bomb.Velocity, nil)
+	end
 	local effect = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, bomb.Position, Vector.Zero, nil)
 	effect:SetColor(mod.RedColor, 50, 1, false, false)
 end
----Red Button ---
+---Red Button
 local function RemoveRedButton(room)
 	--- remove pressure plate spawned by red button
 	for gridIndex = 1, room:GetGridSize() do -- get room size
@@ -1576,8 +1620,6 @@ local function SetBombEXCountdown(player, bomb)
 		bomb:SetExplosionCountdown(mod.CompoBombs.FetusCountdown/2)
 	end
 end
-
-
 ---Dice Bombs
 local function InitDiceyBomb(bomb, bombData)
 	bombData.Dicey = true
@@ -2152,8 +2194,8 @@ local function AddItemFromWisp(player, add, kill, stop)
 					player:AddCollectible(witem.SubType)
 				end
 				if kill then
-					witem:Kill()
 					witem:Remove()
+					witem:Kill()
 				end
 				if stop then
 					return witem.SubType
@@ -2164,7 +2206,7 @@ local function AddItemFromWisp(player, add, kill, stop)
 	
 	end
 end
----Soul of Unbidden (unused)
+---Soul of Unbidden
 local function SpawnItemWisps(player)
 	local items = Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE)
 	if #items > 0 then
@@ -2177,11 +2219,23 @@ local function SpawnItemWisps(player)
 		end
 	end
 end
---- LOCAL FUNCTIONS ---
------------------------------------------------------------------------------------------------
---- MOD CALLBACKS ---
----SAVE/LOAD MOD DATA---
---exit
+---Mongo Cells
+local function AddFamiliarEffect(player, pointer, babyItem, effectItem)
+	local tempEffects = player:GetEffects()
+	if not pointer and (player:HasCollectible(babyItem) or tempEffects:HasCollectibleEffect(babyItem)) then
+		pointer = true
+		tempEffects:AddCollectibleEffect(effectItem, false)
+	elseif pointer and not player:HasCollectible(babyItem) and not tempEffects:HasCollectibleEffect(babyItem) then
+		pointer = false
+		tempEffects:RemoveCollectibleEffect(effectItem)
+	end
+	return pointer
+end
+--- LOCAL FUNCTIONS --
+
+--- MOD CALLBACKS --
+-- callback
+--- GAME EXIT --
 function mod:onExit(isContinue)
 	if isContinue then
 		savetable.OblivionCardErasedEntities = mod.OblivionCard.ErasedEntities
@@ -2200,15 +2254,6 @@ function mod:onExit(isContinue)
 		savetable.KarmaStats = {}
 
 		--savetable.MemoryBoolPool = {}
-
-		if mod.OutOfMap then
-			mod.OutOfMap = nil
-			print("[Oblivion Card mod] You was in Out of Map Room. Now you can Exit")
-			Isaac.ExecuteCommand('rewind')
-			--game:GetPlayer(0):UseActiveItem(CollectibleType.COLLECTIBLE_GLOWING_HOUR_GLASS, myUseFlags) -- else it crashes when you in out of map rooms
-			--game:GetPlayer(0):UseCard(1, myUseFlags)
-			--game:GetHUD():ShowFortuneText("You was in Out of Map Room", "Now you can Exit")
-		end
 
 		for playerNum = 0, game:GetNumPlayers()-1 do
 			local player = game:GetPlayer(playerNum)
@@ -2261,7 +2306,7 @@ function mod:onExit(isContinue)
 	modDataSave()
 end
 mod:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, mod.onExit)
--- start
+--- GAME START --
 function mod:onStart(isSave)
 
 	--- load mod save data; if debug, spawn mod items
@@ -2288,10 +2333,9 @@ function mod:onStart(isSave)
 			InitDebugCall() -- spawn mod items for test
 		end
 	end
-
 end
 mod:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, mod.onStart)
---- player init
+--- PLAYER INIT --
 function mod:onPlayerInit(player)
 	local data = player:GetData()
 	local idx = getPlayerIndex(player)
@@ -2366,9 +2410,8 @@ function mod:onPlayerInit(player)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, mod.onPlayerInit)
----SAVE/LOAD MOD DATA---
 
----EVAL_CACHE---
+--- EVAL_CACHE --
 function mod:onCache(player, cacheFlag)
 	player = player:ToPlayer()
 	local data = player:GetData()
@@ -2469,10 +2512,7 @@ function mod:onCache(player, cacheFlag)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, mod.onCache)
----EVAL_CACHE---
-
----PLAYER PEFFECT/TAKE_DAMAGE---
---take damage
+--- PLAYER TAKE DMG --
 function mod:onPlayerTakeDamage(entity, _, flags) --entity, amount, flags, source, countdown
 	local player = entity:ToPlayer()
 	local data = player:GetData()
@@ -2480,62 +2520,65 @@ function mod:onPlayerTakeDamage(entity, _, flags) --entity, amount, flags, sourc
 	if data.UsedSoulNadabAbihu then
 		if (flags & DamageFlag.DAMAGE_FIRE ~= 0) or (flags & DamageFlag.DAMAGE_EXPLOSION ~= 0) then return false end
 	end
-	--- lost flower
-	if player:HasTrinket(mod.Trinkets.LostFlower) then -- remove lost flower if get hit
-		if (flags & DamageFlag.DAMAGE_NO_PENALTIES == 0) and (flags & DamageFlag.DAMAGE_RED_HEARTS == 0) then
-			RemoveThrowTrinket(player, mod.Trinkets.LostFlower, mod.LostFlower.DespawnTimer)
+	if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+		--- mongo cells
+		if player:HasCollectible(mod.Items.MongoCells) and (flags & DamageFlag.DAMAGE_NO_PENALTIES == 0) and (flags & DamageFlag.DAMAGE_RED_HEARTS == 0) then
+			local rng = player:GetCollectibleRNG(mod.Items.MongoCells)
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_DRY_BABY) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_DRY_BABY) then
+				if rng:RandomFloat() < mod.MongoCells.DryBabyChance then
+					player:UseActiveItem(CollectibleType.COLLECTIBLE_NECRONOMICON, myUseFlags)
+				end
+			end
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_FARTING_BABY) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_FARTING_BABY) then
+				if rng:RandomFloat() < mod.MongoCells.DryBabyChance then
+					local bean = mod.MongoCells.FartBabyBeans[rng:RandomInt(#mod.MongoCells.FartBabyBeans)+1]
+					player:UseActiveItem(bean, myUseFlags)
+				end
+			end
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_BBF) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_BBF) then
+				game:BombExplosionEffects(player.Position, mod.MongoCells.BBFDamage, player:GetBombFlags(), Color.Default, player, 1, true, false, DamageFlag.DAMAGE_EXPLOSION)
+			end
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_BOBS_BRAIN) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_BOBS_BRAIN) then
+				game:BombExplosionEffects(player.Position, mod.MongoCells.BBFDamage, player:GetBombFlags(), Color.Default, player, 1, true, false, DamageFlag.DAMAGE_EXPLOSION)
+				local cloud = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.SMOKE_CLOUD, 0, player.Position, Vector.Zero, player):ToEffect()
+				cloud:SetTimeout(150)
+			end
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_HOLY_WATER) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_WATER) then
+				Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_HOLYWATER, 0, player.Position, Vector.Zero, player):SetColor(Color(1,1,1,0), 5, 1, false, false)
+			end
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_DEPRESSION) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_DEPRESSION) then
+				if rng:RandomFloat() < mod.MongoCells.DepressionLightChance then
+					Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 0, player.Position, Vector.Zero, player)
+				end
+			end
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_RAZOR) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_MOMS_RAZOR) then
+				player:AddEntityFlags(EntityFlag.FLAG_BLEED_OUT)
+			end
 		end
-	end
-	--- RubikCubelet: TMTRAINER + D6
-	if player:HasTrinket(mod.Trinkets.RubikCubelet) then
-		if player:GetTrinketRNG(mod.Trinkets.RubikCubelet):RandomFloat() < mod.RubikCubelet.TriggerChance then
-			RerollTMTRAINER(player)
-			--sfx:Play(SoundEffect.SOUND_DICE_SHARD)
+		--- lost flower
+		if player:HasTrinket(mod.Trinkets.LostFlower) then -- remove lost flower if get hit
+			if (flags & DamageFlag.DAMAGE_NO_PENALTIES == 0) and (flags & DamageFlag.DAMAGE_RED_HEARTS == 0) then
+				RemoveThrowTrinket(player, mod.Trinkets.LostFlower, mod.LostFlower.DespawnTimer)
+			end
+		end
+		--- RubikCubelet: TMTRAINER + D6
+		if player:HasTrinket(mod.Trinkets.RubikCubelet) then
+			if player:GetTrinketRNG(mod.Trinkets.RubikCubelet):RandomFloat() < mod.RubikCubelet.TriggerChance then
+				RerollTMTRAINER(player)
+				--sfx:Play(SoundEffect.SOUND_DICE_SHARD)
+			end
 		end
 	end
 end
 mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, mod.onPlayerTakeDamage, EntityType.ENTITY_PLAYER)
-
--- player effects
+--- PLAYER PEFFECT --
 function mod:onPEffectUpdate(player)
 	local level = game:GetLevel()
 	local room = game:GetRoom()
 	local data = player:GetData()
 	local sprite = player:GetSprite()
 	local tempEffects = player:GetEffects()
-	
-	if player:HasCollectible(mod.Items.Lililith) then
-		data.LililithDemonSpawn = data.LililithDemonSpawn or mod.Lililith.DemonSpawn
-	end
-	
-	--- Mew-Gen
-	if player:HasCollectible(mod.Items.MewGen) then
-		data.HasMewGen = data.HasMewGen or false
-		if not data.HasMewGen then
-			--add costume
-		end
-		if not player.CanFly then
-			player:AddCacheFlags(CacheFlag.CACHE_FLYING)
-			player:EvaluateItems()
-		end
-		MewGenManager(player)
-	else
-		if data.HasMewGen then
-			--remove costume
-		end
-	end
-	
-	-- void karma
-	if player:HasCollectible(mod.Items.VoidKarma) and level:GetStateFlag(LevelStateFlag.STATE_DAMAGED) and not data.StateDamaged then
-		data.StateDamaged = 1 -- used as stat multiplier. without damage == 2
-	end
-	-- corruption
-	if data.CorruptionIsActive and player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) ~= 0 then
-		local activeItem = player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)
-		if player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY) < Isaac.GetItemConfig():GetCollectible(activeItem).MaxCharges then
-			player:FullCharge(ActiveSlot.SLOT_PRIMARY, false)
-		end
-	end
+
 	-- infinite blades
 	if data.InfiniteBlades and player:GetMovementDirection() ~= -1 then -- player:GetShootingInput() ~= -1
 		if data.InfiniteBlades <= 0 then
@@ -2558,107 +2601,6 @@ function mod:onPEffectUpdate(player)
 			knifeSprite:ReplaceSpritesheet(0, mod.InfiniteBlades.newSpritePath)
 			knifeSprite:LoadGraphics()
 
-		end
-	end
-	-- frosty tears for ice cube bombs / attractor tears for black hole bombs
-	for _, bomb in pairs(Isaac.FindByType(4)) do -- bombs == 4
-		bomb = bomb:ToBomb()
-		if bomb:GetSprite():GetAnimation() == "Explode" then -- not mod.MirrorBombs.Ban[bomb.Variant]
-			if bomb:GetData().Dicey then
-				DiceyReroll(player:GetCollectibleRNG(mod.Items.DiceBombs), bomb.Position, mod.DiceBombs.AreaRadius)
-			end
-			if bomb:GetData().DeadEgg then
-				DeadEggEffect(player, bomb.Position, mod.DeadEgg.Timeout)
-			end
-			--spawn particle
-			if bomb:GetData().Frosty then
-				game:SpawnParticles(bomb.Position, EffectVariant.DIAMOND_PARTICLE, 10, 5, Color(1,1,1,1,0.5,0.5,0.8))-- poofColor --ROCK_PARTICLE
-			end
-			if  bomb:HasTearFlags(TearFlags.TEAR_SAD_BOMB) then
-				for _, tear in pairs(Isaac.FindInRadius(bomb.Position, 22, EntityPartition.TEAR)) do
-					if tear.FrameCount == 1 then -- other tears can get this effects if you shoot tears near bomb (idk else how to get)
-						tear = tear:ToTear()
-						if bomb:GetData().Frosty then
-							tear:ChangeVariant(TearVariant.ICE)
-							tear:AddTearFlags(TearFlags.TEAR_SLOW | TearFlags.TEAR_ICE)
-						end
-					end
-				end
-			end
-		end
-	end
-	-- black hole bombs
-	if player:HasCollectible(mod.Items.GravityBombs) then
-		if not data.HasItemGravityBombs then
-			data.HasItemGravityBombs = 1
-			player:AddGigaBombs(mod.GravityBombs.GigaBombs )
-		end
-		local numGravityBombs =  GetItemsCount(player, mod.Items.GravityBombs)
-		if numGravityBombs ~= data.HasItemGravityBombs then
-			if numGravityBombs > data.HasItemGravityBombs and GetItemsCount(player, mod.Items.GravityBombs)  ~= 0 then
-				player:AddGigaBombs(mod.GravityBombs.GigaBombs)
-
-			end
-			data.HasItemGravityBombs =  GetItemsCount(player, mod.Items.GravityBombs)
-		end
-	else
-		if data.HasItemGravityBombs then
-			data.HasItemGravityBombs = nil
-		end
-	end
-	--long elk
-	if player:HasCollectible(mod.Items.LongElk) then
-		if not data.HasLongElk then
-			data.HasLongElk = true
-			player:AddCacheFlags(CacheFlag.CACHE_FLYING)
-			player:AddNullCostume(mod.LongElk.Costume)
-			player:EvaluateItems()
-		end
-
-		if data.ElkKiller and not tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_MARS) then
-			data.ElkKiller = false
-		end
-
-		if not data.BoneSpurTimer then
-			data.BoneSpurTimer = mod.LongElk.BoneSpurTimer
-		else
-			if  data.BoneSpurTimer > 0 then
-				data.BoneSpurTimer = data.BoneSpurTimer - 1
-			end
-		end
-		if player:GetMovementDirection() ~= -1 and not room:IsClear() and data.BoneSpurTimer <= 0 then
-			Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BONE_SPUR, 0, player.Position, Vector.Zero, player):ToFamiliar():GetData().RemoveTimer = mod.LongElk.BoneSpurTimer * mod.LongElk.NumSpur
-			data.BoneSpurTimer = mod.LongElk.BoneSpurTimer
-		end
-	else
-		if data.HasLongElk then
-			data.HasLongElk = nil
-			player:TryRemoveNullCostume(mod.LongElk.Costume)
-			player:AddCacheFlags(CacheFlag.CACHE_FLYING)
-			player:EvaluateItems()
-		end
-	end
-	--mini-pony
-	if player:HasCollectible(mod.Items.MiniPony) then
-		if not data.HasMiniPony then
-			data.HasMiniPony = true
-			--player:AddCacheFlags(CacheFlag.CACHE_SIZE)
-			player:AddCacheFlags(CacheFlag.CACHE_FLYING)
-			player:AddCacheFlags(CacheFlag.CACHE_SPEED)
-			player:AddNullCostume(mod.MiniPony.Costume)
-			player:EvaluateItems()
-		end
-		if player.MoveSpeed < mod.MiniPony.MoveSpeed then
-			player:AddCacheFlags(CacheFlag.CACHE_SPEED)
-			player:EvaluateItems()
-		end
-	else
-		if data.HasMiniPony then
-			data.HasMiniPony = nil
-			player:TryRemoveNullCostume(mod.MiniPony.Costume)
-			player:AddCacheFlags(CacheFlag.CACHE_FLYING)
-			player:AddCacheFlags(CacheFlag.CACHE_SPEED)
-			player:EvaluateItems()
 		end
 	end
 
@@ -2717,286 +2659,7 @@ function mod:onPEffectUpdate(player)
 			data.KeeperMirror = nil
 		end
 	end
-	--red pills
-	if data.RedPillDamageUp then --and game:GetFrameCount()%2 == 0 then
-		data.RedPillDamageUp = data.RedPillDamageUp - data.RedPillDamageDown
-		data.RedPillDamageDown = data.RedPillDamageDown + mod.RedPills.DamageDownTick
-		if data.RedPillDamageUp < 0 then
-			data.RedPillDamageUp = 0
-		end
-		player:AddCacheFlags(CacheFlag.CACHE_DAMAGE) -- | CacheFlag.CACHE_FIREDELAY)
-		player:EvaluateItems()
-		if data.RedPillDamageUp == 0 then
-			data.RedPillDamageUp = nil
-			data.RedPillDamageDown = nil
-		end
-	end
-	--MidasCurse
-	if player:HasCollectible(mod.Items.MidasCurse) then
-		if not data.HasItemMidasCurse then
-			data.HasItemMidasCurse = 1
-			player:AddGoldenHearts(3)
-			data.GoldenHeartsAmount = player:GetGoldenHearts()
-		end
-		local numMidas = GetItemsCount(player, mod.Items.MidasCurse)
-		if numMidas ~= data.HasItemMidasCurse then
-			if numMidas > data.HasItemMidasCurse and GetItemsCount(player, mod.Items.MidasCurse)  ~= 0 then
-				player:AddGoldenHearts(3)
-			end
-			data.HasItemMidasCurse = GetItemsCount(player, mod.Items.MidasCurse)
-		end
-		if player:HasCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE) and mod.MidasCurse.TurnGoldChance ~= mod.MidasCurse.MinGold then -- remove curse
-			mod.MidasCurse.TurnGoldChance = mod.MidasCurse.MinGold
-		elseif not player:HasCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE) and mod.MidasCurse.TurnGoldChance ~= mod.MidasCurse.MaxGold then
-			mod.MidasCurse.TurnGoldChance = mod.MidasCurse.MaxGold
-		end
-		-- golden particles
-		if player:GetMovementDirection() ~= -1 then
-			game:SpawnParticles(player.Position, EffectVariant.GOLD_PARTICLE, 1, 2, _, 0)
-		end
-		if player:GetGoldenHearts() < data.GoldenHeartsAmount then
-			local rngMidasCurse = player:GetCollectibleRNG(mod.Items.MidasCurse)
-			data.GoldenHeartsAmount = player:GetGoldenHearts()
-			room:TurnGold() -- turn room gold (ultra greed death)
-			GoldenGrid(rngMidasCurse) -- golden poops
-			for _, entity in pairs(Isaac.GetRoomEntities()) do
-				if entity:ToNPC() then
-					local enemy = entity:ToNPC()
-					enemy:RemoveStatusEffects()
-					enemy:AddMidasFreeze(EntityRef(player), mod.MidasCurse.FreezeTime)
-				end
-				if entity.Type == EntityType.ENTITY_PICKUP then
-					TurnPickupsGold(entity:ToPickup(), rngMidasCurse)
-				end
-			end
-		elseif player:GetGoldenHearts() > data.GoldenHeartsAmount then
-			data.GoldenHeartsAmount = player:GetGoldenHearts()
-		end
-	else
-		if data.HasItemMidasCurse then
-			data.HasItemMidasCurse = false
-			data.GoldenHeartsAmount = 0
-		end
-	end
-	---Duckling
-	if player:HasCollectible(mod.Items.RubberDuck) then
-		if not data.HasItemRubberDuck then
-			data.HasItemRubberDuck = 1
-			--data.DuckCurrentLuck = mod.RubberDuck.MaxLuck
-			EvaluateDuckLuck(player, mod.RubberDuck.MaxLuck)
-		end
 
-		local numDuck = GetItemsCount(player, mod.Items.RubberDuck)
-		if numDuck ~= data.HasItemRubberDuck then
-			if numDuck > data.HasItemRubberDuck and GetItemsCount(player, mod.Items.RubberDuck) ~= 0 then
-				EvaluateDuckLuck(player, data.DuckCurrentLuck + mod.RubberDuck.MaxLuck)
-			end
-			data.HasItemRubberDuck = GetItemsCount(player, mod.Items.RubberDuck)
-		end
-
-		if not data.DuckCurrentLuck then
-			data.DuckCurrentLuck = 0
-		end
-	else
-		if data.HasItemRubberDuck then
-			data.HasItemRubberDuck = false
-			--data.DuckCurrentLuck = 0
-			EvaluateDuckLuck(player, 0)
-		end
-	end
-	--WitchPaper
-	if data.WitchPaper then
-		data.WitchPaper = data.WitchPaper - 1
-		if data.WitchPaper <= 0 then
-			data.WitchPaper = nil
-			player:AnimateTrinket(mod.Trinkets.WitchPaper)
-			player:TryRemoveTrinket(mod.Trinkets.WitchPaper)
-		end
-	end
-	--- COPY from Edith mod ------------
-	-- BlackKnight
-	if player:HasCollectible(mod.Items.BlackKnight, true) then
-		if not data.HasBlackKnight then
-			data.HasBlackKnight = true
-			player:AddNullCostume(mod.BlackKnight.Costume)
-			player:AddCacheFlags(CacheFlag.CACHE_FLYING)
-			player:EvaluateItems()
-		end
-		if data.ControlTarget == nil then data.ControlTarget = true end
-		if not player:HasEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK | EntityFlag.FLAG_NO_KNOCKBACK) then
-			player:AddEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK | EntityFlag.FLAG_NO_KNOCKBACK)
-		end
-		-- get movement action
-		local up = Input.IsActionPressed(ButtonAction.ACTION_UP, player.ControllerIndex)
-		local down = Input.IsActionPressed(ButtonAction.ACTION_DOWN, player.ControllerIndex)
-		local left = Input.IsActionPressed(ButtonAction.ACTION_LEFT, player.ControllerIndex)
-		local right = Input.IsActionPressed(ButtonAction.ACTION_RIGHT, player.ControllerIndex)
-		local isMoving = (down or right or left or up)
-		if not data.ControlTarget then isMoving = false end
-		-- spawn target mark
-		if isMoving and not data.KnightTarget and not player:HasCollectible(CollectibleType.COLLECTIBLE_DOGMA) and not player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_MEGA_MUSH) and not player:IsCoopGhost() then
-			if data.ControlTarget then
-				data.KnightTarget = Isaac.Spawn(1000, mod.BlackKnight.Target, 0, player.Position, Vector.Zero, player):ToEffect()
-				data.KnightTarget.Parent = player
-				data.KnightTarget.SpawnerEntity = player
-			end
-		end
-		if data.KnightTarget and data.KnightTarget:Exists() then
-		 	if player:HasCollectible(CollectibleType.COLLECTIBLE_DOGMA) or player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_MEGA_MUSH) or player:IsCoopGhost() then
-				data.KnightTarget:Remove()
-				data.KnightTarget = nil
-			end
-			local targetData = data.KnightTarget:GetData()
-			local targetSprite = data.KnightTarget:GetSprite()
-			--- COPY from Edith mod ------------
-			if not targetData.MovementVector then targetData.MovementVector = Vector.Zero end
-			if not (left or right) then targetData.MovementVector.X = 0 end
-			if not (up or down) then targetData.MovementVector.Y = 0 end
-			if left and not right then targetData.MovementVector.X = -1
-			elseif right then targetData.MovementVector.X = 1 end
-			if up and not down then targetData.MovementVector.Y = -1
-			elseif down then targetData.MovementVector.Y = 1 end
-			if room:IsMirrorWorld() then targetData.MovementVector.X = targetData.MovementVector.X * -1 end
-			if isMoving and data.KnightTarget:CollidesWithGrid() and player.ControlsEnabled then
-				for gridIndex = 1, room:GetGridSize() do
-					if room:GetGridEntity(gridIndex) then
-						local grid = room:GetGridEntity(gridIndex)
-						if (data.KnightTarget.Position - grid.Position):Length() <= mod.BlackKnight.DoorRadius then
-							if grid.Desc.Type == GridEntityType.GRID_DOOR then
-								grid = grid:ToDoor()
-								if room:IsClear() then
-									grid:TryUnlock(player)
-								end
-								if grid:IsOpen() then
-									if (player.Position - grid.Position):Length() <= mod.BlackKnight.DoorRadius then
-										player.Position = grid.Position
-										player:SetColor(Color(1, 1, 1, 0, 0, 0, 0), 1, 999, false, true)
-									else
-										player:PlayExtraAnimation("TeleportUp")
-										data.NextRoom = grid.Position
-										data.Jumped = true
-										data.ControlTarget = false
-									end
-								end
-							end
-						end
-					end
-				end
-				if room:GetType() == RoomType.ROOM_DUNGEON then
-					if ((data.KnightTarget.Position - Vector(110, 135)):Length() or (data.KnightTarget.Position - Vector(595, 272)):Length() or (data.KnightTarget.Position - Vector(595, 385)):Length()) <= 35 then
-						player.Position = data.KnightTarget.Position + UnitVector(data.KnightTarget.Velocity):Resized(25)
-						player:SetColor(Color(1, 1, 1, 0, 0, 0, 0), 2, 999, false, true)
-					--[[
-					if (data.KnightTarget.Position - Vector(110, 135)):Length() <= 35 then
-						player.Position = data.KnightTarget.Position + UnitVector(data.KnightTarget.Velocity):Resized(25)
-						player:SetColor(Color(1, 1, 1, 0, 0, 0, 0), 2, 999, false, true)
-					elseif (data.KnightTarget.Position - Vector(595, 272)):Length() <= 35 then
-						player.Position = data.KnightTarget.Position + UnitVector(data.KnightTarget.Velocity):Resized(25)
-						player:SetColor(Color(1, 1, 1, 0, 0, 0, 0), 2, 999, false, true)
-					elseif (data.KnightTarget.Position - Vector(595, 385)):Length() <= 35 then
-						player.Position = data.KnightTarget.Position + UnitVector(data.KnightTarget.Velocity):Resized(25)
-						player:SetColor(Color(1, 1, 1, 0, 0, 0, 0), 2, 999, false, true)
-					--]]
-					end
-				end
-			end
-			--- COPY from Edith mod ------------
-			if isMoving then
-				data.KnightTarget.Velocity = data.KnightTarget.Velocity + UnitVector(targetData.MovementVector):Resized(player.MoveSpeed + 2)
-				targetSprite:Play("Idle")
-			end
-		end
-		if data.Jumped and sprite:GetAnimation() == "TeleportUp" then
-			player.FireDelay = player.MaxFireDelay-1 -- it can pause some charging attacks (better way to remove tears in TearInit callback but meh)
-			data.ControlTarget = false
-			player.EntityCollisionClass = EntityCollisionClass.ENTCOLL_PLAYERONLY
-			player.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_NONE
-			if player:IsExtraAnimationFinished() then
-				if data.NextRoom then
-					player.Position = data.NextRoom
-					player:SetColor(Color(1, 1, 1, 0, 0, 0, 0), 1, 999, false, true)
-					data.NextRoom = nil
-					data.ControlTarget = true
-					data.Jumped = nil
-				else
-					player:PlayExtraAnimation("TeleportDown")
-				end
-			end
-		end
-		if data.Jumped and sprite:GetAnimation() == "TeleportDown" then
-			if data.KnightTarget then
-				player.Position = data.KnightTarget.Position
-				data.ControlTarget = false
-			end
-		end
-		--- COPY from Edith mod ------------
-		if data.Jumped and sprite:IsFinished("TeleportDown") then
-			data.Jumped = nil
-			data.ControlTarget = true
-			player.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
-			if player.CanFly then
-				player.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
-			else
-				player.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_GROUND
-			end
-			--- COPY from Edith mod ------------
-			for _, entity in pairs(Isaac.GetRoomEntities()) do
-				--EntityType.ENTITY_HOST
-				--EntityType.ENTITY_MOBILE_HOST
-				--EntityType.ENTITY_FLOATING_HOST
-				if entity:IsVulnerableEnemy() and entity:IsActiveEnemy() then
-					if entity.Position:Distance(player.Position) > mod.BlackKnight.BlastRadius and entity.Position:Distance(player.Position) <= mod.BlackKnight.BlastRadius*2.5 then
-						entity.Velocity = (entity.Position - player.Position):Resized(mod.BlackKnight.BlastKnockback*(2/3))
-					end
-				elseif entity.Type == EntityType.ENTITY_PICKUP and entity.Position:Distance(player.Position) <= mod.BlackKnight.PickupDistance then
-					entity = entity:ToPickup()
-					if mod.BlackKnight.ChestVariant[entity.Variant] and entity.SubType ~= 0 then
-						if entity.Variant == PickupVariant.PICKUP_BOMBCHEST then
-							entity:TryOpenChest()
-						end
-						entity.Position = player.Position
-						entity.Velocity = Vector.Zero
-					else
-						entity.Position = player.Position
-						entity.Velocity = Vector.Zero
-					end
-				end
-			end
-			--- COPY from Edith mod ------------
-			BlastDamage(mod.BlackKnight.BlastRadius, mod.BlackKnight.BlastDamage + player.Damage/2, mod.BlackKnight.BlastKnockback, player)
-			local gridEntity = room:GetGridEntityFromPos(player.Position)
-			if gridEntity then
-				if gridEntity.Desc.Type == GridEntityType.GRID_PIT and gridEntity.Desc.State ~= 1 then
-					if room:HasLava() then
-						local splash = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BIG_SPLASH, 0, player.Position, Vector.Zero, player):ToEffect()
-						splash.Color = Color(1.2, 0.8, 0.1, 1, 0, 0, 0)
-						splash.SpriteScale = Vector(0.75, 0.75)
-					elseif room:HasWaterPits() or room:HasWater() then
-						local splash = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BIG_SPLASH, 0, player.Position, Vector.Zero, player):ToEffect()
-						splash.SpriteScale = Vector(0.75, 0.75)
-					end
-				end
-			elseif room:HasWater() then
-				--sfx:Play(SoundEffect.SOUND_WATERSPLASH, 1, 0, false, 1, 0)
-				local splash = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BIG_SPLASH, 0, player.Position, Vector.Zero, player):ToEffect()
-				splash.SpriteScale = Vector(0.75, 0.75)
-			else
-				sfx:Play(SoundEffect.SOUND_STONE_IMPACT, 1, 0, false, 1, 0)
-				--game:SpawnParticles(player.Position, EffectVariant.TOOTH_PARTICLE, 3, 2, _, 0)
-			end
-			game:ShakeScreen(10)
-			player.Velocity = Vector.Zero
-		end
-	else
-		if data.HasBlackKnight then
-			player:TryRemoveNullCostume(mod.BlackKnight.Costume)
-			data.HasBlackKnight = false
-			player:ClearEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK | EntityFlag.FLAG_NO_KNOCKBACK)
-			data.KnightTarget:Remove()
-			data.KnightTarget = nil
-		end
-	end
-	--- COPY from Edith mod ------------
 	--domino 25
 	if data.Domino25Used then
 		data.Domino25Used = data.Domino25Used - 1
@@ -3009,229 +2672,13 @@ function mod:onPEffectUpdate(player)
 			data.Domino25Used = nil
 		end
 	end
-	--red button
-	if player:HasCollectible(mod.Items.RedButton) then
-		if mod.RedButton.Blastocyst then
-			mod.RedButton.Blastocyst.Visible = true
-			mod.RedButton.Blastocyst = false
-		end
-		if not mod.PreRoomState then -- if room is not cleared
-			for gridIndex = 1, room:GetGridSize() do -- get room size
-				local grid = room:GetGridEntity(gridIndex)
-				if grid then -- if grid ~= nil then
-					if grid.VarData == mod.RedButton.VarData then -- check button
-						if grid.State ~= 0 then
-							mod.RedButton.PressCount = mod.RedButton.PressCount + 1 -- button was pressed, increment 1
-							room:RemoveGridEntity(gridIndex, 0, false) -- remove pressed button
-							--grid:Update()
-							room:Update()
-							if mod.RedButton.PressCount >= mod.RedButton.Limit then -- get limit, no more buttons for this room
-								mod.RedButton.PressCount = 0 -- set press counter to 0
-								local effect = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.FART, 0, grid.Position, Vector.Zero, nil)
-								effect:SetColor(Color(2.5,0,0,1,0,0,0),50,1, false, false) -- poof effect
-								mod.RedButton.Blastocyst = Isaac.Spawn(EntityType.ENTITY_BLASTOCYST_BIG, 0, 0, room:GetCenterPos(), Vector.Zero, nil) -- spawn blastocyst
-								mod.RedButton.Blastocyst.Visible = false
-								mod.RedButton.Blastocyst:ToNPC().State = NpcState.STATE_JUMP
-							else
-								SpawnButton(player, room) -- spawn new button
-								local effect = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, grid.Position, Vector.Zero, nil)
-								effect:SetColor(Color(1.5,0,0,1,0,0,0),50,1, false, false) -- poof effect
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-	if player:HasTrinket(mod.Trinkets.LostFlower) and player:GetEternalHearts() > 0 then -- if you get eternal heart, add another one
-		player:AddEternalHearts(1)
-	end
-
-	if mod.RubikDice.ScrambledDices[player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)] then -- if player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == mod.Items.RubikDiceScrambled0 then
-		local scrambledice = player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)
-		if player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY) >= Isaac.GetItemConfig():GetCollectible(scrambledice).MaxCharges then
-			--player:RemoveCollectible(scrambledice) -- scrambledice
-			player:AddCollectible(mod.Items.RubikDice)
-			player:SetActiveCharge(3, ActiveSlot.SLOT_PRIMARY)
-		elseif player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY) > 0 and Input.IsActionPressed(ButtonAction.ACTION_ITEM, 0) then
-			local rng = player:GetCollectibleRNG(scrambledice)
-			local Newdice = mod.RubikDice.ScrambledDicesList[rng:RandomInt(#mod.RubikDice.ScrambledDicesList)+1]
-			RerollTMTRAINER(player, scrambledice)
-			--player:RemoveCollectible(scrambledice) -- scrambledice
-			player:AddCollectible(Newdice) --Newdice
-			player:SetActiveCharge(0, ActiveSlot.SLOT_PRIMARY)
-		end
-	end
-	--- tea bag
-	if player:HasTrinket(mod.Trinkets.TeaBag) then
-		--TrinketType.TRINKET_GOLDEN_FLAG
-		--pickup.SubType < 32768
-		local removeRadius = mod.TeaBag.Radius
-		local numTrinket = player:GetTrinketMultiplier(mod.Trinkets.TeaBag)
-		--if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_BOX) then numTrinket = numTrinket + 1 end
-		removeRadius = removeRadius * numTrinket
-		for _, effect in pairs(Isaac.FindByType(EntityType.ENTITY_EFFECT, EffectVariant.SMOKE_CLOUD)) do
-			if effect.Position:Distance(player.Position) < removeRadius then
-				if not effect.SpawnerType then
-					effect:Remove()
-				elseif effect.SpawnerType ~= EntityType.ENTITY_PLAYER then
-					effect:Remove()
-				end
-			end
-		end
-	end
-	-- white knight
-	if player:HasCollectible(mod.Items.WhiteKnight, true) then
-		if not data.HasWhiteKnight then
-			data.HasWhiteKnight = true
-			player:AddNullCostume(mod.WhiteKnight.Costume)
-			-- remove cache flag
-		end
-		if data.Jumped and sprite:GetAnimation() == "TeleportUp" then
-			player.FireDelay = player.MaxFireDelay-1 -- it can pause some charging attacks (better way to remove tears in TearInit callback but meh)
-
-			player.EntityCollisionClass = EntityCollisionClass.ENTCOLL_PLAYERONLY
-			player.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_NONE
-
-			if player:IsExtraAnimationFinished() then
-				player:PlayExtraAnimation("TeleportDown")
-			end
-		end
-		if data.Jumped and sprite:GetAnimation() == "TeleportDown" then
-			local nearest = 5000
-			local JumpPosition = GetNearestEnemy(player.Position)
-			if player.Position:Distance(JumpPosition) == 0 then
-				for gridIndex = 1, room:GetGridSize() do
-					if room:GetGridEntity(gridIndex) then
-						if room:GetGridEntity(gridIndex):ToDoor() then
-							if room:GetGridEntity(gridIndex):ToDoor():GetVariant() ~= 7 then
-								local newPos = Isaac.GetFreeNearPosition(room:GetGridPosition(gridIndex), 1)
-								if player.Position:Distance(newPos) < nearest then
-									JumpPosition = newPos
-									nearest = player.Position:Distance(newPos)
-								end
-							end
-						end
-					end
-				end
-			end
-			player.Position = JumpPosition
-		end
-		--- COPY from Edith mod ------------
-		if data.Jumped and sprite:IsFinished("TeleportDown") then
-			data.Jumped = nil
-			--data.JumpPosition = nil
-
-			player.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
-			if player.CanFly then
-				player.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
-			else
-				player.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_GROUND
-			end
-
-			--- COPY from Edith mod ------------
-			for _, entity in pairs(Isaac.GetRoomEntities()) do
-				--EntityType.ENTITY_HOST
-				--EntityType.ENTITY_MOBILE_HOST
-				--EntityType.ENTITY_FLOATING_HOST
-				if entity:IsVulnerableEnemy() and entity:IsActiveEnemy() then
-					if entity.Position:Distance(player.Position) > mod.BlackKnight.BlastRadius and entity.Position:Distance(player.Position) <= mod.BlackKnight.BlastRadius*2.5 then
-						entity.Velocity = (entity.Position - player.Position):Resized(mod.BlackKnight.BlastKnockback*(2/3))
-					end
-				elseif entity.Type == EntityType.ENTITY_PICKUP and entity.Position:Distance(player.Position) <= mod.BlackKnight.PickupDistance then
-					entity = entity:ToPickup()
-					if mod.BlackKnight.ChestVariant[entity.Variant] and entity.SubType ~= 0 then
-						if entity.Variant == PickupVariant.PICKUP_BOMBCHEST then
-							entity:TryOpenChest()
-						end
-						entity.Position = player.Position
-						entity.Velocity = Vector.Zero
-					else
-						entity.Position = player.Position
-						entity.Velocity = Vector.Zero
-					end
-				end
-			end
-			--- COPY from Edith mod ------------
-			BlastDamage(mod.BlackKnight.BlastRadius, mod.BlackKnight.BlastDamage + player.Damage/2, mod.BlackKnight.BlastKnockback, player)
-			local gridEntity = room:GetGridEntityFromPos(player.Position)
-			if gridEntity then
-				if gridEntity.Desc.Type == GridEntityType.GRID_PIT and gridEntity.Desc.State ~= 1 then
-					if room:HasLava() then
-						local splash = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BIG_SPLASH, 0, player.Position, Vector.Zero, player):ToEffect()
-						splash.Color = Color(1.2, 0.8, 0.1, 1, 0, 0, 0)
-						splash.SpriteScale = Vector(0.75, 0.75)
-					elseif room:HasWaterPits() or room:HasWater() then
-						local splash = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BIG_SPLASH, 0, player.Position, Vector.Zero, player):ToEffect()
-						splash.SpriteScale = Vector(0.75, 0.75)
-					end
-				end
-			elseif room:HasWater() then
-				--sfx:Play(SoundEffect.SOUND_WATERSPLASH, 1, 0, false, 1, 0)
-				local splash = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BIG_SPLASH, 0, player.Position, Vector.Zero, player):ToEffect()
-				splash.SpriteScale = Vector(0.75, 0.75)
-			else
-				sfx:Play(SoundEffect.SOUND_STONE_IMPACT, 1, 0, false, 1, 0)
-				--game:SpawnParticles(player.Position, EffectVariant.TOOTH_PARTICLE, 3, 2, _, 0)
-			end
-			game:ShakeScreen(10)
-			player.Velocity = Vector.Zero
-			--player.ControlsEnabled = true
-		end
-		--]]
-	else
-		if data.HasWhiteKnight then
-			player:TryRemoveNullCostume(mod.WhiteKnight.Costume)
-			data.HasWhiteKnight = false
-		end
-	end
-
-	if player:HasTrinket(mod.Trinkets.RedScissors) then
-		if not mod.RedScissorsMod then
-			mod.RedScissorsMod = true
-		end
-	else
-		if mod.RedScissorsMod then
-			mod.RedScissorsMod = false
-		end
-	end
-
-	--charon's obol block if you used health
-	if data.BlockObol then
-		data.BlockObol = data.BlockObol - 1
-		if data.BlockObol == 0 then
-			data.BlockObol = nil
-		end
-	end
-
-	-- viridian
-	if player:HasCollectible(mod.Items.Viridian) then
-		if not data.HasItemViridian then
-			data.HasItemViridian = true
-			player:AddCacheFlags(CacheFlag.CACHE_FLYING)
-			player:EvaluateItems()
-			player.SpriteOffset = Vector(player.SpriteOffset.X, player.SpriteOffset.Y + mod.Viridian.FlipOffsetY)
-			player:GetSprite().FlipX = true
-			player:GetSprite().FlipY = true
-		end
-		--local mySprite = player:GetSprite()
-		--mySprite.FlipY = true
-		--player:ClearCostumes()
-	else
-		if data.HasItemViridian then
-			data.HasItemViridian = nil
-			player:AddCacheFlags(CacheFlag.CACHE_FLYING)
-			player:EvaluateItems()
-		end
-	end
-
+	---maze of memory
 	if data.MazeMemoryUsed then
 		if data.MazeMemoryUsed[1] then
 			if data.MazeMemoryUsed[1] > 0 then
 				data.MazeMemoryUsed[1] = data.MazeMemoryUsed[1] - 1
 			elseif data.MazeMemoryUsed[1] == 0 then
 				data.MazeMemoryUsed[1] = data.MazeMemoryUsed[1] - 1
-				mod.OutOfMap = true
 				Isaac.ExecuteCommand("goto s.treasure.0")
 			elseif data.MazeMemoryUsed[1] < 0 then
 				game:ShowHallucination(0, BackdropType.DARK_CLOSET)
@@ -3278,32 +2725,687 @@ function mod:onPEffectUpdate(player)
 			end
 		end
 	end
-
 	if data.Transit then
 		data.Transit = data.Transit - 1
 		if data.Transit <= 0 then
-		data.Transit = nil
+			data.Transit = nil
 			game:StartRoomTransition(level:GetStartingRoomIndex(), 1, RoomTransitionAnim.DEATH_CERTIFICATE, player, -1)
 		end
 	end
 
-	-- brain queue (better holy water mod)
-	local brains = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, mod.NadabBrain.Variant)
-	if #brains > 0 then
-		local nadabBrainAmount = GetItemsCount(player, mod.Items.NadabBrain)
-		local highest --= nil
-		for _, fam in pairs(brains) do
-			local famData = fam:GetData()
-			famData.IsHighest = false
-			if fam.Visible then
-				if nadabBrainAmount == 1 or highest == nil then
-					highest = fam
-					famData.IsHighest = true
+	if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+		--- mongo cells
+		if player:HasCollectible(mod.Items.MongoCells) then
+			if game:GetFrameCount() %mod.MongoCells.HeadlessCreepFrame == 0 then
+				if player:HasCollectible(CollectibleType.COLLECTIBLE_HEADLESS_BABY) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_HEADLESS_BABY) then
+					Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED, 0, player.Position, Vector.Zero, player)
+				end
+			end
+			if game:GetFrameCount() %mod.MongoCells.DepressionCreepFrame == 0 then
+				if player:HasCollectible(CollectibleType.COLLECTIBLE_DEPRESSION) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_DEPRESSION) then
+					creep = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_HOLYWATER_TRAIL, 0, player.Position, Vector.Zero, player):ToEffect()
+					creep.SpriteScale = creep.SpriteScale * 0.1
+				end
+			end
+			data.MongoSteven = AddFamiliarEffect(player, data.MongoSteven, CollectibleType.COLLECTIBLE_LITTLE_STEVEN, CollectibleType.COLLECTIBLE_SPOON_BENDER)
+			data.MongoHarlequin = AddFamiliarEffect(player, data.MongoHarlequin, CollectibleType.COLLECTIBLE_HARLEQUIN_BABY, CollectibleType.COLLECTIBLE_THE_WIZ)
+			data.MongoFreezer = AddFamiliarEffect(player, data.MongoFreezer, CollectibleType.COLLECTIBLE_FREEZER_BABY, CollectibleType.COLLECTIBLE_URANUS)
+			data.MongoGhost = AddFamiliarEffect(player, data.MongoGhost, CollectibleType.COLLECTIBLE_GHOST_BABY, CollectibleType.COLLECTIBLE_OUIJA_BOARD)
+			data.MongoAbel = AddFamiliarEffect(player, data.MongoAbel, CollectibleType.COLLECTIBLE_ABEL, CollectibleType.COLLECTIBLE_MY_REFLECTION)
+			-- COLLECTIBLE_3_DOLLAR_BILL
+			data.MongoRainbow = AddFamiliarEffect(player, data.MongoRainbow, CollectibleType.COLLECTIBLE_RAINBOW_BABY, CollectibleType.COLLECTIBLE_FRUIT_CAKE)
+			data.MongoBrimstone = AddFamiliarEffect(player, data.MongoBrimstone, CollectibleType.COLLECTIBLE_LIL_BRIMSTONE, CollectibleType.COLLECTIBLE_BRIMSTONE)
+			if GetItemsCount(player, CollectibleType.COLLECTIBLE_BALL_OF_BANDAGES) > 1 then
+				data.MongoBallBandage = AddFamiliarEffect(player, data.MongoBallBandage, CollectibleType.COLLECTIBLE_BALL_OF_BANDAGES, CollectibleType.COLLECTIBLE_MOMS_EYESHADOW)
+			end
+			data.MongoHaunt = AddFamiliarEffect(player, data.MongoHaunt, CollectibleType.COLLECTIBLE_LIL_HAUNT, CollectibleType.COLLECTIBLE_MOMS_PERFUME)
+			-- COLLECTIBLE_VENUS
+			data.MongoSissy = AddFamiliarEffect(player, data.MongoSissy, CollectibleType.COLLECTIBLE_SISSY_LONGLEGS, CollectibleType.COLLECTIBLE_MOMS_WIG)
+		end
+
+		--- lililith
+		if player:HasCollectible(mod.Items.Lililith) then
+			data.LililithDemonSpawn = data.LililithDemonSpawn or mod.Lililith.DemonSpawn
+		end
+		--- Mew-Gen
+		if player:HasCollectible(mod.Items.MewGen) then
+			data.HasMewGen = data.HasMewGen or false
+			if not data.HasMewGen then
+				--add costume
+			end
+			if not player.CanFly then
+				player:AddCacheFlags(CacheFlag.CACHE_FLYING)
+				player:EvaluateItems()
+			end
+			MewGenManager(player)
+		else
+			if data.HasMewGen then
+				--remove costume
+			end
+		end
+		-- void karma
+		if player:HasCollectible(mod.Items.VoidKarma) and level:GetStateFlag(LevelStateFlag.STATE_DAMAGED) and not data.StateDamaged then
+			data.StateDamaged = 1 -- used as stat multiplier. without damage == 2
+		end
+		-- corruption
+		if data.CorruptionIsActive and player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) ~= 0 then
+			local activeItem = player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)
+			if player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY) < Isaac.GetItemConfig():GetCollectible(activeItem).MaxCharges then
+				player:FullCharge(ActiveSlot.SLOT_PRIMARY, false)
+			end
+		end
+		-- frosty tears for ice cube bombs / attractor tears for black hole bombs
+		for _, bomb in pairs(Isaac.FindByType(4)) do -- bombs == 4
+			bomb = bomb:ToBomb()
+			if bomb:GetSprite():GetAnimation() == "Explode" then -- not mod.MirrorBombs.Ban[bomb.Variant]
+				if bomb:GetData().Dicey then
+					DiceyReroll(player:GetCollectibleRNG(mod.Items.DiceBombs), bomb.Position, mod.DiceBombs.AreaRadius)
+				end
+				if bomb:GetData().DeadEgg then
+					DeadEggEffect(player, bomb.Position, mod.DeadEgg.Timeout)
+				end
+				--spawn particle
+				if bomb:GetData().Frosty then
+					game:SpawnParticles(bomb.Position, EffectVariant.DIAMOND_PARTICLE, 10, 5, Color(1,1,1,1,0.5,0.5,0.8))-- poofColor --ROCK_PARTICLE
+				end
+				if  bomb:HasTearFlags(TearFlags.TEAR_SAD_BOMB) then
+					for _, tear in pairs(Isaac.FindInRadius(bomb.Position, 22, EntityPartition.TEAR)) do
+						if tear.FrameCount == 1 then -- other tears can get this effects if you shoot tears near bomb (idk else how to get)
+							tear = tear:ToTear()
+							if bomb:GetData().Frosty then
+								tear:ChangeVariant(TearVariant.ICE)
+								tear:AddTearFlags(TearFlags.TEAR_SLOW | TearFlags.TEAR_ICE)
+							end
+						end
+					end
+				end
+			end
+		end
+		-- black hole bombs
+		if player:HasCollectible(mod.Items.GravityBombs) then
+			if not data.HasItemGravityBombs then
+				data.HasItemGravityBombs = 1
+				player:AddGigaBombs(mod.GravityBombs.GigaBombs )
+			end
+			local numGravityBombs =  GetItemsCount(player, mod.Items.GravityBombs)
+			if numGravityBombs ~= data.HasItemGravityBombs then
+				if numGravityBombs > data.HasItemGravityBombs and GetItemsCount(player, mod.Items.GravityBombs)  ~= 0 then
+					player:AddGigaBombs(mod.GravityBombs.GigaBombs)
+
+				end
+				data.HasItemGravityBombs =  GetItemsCount(player, mod.Items.GravityBombs)
+			end
+		else
+			if data.HasItemGravityBombs then
+				data.HasItemGravityBombs = nil
+			end
+		end
+		--long elk
+		if player:HasCollectible(mod.Items.LongElk) then
+			if not data.HasLongElk then
+				data.HasLongElk = true
+				player:AddCacheFlags(CacheFlag.CACHE_FLYING)
+				player:AddNullCostume(mod.LongElk.Costume)
+				player:EvaluateItems()
+			end
+
+			if data.ElkKiller and not tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_MARS) then
+				data.ElkKiller = false
+			end
+
+			if not data.BoneSpurTimer then
+				data.BoneSpurTimer = mod.LongElk.BoneSpurTimer
+			else
+				if  data.BoneSpurTimer > 0 then
+					data.BoneSpurTimer = data.BoneSpurTimer - 1
+				end
+			end
+			if player:GetMovementDirection() ~= -1 and not room:IsClear() and data.BoneSpurTimer <= 0 then
+				Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BONE_SPUR, 0, player.Position, Vector.Zero, player):ToFamiliar():GetData().RemoveTimer = mod.LongElk.BoneSpurTimer * mod.LongElk.NumSpur
+				data.BoneSpurTimer = mod.LongElk.BoneSpurTimer
+			end
+		else
+			if data.HasLongElk then
+				data.HasLongElk = nil
+				player:TryRemoveNullCostume(mod.LongElk.Costume)
+				player:AddCacheFlags(CacheFlag.CACHE_FLYING)
+				player:EvaluateItems()
+			end
+		end
+		--mini-pony
+		if player:HasCollectible(mod.Items.MiniPony) then
+			if not data.HasMiniPony then
+				data.HasMiniPony = true
+				--player:AddCacheFlags(CacheFlag.CACHE_SIZE)
+				player:AddCacheFlags(CacheFlag.CACHE_FLYING)
+				player:AddCacheFlags(CacheFlag.CACHE_SPEED)
+				player:AddNullCostume(mod.MiniPony.Costume)
+				player:EvaluateItems()
+			end
+			if player.MoveSpeed < mod.MiniPony.MoveSpeed then
+				player:AddCacheFlags(CacheFlag.CACHE_SPEED)
+				player:EvaluateItems()
+			end
+		else
+			if data.HasMiniPony then
+				data.HasMiniPony = nil
+				player:TryRemoveNullCostume(mod.MiniPony.Costume)
+				player:AddCacheFlags(CacheFlag.CACHE_FLYING)
+				player:AddCacheFlags(CacheFlag.CACHE_SPEED)
+				player:EvaluateItems()
+			end
+		end
+
+		---red pills
+		if data.RedPillDamageUp then --and game:GetFrameCount()%2 == 0 then
+			data.RedPillDamageUp = data.RedPillDamageUp - data.RedPillDamageDown
+			data.RedPillDamageDown = data.RedPillDamageDown + mod.RedPills.DamageDownTick
+			if data.RedPillDamageUp < 0 then
+				data.RedPillDamageUp = 0
+			end
+			player:AddCacheFlags(CacheFlag.CACHE_DAMAGE) -- | CacheFlag.CACHE_FIREDELAY)
+			player:EvaluateItems()
+			if data.RedPillDamageUp == 0 then
+				data.RedPillDamageUp = nil
+				data.RedPillDamageDown = nil
+			end
+		end
+
+		---MidasCurse
+		if player:HasCollectible(mod.Items.MidasCurse) then
+			if not data.HasItemMidasCurse then
+				data.HasItemMidasCurse = 1
+				player:AddGoldenHearts(3)
+				data.GoldenHeartsAmount = player:GetGoldenHearts()
+			end
+			local numMidas = GetItemsCount(player, mod.Items.MidasCurse)
+			if numMidas ~= data.HasItemMidasCurse then
+				if numMidas > data.HasItemMidasCurse and GetItemsCount(player, mod.Items.MidasCurse)  ~= 0 then
+					player:AddGoldenHearts(3)
+				end
+				data.HasItemMidasCurse = GetItemsCount(player, mod.Items.MidasCurse)
+			end
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE) and mod.MidasCurse.TurnGoldChance ~= mod.MidasCurse.MinGold then -- remove curse
+				mod.MidasCurse.TurnGoldChance = mod.MidasCurse.MinGold
+			elseif not player:HasCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE) and mod.MidasCurse.TurnGoldChance ~= mod.MidasCurse.MaxGold then
+				mod.MidasCurse.TurnGoldChance = mod.MidasCurse.MaxGold
+			end
+			-- golden particles
+			if player:GetMovementDirection() ~= -1 then
+				game:SpawnParticles(player.Position, EffectVariant.GOLD_PARTICLE, 1, 2, _, 0)
+			end
+			if player:GetGoldenHearts() < data.GoldenHeartsAmount then
+				local rngMidasCurse = player:GetCollectibleRNG(mod.Items.MidasCurse)
+				data.GoldenHeartsAmount = player:GetGoldenHearts()
+				room:TurnGold() -- turn room gold (ultra greed death)
+				GoldenGrid(rngMidasCurse) -- golden poops
+				for _, entity in pairs(Isaac.GetRoomEntities()) do
+					if entity:ToNPC() then
+						local enemy = entity:ToNPC()
+						enemy:RemoveStatusEffects()
+						enemy:AddMidasFreeze(EntityRef(player), mod.MidasCurse.FreezeTime)
+					end
+					if entity.Type == EntityType.ENTITY_PICKUP then
+						if rngMidasCurse:RandomFloat() < mod.MidasCurse.TurnGoldChance then
+							TurnPickupsGold(entity:ToPickup())
+						end
+					end
+				end
+			elseif player:GetGoldenHearts() > data.GoldenHeartsAmount then
+				data.GoldenHeartsAmount = player:GetGoldenHearts()
+			end
+		else
+			if data.HasItemMidasCurse then
+				data.HasItemMidasCurse = false
+				data.GoldenHeartsAmount = 0
+			end
+		end
+		---Duckling
+		if player:HasCollectible(mod.Items.RubberDuck) then
+			if not data.HasItemRubberDuck then
+				data.HasItemRubberDuck = 1
+				--data.DuckCurrentLuck = mod.RubberDuck.MaxLuck
+				EvaluateDuckLuck(player, mod.RubberDuck.MaxLuck)
+			end
+
+			local numDuck = GetItemsCount(player, mod.Items.RubberDuck)
+			if numDuck ~= data.HasItemRubberDuck then
+				if numDuck > data.HasItemRubberDuck and GetItemsCount(player, mod.Items.RubberDuck) ~= 0 then
+					EvaluateDuckLuck(player, data.DuckCurrentLuck + mod.RubberDuck.MaxLuck)
+				end
+				data.HasItemRubberDuck = GetItemsCount(player, mod.Items.RubberDuck)
+			end
+
+			if not data.DuckCurrentLuck then
+				data.DuckCurrentLuck = 0
+			end
+		else
+			if data.HasItemRubberDuck then
+				data.HasItemRubberDuck = false
+				--data.DuckCurrentLuck = 0
+				EvaluateDuckLuck(player, 0)
+			end
+		end
+		---WitchPaper
+		if data.WitchPaper then
+			data.WitchPaper = data.WitchPaper - 1
+			if data.WitchPaper <= 0 then
+				data.WitchPaper = nil
+				player:AnimateTrinket(mod.Trinkets.WitchPaper)
+				player:TryRemoveTrinket(mod.Trinkets.WitchPaper)
+			end
+		end
+		--- COPY from Edith mod ------------
+		--- BlackKnight
+		if player:HasCollectible(mod.Items.BlackKnight, true) then
+			if not data.HasBlackKnight then
+				data.HasBlackKnight = true
+				player:AddNullCostume(mod.BlackKnight.Costume)
+				player:AddCacheFlags(CacheFlag.CACHE_FLYING)
+				player:EvaluateItems()
+			end
+			if data.ControlTarget == nil then data.ControlTarget = true end
+			if not player:HasEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK | EntityFlag.FLAG_NO_KNOCKBACK) then
+				player:AddEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK | EntityFlag.FLAG_NO_KNOCKBACK)
+			end
+			-- get movement action
+			local up = Input.IsActionPressed(ButtonAction.ACTION_UP, player.ControllerIndex)
+			local down = Input.IsActionPressed(ButtonAction.ACTION_DOWN, player.ControllerIndex)
+			local left = Input.IsActionPressed(ButtonAction.ACTION_LEFT, player.ControllerIndex)
+			local right = Input.IsActionPressed(ButtonAction.ACTION_RIGHT, player.ControllerIndex)
+			local isMoving = (down or right or left or up)
+			if not data.ControlTarget then isMoving = false end
+			-- spawn target mark
+			if isMoving and not data.KnightTarget and not player:HasCollectible(CollectibleType.COLLECTIBLE_DOGMA) and not player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_MEGA_MUSH) and not player:IsCoopGhost() then
+				if data.ControlTarget then
+					data.KnightTarget = Isaac.Spawn(1000, mod.BlackKnight.Target, 0, player.Position, Vector.Zero, player):ToEffect()
+					data.KnightTarget.Parent = player
+					data.KnightTarget.SpawnerEntity = player
+				end
+			end
+			if data.KnightTarget and data.KnightTarget:Exists() then
+				if player:HasCollectible(CollectibleType.COLLECTIBLE_DOGMA) or player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_MEGA_MUSH) or player:IsCoopGhost() then
+					data.KnightTarget:Remove()
+					data.KnightTarget = nil
+				end
+				local targetData = data.KnightTarget:GetData()
+				local targetSprite = data.KnightTarget:GetSprite()
+				if not targetData.MovementVector then targetData.MovementVector = Vector.Zero end
+				if not (left or right) then targetData.MovementVector.X = 0 end
+				if not (up or down) then targetData.MovementVector.Y = 0 end
+				if left and not right then targetData.MovementVector.X = -1
+				elseif right then targetData.MovementVector.X = 1 end
+				if up and not down then targetData.MovementVector.Y = -1
+				elseif down then targetData.MovementVector.Y = 1 end
+				if room:IsMirrorWorld() then targetData.MovementVector.X = targetData.MovementVector.X * -1 end
+				if isMoving and data.KnightTarget:CollidesWithGrid() and player.ControlsEnabled then
+					for gridIndex = 1, room:GetGridSize() do
+						if room:GetGridEntity(gridIndex) then
+							local grid = room:GetGridEntity(gridIndex)
+							if (data.KnightTarget.Position - grid.Position):Length() <= mod.BlackKnight.DoorRadius then
+								if grid.Desc.Type == GridEntityType.GRID_DOOR then
+									grid = grid:ToDoor()
+									if room:IsClear() then
+										grid:TryUnlock(player)
+									end
+									if grid:IsOpen() then
+										if (player.Position - grid.Position):Length() <= mod.BlackKnight.DoorRadius then
+											player.Position = grid.Position
+											player:SetColor(Color(1, 1, 1, 0, 0, 0, 0), 1, 999, false, true)
+										else
+											player:PlayExtraAnimation("TeleportUp")
+											data.NextRoom = grid.Position
+											data.Jumped = true
+											data.ControlTarget = false
+										end
+									end
+								end
+							end
+						end
+					end
+					if room:GetType() == RoomType.ROOM_DUNGEON then
+						if ((data.KnightTarget.Position - Vector(110, 135)):Length() or (data.KnightTarget.Position - Vector(595, 272)):Length() or (data.KnightTarget.Position - Vector(595, 385)):Length()) <= 35 then
+							player.Position = data.KnightTarget.Position + UnitVector(data.KnightTarget.Velocity):Resized(25)
+							player:SetColor(Color(1, 1, 1, 0, 0, 0, 0), 2, 999, false, true)
+							--[[
+							if (data.KnightTarget.Position - Vector(110, 135)):Length() <= 35 then
+								player.Position = data.KnightTarget.Position + UnitVector(data.KnightTarget.Velocity):Resized(25)
+								player:SetColor(Color(1, 1, 1, 0, 0, 0, 0), 2, 999, false, true)
+							elseif (data.KnightTarget.Position - Vector(595, 272)):Length() <= 35 then
+								player.Position = data.KnightTarget.Position + UnitVector(data.KnightTarget.Velocity):Resized(25)
+								player:SetColor(Color(1, 1, 1, 0, 0, 0, 0), 2, 999, false, true)
+							elseif (data.KnightTarget.Position - Vector(595, 385)):Length() <= 35 then
+								player.Position = data.KnightTarget.Position + UnitVector(data.KnightTarget.Velocity):Resized(25)
+								player:SetColor(Color(1, 1, 1, 0, 0, 0, 0), 2, 999, false, true)
+							--]]
+						end
+					end
+				end
+				if isMoving then
+					data.KnightTarget.Velocity = data.KnightTarget.Velocity + UnitVector(targetData.MovementVector):Resized(player.MoveSpeed + 2)
+					targetSprite:Play("Idle")
+				end
+			end
+			if data.Jumped and sprite:GetAnimation() == "TeleportUp" then
+				player.FireDelay = player.MaxFireDelay-1 -- it can pause some charging attacks (better way to remove tears in TearInit callback but meh)
+				data.ControlTarget = false
+				player.EntityCollisionClass = EntityCollisionClass.ENTCOLL_PLAYERONLY
+				player.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_NONE
+				if player:IsExtraAnimationFinished() then
+					if data.NextRoom then
+						player.Position = data.NextRoom
+						player:SetColor(Color(1, 1, 1, 0, 0, 0, 0), 1, 999, false, true)
+						data.NextRoom = nil
+						data.ControlTarget = true
+						data.Jumped = nil
+					else
+						player:PlayExtraAnimation("TeleportDown")
+					end
+				end
+			end
+			if data.Jumped and sprite:GetAnimation() == "TeleportDown" then
+				if data.KnightTarget then
+					player.Position = data.KnightTarget.Position
+					data.ControlTarget = false
+				end
+			end
+			if data.Jumped and sprite:IsFinished("TeleportDown") then
+				data.Jumped = nil
+				data.ControlTarget = true
+				player.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
+				if player.CanFly then
+					player.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
 				else
-					if highest.FrameCount < fam.FrameCount then
-						highest:GetData().IsHighest = false
-						famData.IsHighest = true
+					player.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_GROUND
+				end
+				for _, entity in pairs(Isaac.GetRoomEntities()) do
+					--EntityType.ENTITY_HOST
+					--EntityType.ENTITY_MOBILE_HOST
+					--EntityType.ENTITY_FLOATING_HOST
+					if entity:IsVulnerableEnemy() and entity:IsActiveEnemy() then
+						if entity.Position:Distance(player.Position) > mod.BlackKnight.BlastRadius and entity.Position:Distance(player.Position) <= mod.BlackKnight.BlastRadius*2.5 then
+							entity.Velocity = (entity.Position - player.Position):Resized(mod.BlackKnight.BlastKnockback*(2/3))
+						end
+					elseif entity.Type == EntityType.ENTITY_PICKUP and entity.Position:Distance(player.Position) <= mod.BlackKnight.PickupDistance then
+						entity = entity:ToPickup()
+						if mod.BlackKnight.ChestVariant[entity.Variant] and entity.SubType ~= 0 then
+							if entity.Variant == PickupVariant.PICKUP_BOMBCHEST then
+								entity:TryOpenChest()
+							end
+							entity.Position = player.Position
+							entity.Velocity = Vector.Zero
+						else
+							entity.Position = player.Position
+							entity.Velocity = Vector.Zero
+						end
+					end
+				end
+				BlastDamage(mod.BlackKnight.BlastRadius, mod.BlackKnight.BlastDamage + player.Damage/2, mod.BlackKnight.BlastKnockback, player)
+				local gridEntity = room:GetGridEntityFromPos(player.Position)
+				if gridEntity then
+					if gridEntity.Desc.Type == GridEntityType.GRID_PIT and gridEntity.Desc.State ~= 1 then
+						if room:HasLava() then
+							local splash = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BIG_SPLASH, 0, player.Position, Vector.Zero, player):ToEffect()
+							splash.Color = Color(1.2, 0.8, 0.1, 1, 0, 0, 0)
+							splash.SpriteScale = Vector(0.75, 0.75)
+						elseif room:HasWaterPits() or room:HasWater() then
+							local splash = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BIG_SPLASH, 0, player.Position, Vector.Zero, player):ToEffect()
+							splash.SpriteScale = Vector(0.75, 0.75)
+						end
+					end
+				elseif room:HasWater() then
+					--sfx:Play(SoundEffect.SOUND_WATERSPLASH, 1, 0, false, 1, 0)
+					local splash = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BIG_SPLASH, 0, player.Position, Vector.Zero, player):ToEffect()
+					splash.SpriteScale = Vector(0.75, 0.75)
+				else
+					sfx:Play(SoundEffect.SOUND_STONE_IMPACT, 1, 0, false, 1, 0)
+					--game:SpawnParticles(player.Position, EffectVariant.TOOTH_PARTICLE, 3, 2, _, 0)
+				end
+				game:ShakeScreen(10)
+				player.Velocity = Vector.Zero
+			end
+		else
+			if data.HasBlackKnight then
+				player:TryRemoveNullCostume(mod.BlackKnight.Costume)
+				data.HasBlackKnight = false
+				player:ClearEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK | EntityFlag.FLAG_NO_KNOCKBACK)
+				data.KnightTarget:Remove()
+				data.KnightTarget = nil
+			end
+		end
+
+		--red button
+		if player:HasCollectible(mod.Items.RedButton) then
+			if mod.RedButton.Blastocyst then
+				mod.RedButton.Blastocyst.Visible = true
+				mod.RedButton.Blastocyst = false
+			end
+			if not mod.PreRoomState then -- if room is not cleared
+				for gridIndex = 1, room:GetGridSize() do -- get room size
+					local grid = room:GetGridEntity(gridIndex)
+					if grid then -- if grid ~= nil then
+						if grid.VarData == mod.RedButton.VarData then -- check button
+							if grid.State ~= 0 then
+								mod.RedButton.PressCount = mod.RedButton.PressCount + 1 -- button was pressed, increment 1
+								room:RemoveGridEntity(gridIndex, 0, false) -- remove pressed button
+								--grid:Update()
+								room:Update()
+								if mod.RedButton.PressCount >= mod.RedButton.Limit then -- get limit, no more buttons for this room
+									mod.RedButton.PressCount = 0 -- set press counter to 0
+									local effect = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.FART, 0, grid.Position, Vector.Zero, nil)
+									effect:SetColor(Color(2.5,0,0,1,0,0,0),50,1, false, false) -- poof effect
+									mod.RedButton.Blastocyst = Isaac.Spawn(EntityType.ENTITY_BLASTOCYST_BIG, 0, 0, room:GetCenterPos(), Vector.Zero, nil) -- spawn blastocyst
+									mod.RedButton.Blastocyst.Visible = false
+									mod.RedButton.Blastocyst:ToNPC().State = NpcState.STATE_JUMP
+								else
+									SpawnButton(player, room) -- spawn new button
+									local effect = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, grid.Position, Vector.Zero, nil)
+									effect:SetColor(Color(1.5,0,0,1,0,0,0),50,1, false, false) -- poof effect
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+
+		--- lost flower
+		if player:HasTrinket(mod.Trinkets.LostFlower) and player:GetEternalHearts() > 0 then -- if you get eternal heart, add another one
+			player:AddEternalHearts(1)
+		end
+		--- rubick's dice
+		if mod.RubikDice.ScrambledDices[player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)] then -- if player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == mod.Items.RubikDiceScrambled0 then
+			local scrambledice = player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)
+			if player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY) >= Isaac.GetItemConfig():GetCollectible(scrambledice).MaxCharges then
+				--player:RemoveCollectible(scrambledice) -- scrambledice
+				player:AddCollectible(mod.Items.RubikDice)
+				player:SetActiveCharge(3, ActiveSlot.SLOT_PRIMARY)
+			elseif player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY) > 0 and Input.IsActionPressed(ButtonAction.ACTION_ITEM, 0) then
+				local rng = player:GetCollectibleRNG(scrambledice)
+				local Newdice = mod.RubikDice.ScrambledDicesList[rng:RandomInt(#mod.RubikDice.ScrambledDicesList)+1]
+				RerollTMTRAINER(player, scrambledice)
+				--player:RemoveCollectible(scrambledice) -- scrambledice
+				player:AddCollectible(Newdice) --Newdice
+				player:SetActiveCharge(0, ActiveSlot.SLOT_PRIMARY)
+			end
+		end
+		--- tea bag
+		if player:HasTrinket(mod.Trinkets.TeaBag) then
+			--TrinketType.TRINKET_GOLDEN_FLAG
+			--pickup.SubType < 32768
+			local removeRadius = mod.TeaBag.Radius
+			local numTrinket = player:GetTrinketMultiplier(mod.Trinkets.TeaBag)
+			--if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_BOX) then numTrinket = numTrinket + 1 end
+			removeRadius = removeRadius * numTrinket
+			for _, effect in pairs(Isaac.FindByType(EntityType.ENTITY_EFFECT, EffectVariant.SMOKE_CLOUD)) do
+				if effect.Position:Distance(player.Position) < removeRadius then
+					if not effect.SpawnerType then
+						effect:Remove()
+					elseif effect.SpawnerType ~= EntityType.ENTITY_PLAYER then
+						effect:Remove()
+					end
+				end
+			end
+		end
+		--- COPY from Edith mod ------------
+		--- white knight
+		if player:HasCollectible(mod.Items.WhiteKnight, true) then
+			if not data.HasWhiteKnight then
+				data.HasWhiteKnight = true
+				player:AddNullCostume(mod.WhiteKnight.Costume)
+				-- remove cache flag
+			end
+			if data.Jumped and sprite:GetAnimation() == "TeleportUp" then
+				player.FireDelay = player.MaxFireDelay-1 -- it can pause some charging attacks (better way to remove tears in TearInit callback but meh)
+
+				player.EntityCollisionClass = EntityCollisionClass.ENTCOLL_PLAYERONLY
+				player.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_NONE
+
+				if player:IsExtraAnimationFinished() then
+					player:PlayExtraAnimation("TeleportDown")
+				end
+			end
+			if data.Jumped and sprite:GetAnimation() == "TeleportDown" then
+				local nearest = 5000
+				local JumpPosition = GetNearestEnemy(player.Position)
+				if player.Position:Distance(JumpPosition) == 0 then
+					for gridIndex = 1, room:GetGridSize() do
+						if room:GetGridEntity(gridIndex) then
+							if room:GetGridEntity(gridIndex):ToDoor() then
+								if room:GetGridEntity(gridIndex):ToDoor():GetVariant() ~= 7 then
+									local newPos = Isaac.GetFreeNearPosition(room:GetGridPosition(gridIndex), 1)
+									if player.Position:Distance(newPos) < nearest then
+										JumpPosition = newPos
+										nearest = player.Position:Distance(newPos)
+									end
+								end
+							end
+						end
+					end
+				end
+				player.Position = JumpPosition
+			end
+			if data.Jumped and sprite:IsFinished("TeleportDown") then
+				data.Jumped = nil
+				--data.JumpPosition = nil
+
+				player.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
+				if player.CanFly then
+					player.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
+				else
+					player.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_GROUND
+				end
+				for _, entity in pairs(Isaac.GetRoomEntities()) do
+					--EntityType.ENTITY_HOST
+					--EntityType.ENTITY_MOBILE_HOST
+					--EntityType.ENTITY_FLOATING_HOST
+					if entity:IsVulnerableEnemy() and entity:IsActiveEnemy() then
+						if entity.Position:Distance(player.Position) > mod.BlackKnight.BlastRadius and entity.Position:Distance(player.Position) <= mod.BlackKnight.BlastRadius*2.5 then
+							entity.Velocity = (entity.Position - player.Position):Resized(mod.BlackKnight.BlastKnockback*(2/3))
+						end
+					elseif entity.Type == EntityType.ENTITY_PICKUP and entity.Position:Distance(player.Position) <= mod.BlackKnight.PickupDistance then
+						entity = entity:ToPickup()
+						if mod.BlackKnight.ChestVariant[entity.Variant] and entity.SubType ~= 0 then
+							if entity.Variant == PickupVariant.PICKUP_BOMBCHEST then
+								entity:TryOpenChest()
+							end
+							entity.Position = player.Position
+							entity.Velocity = Vector.Zero
+						else
+							entity.Position = player.Position
+							entity.Velocity = Vector.Zero
+						end
+					end
+				end
+				BlastDamage(mod.BlackKnight.BlastRadius, mod.BlackKnight.BlastDamage + player.Damage/2, mod.BlackKnight.BlastKnockback, player)
+				local gridEntity = room:GetGridEntityFromPos(player.Position)
+				if gridEntity then
+					if gridEntity.Desc.Type == GridEntityType.GRID_PIT and gridEntity.Desc.State ~= 1 then
+						if room:HasLava() then
+							local splash = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BIG_SPLASH, 0, player.Position, Vector.Zero, player):ToEffect()
+							splash.Color = Color(1.2, 0.8, 0.1, 1, 0, 0, 0)
+							splash.SpriteScale = Vector(0.75, 0.75)
+						elseif room:HasWaterPits() or room:HasWater() then
+							local splash = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BIG_SPLASH, 0, player.Position, Vector.Zero, player):ToEffect()
+							splash.SpriteScale = Vector(0.75, 0.75)
+						end
+					end
+				elseif room:HasWater() then
+					--sfx:Play(SoundEffect.SOUND_WATERSPLASH, 1, 0, false, 1, 0)
+					local splash = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BIG_SPLASH, 0, player.Position, Vector.Zero, player):ToEffect()
+					splash.SpriteScale = Vector(0.75, 0.75)
+				else
+					sfx:Play(SoundEffect.SOUND_STONE_IMPACT, 1, 0, false, 1, 0)
+					--game:SpawnParticles(player.Position, EffectVariant.TOOTH_PARTICLE, 3, 2, _, 0)
+				end
+				game:ShakeScreen(10)
+				player.Velocity = Vector.Zero
+				--player.ControlsEnabled = true
+			end
+			--]]
+		else
+			if data.HasWhiteKnight then
+				player:TryRemoveNullCostume(mod.WhiteKnight.Costume)
+				data.HasWhiteKnight = false
+			end
+		end
+		--- red scissors
+		if player:HasTrinket(mod.Trinkets.RedScissors) then
+			if not mod.RedScissorsMod then
+				mod.RedScissorsMod = true
+			end
+		else
+			if mod.RedScissorsMod then
+				mod.RedScissorsMod = false
+			end
+		end
+
+		---charon's obol block if you used health
+		if data.BlockObol then
+			data.BlockObol = data.BlockObol - 1
+			if data.BlockObol == 0 then
+				data.BlockObol = nil
+			end
+		end
+
+		--- viridian
+		if player:HasCollectible(mod.Items.Viridian) then
+			if not data.HasItemViridian then
+				data.HasItemViridian = true
+				player:AddCacheFlags(CacheFlag.CACHE_FLYING)
+				player:EvaluateItems()
+				player.SpriteOffset = Vector(player.SpriteOffset.X, player.SpriteOffset.Y + mod.Viridian.FlipOffsetY)
+				player:GetSprite().FlipX = true
+				player:GetSprite().FlipY = true
+			end
+			--local mySprite = player:GetSprite()
+			--mySprite.FlipY = true
+			--player:ClearCostumes()
+		else
+			if data.HasItemViridian then
+				data.HasItemViridian = nil
+				player:AddCacheFlags(CacheFlag.CACHE_FLYING)
+				player:EvaluateItems()
+			end
+		end
+		--- brain queue (better holy water mod)
+		local brains = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, mod.NadabBrain.Variant)
+		if #brains > 0 then
+			local nadabBrainAmount = GetItemsCount(player, mod.Items.NadabBrain)
+			local highest --= nil
+			for _, fam in pairs(brains) do
+				local famData = fam:GetData()
+				famData.IsHighest = false
+				if fam.Visible then
+					if nadabBrainAmount == 1 or highest == nil then
 						highest = fam
+						famData.IsHighest = true
+					else
+						if highest.FrameCount < fam.FrameCount then
+							highest:GetData().IsHighest = false
+							famData.IsHighest = true
+							highest = fam
+						end
 					end
 				end
 			end
@@ -3311,11 +3413,12 @@ function mod:onPEffectUpdate(player)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, mod.onPEffectUpdate)
-
+--- PLAYER COLLISION --
 function mod:onPlayerCollision(player, collider)
 	local data = player:GetData()
 	local tempEffects = player:GetEffects()
-	-- long elk
+
+	--- long elk
 	if data.ElkKiller and tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_MARS) and collider:ToNPC() then --collider:IsVulnerableEnemy() and collider:IsActiveEnemy() then  -- player.Velocity ~= Vector.Zero
 		if not collider:IsVulnerableEnemy() then
 			game:ShakeScreen(10)
@@ -3337,6 +3440,7 @@ function mod:onPlayerCollision(player, collider)
 		end
 	end
 
+	--- abihu
 	if player:GetPlayerType() == mod.Characters.Abihu then
 		if collider:ToNPC() then
 			collider:AddBurn(EntityRef(player), 100, player.Damage)
@@ -3345,42 +3449,11 @@ function mod:onPlayerCollision(player, collider)
 
 end
 mod:AddCallback(ModCallbacks.MC_PRE_PLAYER_COLLISION, mod.onPlayerCollision)
----PLAYER UPDATE PEFFECT/TAKE_DAMAGE/COLLISION---
-
----POST UPDATE---
+--- POST UPDATE --
 function mod:onUpdate()
 	local level = game:GetLevel()
 	local room = game:GetRoom()
 
-	if level:GetCurses() & mod.Curses.Envy > 0 then
-		local shopItems = Isaac.FindInRadius(room:GetCenterPos(), 5000, EntityPartition.PICKUP)
-		if #shopItems > 0 then
-			if mod.EnvyCurseIndex == nil then
-				mod.EnvyCurseIndex = modRNG:RandomInt(Random())+1
-			end
-			for _, pickup in pairs(shopItems) do
-				if pickup.Type ~= EntityType.ENTITY_SLOT then
-					pickup = pickup:ToPickup()
-					if pickup:IsShopItem() and pickup.OptionsPickupIndex ~= mod.EnvyCurseIndex then
-						pickup.OptionsPickupIndex = mod.EnvyCurseIndex
-					end
-				end
-			end
-		end
-	end
-	--curse void reroll countdown
-	if mod.VoidCurseReroll then
-		mod.VoidCurseReroll = mod.VoidCurseReroll - 1
-		if mod.VoidCurseReroll <= 0 then
-			for _, enemy in pairs(Isaac.FindInRadius(room:GetCenterPos(), 5000, EntityPartition.ENEMY)) do
-				if enemy:IsVulnerableEnemy() and enemy:IsActiveEnemy() then
-					game:RerollEnemy(enemy)
-					enemy:GetData().VoidCurseNoDevolde = true
-				end
-			end
-			mod.VoidCurseReroll = nil
-		end
-	end
 	--Apocalypse card
 	if mod.Apocalypse.Room then
 		if level:GetCurrentRoomIndex() == mod.Apocalypse.Room then -- meh. bad solution. but anyway. poop created in this room will be red (it will run in loop, until you leave current room. Why? Cause poop doesn't spawn immediately)
@@ -3400,53 +3473,117 @@ function mod:onUpdate()
 		end
 	end
 
+	if level:GetCurses() & mod.Curses.Envy > 0 then
+		local shopItems = Isaac.FindInRadius(room:GetCenterPos(), 5000, EntityPartition.PICKUP)
+		if #shopItems > 0 then
+			if mod.EnvyCurseIndex == nil then
+				mod.EnvyCurseIndex = modRNG:RandomInt(Random())+1
+			end
+			for _, pickup in pairs(shopItems) do
+				if pickup.Type ~= EntityType.ENTITY_SLOT then
+					pickup = pickup:ToPickup()
+					if pickup:IsShopItem() and pickup.OptionsPickupIndex ~= mod.EnvyCurseIndex then
+						pickup.OptionsPickupIndex = mod.EnvyCurseIndex
+					end
+				end
+			end
+		end
+	end
+	--curse void reroll countdown
+	if not room:HasCurseMist() then
+		if mod.VoidCurseReroll then
+			mod.VoidCurseReroll = mod.VoidCurseReroll - 1
+			if mod.VoidCurseReroll <= 0 then
+				for _, enemy in pairs(Isaac.FindInRadius(room:GetCenterPos(), 5000, EntityPartition.ENEMY)) do
+					if enemy:IsVulnerableEnemy() and enemy:IsActiveEnemy() then
+						game:RerollEnemy(enemy)
+						enemy:GetData().VoidCurseNoDevolde = true
+					end
+				end
+				mod.VoidCurseReroll = nil
+			end
+		end
+	end
+
 	--player
 	for playerNum = 0, game:GetNumPlayers()-1 do
 		local player = game:GetPlayer(playerNum):ToPlayer()
 		local data = player:GetData()
 		--local tempEffects = player:GetEffects()
 		--local pType = player:GetPlayerType()
-
-		if player:HasTrinket(mod.Trinkets.TeaFungus) and not room:HasWater() and not room:IsClear() and room:GetFrameCount() <= 2 then
-			if room:GetFrameCount() == 1 then
-				local enemies = Isaac.FindInRadius(player.Position, 5000, EntityPartition.ENEMY)
-				if #enemies > 0 then -- prevent turning enemies into poop
-					for _, enemy in pairs(enemies) do
-						if enemy:IsVulnerableEnemy() and enemy:IsActiveEnemy() and not enemy:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
-							enemy:AddEntityFlags(EntityFlag.FLAG_FRIENDLY)
-							enemy:GetData().TeaFungused = true
+		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+			if player:HasTrinket(mod.Trinkets.TeaFungus) and not room:HasWater() and not room:IsClear() and room:GetFrameCount() <= 2  then
+				if room:GetFrameCount() == 1 then
+					local enemies = Isaac.FindInRadius(player.Position, 5000, EntityPartition.ENEMY)
+					if #enemies > 0 then -- prevent turning enemies into poop
+						for _, enemy in pairs(enemies) do
+							if enemy:IsVulnerableEnemy() and enemy:IsActiveEnemy() and not enemy:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
+								enemy:AddEntityFlags(EntityFlag.FLAG_FRIENDLY)
+								enemy:GetData().TeaFungused = true
+							end
 						end
 					end
-				end
-			elseif room:GetFrameCount() == 2 then
-				player:UseActiveItem(CollectibleType.COLLECTIBLE_FLUSH, myUseFlags)
-				if sfx:IsPlaying(SoundEffect.SOUND_FLUSH) then
-					sfx:Stop(SoundEffect.SOUND_FLUSH)
-				end
-				--elseif room:GetFrameCount() == 3 then
-				local enemies = Isaac.FindInRadius(player.Position, 5000, EntityPartition.ENEMY)
-				if #enemies > 0 then
-					for _, enemy in pairs(enemies) do
-						if enemy:IsVulnerableEnemy() and enemy:IsActiveEnemy() and enemy:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) and enemy:GetData().TeaFungused then
-							enemy:ClearEntityFlags(EntityFlag.FLAG_FRIENDLY)
-							enemy:GetData().TeaFungused = nil
+				elseif room:GetFrameCount() == 2 then
+					player:UseActiveItem(CollectibleType.COLLECTIBLE_FLUSH, myUseFlags)
+					if sfx:IsPlaying(SoundEffect.SOUND_FLUSH) then
+						sfx:Stop(SoundEffect.SOUND_FLUSH)
+					end
+					--elseif room:GetFrameCount() == 3 then
+					local enemies = Isaac.FindInRadius(player.Position, 5000, EntityPartition.ENEMY)
+					if #enemies > 0 then
+						for _, enemy in pairs(enemies) do
+							if enemy:IsVulnerableEnemy() and enemy:IsActiveEnemy() and enemy:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) and enemy:GetData().TeaFungused then
+								enemy:ClearEntityFlags(EntityFlag.FLAG_FRIENDLY)
+								enemy:GetData().TeaFungused = nil
+							end
 						end
 					end
 				end
 			end
-		end
 
-		-- abyss cartridge
-		if player:HasTrinket(mod.Trinkets.AbyssCart) and player:IsDead() and player:GetExtraLives() == 0 then --and not player:WillPlayerRevive() then
-			local allItems = Isaac.GetItemConfig():GetCollectibles().Size - 1 -- get all items in the game + mod items
-			for id = 1, allItems do
-				if player:HasCollectible(id) and CheckItemTags(id, ItemConfig.TAG_BABY) and not CheckItemTags(id, ItemConfig.TAG_QUEST) then
-					player:RemoveCollectible(id)
-					player:AddCollectible(CollectibleType.COLLECTIBLE_1UP)
-					--tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_1UP)
-					RemoveThrowTrinket(player, mod.Trinkets.AbyssCart, mod.TrinketDespawnTimer)
-					break
+			-- abyss cartridge
+			if player:HasTrinket(mod.Trinkets.AbyssCart) and player:IsDead() and player:GetExtraLives() == 0 then --and not player:WillPlayerRevive() then
+				local allItems = Isaac.GetItemConfig():GetCollectibles().Size - 1 -- get all items in the game + mod items
+				for id = 1, allItems do
+					if player:HasCollectible(id) and CheckItemTags(id, ItemConfig.TAG_BABY) and not CheckItemTags(id, ItemConfig.TAG_QUEST) then
+						player:RemoveCollectible(id)
+						player:AddCollectible(CollectibleType.COLLECTIBLE_1UP)
+						--tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_1UP)
+						RemoveThrowTrinket(player, mod.Trinkets.AbyssCart, mod.TrinketDespawnTimer)
+						break
+					end
 				end
+			end
+
+			-- player dead
+			if player:IsDead() then --and not player:WillPlayerRevive() then
+				--witch paper
+				if player:HasTrinket(mod.Trinkets.WitchPaper) then
+					data.WitchPaper = 2
+					--Isaac.ExecuteCommand("rewind")
+					player:UseActiveItem(CollectibleType.COLLECTIBLE_GLOWING_HOUR_GLASS, myUseFlags)
+				end
+			end
+
+			-- limb
+			if data.LimbActive then --- make it so this effect saved until next floor and if you don't get any health kill you
+				game:Darken(1, 1)
+			end
+			--]]
+
+			if player:IsDead() then
+				if player:GetExtraLives() == 0 and player:HasCollectible(mod.Items.Limb) and not data.LimbActive then -- and player:GetBrokenHearts() < 12 then -- and not player:WillPlayerRevive()
+					player:Revive()
+					player:SetMinDamageCooldown(mod.Limb.InvFrames)
+					data.LimbActive = true
+					player:UseCard(Card.CARD_SOUL_LOST, myUseFlags)
+					game:Darken(1, 3)
+				end
+				--
+				if player:HasCollectible(mod.Items.CharonObol) then
+					player:RemoveCollectible(mod.Items.CharonObol)
+				end
+				--
 			end
 		end
 
@@ -3461,41 +3598,11 @@ function mod:onUpdate()
 			player:RemoveCollectible(mod.Items.FloppyDiskFull)
 			player:AddCollectible(mod.Items.FloppyDisk)
 		end
-		-- player dead
-		if player:IsDead() then --and not player:WillPlayerRevive() then
-			--witch paper
-			if player:HasTrinket(mod.Trinkets.WitchPaper) then
-				data.WitchPaper = 2
-				--Isaac.ExecuteCommand("rewind")
-				player:UseActiveItem(CollectibleType.COLLECTIBLE_GLOWING_HOUR_GLASS, myUseFlags)
-			end
-		end
-		-- limb
-		if data.LimbActive then --- make it so this effect saved until next floor and if you don't get any health kill you
-		game:Darken(1, 1)
-		end
-		--]]
-		if player:IsDead() then
-			if player:GetExtraLives() == 0 and player:HasCollectible(mod.Items.Limb) and not data.LimbActive then -- and player:GetBrokenHearts() < 12 then -- and not player:WillPlayerRevive()
-				player:Revive()
-				player:SetMinDamageCooldown(mod.Limb.InvFrames)
-				data.LimbActive = true
-				player:UseCard(Card.CARD_SOUL_LOST, myUseFlags)
-				game:Darken(1, 3)
-			end
-			--[[
-			if player:HasCollectible(mod.Items.CharonObol) then
-				player:RemoveCollectible(mod.Items.CharonObol)
-			end
-			--]]
-		end
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_UPDATE, mod.onUpdate)
----POST UPDATE---
 
----ROOM/LEVEL/CLEAN---
--- NEW LEVEL Callbacks
+--- NEW LEVEL --
 function mod:onNewLevel()
 	local level = game:GetLevel()
 	local room = game:GetRoom()
@@ -3596,7 +3703,7 @@ function mod:onNewLevel()
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, mod.onNewLevel)
---new room
+--- NEW ROOM --
 function mod:onNewRoom()
 	local room = game:GetRoom()
  	local level = game:GetLevel()
@@ -3604,56 +3711,173 @@ function mod:onNewRoom()
 	mod.PreRoomState = room:IsClear()
 	--familiars
 	--red bag
-	for _, fam in pairs(Isaac.FindByType(EntityType.ENTITY_FAMILIAR, mod.RedBag.Variant)) do
-		if fam:GetData().GenPickup then fam:GetData().GenPickup = false end
-	end
-	--curses
-	--Void curse
-	if level:GetCurses() & mod.Curses.Void > 0 and not room:IsClear() then
-		if modRNG:RandomFloat() < mod.VoidThreshold then
-			mod.VoidCurseReroll = 0
-			game:ShowHallucination(0, BackdropType.NUM_BACKDROPS)
-
-			game:GetPlayer(0):UseActiveItem(CollectibleType.COLLECTIBLE_D12, myUseFlags)
+	if not room:HasCurseMist() then
+		for _, fam in pairs(Isaac.FindByType(EntityType.ENTITY_FAMILIAR, mod.RedBag.Variant)) do
+			if fam:GetData().GenPickup then fam:GetData().GenPickup = false end
 		end
-	end
-
-	--[[ curse Emperor
-	if level:GetCurses() & mod.Curses.Emperor > 0 and room:GetType() == RoomType.ROOM_BOSS then
-		--SeedEffect.SEED_NO_BOSS_ROOM_EXITS
-
-		local door = room:GetDoor(level.EnterDoor) --:ToDoor()
-		if door then
-			room:RemoveDoor(door.Slot)
+		--curses
+		--Void curse
+		if level:GetCurses() & mod.Curses.Void > 0 and not room:IsClear() then
+			if modRNG:RandomFloat() < mod.VoidThreshold then
+				mod.VoidCurseReroll = 0
+				game:ShowHallucination(0, BackdropType.NUM_BACKDROPS)
+				game:GetPlayer(0):UseActiveItem(CollectibleType.COLLECTIBLE_D12, myUseFlags)
+			end
 		end
+		--[ curse Emperor
+		if level:GetCurses() & mod.Curses.Emperor > 0 and not level:IsAscent() and room:GetType() == RoomType.ROOM_BOSS and not level:GetStage(LevelStage.STAGE3_2) and not level:GetStage(LevelStage.STAGE7) and not level:GetStage(LevelStage.STAGE7_GREED) then
+			--SeedEffect.SEED_NO_BOSS_ROOM_EXITS
+			local door = room:GetDoor(level.EnterDoor) --:ToDoor()
+			if door then
+				room:RemoveDoor(door:ToDoor().Slot)
+			end
+		end
+		--]]
 	end
-	--]]
-
 	-- Apocalypse card
 	if mod.Apocalypse.Room then
 		mod.Apocalypse.Room = nil
 		mod.Apocalypse.RNG = nil
 	end
 
-	--print(level:GetCurrentRoomIndex())
-	if mod.OutOfMap and level:GetCurrentRoomIndex() >= 0 then
-		mod.OutOfMap = nil
-	end
-
 	--player
 	for playerNum = 0, game:GetNumPlayers()-1 do
 		local player = game:GetPlayer(playerNum)
 		local data = player:GetData()
+		local tempEffects = player:GetEffects()
+		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+			--mongo cells
+			if data.MongoSteven then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_SPOON_BENDER, false) end
+			if data.MongoHarlequin then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_THE_WIZ, false) end
+			if data.MongoFreezer then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_URANUS, false) end
+			if data.MongoGhost then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_OUIJA_BOARD, false) end
+			if data.MongoAbel then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_MY_REFLECTION, false) end
+			if data.MongoRainbow then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_FRUIT_CAKE, false) end
+			if data.MongoBrimstone then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_BRIMSTONE, false) end
+			if data.MongoBallBandage then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_MOMS_EYESHADOW, false) end
+			if data.MongoHaunt then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_MOMS_PERFUME, false) end
+			if data.MongoSissy then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_MOMS_WIG, false) end
+			--lililith
+			LililithReset() -- update items
+			-- limb
+			if data.LimbActive then
+				tempEffects:AddNullEffect(NullItemID.ID_LOST_CURSE, true, 1)
+			end
+			--- queen of spades
+			if player:HasTrinket(mod.Trinkets.QueenSpades) then
+				SesameOpen(room, level, player)
+			end
+			--red button
+			if player:HasCollectible(mod.Items.RedButton) and not mod.PreRoomState then
+				NewRoomRedButton(player, room) -- spawn new button
+			end
+			--red pill
+			if data.RedPillDamageUp and not room:IsClear() then
+				--[[if room:IsFirstVisit() and not room:IsClear() then
+					player:UseActiveItem(CollectibleType.COLLECTIBLE_WAVY_CAP, myUseFlags)
+					if sfx:IsPlaying(SoundEffect.SOUND_VAMP_GULP) then
+						sfx:Stop(SoundEffect.SOUND_VAMP_GULP)
+					end
+				end
+				--]]
+				--ID_WAVY_CAP_1
+				--ID_WAVY_CAP_2
+				--ID_WAVY_CAP_3
+				tempEffects:AddNullEffect(NullItemID.ID_WAVY_CAP_1, false, 1)
+				game:ShowHallucination(0, BackdropType.DICE)
+				if sfx:IsPlaying(SoundEffect.SOUND_DEATH_CARD) then
+					sfx:Stop(SoundEffect.SOUND_DEATH_CARD)
+				end
+			end
+			--BlackKnight
+			if player:HasCollectible(mod.Items.BlackKnight, true) then
+				if data.KnightTarget then
+					if data.KnightTarget:Exists() then data.KnightTarget:Remove() end
+					data.KnightTarget = nil
+				end
+				player.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
+				if player.CanFly then
+					player.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
+				else
+					player.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_GROUND
+				end
+			end
+			--duckling
+			if player:HasCollectible(mod.Items.RubberDuck) then
+				if room:IsFirstVisit() then
+					EvaluateDuckLuck(player, data.DuckCurrentLuck + data.HasItemRubberDuck) -- add number of duck
+				elseif not room:IsFirstVisit() and data.DuckCurrentLuck > 0 then -- luck down while you have temp.luck
+					EvaluateDuckLuck(player, data.DuckCurrentLuck - 1)
+				end
+			end
+			--ivory
+			if data.IvoryOilBatteryEffect then -- or Render it
+				if data.IvoryOilBatteryEffect:Exists() then
+					data.IvoryOilBatteryEffect.Position = Vector(player.Position.X, player.Position.Y-70)
+				else
+					data.IvoryOilBatteryEffect = nil
+				end
+			end
+			if player:HasCollectible(mod.Items.IvoryOil) and room:IsFirstVisit() and not room:IsClear() then
+				--local chargingActive = true/false
+				local chargingEffect = false -- leave it as nil
+				for slot = 0, 2 do
+					if player:GetActiveItem(slot) ~= 0 then --and chargingActive then
+						local charge = 1
+						if room:GetRoomShape() > 7 then charge = 2 end
+						local activeItem = player:GetActiveItem(slot) -- active item on given slot
+						local activeCharge = player:GetActiveCharge(slot) -- item charge
+						local batteryCharge = player:GetBatteryCharge(slot) -- extra charge (battery item)
+						local activeMaxCharge = Isaac.GetItemConfig():GetCollectible(activeItem).MaxCharges -- max charge of item
+						local activeChargeType = Isaac.GetItemConfig():GetCollectible(activeItem).ChargeType -- get charge type (normal, timed, special)
+						--print(activeChargeType)
+						if activeChargeType == 0 then -- if normal
+							if player:NeedsCharge(slot) then
+								if activeCharge >= activeMaxCharge and batteryCharge < activeMaxCharge then
+									batteryCharge = batteryCharge + charge
+									player:SetActiveCharge(batteryCharge+activeCharge, slot)
+								else
+									activeCharge = activeCharge + charge
+									player:SetActiveCharge(activeCharge, slot)
+								end
+								chargingEffect = slot
+								break
+							elseif activeCharge >= activeMaxCharge and batteryCharge < activeMaxCharge then
+								batteryCharge = batteryCharge + charge
+								player:SetActiveCharge(batteryCharge+activeCharge, slot)
+								chargingEffect = slot
+								break
+							end
+						elseif activeChargeType == 1 then -- if timed
+							if player:NeedsCharge(slot) then
+								if activeCharge >= activeMaxCharge and batteryCharge < activeMaxCharge then
+									player:SetActiveCharge(2*activeMaxCharge, slot)
+								else
+									player:SetActiveCharge(activeMaxCharge, slot)
+								end
+								chargingEffect = slot
+								break
+							elseif activeCharge >= activeMaxCharge and batteryCharge < activeMaxCharge then
+								player:SetActiveCharge(2*activeMaxCharge, slot)
+								chargingEffect = slot
+								break
+							end
+						end
 
-		--lililith
-		LililithReset() -- update items
-
+					end
+				end
+				if chargingEffect then
+					data.IvoryOilBatteryEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BATTERY, 0, Vector(player.Position.X, player.Position.Y-70), Vector.Zero, nil)
+					sfx:Play(SoundEffect.SOUND_BATTERYCHARGE, 1, 0, false, 1, 0)
+					--game:GetHUD():FlashChargeBar(player, chargingEffect)
+				end
+			end
+		end
 		--ancestral crypt
 		if data.CryptUsed then
 			player.Position = Vector(120, 165)
 			data.CryptUsed = nil
 		end
-
 		-- maze memory
 		if data.MazeMemoryUsed then
 			--player.Position = room:GetCenterPos()
@@ -3673,7 +3897,6 @@ function mod:onNewRoom()
 				end
 			end
 		end
-
 		-- zero milestone
 		if level:GetCurrentRoomIndex() == GridRooms.ROOM_GENESIS_IDX and mod.ZeroStoneUsed then
 			mod.ZeroStoneUsed = false
@@ -3683,19 +3906,11 @@ function mod:onNewRoom()
 				level:SetStage(LevelStage.STAGE7, 0)
 			end
 		end
-
 		-- decay
 		if data.DecayLevel then
 			TrinketRemove(player, TrinketType.TRINKET_APPLE_OF_SODOM)
 			data.DecayLevel = nil
 		end
-
-		-- limb
-		if data.LimbActive then
-			local tempEffects = player:GetEffects()
-			tempEffects:AddNullEffect(NullItemID.ID_LOST_CURSE, true, 1)
-		end
-
 		-- Corruption
 		if data.CorruptionIsActive then
 			data.CorruptionIsActive = nil
@@ -3705,25 +3920,18 @@ function mod:onNewRoom()
 				player:RemoveCollectible(activeItem)
 			end
 		end
-
 		-- soul nadab and abihu
 		if data.UsedSoulNadabAbihu then
 			data.UsedSoulNadabAbihu = nil
 		end
-
+		-- deus ex card
 		if data.DeuxExLuck then
 			data.DeuxExLuck = nil
 			player:AddCacheFlags(CacheFlag.CACHE_LUCK) -- remove luck effect
 			player:EvaluateItems()
 		end
-
-		if player:HasTrinket(mod.Trinkets.QueenSpades) then
-			SesameOpen(room, level, player)
-		end
-
 		-- long elk
 		if data.ElkKiller then data.ElkKiller = false end
-
 		-- bleeding grimoire
 		if data.UsedBG then
 			--player.FireDelay = player.MaxFireDelay-1
@@ -3732,124 +3940,17 @@ function mod:onNewRoom()
 				data.UsedBG = false
 			end
 		end
-		--red button
-		if player:HasCollectible(mod.Items.RedButton) and not mod.PreRoomState then
-			NewRoomRedButton(player, room) -- spawn new button
-		end
-		--red pill
-		if data.RedPillDamageUp and not room:IsClear() then
-			--[[if room:IsFirstVisit() and not room:IsClear() then
-				player:UseActiveItem(CollectibleType.COLLECTIBLE_WAVY_CAP, myUseFlags)
-				if sfx:IsPlaying(SoundEffect.SOUND_VAMP_GULP) then
-					sfx:Stop(SoundEffect.SOUND_VAMP_GULP)
-				end
-			end
-			--]]
-			local tempEffects = player:GetEffects()
-			--ID_WAVY_CAP_1
-			--ID_WAVY_CAP_2
-			--ID_WAVY_CAP_3
-			tempEffects:AddNullEffect(NullItemID.ID_WAVY_CAP_1, false, 1)
-			game:ShowHallucination(0, BackdropType.DICE)
-			if sfx:IsPlaying(SoundEffect.SOUND_DEATH_CARD) then
-				sfx:Stop(SoundEffect.SOUND_DEATH_CARD)
-			end
-		end
-
-		--BlackKnight
-		if player:HasCollectible(mod.Items.BlackKnight, true) then
-			if data.KnightTarget then
-				if data.KnightTarget:Exists() then data.KnightTarget:Remove() end
-				data.KnightTarget = nil
-			end
-			player.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
-			if player.CanFly then
-				player.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
-			else
-				player.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_GROUND
-			end
-		end
-		--duckling
-		if player:HasCollectible(mod.Items.RubberDuck) then
-			if room:IsFirstVisit() then
-				EvaluateDuckLuck(player, data.DuckCurrentLuck + data.HasItemRubberDuck) -- add number of duck
-			elseif not room:IsFirstVisit() and data.DuckCurrentLuck > 0 then -- luck down while you have temp.luck
-				EvaluateDuckLuck(player, data.DuckCurrentLuck - 1)
-			end
-		end
-		--ivory
-		if data.IvoryOilBatteryEffect then -- or Render it
-			if data.IvoryOilBatteryEffect:Exists() then
-				data.IvoryOilBatteryEffect.Position = Vector(player.Position.X, player.Position.Y-70)
-			else
-			 	data.IvoryOilBatteryEffect = nil
-			end
-		end
-		if player:HasCollectible(mod.Items.IvoryOil) and room:IsFirstVisit() and not room:IsClear() then
-			--local chargingActive = true/false
-			local chargingEffect = false -- leave it as nil
-			for slot = 0, 2 do
-				if player:GetActiveItem(slot) ~= 0 then --and chargingActive then
-					local charge = 1
-					if room:GetRoomShape() > 7 then charge = 2 end
-					local activeItem = player:GetActiveItem(slot) -- active item on given slot
-					local activeCharge = player:GetActiveCharge(slot) -- item charge
-					local batteryCharge = player:GetBatteryCharge(slot) -- extra charge (battery item)
-					local activeMaxCharge = Isaac.GetItemConfig():GetCollectible(activeItem).MaxCharges -- max charge of item
-					local activeChargeType = Isaac.GetItemConfig():GetCollectible(activeItem).ChargeType -- get charge type (normal, timed, special)
-					--print(activeChargeType)
-					if activeChargeType == 0 then -- if normal
-						if player:NeedsCharge(slot) then
-							if activeCharge >= activeMaxCharge and batteryCharge < activeMaxCharge then
-								batteryCharge = batteryCharge + charge
-								player:SetActiveCharge(batteryCharge+activeCharge, slot)
-							else
-								activeCharge = activeCharge + charge
-								player:SetActiveCharge(activeCharge, slot)
-							end
-							chargingEffect = slot
-							break
-						elseif activeCharge >= activeMaxCharge and batteryCharge < activeMaxCharge then
-							batteryCharge = batteryCharge + charge
-							player:SetActiveCharge(batteryCharge+activeCharge, slot)
-							chargingEffect = slot
-							break
-						end
-					elseif activeChargeType == 1 then -- if timed
-						if player:NeedsCharge(slot) then
-							if activeCharge >= activeMaxCharge and batteryCharge < activeMaxCharge then
-								player:SetActiveCharge(2*activeMaxCharge, slot)
-							else
-								player:SetActiveCharge(activeMaxCharge, slot)
-							end
-							chargingEffect = slot
-							break
-						elseif activeCharge >= activeMaxCharge and batteryCharge < activeMaxCharge then
-							player:SetActiveCharge(2*activeMaxCharge, slot)
-							chargingEffect = slot
-							break
-						end
-					end
-
-				end
-			end
-			if chargingEffect then
-				data.IvoryOilBatteryEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BATTERY, 0, Vector(player.Position.X, player.Position.Y-70), Vector.Zero, nil)
-				sfx:Play(SoundEffect.SOUND_BATTERYCHARGE, 1, 0, false, 1, 0)
-				--game:GetHUD():FlashChargeBar(player, chargingEffect)
-			end
-		end
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, mod.onNewRoom)
--- pre spawn clear award
+--- CLEAN AWARD --
 function mod:onRoomClear() --rng, spawnPosition
 	local room = game:GetRoom()
 	local level = game:GetLevel()
 	--red button
 	RemoveRedButton(room)
 	-- jamming curse
-	if level:GetCurses() & mod.Curses.Jamming > 0 then
+	if level:GetCurses() & mod.Curses.Jamming > 0 and not room:HasCurseMist() then
 		if modRNG:RandomFloat() < mod.JammingThreshold and not mod.NoJamming then
 			game:ShowHallucination(5, 0)
 			room:RespawnEnemies()
@@ -3861,18 +3962,18 @@ function mod:onRoomClear() --rng, spawnPosition
 		local player = game:GetPlayer(playerNum)
 		--local data = player:GetData()
 		--queen of spades
-		if player:HasTrinket(mod.Trinkets.QueenSpades) then
-			SesameOpen(room, level, player)
+		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+			if player:HasTrinket(mod.Trinkets.QueenSpades) then
+				SesameOpen(room, level, player)
+			end
 		end
 	end
 end
 mod:AddCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, mod.onRoomClear)
----ROOM/LEVEL/CLEAN---
-
----CURSE_EVAL---
+--- CURSE EVAL --
 function mod:onCurseEval(curseFlags)
 	local newCurse = LevelCurse.CURSE_NONE
-	local level = game:GetLevel()
+	--local level = game:GetLevel()
 	--[
 	if curseFlags == LevelCurse.CURSE_NONE then
 		if modRNG:RandomFloat() < mod.CurseChance then
@@ -3886,9 +3987,11 @@ function mod:onCurseEval(curseFlags)
 		end
 	end
 	--]
+	--[[
 	if level:GetStage() == LevelStage.STAGE7 and mod.ChaosVoid then
 		curseFlags = curseFlags | mod.Curses.Void
 	end
+	--]]
 
 	local player = game:GetPlayer(0)
 	if player:GetPlayerType() == mod.Characters.Oblivious and not player:HasCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE) and not player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
@@ -3897,20 +4000,16 @@ function mod:onCurseEval(curseFlags)
 
 	return curseFlags | newCurse
 end
-mod:AddCallback(ModCallbacks.MC_POST_CURSE_EVAL, mod.onCurseEval)
----CURSE_EVAL---
 
----NPC 'enemies' INIT/UPDATE/COLLISION/TAKE_DAMAGE---
----ENTITY DEVOLVE---
+mod:AddCallback(ModCallbacks.MC_POST_CURSE_EVAL, mod.onCurseEval)
+--- NPC DEVOLVE --
 function mod:onDevolve(entity)
 	if entity:GetData().VoidCurseNoDevolde then
 		return true
 	end
 end
 mod:AddCallback(ModCallbacks.MC_PRE_ENTITY_DEVOLVE, mod.onDevolve)
----ENTITY DEVOLVE---
-
---update
+--- NPC UPDATE --
 function mod:onUpdateNPC(entityNPC)
 	entityNPC = entityNPC:ToNPC()
 	local eData = entityNPC:GetData()
@@ -3951,11 +4050,10 @@ function mod:onUpdateNPC(entityNPC)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_PRE_NPC_UPDATE, mod.onUpdateNPC)
--- take damage
-
--- NPC Callbacks
+--- NPC INIT --
 function mod:onEnemyInit(entity)
 	local level = game:GetLevel()
+	local room = game:GetRoom()
 	entity = entity:ToNPC()
 	-- oblivion card
 	if #mod.OblivionCard.ErasedEntities ~= 0 then
@@ -3977,61 +4075,67 @@ function mod:onEnemyInit(entity)
 			end
 		end
 	end
-	-- curse of strength
-	if level:GetCurses() & mod.Curses.Strength > 0 then
-		if entity:IsActiveEnemy() and entity:IsVulnerableEnemy() and not entity:IsBoss() and not entity:IsChampion() and modRNG:RandomFloat() > mod.StrengthThreshold then
-			entity:Morph(entity.Type, entity.Variant, entity.SubType, modRNG:RandomInt(26))
+	if not room:HasCurseMist() then
+		-- curse of strength
+		if level:GetCurses() & mod.Curses.Strength > 0  then
+			if entity:IsActiveEnemy() and entity:IsVulnerableEnemy() and not entity:IsBoss() and not entity:IsChampion() and modRNG:RandomFloat() > mod.StrengthThreshold then
+				entity:Morph(entity.Type, entity.Variant, entity.SubType, modRNG:RandomInt(26))
+			end
 		end
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_NPC_INIT, mod.onEnemyInit)
+--- NPC DEATH --
 function mod:onNPCDeath(enemy)
 	--local eData = enemy:GetData()
 	if enemy:IsActiveEnemy(true) then
 	--if not enemy:IsVulnerableEnemy() then
 		for playerNum = 0, game:GetNumPlayers()-1 do
 			local player = game:GetPlayer(playerNum)
-			if player:HasCollectible(mod.Items.DMS) then
-				local rng = player:GetCollectibleRNG(mod.Items.DMS)
-				if rng:RandomFloat() < mod.DMS.Chance then
-					local purgesoul = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PURGATORY, 1, enemy.Position, Vector.Zero, player):ToEffect() -- subtype = 0 is rift, 1 is soul
-					purgesoul:GetSprite():Play("Charge", true) -- set animation (skip appearing from rift)
-					--purgesoul.Color = Color(0.1,0.1,0.1,1)
+
+			if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+				if player:HasCollectible(mod.Items.DMS) then
+					local rng = player:GetCollectibleRNG(mod.Items.DMS)
+					if rng:RandomFloat() < mod.DMS.Chance then
+						local purgesoul = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PURGATORY, 1, enemy.Position, Vector.Zero, player):ToEffect() -- subtype = 0 is rift, 1 is soul
+						purgesoul:GetSprite():Play("Charge", true) -- set animation (skip appearing from rift)
+						--purgesoul.Color = Color(0.1,0.1,0.1,1)
+					end
 				end
-			end
-			
-			if player:HasTrinket(mod.Trinkets.MilkTeeth) then
-				local rng = player:GetTrinketRNG(mod.Trinkets.MilkTeeth)
-				local coinChance = mod.MilkTeeth.CoinChance
-				local numTrinket = player:GetTrinketMultiplier(mod.Trinkets.MilkTeeth)
-				--if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_BOX) then numTrinket = numTrinket + 1 end
-				coinChance = coinChance * numTrinket
-				if rng:RandomFloat() < coinChance then
-					local randVector = RandomVector()*5
-					local coin = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 1, enemy.Position, randVector, nil)
-					coin:GetData().MilkTeethDespawn = mod.MilkTeeth.CoinDespawnTimer --= 35
+
+				if player:HasTrinket(mod.Trinkets.MilkTeeth) then
+					local rng = player:GetTrinketRNG(mod.Trinkets.MilkTeeth)
+					local coinChance = mod.MilkTeeth.CoinChance
+					local numTrinket = player:GetTrinketMultiplier(mod.Trinkets.MilkTeeth)
+					--if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_BOX) then numTrinket = numTrinket + 1 end
+					coinChance = coinChance * numTrinket
+					if rng:RandomFloat() < coinChance then
+						local randVector = RandomVector()*5
+						local coin = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 1, enemy.Position, randVector, nil)
+						coin:GetData().MilkTeethDespawn = mod.MilkTeeth.CoinDespawnTimer --= 35
+					end
 				end
 			end
 		end
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, mod.onNPCDeath)
----NPC 'enemies' INIT/UPDATE/COLLISION/TAKE_DAMAGE---
-
----LASERS
+--- NPC TAKE DMG FROM LASER --
 function mod:onLaserDamage(entity, _, flags, source, _)
 	if flags & DamageFlag.DAMAGE_LASER == DamageFlag.DAMAGE_LASER and entity:IsVulnerableEnemy() and entity:IsActiveEnemy() and source.Entity and source.Entity:ToPlayer() then
 		local player = source.Entity:ToPlayer()
 		local data = player:GetData()
-		if player:HasCollectible(mod.Items.MeltedCandle) and not entity:GetData().Waxed then
-			local rng = player:GetCollectibleRNG(mod.Items.MeltedCandle)
-			if rng:RandomFloat() + player.Luck/100 >= mod.MeltedCandle.TearChance then
-				entity:AddFreeze(EntityRef(player), mod.MeltedCandle.FrameCount)
-				if entity:HasEntityFlags(EntityFlag.FLAG_FREEZE) then
-					--entity:AddBurn(EntityRef(player), 1, player.Damage) -- the issue is Freeze stops framecount of entity, so it won't call NPC_UPDATE.
-					entity:AddEntityFlags(EntityFlag.FLAG_BURN)          -- the burn timer doesn't update, so just add burn until npc have freeze
-					entity:GetData().Waxed = mod.MeltedCandle.FrameCount
-					entity:SetColor(mod.MeltedCandle.TearColor, mod.MeltedCandle.FrameCount, 100, false, false)
+		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+			if player:HasCollectible(mod.Items.MeltedCandle) and not entity:GetData().Waxed then
+				local rng = player:GetCollectibleRNG(mod.Items.MeltedCandle)
+				if rng:RandomFloat() + player.Luck/100 >= mod.MeltedCandle.TearChance then
+					entity:AddFreeze(EntityRef(player), mod.MeltedCandle.FrameCount)
+					if entity:HasEntityFlags(EntityFlag.FLAG_FREEZE) then
+						--entity:AddBurn(EntityRef(player), 1, player.Damage) -- the issue is Freeze stops framecount of entity, so it won't call NPC_UPDATE.
+						entity:AddEntityFlags(EntityFlag.FLAG_BURN)          -- the burn timer doesn't update, so just add burn until npc have freeze
+						entity:GetData().Waxed = mod.MeltedCandle.FrameCount
+						entity:SetColor(mod.MeltedCandle.TearColor, mod.MeltedCandle.FrameCount, 100, false, false)
+					end
 				end
 			end
 		end
@@ -4042,9 +4146,7 @@ function mod:onLaserDamage(entity, _, flags, source, _)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, mod.onLaserDamage)
----LASERS
-
----KNIFE
+--- KNIFE COLLISION --
 function mod:onKnifeCollision(knife, collider) -- low
 	if knife.SpawnerEntity then
 		if knife.SpawnerEntity:ToPlayer() and collider:IsVulnerableEnemy() then
@@ -4052,15 +4154,17 @@ function mod:onKnifeCollision(knife, collider) -- low
 			local data = player:GetData()
 			local entity = collider:ToNPC()
 			--local eData = entity:GetData()
-			if player:HasCollectible(mod.Items.MeltedCandle) and not entity:GetData().Waxed then
-				local rng = player:GetCollectibleRNG(mod.Items.MeltedCandle)
-				if rng:RandomFloat() + player.Luck/100 >= mod.MeltedCandle.TearChance then
-					entity:AddFreeze(EntityRef(player), mod.MeltedCandle.FrameCount)
-					if entity:HasEntityFlags(EntityFlag.FLAG_FREEZE) then
-						--entity:AddBurn(EntityRef(player), 1, player.Damage) -- the issue is Freeze stops framecount of entity, so it won't call NPC_UPDATE.
-						entity:AddEntityFlags(EntityFlag.FLAG_BURN)          -- the burn timer doesn't update
-						entity:GetData().Waxed = mod.MeltedCandle.FrameCount
-						entity:SetColor(mod.MeltedCandle.TearColor, mod.MeltedCandle.FrameCount, 100, false, false)
+			if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+				if player:HasCollectible(mod.Items.MeltedCandle) and not entity:GetData().Waxed then
+					local rng = player:GetCollectibleRNG(mod.Items.MeltedCandle)
+					if rng:RandomFloat() + player.Luck/100 >= mod.MeltedCandle.TearChance then
+						entity:AddFreeze(EntityRef(player), mod.MeltedCandle.FrameCount)
+						if entity:HasEntityFlags(EntityFlag.FLAG_FREEZE) then
+							--entity:AddBurn(EntityRef(player), 1, player.Damage) -- the issue is Freeze stops framecount of entity, so it won't call NPC_UPDATE.
+							entity:AddEntityFlags(EntityFlag.FLAG_BURN)          -- the burn timer doesn't update
+							entity:GetData().Waxed = mod.MeltedCandle.FrameCount
+							entity:SetColor(mod.MeltedCandle.TearColor, mod.MeltedCandle.FrameCount, 100, false, false)
+						end
 					end
 				end
 			end
@@ -4073,11 +4177,7 @@ function mod:onKnifeCollision(knife, collider) -- low
 	end
 end
 mod:AddCallback(ModCallbacks.MC_PRE_KNIFE_COLLISION, mod.onKnifeCollision) --KnifeSubType
----KNIFE
-
----TEARS / PROJECTILES INIT/UPDATE/COLLISION---
---tears
---[
+--- TEARS UPDATE --
 function mod:onTearUpdate(tear)
 	if not tear.SpawnerEntity then return end
 	if not tear.SpawnerEntity:ToPlayer() then return end
@@ -4141,7 +4241,6 @@ function mod:onTearUpdate(tear)
 			tear.Position = Vector(newX, newY)
 		end
 		--]]
-
 		--[
 		local prisms = Isaac.FindByType(3, 123)
 		if #prisms > 0 then
@@ -4155,7 +4254,7 @@ function mod:onTearUpdate(tear)
 		end
 		--]
 
-		if player:HasCollectible(CollectibleType.COLLECTIBLE_TECHNOLOGY) or not player:HasCollectible(CollectibleType.COLLECTIBLE_LUDOVICO_TECHNIQUE) or not data.BlindUnbidden then
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_TECHNOLOGY) or not player:HasCollectible(CollectibleType.COLLECTIBLE_LUDOVICO_TECHNIQUE) or not data.BlindUnbidden then -- or player:HasCurseMistEffect() or player:IsCoopGhost() then
 			tear:Kill()
 		end
 	elseif tearData.KnifeTear then
@@ -4188,7 +4287,7 @@ function mod:onTearUpdate(tear)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, mod.onTearUpdate)
-
+--- TEARS COLLISION --
 function mod:onTearCollision(tear, collider) --tear, collider, low
 	tear = tear:ToTear()
 	--local tearData = tear:GetData()
@@ -4198,16 +4297,17 @@ function mod:onTearCollision(tear, collider) --tear, collider, low
 			local data = player:GetData()
 			local entity = collider:ToNPC()
 			--local eData = entity:GetData()
-
-			if player:HasCollectible(mod.Items.MeltedCandle) and not entity:GetData().Waxed then
-				local rng = player:GetCollectibleRNG(mod.Items.MeltedCandle)
-				if rng:RandomFloat() + player.Luck/100 >= mod.MeltedCandle.TearChance then
-					entity:AddFreeze(EntityRef(player), mod.MeltedCandle.FrameCount)
-					if entity:HasEntityFlags(EntityFlag.FLAG_FREEZE) then
-						--entity:AddBurn(EntityRef(player), 1, player.Damage) -- the issue is Freeze stops framecount of entity, so it won't call NPC_UPDATE.
-						entity:AddEntityFlags(EntityFlag.FLAG_BURN )
-						entity:GetData().Waxed = mod.MeltedCandle.FrameCount
-						entity:SetColor(mod.MeltedCandle.TearColor, mod.MeltedCandle.FrameCount, 100, false, false)
+			if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+				if player:HasCollectible(mod.Items.MeltedCandle) and not entity:GetData().Waxed then
+					local rng = player:GetCollectibleRNG(mod.Items.MeltedCandle)
+					if rng:RandomFloat() + player.Luck/100 >= mod.MeltedCandle.TearChance then
+						entity:AddFreeze(EntityRef(player), mod.MeltedCandle.FrameCount)
+						if entity:HasEntityFlags(EntityFlag.FLAG_FREEZE) then
+							--entity:AddBurn(EntityRef(player), 1, player.Damage) -- the issue is Freeze stops framecount of entity, so it won't call NPC_UPDATE.
+							entity:AddEntityFlags(EntityFlag.FLAG_BURN )
+							entity:GetData().Waxed = mod.MeltedCandle.FrameCount
+							entity:SetColor(mod.MeltedCandle.TearColor, mod.MeltedCandle.FrameCount, 100, false, false)
+						end
 					end
 				end
 			end
@@ -4219,8 +4319,8 @@ function mod:onTearCollision(tear, collider) --tear, collider, low
 	end
 end
 mod:AddCallback(ModCallbacks.MC_PRE_TEAR_COLLISION, mod.onTearCollision)
---oblivion tear
-function mod:onTearCollision(tear, collider) --tear, collider, low
+--- OBLIVION CARD TEAR COLLISION --
+function mod:onTearOblivionCardCollision(tear, collider) --tear, collider, low
 	tear = tear:ToTear()
 	local tearData = tear:GetData()
 	-- oblivion card
@@ -4240,7 +4340,8 @@ function mod:onTearCollision(tear, collider) --tear, collider, low
 		end
 	end
 end
-mod:AddCallback(ModCallbacks.MC_PRE_TEAR_COLLISION, mod.onTearCollision, mod.OblivionCard.TearVariant)
+mod:AddCallback(ModCallbacks.MC_PRE_TEAR_COLLISION, mod.onTearOblivionCardCollision, mod.OblivionCard.TearVariant)
+--- OBLIVION CARD TEAR INIT --
 function mod:onOblivionTearInit(tear) -- card, player, useflag
 	if tear.SpawnerEntity:ToPlayer() then
 		local player = tear.SpawnerEntity:ToPlayer()
@@ -4257,52 +4358,36 @@ function mod:onOblivionTearInit(tear) -- card, player, useflag
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_TEAR_INIT, mod.onOblivionTearInit, mod.OblivionCard.TearVariant)
-
---- projectiles
--- enemy projectiles
+--- PROJECTILES INIT --
 function mod:onProjectileInit(projectile)
 	local level = game:GetLevel()
-	if Isaac.GetChallenge() == mod.Challenges.Magician or level:GetCurses() & mod.Curses.Magician > 0 then
-		if projectile.SpawnerEntity then
-			if not projectile.SpawnerEntity:IsBoss() then
-				projectile:AddProjectileFlags(ProjectileFlags.SMART)
+	local room = game:GetRoom()
+	if not room:HasCurseMist() then
+		if Isaac.GetChallenge() == mod.Challenges.Magician or level:GetCurses() & mod.Curses.Magician > 0 then
+			if projectile.SpawnerEntity then
+				if not projectile.SpawnerEntity:IsBoss() and Isaac.GetChallenge() ~= mod.Challenges.Magician then
+					projectile:AddProjectileFlags(ProjectileFlags.SMART)
+				end
 			end
 		end
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_PROJECTILE_INIT, mod.onProjectileInit)
----TEARS/PROJECTILES INIT/UPDATE/COLLISION---
-
----INPUT ACTIONS---
--- keyboard input
--- BlackKnight
+--- INPUT ACTIONS --
 function mod:onInputAction(entity, inputHook, buttonAction)
 	if entity and entity.Type == EntityType.ENTITY_PLAYER and not entity:IsDead() then
 		local player = entity:ToPlayer()
 		local sprite = player:GetSprite()
 		--- COPY from Edith mod ------------
-		if player:HasCollectible(mod.Items.BlackKnight, true) then
-			--if sprite:GetAnimation() == "BigJumpUp" or sprite:GetAnimation() == "BigJumpDown" then
-			if mod.BlackKnight.TeleportAnimations[sprite:GetAnimation()] then
-				if buttonAction == ButtonAction.ACTION_BOMB or buttonAction == ButtonAction.ACTION_PILLCARD or buttonAction == ButtonAction.ACTION_ITEM then
-					return false
-				end
-			end
-			-- block movement
-			if inputHook == 2 then
-				if not player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_MEGA_MUSH) and not player:HasCollectible(CollectibleType.COLLECTIBLE_DOGMA) and not player:IsCoopGhost() then
-					if buttonAction == ButtonAction.ACTION_LEFT or buttonAction == ButtonAction.ACTION_RIGHT or buttonAction == ButtonAction.ACTION_UP or buttonAction == ButtonAction.ACTION_DOWN then
-						return 0
+		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+			if player:HasCollectible(mod.Items.BlackKnight, true) then
+				--if sprite:GetAnimation() == "BigJumpUp" or sprite:GetAnimation() == "BigJumpDown" then
+				if mod.BlackKnight.TeleportAnimations[sprite:GetAnimation()] then
+					if buttonAction == ButtonAction.ACTION_BOMB or buttonAction == ButtonAction.ACTION_PILLCARD or buttonAction == ButtonAction.ACTION_ITEM then
+						return false
 					end
 				end
-			end
-		end
-
-		if player:HasCollectible(mod.Items.WhiteKnight, true) then
-		 	if mod.BlackKnight.TeleportAnimations[sprite:GetAnimation()] then
-				if buttonAction == ButtonAction.ACTION_BOMB or buttonAction == ButtonAction.ACTION_PILLCARD or buttonAction == ButtonAction.ACTION_ITEM then
-					return false
-				end
+				-- block movement
 				if inputHook == 2 then
 					if not player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_MEGA_MUSH) and not player:HasCollectible(CollectibleType.COLLECTIBLE_DOGMA) and not player:IsCoopGhost() then
 						if buttonAction == ButtonAction.ACTION_LEFT or buttonAction == ButtonAction.ACTION_RIGHT or buttonAction == ButtonAction.ACTION_UP or buttonAction == ButtonAction.ACTION_DOWN then
@@ -4311,47 +4396,76 @@ function mod:onInputAction(entity, inputHook, buttonAction)
 					end
 				end
 			end
+			if player:HasCollectible(mod.Items.WhiteKnight, true) then
+				if mod.BlackKnight.TeleportAnimations[sprite:GetAnimation()] then
+					if buttonAction == ButtonAction.ACTION_BOMB or buttonAction == ButtonAction.ACTION_PILLCARD or buttonAction == ButtonAction.ACTION_ITEM then
+						return false
+					end
+					if inputHook == 2 then
+						if not player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_MEGA_MUSH) and not player:HasCollectible(CollectibleType.COLLECTIBLE_DOGMA) and not player:IsCoopGhost() then
+							if buttonAction == ButtonAction.ACTION_LEFT or buttonAction == ButtonAction.ACTION_RIGHT or buttonAction == ButtonAction.ACTION_UP or buttonAction == ButtonAction.ACTION_DOWN then
+								return 0
+							end
+						end
+					end
+				end
+			end
 		end
 	end
 end
 mod:AddCallback(ModCallbacks.MC_INPUT_ACTION, mod.onInputAction)
----INPUT ACTIONS---
-
-
----GET CARD/PILL/TRINKET/COLLECTIBLE---
---PILLs
--- duotine
+--- PILL INIT --
 function mod:onPostPillInit(pickup) -- pickup
 	for playerNum = 0, game:GetNumPlayers()-1 do
 		local player = game:GetPlayer(playerNum)
-		if player:HasTrinket(mod.Trinkets.Duotine) then
-			local newSub = mod.Pickups.RedPill
-			--print(pickup.SubType)
-			if pickup.SubType >= PillColor.PILL_GIANT_FLAG then newSub = mod.Pickups.RedPillHorse end
-			pickup:Morph(5, 300, newSub, true, false, true)
+		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+			if player:HasTrinket(mod.Trinkets.Duotine) then
+				local newSub = mod.Pickups.RedPill
+				--print(pickup.SubType)
+				if pickup.SubType >= PillColor.PILL_GIANT_FLAG then newSub = mod.Pickups.RedPillHorse end
+				pickup:Morph(5, 300, newSub, true, false, true)
+			end
 		end
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, mod.onPostPillInit, PickupVariant.PICKUP_PILL)
----GET CARD/PILL/TRINKET/COLLECTIBLE---
-
-
----PICKUPS/BOMBS INIT/UPDATE/COLLISION---
---all pickups
----Midas Curse
+--- PICKUP INIT --
 function mod:onPostPickupInit(pickup)
 	for playerNum = 0, game:GetNumPlayers()-1 do
 		local player = game:GetPlayer(playerNum):ToPlayer()
-		--local data = player:GetData()
-		-- if player has midas curse, turn all pickups into golden
-		if player:HasCollectible(mod.Items.MidasCurse) then
-			TurnPickupsGold(pickup:ToPickup(), player:GetCollectibleRNG(mod.Items.MidasCurse))
-			break
+		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+			-- binder clip
+			if player:HasTrinket(mod.Trinkets.BinderClip) then
+				local rng = player:GetTrinketRNG(mod.Trinkets.BinderClip)
+				if mod.BinderClip.DoublerChance > rng:RandomFloat() then
+					local newSub = pickup.SubType
+					if pickup.Variant == PickupVariant.PICKUP_HEART and newSub == HeartSubType.HEART_FULL then
+						newSub = HeartSubType.HEART_DOUBLEPACK
+					elseif pickup.Variant == PickupVariant.PICKUP_COIN and newSub == CoinSubType.COIN_PENNY then
+						newSub = CoinSubType.COIN_DOUBLEPACK
+					elseif pickup.Variant == PickupVariant.PICKUP_KEY and newSub == KeySubType.KEY_NORMAL then
+						newSub = KeySubType.KEY_DOUBLEPACK
+					elseif pickup.Variant == PickupVariant.PICKUP_BOMB and newSub == BombSubType.BOMB_NORMAL then
+						newSub = BombSubType.BOMB_DOUBLEPACK
+					end
+					if newSub ~= pickup.SubType then
+						pickup:Morph(pickup.Type, pickup.Variant, newSub, true, false, true)
+					end
+				end
+			end
+			--local data = player:GetData()
+			-- if player has midas curse, turn all pickups into golden -> check chance
+			if player:HasCollectible(mod.Items.MidasCurse) then
+				if player:GetCollectibleRNG(mod.Items.MidasCurse):RandomFloat() < mod.MidasCurse.TurnGoldChance then
+					TurnPickupsGold(pickup:ToPickup())
+					break
+				end
+			end
 		end
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, mod.onPostPickupInit)
--- coin de spawner
+--- COIN UPDATE --
 function mod:onCoinUpdate(pickup)
 	local pickupData = pickup:GetData()
 	if pickupData.MilkTeethDespawn then
@@ -4365,9 +4479,7 @@ function mod:onCoinUpdate(pickup)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, mod.onCoinUpdate, PickupVariant.PICKUP_COIN)
-
---collectible
--- collectible update
+--- COLLECTIBLE UPDATE --
 function mod:CollectibleUpdate(entity)
 	if Isaac.GetChallenge() == mod.Challenges.Potatoes then
 		local lunch = CollectibleType.COLLECTIBLE_LUNCH
@@ -4377,26 +4489,24 @@ function mod:CollectibleUpdate(entity)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, mod.CollectibleUpdate, PickupVariant.PICKUP_COLLECTIBLE)
----Midas Curse
--- turn food into coins
+--- COLLECTIBLE COLLISION --
 function mod:onItemCollision(pickup, collider)
-	if CheckItemTags(pickup.SubType, ItemConfig.TAG_FOOD) then
-		if collider:ToPlayer() then
-			player = collider:ToPlayer()
-			if player:HasCollectible(mod.Items.MidasCurse) and mod.MidasCurse.TurnGoldChance == mod.MidasCurse.MaxGold then
-				pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, CoinSubType.COIN_GOLDEN)
-				local rngMidasCurse = player:GetCollectibleRNG(mod.Items.MidasCurse)
-				local coinNum = rngMidasCurse:RandomInt(8)+1
-				for _ = 1, coinNum do
-					local randVector = RandomVector()*coinNum
-					Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, pickup.Position, randVector, player)
-					--local coin = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, pickup.Position, randVector, player) --anyway turns into golden coin
+	if collider:ToPlayer() then
+		local player = collider:ToPlayer()
+		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+			if CheckItemTags(pickup.SubType, ItemConfig.TAG_FOOD) then
+				if player:HasCollectible(mod.Items.MidasCurse) and mod.MidasCurse.TurnGoldChance == mod.MidasCurse.MaxGold then
+					pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, CoinSubType.COIN_GOLDEN)
+					local rngMidasCurse = player:GetCollectibleRNG(mod.Items.MidasCurse)
+					local coinNum = rngMidasCurse:RandomInt(8)+1
+					for _ = 1, coinNum do
+						local randVector = RandomVector()*coinNum
+						Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, pickup.Position, randVector, player)
+						--local coin = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, pickup.Position, randVector, player) --anyway turns into golden coin
+					end
 				end
 			end
 		end
-	end
-	if collider:ToPlayer() then
-		local player = collider:ToPlayer()
 		--local tempEffects = player:GetEffects()
 		if player:HasTrinket(mod.Trinkets.LostFlower) and (player:GetPlayerType() == PlayerType.PLAYER_THELOST or player:GetPlayerType() == PlayerType.PLAYER_THELOST_B or player:GetPlayerType() == mod.Characters.Oblivious) then
 			if mod.LostFlower.ItemGiveEternalHeart[pickup.SubType] then
@@ -4406,34 +4516,36 @@ function mod:onItemCollision(pickup, collider)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, mod.onItemCollision, PickupVariant.PICKUP_COLLECTIBLE)
-
-
--- binder clip
+--- PICKUP COLLISION --
 function mod:onItemCollision(pickup, collider, _) --add --PickupVariant.PICKUP_SHOPITEM
 	if collider:ToPlayer() and pickup.Variant ~= PickupVariant.PICKUP_COLLECTIBLE and pickup.OptionsPickupIndex ~= 0 then
 		local player = collider:ToPlayer()
-		if player:HasTrinket(mod.Trinkets.BinderClip) then
- 			pickup.OptionsPickupIndex = 0
+		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+			if player:HasTrinket(mod.Trinkets.BinderClip) then
+				pickup.OptionsPickupIndex = 0
+			end
 		end
 	end
 end
 mod:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, mod.onItemCollision)
-
+--- HEART COLLISION --
 function mod:onHeartCollision(pickup, collider)
 	if collider:ToPlayer() then
 		local player = collider:ToPlayer()
-		if player:HasTrinket(mod.Trinkets.LostFlower) then
-			local playerType = player:GetPlayerType()
-			if playerType == PlayerType.PLAYER_THELOST or playerType == PlayerType.PLAYER_THELOST_B or player:GetPlayerType() == mod.Characters.Oblivious then  -- if player is Lost/T.Lost
-				if pickup.SubType == HeartSubType.HEART_ETERNAL then
-					player:UseCard(Card.CARD_HOLY,  myUseFlags) -- give holy card effect
+		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+			if player:HasTrinket(mod.Trinkets.LostFlower) then
+				local playerType = player:GetPlayerType()
+				if playerType == PlayerType.PLAYER_THELOST or playerType == PlayerType.PLAYER_THELOST_B or player:GetPlayerType() == mod.Characters.Oblivious then  -- if player is Lost/T.Lost
+					if pickup.SubType == HeartSubType.HEART_ETERNAL then
+						player:UseCard(Card.CARD_HOLY,  myUseFlags) -- give holy card effect
+					end
 				end
 			end
 		end
 	end
 end
 mod:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, mod.onHeartCollision, PickupVariant.PICKUP_HEART)
-
+--- BOMB COLLISION --
 function mod:onBombPickupCollision(pickup, collider)
 	if collider:ToPlayer() then
 		local player = collider:ToPlayer()
@@ -4443,36 +4555,7 @@ function mod:onBombPickupCollision(pickup, collider)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, mod.onBombPickupCollision, PickupVariant.PICKUP_BOMB)
-
---[binder clip
-function mod:onPostPickupInit3(pickup) -- pickup
-	for playerNum = 0, game:GetNumPlayers()-1 do
-		local player = game:GetPlayer(playerNum)
-		if player:HasTrinket(mod.Trinkets.BinderClip) then
-			local rng = player:GetTrinketRNG(mod.Trinkets.BinderClip)
-			if mod.BinderClip.DoublerChance > rng:RandomFloat() then
-				local newSub = pickup.SubType
-				if pickup.Variant == PickupVariant.PICKUP_HEART and newSub == HeartSubType.HEART_FULL then
-					newSub = HeartSubType.HEART_DOUBLEPACK
-				elseif pickup.Variant == PickupVariant.PICKUP_COIN and newSub == CoinSubType.COIN_PENNY then
-					newSub = CoinSubType.COIN_DOUBLEPACK
-				elseif pickup.Variant == PickupVariant.PICKUP_KEY and newSub == KeySubType.KEY_NORMAL then
-					newSub = KeySubType.KEY_DOUBLEPACK
-				elseif pickup.Variant == PickupVariant.PICKUP_BOMB and newSub == BombSubType.BOMB_NORMAL then
-					newSub = BombSubType.BOMB_DOUBLEPACK
-				end
-				if newSub ~= pickup.SubType then
-					pickup:Morph(pickup.Type, pickup.Variant, newSub, true, false, true)
-				end
-			end
-		end
-	end
-end
-mod:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, mod.onPostPickupInit3)
---]]
-
---trinkets
--- trinket update
+--- TRINKET UPDATE --
 function mod:onTrinketUpdate(trinket)
 	local dataTrinket = trinket:GetData()
 	-- destroy trinket
@@ -4491,155 +4574,152 @@ function mod:onTrinketUpdate(trinket)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, mod.onTrinketUpdate, PickupVariant.PICKUP_TRINKET)
-
-
--- placed bombs
--- bombs update
+--- BOMB UPDATE --
 function mod:onBombUpdate(bomb)
 	local bombSprite = bomb:GetSprite()
 	local bombData = bomb:GetData()
 	local level = game:GetLevel()
+	local room = game:GetRoom()
 
-	if level:GetCurses() & mod.Curses.Bell > 0 and mod.BellCurse[bomb.Variant] and bomb.FrameCount == 1 then
-		bomb:Remove()
-		Isaac.Spawn(bomb.Type, BombVariant.BOMB_GOLDENTROLL, 0, bomb.Position, bomb.Velocity, bomb.SpawnerEntity)
-	end
+	if not room:HasCurseMist() then
+		if level:GetCurses() & mod.Curses.Bell > 0 and mod.BellCurse[bomb.Variant] and bomb.FrameCount == 1 then
+			bomb:Remove()
+			Isaac.Spawn(bomb.Type, BombVariant.BOMB_GOLDENTROLL, 0, bomb.Position, bomb.Velocity, bomb.SpawnerEntity)
+		end
+		if bomb.FrameCount == 0 or (bomb.FrameCount == 1 and (bomb.IsFetus or bombData.Mirror == true or bomb.Variant == BombVariant.BOMB_BIG or bomb.Size == 8.0)) then -- check size for bombs spawned by scatter bombs
+			if bomb.SpawnerEntity and bomb.SpawnerType == EntityType.ENTITY_PLAYER then --and not bombData.Modded then
+				local player = bomb.SpawnerEntity:ToPlayer()
+				local playerData = player:GetData()
+				local roomIndex = level:GetCurrentRoomIndex()
 
-	if bomb.FrameCount == 0 or (bomb.FrameCount == 1 and (bomb.IsFetus or bombData.Mirror == true or bomb.Variant == BombVariant.BOMB_BIG or bomb.Size == 8.0)) then -- check size for bombs spawned by scatter bombs
-		if bomb.SpawnerEntity and bomb.SpawnerType == EntityType.ENTITY_PLAYER then --and not bombData.Modded then
-			local player = bomb.SpawnerEntity:ToPlayer()
-			local playerData = player:GetData()
-			local roomIndex = level:GetCurrentRoomIndex()
+				if not playerData.ModdedBombas then playerData.ModdedBombas = {} end
+				if playerData.ModdedBombas[roomIndex] == nil then playerData.ModdedBombas[roomIndex] = {} end
 
-			if not playerData.ModdedBombas then playerData.ModdedBombas = {} end
-			if playerData.ModdedBombas[roomIndex] == nil then playerData.ModdedBombas[roomIndex] = {} end
+				if not bombData.Mirror then
+					for _, pos in pairs(playerData.ModdedBombas[roomIndex]) do
+						if bomb.Position:Distance(pos[1]) == 0 then
+							if pos[2].Gravity then bombData.Gravity = true else bombData.Gravity = false end
+							if pos[2].Compo then bombData.Compo = true else bombData.Compo = false end
+							if pos[2].Mirror then bombData.Mirror = true else bombData.Mirror = false end
+							if pos[2].Frosty then bombData.Frosty = true else bombData.Frosty = false end
+							if pos[2].DeadEgg then bombData.DeadEgg = true else bombData.DeadEgg = false end
 
-			if not bombData.Mirror then
-				for _, pos in pairs(playerData.ModdedBombas[roomIndex]) do
-					if bomb.Position:Distance(pos[1]) == 0 then
-						if pos[2].Gravity then bombData.Gravity = true else bombData.Gravity = false end
-						if pos[2].Compo then bombData.Compo = true else bombData.Compo = false end
-						if pos[2].Mirror then bombData.Mirror = true else bombData.Mirror = false end
-						if pos[2].Frosty then bombData.Frosty = true else bombData.Frosty = false end
-						if pos[2].DeadEgg then bombData.DeadEgg = true else bombData.DeadEgg = false end
-
+						end
 					end
 				end
-			end
 
-			--if bombData.Mirror and not bomb.Parent then
-			if bombData.Mirror and (not bomb.Parent or bomb.FrameCount == 0) then -- or (bomb.Variant == BombVariant.BOMB_THROWABLE) then -- don't make it elseif cause you need to check it 2 times
-				bomb:Remove() -- remove mirror bombs when entering room where you placed bomb. else it would be duplicated
-			end
-
-			if playerData.UsedSoulNadabAbihu then
-				bomb:AddTearFlags(TearFlags.TEAR_BURN)
-			end
-
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_NANCY_BOMBS) then
-				if bombData.Frosty == nil and modRNG:RandomFloat() < mod.FrostyBombs.NancyChance then
-					InitGravityBomb(bomb, bombData)
+				--if bombData.Mirror and not bomb.Parent then
+				if bombData.Mirror and (not bomb.Parent or bomb.FrameCount == 0) then -- or (bomb.Variant == BombVariant.BOMB_THROWABLE) then -- don't make it elseif cause you need to check it 2 times
+					bomb:Remove() -- remove mirror bombs when entering room where you placed bomb. else it would be duplicated
 				end
-				if bombData.Gravity == nil and modRNG:RandomFloat() < mod.GravityBombs.NancyChance then
-					InitFrostyBomb(bomb, bombData)
+
+				if playerData.UsedSoulNadabAbihu then
+					bomb:AddTearFlags(TearFlags.TEAR_BURN)
 				end
-				--if bombData.Dicey == nil and modRNG:RandomFloat() < mod.DiceBombs.NancyChance then
-				--  InitDiceyBomb(bomb, bombData)
-				--end
 
-
-			end
-
-			-- mirror
-			if player:HasCollectible(mod.Items.MirrorBombs) and not mod.MirrorBombs.Ban[bomb.Variant] and bombData.Mirror ~= true then
-				local flipPos = FlipMirrorPos(bomb.Position)
-				local mirrorBomb = Isaac.Spawn(bomb.Type, bomb.Variant, bomb.SubType, flipPos, bomb.Velocity, player):ToBomb()
-				local mirrorBombData = mirrorBomb:GetData()
-				local mirrorBombSprite = mirrorBomb:GetSprite()
-				mirrorBombSprite.FlipX = true
-				mirrorBombSprite.FlipY = true
-				mirrorBomb:AddTearFlags(bomb.Flags)
-				mirrorBomb.Parent = bomb
-				-- rotate in right pos
-				if mirrorBomb.Variant == BombVariant.BOMB_ROCKET_GIGA or mirrorBomb.Variant == BombVariant.BOMB_ROCKET then
-					mirrorBombData.RocketMirror = player:GetShootingInput()  -- -rotVec
-					mirrorBombSprite.Rotation = mirrorBombData.RocketMirror:GetAngleDegrees()
+				if player:HasCollectible(CollectibleType.COLLECTIBLE_NANCY_BOMBS) then
+					if bombData.Frosty == nil and modRNG:RandomFloat() < mod.FrostyBombs.NancyChance then
+						InitGravityBomb(bomb, bombData)
+					end
+					if bombData.Gravity == nil and modRNG:RandomFloat() < mod.GravityBombs.NancyChance then
+						InitFrostyBomb(bomb, bombData)
+					end
+					--if bombData.Dicey == nil and modRNG:RandomFloat() < mod.DiceBombs.NancyChance then
+					--  InitDiceyBomb(bomb, bombData)
+					--end
 				end
-				if bomb.IsFetus then mirrorBomb.IsFetus = true end
 
-				--set explosion countdown
-				SetBombEXCountdown(player, mirrorBomb)
+				-- mirror
+				if player:HasCollectible(mod.Items.MirrorBombs) and not mod.MirrorBombs.Ban[bomb.Variant] and bombData.Mirror ~= true then
+					local flipPos = FlipMirrorPos(bomb.Position)
+					local mirrorBomb = Isaac.Spawn(bomb.Type, bomb.Variant, bomb.SubType, flipPos, bomb.Velocity, player):ToBomb()
+					local mirrorBombData = mirrorBomb:GetData()
+					local mirrorBombSprite = mirrorBomb:GetSprite()
+					mirrorBombSprite.FlipX = true
+					mirrorBombSprite.FlipY = true
+					mirrorBomb:AddTearFlags(bomb.Flags)
+					mirrorBomb.Parent = bomb
+					-- rotate in right pos
+					if mirrorBomb.Variant == BombVariant.BOMB_ROCKET_GIGA or mirrorBomb.Variant == BombVariant.BOMB_ROCKET then
+						mirrorBombData.RocketMirror = player:GetShootingInput()  -- -rotVec
+						mirrorBombSprite.Rotation = mirrorBombData.RocketMirror:GetAngleDegrees()
+					end
+					if bomb.IsFetus then mirrorBomb.IsFetus = true end
 
-				mirrorBomb:SetColor(Color(1, 1, 1, 0.5, 0, 0, 0), 100, 1, false, false)
-				mirrorBomb.FlipX = true
-				mirrorBomb.EntityCollisionClass = 0
-				mirrorBomb:AddTearFlags(bomb.Flags)
-				mirrorBombData.Mirror = true
-			end
-			--compo
-			if player:HasCollectible(mod.Items.CompoBombs) and not mod.CompoBombs.Baned[bomb.Variant] and bombData.Compo ~= false then
-				bombData.Compo = true
-				local redBomb = Isaac.Spawn(EntityType.ENTITY_BOMB, BombVariant.BOMB_THROWABLE, 0, bomb.Position, bomb.Velocity, player):ToBomb()
-				redBomb.Parent = bomb
-				redBomb:GetData().RedBomb = true
-				redBomb.EntityCollisionClass = 0
-				redBomb.FlipX = true
-				--set explosion countdown
-				if bomb.IsFetus and bomb.FrameCount == 0 then
-					bomb:SetExplosionCountdown(mod.CompoBombs.FetusCountdown)
-				else
-					SetBombEXCountdown(player, redBomb)
-				end
-				if bomb.IsFetus then redBomb.IsFetus = true end
-			end
+					--set explosion countdown
+					SetBombEXCountdown(player, mirrorBomb)
 
-			-- frosty
-			if player:HasCollectible(mod.Items.FrostyBombs) and not mod.FrostyBombs.Ban[bomb.Variant] and bombData.Frosty ~= false then
-				local initTrue = true
-				if bomb.FrameCount == 1 and bomb.IsFetus and modRNG:RandomFloat() > mod.FrostyBombs.FetusChance + player.Luck/100 then
-					initTrue = false
+					mirrorBomb:SetColor(Color(1, 1, 1, 0.5, 0, 0, 0), 100, 1, false, false)
+					mirrorBomb.FlipX = true
+					mirrorBomb.EntityCollisionClass = 0
+					mirrorBomb:AddTearFlags(bomb.Flags)
+					mirrorBombData.Mirror = true
 				end
-				if initTrue then
-					InitFrostyBomb(bomb, bombData)
+				--compo
+				if player:HasCollectible(mod.Items.CompoBombs) and not mod.CompoBombs.Baned[bomb.Variant] and bombData.Compo ~= false then
+					bombData.Compo = true
+					local redBomb = Isaac.Spawn(EntityType.ENTITY_BOMB, BombVariant.BOMB_THROWABLE, 0, bomb.Position, bomb.Velocity, player):ToBomb()
+					redBomb.Parent = bomb
+					redBomb:GetData().RedBomb = true
+					redBomb.EntityCollisionClass = 0
+					redBomb.FlipX = true
+					--set explosion countdown
+					if bomb.IsFetus and bomb.FrameCount == 0 then
+						bomb:SetExplosionCountdown(mod.CompoBombs.FetusCountdown)
+					else
+						SetBombEXCountdown(player, redBomb)
+					end
+					if bomb.IsFetus then redBomb.IsFetus = true end
 				end
-			end
 
-			-- gravity
-			if player:HasCollectible(mod.Items.GravityBombs) and not mod.GravityBombs.Ban[bomb.Variant] and bombData.Gravity ~= false then
-				local initTrue = true
-				if bomb.FrameCount == 1 and bomb.IsFetus and modRNG:RandomFloat() > mod.GravityBombs.FetusChance + player.Luck/100 then
-					initTrue = false
+				-- frosty
+				if player:HasCollectible(mod.Items.FrostyBombs) and not mod.FrostyBombs.Ban[bomb.Variant] and bombData.Frosty ~= false then
+					local initTrue = true
+					if bomb.FrameCount == 1 and bomb.IsFetus and modRNG:RandomFloat() > mod.FrostyBombs.FetusChance + player.Luck/100 then
+						initTrue = false
+					end
+					if initTrue then
+						InitFrostyBomb(bomb, bombData)
+					end
 				end
-				if initTrue then
-					InitGravityBomb(bomb, bombData)
-				end
-			end
 
-			-- dicey
-			--[[
-			if player:HasCollectible(mod.Items.DiceBombs) and not mod.DiceBombs.Ban[bomb.Variant] and bombData.Dicey ~= false then
-				local initTrue = true
-				if bomb.FrameCount == 1 and bomb.IsFetus and modRNG:RandomFloat() > mod.DiceBombs.FetusChance + player.Luck/100 then
-					initTrue = false
+				-- gravity
+				if player:HasCollectible(mod.Items.GravityBombs) and not mod.GravityBombs.Ban[bomb.Variant] and bombData.Gravity ~= false then
+					local initTrue = true
+					if bomb.FrameCount == 1 and bomb.IsFetus and modRNG:RandomFloat() > mod.GravityBombs.FetusChance + player.Luck/100 then
+						initTrue = false
+					end
+					if initTrue then
+						InitGravityBomb(bomb, bombData)
+					end
 				end
-				if initTrue then
-					InitDiceyBomb(bomb, bombData)
+
+				-- dicey
+				--[[
+				if player:HasCollectible(mod.Items.DiceBombs) and not mod.DiceBombs.Ban[bomb.Variant] and bombData.Dicey ~= false then
+					local initTrue = true
+					if bomb.FrameCount == 1 and bomb.IsFetus and modRNG:RandomFloat() > mod.DiceBombs.FetusChance + player.Luck/100 then
+						initTrue = false
+					end
+					if initTrue then
+						InitDiceyBomb(bomb, bombData)
+					end
 				end
-			end
-			--]]
+				--]]
 
-			-- bob's tongue
-			if player:HasTrinket(mod.Trinkets.BobTongue) then
-				bombData.BobTongue = true
-				local fartRingEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.FART_RING, 0, bomb.Position, Vector.Zero, bomb):ToEffect()
-				fartRingEffect:GetData().BobTongue = true
-				fartRingEffect.Parent = bomb
-				fartRingEffect.SpriteScale = fartRingEffect.SpriteScale * 0.8
-				--fartRingEffect.Size = 0.5
-			end
+				-- bob's tongue
+				if player:HasTrinket(mod.Trinkets.BobTongue) then
+					bombData.BobTongue = true
+					local fartRingEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.FART_RING, 0, bomb.Position, Vector.Zero, bomb):ToEffect()
+					fartRingEffect:GetData().BobTongue = true
+					fartRingEffect.Parent = bomb
+					fartRingEffect.SpriteScale = fartRingEffect.SpriteScale * 0.8
+					--fartRingEffect.Size = 0.5
+				end
 
-			if player:HasTrinket(mod.Trinkets.DeadEgg) then
-				bombData.DeadEgg = true
+				if player:HasTrinket(mod.Trinkets.DeadEgg) then
+					bombData.DeadEgg = true
+				end
 			end
 		end
 	end
@@ -4726,11 +4806,8 @@ function mod:onBombUpdate(bomb)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, mod.onBombUpdate)
----PICKUPS/BOMBS INIT/UPDATE/COLLISION---
 
-
----EFFECTS INIT/UPDATE/COLLISION---
---dead egg
+--- EFFECT UPDATE --dead egg
 function mod:onDeadEggEffect(effect)
 	local data = effect:GetData()
 	if data.DeadEgg and effect.Timeout == 0 then
@@ -4739,7 +4816,7 @@ function mod:onDeadEggEffect(effect)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onDeadEggEffect, EffectVariant.DEAD_BIRD)
---bob's tongue poison aura effect
+--- EFFECT UPDATE --bob's tongue
 function mod:onFartRingEffect(fart_ring)
 	if fart_ring:GetData().BobTongue then
 		if not fart_ring.Parent then
@@ -4750,7 +4827,7 @@ function mod:onFartRingEffect(fart_ring)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onFartRingEffect, EffectVariant.FART_RING)
---  hole bombs gravity effect
+--- EFFECT UPDATE --black hole bombs
 function mod:onGravityHoleUpdate(hole)
 	local room = game:GetRoom()
 	local holeData = hole:GetData()
@@ -4818,7 +4895,7 @@ function mod:onGravityHoleUpdate(hole)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onGravityHoleUpdate,  mod.GravityBombs.BlackHoleEffect) -- idk why it triggers when I use ingame black hole item (when using Fusion card)
--- keeper mirror target effect
+--- EFFECT UPDATE --moonlighter
 function mod:onKeeperMirrorTargetEffect(target)
 	--local player = target.Parent:ToPlayer()
 	local targetSprite = target:GetSprite()
@@ -4830,7 +4907,7 @@ function mod:onKeeperMirrorTargetEffect(target)
 	targetSprite:Play("Blink")
 end
 mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onKeeperMirrorTargetEffect, mod.KeeperMirror.Target)
--- BlackKnight target effect
+--- EFFECT UPDATE --black/white knight
 function mod:onBlackKnightTargetEffect(target)
 	--- COPY from Edith mod ------------
 	local ready = false
@@ -4859,10 +4936,27 @@ function mod:onBlackKnightTargetEffect(target)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onBlackKnightTargetEffect ,mod.BlackKnight.Target)
----EFFECTS INIT/UPDATE/COLLISION---
+--- EFFECT UPDATE --Elder Sign
+function mod:onElderSignPentagramUpdate(pentagram)
+	if pentagram:GetData().ElderSign and pentagram.SpawnerEntity then
+		if pentagram.FrameCount == pentagram:GetData().ElderSign then
+			local purgesoul = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PURGATORY, 1, pentagram.Position, Vector.Zero, player):ToEffect() -- subtype = 0 is rift, 1 is soul
+			purgesoul.Color = Color(0.2,0.5,0.2,1)
+		end
+		-- get enemies in range
+		local enemies = Isaac.FindInRadius(pentagram.Position, mod.ElderSign.AuraRange-10, EntityPartition.ENEMY)
+		if #enemies > 0 then
+			for _, enemy in pairs(enemies) do
+				if enemy:IsVulnerableEnemy() and enemy:IsActiveEnemy() then
+					enemy:AddFreeze(EntityRef(pentagram.SpawnerEntity), 1)
+				end
+			end
+		end
+	end
+end
+mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onElderSignPentagramUpdate, mod.ElderSign.Pentagram)
 
----FAMILIARS---
--- long elk bone spurs
+--- FAMILIAR UPDATE --long elk
 function mod:onVertebraeUpdate(fam)
 	local famData = fam:GetData() -- get fam data
 	if famData.RemoveTimer then
@@ -4873,13 +4967,12 @@ function mod:onVertebraeUpdate(fam)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, mod.onVertebraeUpdate,  FamiliarVariant.BONE_SPUR)
-
----nadab brain
+--- FAMILIAR INIT --nadab brain
 function mod:onNadabBrainInit(fam)
 	fam:AddToFollowers()
 end
 mod:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, mod.onNadabBrainInit, mod.NadabBrain.Variant)
--- nadab brain collision
+--- FAMILIAR COLLISION --nadab brain
 function mod:onNadabBrainCollision(fam, collider, _)
 	local famData = fam:GetData()
 	if famData.IsFloating then
@@ -4898,8 +4991,7 @@ function mod:onNadabBrainCollision(fam, collider, _)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_PRE_FAMILIAR_COLLISION, mod.onNadabBrainCollision, mod.NadabBrain.Variant)
-
--- update loop
+--- FAMILIAR UPDATE --nadab brain
 function mod:OnNadabBrainUpdate(fam)
 	local player = fam.Player -- get player
 	local sprite = fam:GetSprite() -- get sprite
@@ -4994,8 +5086,7 @@ function mod:OnNadabBrainUpdate(fam)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, mod.OnNadabBrainUpdate, mod.NadabBrain.Variant)
-
---lililith init
+--- FAMILIAR INIT --lililith
 function mod:onLililithInit(fam)
 	fam:GetSprite():Play("FloatDown")
 	fam:GetData().GenPickup = false
@@ -5003,7 +5094,7 @@ function mod:onLililithInit(fam)
 	fam:AddToFollowers()
 end
 mod:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, mod.onLililithInit, mod.Lililith.Variant)
---lililith loop update
+--- FAMILIAR UPDATE --lililith
 function mod:onLililithUpdate(fam)
 	local player = fam.Player -- get player
 	local data = player:GetData()
@@ -5038,17 +5129,15 @@ function mod:onLililithUpdate(fam)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, mod.onLililithUpdate, mod.Lililith.Variant)
-
---red bag init
+--- FAMILIAR INIT --red bag
 function mod:onRedBagInit(fam)
 	fam:GetSprite():Play("FloatDown")
 	fam:GetData().GenPickup = false
 	fam:GetData().GenChanceUp = 0
 	fam:AddToFollowers()
-
 end
 mod:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, mod.onRedBagInit, mod.RedBag.Variant)
---red bag loop update
+--- FAMILIAR UPDATE --red bag
 function mod:onRedBagUpdate(fam)
 	local player = fam.Player -- get player
 	local famData = fam:GetData() -- get fam data
@@ -5061,6 +5150,7 @@ function mod:onRedBagUpdate(fam)
 		famData.GenPickup = true
 		--if not famData.GenChanceUp then famData.GenChanceUp = 0 end
 		famData.GenChanceUp = famData.GenChanceUp or 0
+
 		if rng:RandomFloat() < mod.RedBag.GenChance + famData.GenChanceUp then
 			famData.GenChanceUp = 0
 			famData.GenIndex = rng:RandomInt(#mod.RedBag.RedPickups)+1
@@ -5087,16 +5177,14 @@ function mod:onRedBagUpdate(fam)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, mod.onRedBagUpdate, mod.RedBag.Variant)
-
--- Abihu familiar
+--- FAMILIAR INIT --abihu
 function mod:onAbihuFamInit(fam)
 	if fam.SubType == mod.AbihuFam.Subtype then
 		fam:GetData().CollisionTime = 0
 	end
 end
 mod:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, mod.onAbihuFamInit, mod.AbihuFam.Variant)
-
--- abihu fam update
+--- FAMILIAR UPDATE --abihu
 function mod:onAbihuFamUpdate(fam)
 	--local player = fam.Player
 	local famData = fam:GetData()
@@ -5110,7 +5198,7 @@ function mod:onAbihuFamUpdate(fam)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, mod.onAbihuFamUpdate, mod.AbihuFam.Variant)
--- familiars take damage
+--- FAMILIAR TAKE DMG --abihu
 function mod:onFamiliarTakeDamage(entity, _, damageFlag, source, _) --entity, amount, flags, source, countdown
 	-- abihu fam take dmg
 	if entity.Variant == mod.AbihuFam.Variant then
@@ -5131,11 +5219,10 @@ function mod:onFamiliarTakeDamage(entity, _, damageFlag, source, _) --entity, am
 	end
 end
 mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, mod.onFamiliarTakeDamage, EntityType.ENTITY_FAMILIAR)
----FAMILIARS---
-
 
 ---USE ITEM---
--- book of memories
+do
+---book of memories
 function mod:onBookMemoryItem(_, _, player) --item, rng, player, useFlag, activeSlot, customVarData
 	local entities = Isaac.FindInRadius(player.Position, 5000, EntityPartition.ENEMY)
 	if #entities > 0 then
@@ -5153,7 +5240,6 @@ function mod:onBookMemoryItem(_, _, player) --item, rng, player, useFlag, active
 	return {ShowAnim = false, Remove = false, Discharge = false}
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onBookMemoryItem, mod.Items.BookMemory)
-
 --[[
 function mod:onBookMemoryItem(item, rng, player, useFlag) --item, rng, player, useFlag, activeSlot, customVarData
 	local data = player:GetData()
@@ -5266,13 +5352,13 @@ function mod:onKeeperMirror(item, _, player) --item, rng, player, useFlag, activ
 	return false
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onKeeperMirror, mod.Items.KeeperMirror)
---pony
+---pony
 function mod:onMiniPony(_, _, player) --item, rng, player, useFlag, activeSlot, customVarData
 	player:UseActiveItem(CollectibleType.COLLECTIBLE_MY_LITTLE_UNICORN, myUseFlags)
 	return false
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onMiniPony, mod.Items.MiniPony)
--- strange box
+---strange box
 function mod:onStrangeBox(_, rng, _) --item, rng, player, useFlag, activeSlot, customVarData
 	--- player use strange box
 	--local allPickups = Isaac.FindByType(EntityType.ENTITY_PICKUP)
@@ -5311,8 +5397,7 @@ function mod:onStrangeBox(_, rng, _) --item, rng, player, useFlag, activeSlot, c
 	return true --{ShowAnim = true, Remove = false, Discharge = true}
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onStrangeBox, mod.Items.StrangeBox)
-
--- lost mirror
+---lost mirror
 function mod:onLostMirror(_, _, player) --item, rng, player, useFlag, activeSlot, customVarData
 	--player:ChangePlayerType(10)
 	--- player use lost mirror
@@ -5325,6 +5410,7 @@ function mod:onLostMirror(_, _, player) --item, rng, player, useFlag, activeSlot
 	return true
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onLostMirror, mod.Items.LostMirror)
+---lost flower + prayer card
 function mod:onPrayerCard(_, _, player) --item, rng, player, useFlag, activeSlot, customVarData
 	--- player use prayer card
 	--- lost flower
@@ -5337,7 +5423,7 @@ function mod:onPrayerCard(_, _, player) --item, rng, player, useFlag, activeSlot
 	end
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onPrayerCard, CollectibleType.COLLECTIBLE_PRAYER_CARD)
---bleeding grimoire
+---bleeding grimoire
 function mod:onBleedingGrimoire(_, _, player) --item, rng, player, useFlag, activeSlot, customVarData
 	local data = player:GetData()
 	player:AddEntityFlags(EntityFlag.FLAG_BLEED_OUT)
@@ -5346,7 +5432,7 @@ function mod:onBleedingGrimoire(_, _, player) --item, rng, player, useFlag, acti
 	return true -- {Discharge = true, Remove = true, ShowAnim = true}
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onBleedingGrimoire, mod.Items.BleedingGrimoire)
--- black book
+---black book
 function mod:onBlackBook(_, rng, player) --item, rng, player, useFlag, activeSlot, customVarData
 	for _, entity in pairs(Isaac.FindInRadius(player.Position, 5000, EntityPartition.ENEMY)) do
 		if entity:IsVulnerableEnemy() and entity:IsActiveEnemy() then
@@ -5392,7 +5478,7 @@ function mod:onBlackBook(_, rng, player) --item, rng, player, useFlag, activeSlo
 	return true
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onBlackBook, mod.Items.BlackBook)
-
+---scrambled rubik's dice
 function mod:onRubikDiceScrambled(item, _, player) --item, rng, player, useFlag, activeSlot, customVarData
 	for _, Scrambledice in pairs(mod.RubikDice.ScrambledDicesList) do
 		if item == Scrambledice then
@@ -5403,17 +5489,19 @@ function mod:onRubikDiceScrambled(item, _, player) --item, rng, player, useFlag,
 	end
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onRubikDiceScrambled) -- called for all items
+---rubik's dice
 function mod:onRubikDice(_, rng, player) --item, rng, player, useFlag, activeSlot, customVarData
 	--- player use rubik's dice
+	player:UseActiveItem(CollectibleType.COLLECTIBLE_D6, myUseFlags)
 	if rng:RandomFloat() < mod.RubikDice.GlitchReroll then -- and (useFlag & UseFlag.USE_OWNED == 0) and (useFlag & UseFlag.USE_MIMIC == 0) then
 		--player:RemoveCollectible(mod.Items.RubikDice)
 		local Newdice = mod.RubikDice.ScrambledDicesList[rng:RandomInt(#mod.RubikDice.ScrambledDicesList)+1]
 		player:AddCollectible(Newdice) --Newdice / mod.Items.RubikDiceScrambled
-		RerollTMTRAINER(player, Newdice) -- Newdice / mod.Items.RubikDiceScrambled
-	else
-		player:UseActiveItem(CollectibleType.COLLECTIBLE_D6, myUseFlags)
-		return true
+		--RerollTMTRAINER(player, Newdice) -- Newdice / mod.Items.RubikDiceScrambled
+	--else
+		--player:UseActiveItem(CollectibleType.COLLECTIBLE_D6, myUseFlags)
 	end
+	return true
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onRubikDice, mod.Items.RubikDice)
 ---vhs cassette
@@ -5452,7 +5540,6 @@ function mod:onLongElk(_, _, player) --item, rng, player, useFlag, activeSlot, c
 	return false
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onLongElk, mod.Items.LongElk)
-
 ---WhiteKnight
 function mod:onWhiteKnight(_, _, player) --item, rng, player, useFlag, activeSlot, customVarData
 	local discharge = false
@@ -5469,7 +5556,7 @@ function mod:onWhiteKnight(_, _, player) --item, rng, player, useFlag, activeSlo
 	return {ShowAnim = false, Remove = false, Discharge = discharge}
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onWhiteKnight, mod.Items.WhiteKnight)
--- charon's obol
+---charon's obol
 function mod:onCharonObol(_, _, player) --item, rng, player, useFlag, activeSlot, customVarData
 	-- spawn soul if you have coins
 	if player:GetNumCoins() > 0 then
@@ -5512,10 +5599,20 @@ function mod:onCosmicJam(_, _, player) --item, rng, player, useFlag, activeSlot,
 	return true
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onCosmicJam, mod.Items.CosmicJam)
----USE ITEM---
+---Elder Sign
+function mod:onUseElderSign(_, _, player)
+    local pentagram = Isaac.Spawn(EntityType.ENTITY_EFFECT, mod.ElderSign.Pentagram, 0, player.Position, Vector.Zero, player):ToEffect()
+	pentagram.SpriteScale = pentagram.SpriteScale * mod.ElderSign.AuraRange/100
+	pentagram.Color = Color(0,1,0,1)
+	pentagram:GetData().ElderSign = mod.ElderSign.Timeout
+    return true
+end
+mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onUseElderSign, mod.Items.ElderSign)
+end
 
 ---USE CARD/PILL---
--- Apocalypse card
+do
+---Apocalypse card
 function mod:onApocalypse(card, player) -- card, player, useflag
 	-- fill the room with poop and turn them into red poop
 	local room = game:GetRoom()
@@ -5525,7 +5622,7 @@ function mod:onApocalypse(card, player) -- card, player, useflag
 	room:SetCardAgainstHumanity()
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onApocalypse, mod.Pickups.Apocalypse)
--- oblivion card
+---oblivion card
 function mod:onOblivionCard(_, player) -- card, player, useflag
 	-- throw chaos card and replace it with oblivion card (MC_POST_TEAR_INIT)
 	local data = player:GetData()
@@ -5533,8 +5630,7 @@ function mod:onOblivionCard(_, player) -- card, player, useflag
 	player:UseCard(Card.CARD_CHAOS, myUseFlags)
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onOblivionCard, mod.Pickups.OblivionCard)
-
----King Chess
+---King Chess black
 function mod:onKingChess(_, player) -- card, player, useflag
 	-- spawn black poops
 	--SquareSpawn(player, 40, 0, EntityType.ENTITY_POOP, 15, 0)
@@ -5550,20 +5646,13 @@ function mod:onKingChess(_, player) -- card, player, useflag
 	--]]
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onKingChess, mod.Pickups.KingChess)
+---King Chess white
 function mod:onKingChessW(_, player) -- card, player, useflag
 	-- spawn white/stone poops
 	SquareSpawn(player, 40, 0, EntityType.ENTITY_POOP, 11, 0)
 	--MyGridSpawn(player, 40, GridEntityType.GRID_POOP, 6, true) --rng:RandomInt(7)
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onKingChessW, mod.Pickups.KingChessW)
-
---[[
-function mod:onInitNPC(enemy)
-	print(enemy.Type)
-	print(enemy.Variant)
-end
-mod:AddCallback(ModCallbacks.MC_POST_NPC_INIT, mod.onInitNPC)
-]]
 ---Trapezohedron
 function mod:onTrapezohedron() -- card, player, useflag
 	-- turn all trinkets in room into cracked keys
@@ -5574,16 +5663,17 @@ function mod:onTrapezohedron() -- card, player, useflag
 	end
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onTrapezohedron, mod.Pickups.Trapezohedron)
---red pill
+---red pill
 function mod:onRedPill(_, player) -- card, player, useflag
 	RedPillManager(player, mod.RedPills.DamageUp, mod.RedPills.WavyCap)
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onRedPill, mod.Pickups.RedPill)
+---red pill horse
 function mod:onRedPillHorse(_, player) -- card, player, useflag
 	RedPillManager(player, mod.RedPills.HorseDamageUp, mod.RedPills.HorseWavyCap)
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onRedPillHorse, mod.Pickups.RedPillHorse)
---domino 3|4
+---domino 3|4
 function mod:onDomino34(card, player) -- card, player, useflag
 	-- reroll items and pickups on floor
 	local rng = player:GetCardRNG(card)
@@ -5593,7 +5683,7 @@ function mod:onDomino34(card, player) -- card, player, useflag
 	game:ShakeScreen(10)
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onDomino34, mod.Pickups.Domino34)
---domino 2|5
+---domino 2|5
 function mod:onDomino25(_, player) -- card, player, useflag
 	-- respawn and reroll enemies
 	local room = game:GetRoom()
@@ -5604,7 +5694,7 @@ function mod:onDomino25(_, player) -- card, player, useflag
 	game:ShakeScreen(10)
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onDomino25, mod.Pickups.Domino25)
---domino 0|0
+---domino 0|0
 function mod:onDomino00(_, player) -- card, player, useflag
 	local enemies = Isaac.FindInRadius(player.Position, 5000, EntityPartition.ENEMY)
 	if #enemies > 0 then
@@ -5617,8 +5707,7 @@ function mod:onDomino00(_, player) -- card, player, useflag
 	game:ShakeScreen(10)
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onDomino00, mod.Pickups.Domino00)
-
---Soul of Unbidden
+---Soul of Unbidden
 function mod:onSoulUnbidden(_, player) -- card, player, useflag
 	
 	if #Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.ITEM_WISP)> 0 then
@@ -5629,7 +5718,7 @@ function mod:onSoulUnbidden(_, player) -- card, player, useflag
 	end
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onSoulUnbidden, mod.Pickups.SoulUnbidden)
---Soul of NadabAbihu
+---Soul of NadabAbihu
 function mod:onSoulNadabAbihu(_, player) -- card, player, useflag
 	local data = player:GetData()
 	-- add fire tears and explosion immunity
@@ -5640,7 +5729,7 @@ function mod:onSoulNadabAbihu(_, player) -- card, player, useflag
 	tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_HOT_BOMBS, true, 1)
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onSoulNadabAbihu, mod.Pickups.SoulNadabAbihu)
---ascender bane
+---ascender bane
 function mod:onAscenderBane(_, player) -- card, player, useflag
 	--- remove 1 broken heart
 	if player:GetBrokenHearts() > 0 then
@@ -5648,7 +5737,7 @@ function mod:onAscenderBane(_, player) -- card, player, useflag
 	end
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onAscenderBane, mod.Pickups.AscenderBane)
--- multi-cast
+---multi-cast
 function mod:onMultiCast(_, player) -- card, player, useflag
 	local activeItem = player:GetActiveItem(0)
 	-- replace mod item wisps
@@ -5661,17 +5750,19 @@ function mod:onMultiCast(_, player) -- card, player, useflag
 	end
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onMultiCast, mod.Pickups.MultiCast)
--- wish
-function mod:onWish(_, player) -- card, player, useflag
-	player:UseActiveItem(CollectibleType.COLLECTIBLE_MYSTERY_GIFT, myUseFlags)
+---wish
+function mod:onWish(_, player, useFlag) -- card, player, useflag
+	if useFlag & UseFlag.USE_MIMIC == 0 then
+		player:UseActiveItem(CollectibleType.COLLECTIBLE_MYSTERY_GIFT, myUseFlags)
+	end
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onWish, mod.Pickups.Wish)
--- offering
+---offering
 function mod:onOffering(_, player) -- card, player, useflag
 	player:UseActiveItem(CollectibleType.COLLECTIBLE_SACRIFICIAL_ALTAR, myUseFlags)
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onOffering, mod.Pickups.Offering)
--- infinite blades card
+---infinite blades card
 function mod:onInfiniteBlades(_, player) -- card, player, useflag
 	local data = player:GetData()
 	-- add knifes into stock (shoot knives)
@@ -5679,7 +5770,7 @@ function mod:onInfiniteBlades(_, player) -- card, player, useflag
 	data.InfiniteBlades = data.InfiniteBlades + mod.InfiniteBlades.MaxNumber
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onInfiniteBlades, mod.Pickups.InfiniteBlades)
--- transmutation card
+---transmutation card
 function mod:onTransmutation(_, player) -- card, player, useflag
 	--- reroll enemies and pickups
 	player:UseCard(Card.CARD_ACE_OF_SPADES, myUseFlags)
@@ -5690,20 +5781,20 @@ function mod:onTransmutation(_, player) -- card, player, useflag
 	--game:ShowHallucination(0, BackdropType.NUM_BACKDROPS)
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onTransmutation, mod.Pickups.Transmutation)
---ritual dagger card
+---ritual dagger card
 function mod:onRitualDagger(_, player) -- card, player, useflag
 	--- add mom's knife for room
 	local tempEffects = player:GetEffects()
 	tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_MOMS_KNIFE, true, 1)
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onRitualDagger, mod.Pickups.RitualDagger)
--- fusion card
+---fusion card
 function mod:onFusion(_, player) -- card, player, useflag
 	--- throw a black hole
 	player:UseActiveItem(CollectibleType.COLLECTIBLE_BLACK_HOLE, myUseFlags)
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onFusion, mod.Pickups.Fusion)
--- deus ex card
+---deus ex card
 function mod:onDeuxEx(_, player) -- card, player, useflag
 	--- add 100 luck
 	--- effects based on room type (refuses to elaborate)
@@ -5807,8 +5898,7 @@ function mod:onDeuxEx(_, player) -- card, player, useflag
 	--]]
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onDeuxEx, mod.Pickups.DeuxEx)
-
--- adrenaline card
+---adrenaline card
 function mod:onAdrenaline(_, player) -- card, player, useflag
 	--- add Adrenaline item effect for current room
 	local tempEffects = player:GetEffects()
@@ -5823,7 +5913,7 @@ function mod:onAdrenaline(_, player) -- card, player, useflag
 	end
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onAdrenaline, mod.Pickups.Adrenaline)
--- corruption card
+---corruption card
 function mod:onCorruption(_, player) -- card, player, useflag
 	--- unlimited use of current active item in room, item will be removed on entering next room
 	local data = player:GetData()
@@ -5832,7 +5922,7 @@ function mod:onCorruption(_, player) -- card, player, useflag
 	player:AddNullCostume(mod.Corruption.CostumeHead)
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onCorruption, mod.Pickups.Corruption)
--- GhostGem
+---GhostGem
 function mod:onGhostGem(_, player) -- card, player, useflag
 	-- loop in soul numbers
 	for _ = 1, mod.GhostGem.NumSouls do
@@ -5845,60 +5935,48 @@ function mod:onGhostGem(_, player) -- card, player, useflag
 	end
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onGhostGem, mod.Pickups.GhostGem)
-
-
---battlefield
+---battlefield
 function mod:onBattlefieldCard(card, player, _) -- card, player, useflag
-	mod.OutOfMap = true
 	local rng = player:GetCardRNG(card)
 	Isaac.ExecuteCommand("goto s.challenge." .. rng:RandomInt(8)+16)  --0 .. 15 - normal; 16 .. 24 - boss
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onBattlefieldCard, mod.Pickups.BattlefieldCard)
-
---treasury
+---treasury
 function mod:onTreasuryCard(card, player, _) -- card, player, useflag
-	mod.OutOfMap = true
 	local rng = player:GetCardRNG(card)
 	Isaac.ExecuteCommand("goto s.treasure." .. rng:RandomInt(56))
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onTreasuryCard, mod.Pickups.TreasuryCard)
-
---bookery
+---bookery
 function mod:onBookeryCard(card, player, _) -- card, player, useflag
-	mod.OutOfMap = true
 	local rng = player:GetCardRNG(card)
 	Isaac.ExecuteCommand("goto s.library." .. rng:RandomInt(18))
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onBookeryCard, mod.Pickups.BookeryCard)
-
---blood grove
+---blood grove
 function mod:onBloodGroveCard(card, player) -- card, player, useflag
-	mod.OutOfMap = true
 	local rng = player:GetCardRNG(card)
 	local num = rng:RandomInt(10)+31 -- 0 .. 30 / 31 .. 40 for voodoo head
 	Isaac.ExecuteCommand("goto s.curse." .. num)
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onBloodGroveCard, mod.Pickups.BloodGroveCard)
-
---storm temple
+---storm temple
 function mod:onStormTempleCard(card, player) -- card, player, useflag
-	mod.OutOfMap = true
+
 	local rng = player:GetCardRNG(card)
 	Isaac.ExecuteCommand("goto s.sacrifice." .. rng:RandomInt(13))
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onStormTempleCard, mod.Pickups.StormTempleCard)
-
---arsenal
+---arsenal
 function mod:onArsenalCard(card, player) -- card, player, useflag
-	mod.OutOfMap = true
+
 	local rng = player:GetCardRNG(card)
 	Isaac.ExecuteCommand("goto s.chest." .. rng:RandomInt(49))
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onArsenalCard, mod.Pickups.ArsenalCard)
-
--- outport
+---outport
 function mod:onOutpostCard(card, player) -- card, player, useflag
-	mod.OutOfMap = true
+
 	local rng = player:GetCardRNG(card)
 	if rng:RandomFloat() > 0.5 then
 		Isaac.ExecuteCommand("goto s.isaacs." .. rng:RandomInt(30))
@@ -5907,11 +5985,9 @@ function mod:onOutpostCard(card, player) -- card, player, useflag
 	end
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onOutpostCard, mod.Pickups.OutpostCard)
-
---ancestral crypt
+---ancestral crypt
 function mod:onCryptCard(card, player) -- card, player, useflag
 	local data = player:GetData()
-	mod.OutOfMap = true
 	local level = game:GetLevel()
 	local roomDesc = level:GetCurrentRoomDesc()
 	local rng = player:GetCardRNG(card)
@@ -5925,8 +6001,7 @@ function mod:onCryptCard(card, player) -- card, player, useflag
 	Isaac.ExecuteCommand("goto s.itemdungeon." .. num)
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onCryptCard, mod.Pickups.CryptCard)
-
---maze of memory
+---maze of memory
 function mod:onMazeMemoryCard(_, player, useFlag) -- card, player, useflag
 	if useFlag & UseFlag.USE_MIMIC == 0 then
 		local level = game:GetLevel()
@@ -5939,15 +6014,13 @@ function mod:onMazeMemoryCard(_, player, useFlag) -- card, player, useflag
 	end
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onMazeMemoryCard, mod.Pickups.MazeMemoryCard)
-
---zero stone
+---zero stone
 function mod:onZeroMilestoneCard(_, player) -- card, player, useflag
 	mod.ZeroStoneUsed = true
 	player:UseActiveItem(CollectibleType.COLLECTIBLE_GENESIS, myUseFlags)
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onZeroMilestoneCard, mod.Pickups.ZeroMilestoneCard)
-
--- pot of greed
+---pot of greed
 function mod:onBannedCard(_, player) -- card, player, useflag
 	for _ = 1, mod.BannedCard.NumCards do
 		--local subtype = itemPool:GetCard(-1, true, true, false)
@@ -5956,8 +6029,7 @@ function mod:onBannedCard(_, player) -- card, player, useflag
 	game:GetHUD():ShowFortuneText("POT OF GREED ALLOWS ME","TO DRAW TWO MORE CARDS!")
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onBannedCard, mod.Pickups.BannedCard)
-
---Decay
+---Decay
 function mod:onDecay(_, player) -- card, player, useflag
 	local redHearts = player:GetHearts()
 	local data = player:GetData()
@@ -5970,8 +6042,7 @@ function mod:onDecay(_, player) -- card, player, useflag
 	TrinketRemoveAdd(player, TrinketType.TRINKET_APPLE_OF_SODOM)
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onDecay, mod.Pickups.Decay)
-
---Domino16
+---Domino16
 function mod:onDomino16(card, player) -- card, player, useflag
 	local rng = player:GetCardRNG(card)
 	local chestTable = {50,51,52,53,54,55,56,57,58,60}
@@ -5996,50 +6067,53 @@ function mod:onDomino16(card, player) -- card, player, useflag
 	end
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onDomino16, mod.Pickups.Domino16)
----USE CARD/PILL---
+end
 
----INTEGRATIONS---
---- EID ---
+--- EID
 if EID then -- External Item Description
-		local disk_description = "Save your items. (Empty -> Full) #If you have saved items, replace them. (Full -> Empty) #MissingNo if item is missing."
-	EID:addCollectible(mod.Items.FloppyDisk, disk_description)
-	EID:addCollectible(mod.Items.FloppyDiskFull, disk_description)
+	EID:addBirthright(mod.Characters.Nadab, "Explosion immunity. #Spawns 3 random items from {{BombBeggar}} Bomb Beggar pool. #Only one can be taken.")
+	EID:addBirthright(mod.Characters.Abihu, "Fire immunity. #{{Heart}} Full health. #{{Chargeable}} Charging Blue Flame is always active.")
+	EID:addBirthright(mod.Characters.Unbidden, "Turn all {{BrokenHeart}} broken hearts into {{SoulHeart}} soul hearts. #Give all items from Item Wisps, without removing wisps.")
+	EID:addBirthright(mod.Characters.Oblivious, "Remove and prevent all curses. #No longer discharges {{Collectible"..mod.Items.Threshold.."}} Threshold after death.")
+
+	local disk_desk = "!!! SINGLE USE !!! #Save your items. #If you have saved items: replace your items by saved items. #{{Warning}} Give {{Collectible258}} MissingNo if saved item is missing."
+	EID:addCollectible(mod.Items.FloppyDisk, disk_desk)
+	EID:addCollectible(mod.Items.FloppyDiskFull, disk_desk)
 
 	EID:addCollectible(mod.Items.RedMirror,
-		"Turn nearest trinket into cracked key.")
+			"Turn nearest {{Trinket}} trinket into {{Card78}} cracked key.")
 	EID:addCollectible(mod.Items.RedLotus,
-		"Remove one broken heart and give flat 1.0 damage up at the start of the floor.")
+			"Remove one {{BrokenHeart}} broken heart and give {{Damage}} flat 1.0 damage up at the start of the floor.")
 	EID:addCollectible(mod.Items.MidasCurse,
-		"Add 3 golden hearts. #10% chance to get golden pickups. #When you lose golden heart turn everything into gold. #Curse effect (Can be removed by Black Candle): # - 100% golden pickups. # - All food-related items turn into coins if you try to pick them up.")
+			"Add 3 {{GoldenHeart}} golden hearts. #10% chance to get golden pickups. #When you lose golden heart turn everything into gold. #{{Warning}} Curse effect: # {{Warning}} 100% chance to get golden pickups. # {{Warning}} All food-related items turn into coins if you try to pick them up. #Curse effect can be removed by {{Collectible260}} Black Candle.")
 	EID:addCollectible(mod.Items.RubberDuck,
-		"+20 temporary luck when picked up. #Temporary luck up for entering unvisited room. #Temporary luck down for entering visited room. #Temporary luck can't go below player's original luck.")
+			"↑ {{Luck}} +20 temporary luck up when picked up. #↑{{Luck}} +1 luck up when entering unvisited room. #↓{{Luck}} -1 luck down when entering visited room. #Temporary luck can't go below player's original luck.")
 	EID:addCollectible(mod.Items.IvoryOil,
-		"Charge active items when entering an uncleared room for the first time.")
+			"Charge active items when entering an uncleared room for the first time.")
 	EID:addCollectible(mod.Items.BlackKnight,
-		"You can't move. #Use to jump to target marker. #Crush and knockback monsters when you land on the ground. #Destroy stone monsters.")
+			"You can't move. #Use to jump to target marker. #Crush and knockback monsters when you land on the ground. #Destroy stone monsters.")
 	EID:addCollectible(mod.Items.WhiteKnight,
-		"Use to jump to nearest enemy. #Crush and knockback monsters when you land on the ground. #Destroy stone monsters.")
+			"Use to jump to nearest enemy. #Crush and knockback monsters when you land on the ground. #Destroy stone monsters.")
 	EID:addCollectible(mod.Items.KeeperMirror,
-		"Sell chosen item or pickup in room.")
+			"Sell item or pickup in target mark. #Spawn 1 coin if no pickup was targeted")
 	EID:addCollectible(mod.Items.RedBag,
-		"Chance to drop red pickups after clearing room. #Possible pickups: red hearts, dice shards, red pills, cracked keys, red throwable bombs.")
+			"Chance to drop red pickups after clearing room. #Possible pickups: {{Heart}} red hearts, {{Card49}} dice shards, {{Pill}} red pills, {{Card78}} cracked keys, {{Bomb}} red throwable bombs. #{{Warning}} Can spawn Red Poop.")
 	EID:addCollectible(mod.Items.MeltedCandle,
-		"Tears have chance to freeze and burn enemies")
+			"Tears have a chance to wax enemies for 3 seconds. #Waxed enemy {{Freezing}} freezes and {{Burning}} burns. #When a waxed enemy dies, it leaves fire.")
 	EID:addCollectible(mod.Items.MiniPony,
-		"Grants flight and 1.5 speed while held. #On use, grants invincibility for 6 seconds. #Deal 40 contact damage per second while invincible.")
-		--"Grants flight, 2.0 speed and size down while held. #On use, grants invincibility for 6 seconds. #Deal 40 contact damage per second while invincible.")
+			"Grants flight and {{Speed}} 1.5 speed while held. #On use, grants {{Collectible77}} My Little Unicorn effect.")
 	EID:addCollectible(mod.Items.StrangeBox,
-		"Create option choice item for all items, pickups and shop items in the room.")
+			"Create {{Collectible249}} option choice item for all items, pickups and shop items in the room. #Only one can be taken.")
 	EID:addCollectible(mod.Items.RedButton,
-		"Spawn Red Button when entering room. #Activate random effect when pressed. #Can be pressed 66 times in one room.")
+			"Spawn Red Button when entering room. #Activate random pressure plate effect when pressed. #{{Warning}}After pressing 66 times, no longer appear in current room.")
 	EID:addCollectible(mod.Items.LostMirror,
-		"Apply white fireplace effect, without Holy Mantle.")
+			"Turn you into {{Player10}} soul.")
 	EID:addCollectible(mod.Items.BleedingGrimoire,
-		"Start bleeding. #Your tears add bleeding to enemies.")
+			"Start {{BleedingOut}} bleeding. #Your tears apply {{BleedingOut}} bleeding to enemies.")
 	EID:addCollectible(mod.Items.BlackBook,
-		"Apply random status effects on enemies in room. #Possible effects: Freeze (Mom's Contact); Poison; Slow; Charm; #Confusion; Midas Touch; Fear; Burn; Shrink; #Bleed; Frozen (Uranus); Magnetized; Bait (Rotten Tomato).")
+			"Apply random status effects on enemies in room. #Possible effects: {{Freezing}}Freeze; {{Poison}}Poison; {{Slow}}Slow; {{Charm}}Charm; {{Confusion}}Confusion; {{Collectible202}}Midas Touch; {{Fear}}Fear; {{Burning}}Burn; {{Collectible398}}Shrink; {{BleedingOut}}Bleed; {{Collectible596}}Frozen; {{Magnetize}}Magnetized; {{Bait}}Bait.")
 
-	local description = "In 'solved' state reroll items (similar to D6). #Have a 16% chance to reroll items into glitched items, after which it's 'scrambles', increasing it's charge bar. #In 'scrambled' state it can be used without full charge, but will reroll items into glitched items. #After fully recharging, it returns to 'solved' state."
+	local description = "In 'solved' state {{Collectible105}} reroll items. #Have a 16% chance to turn into {{Collectible".. mod.Items.RubikDiceScrambled0 .."}} 'scrambled' Rubik's Dice, increasing it's charge bar. #In 'scrambled' state it can be used without full charge, but will reroll items into {{Collectible721}} glitched items. #After fully recharging, it returns to 'solved' state."
 	EID:addCollectible(mod.Items.RubikDice, description)
 	EID:addCollectible(mod.Items.RubikDiceScrambled0, description)
 	EID:addCollectible(mod.Items.RubikDiceScrambled1, description)
@@ -6048,363 +6122,160 @@ if EID then -- External Item Description
 	EID:addCollectible(mod.Items.RubikDiceScrambled4, description)
 	EID:addCollectible(mod.Items.RubikDiceScrambled5, description)
 
-
 	EID:addCollectible(mod.Items.VHSCassette,
-		"Move to another later floor. #Void - is last possible floor. #On ascension you will be send to Home.")
+			"Move to later floor. #Void - is last possible floor. #On ascension you will be send to Home.")
 	EID:addCollectible(mod.Items.Lililith,
-		"After clearing room, chance to spawn a familiar for current floor. #Possible familiars: demon baby, lil brimstone, lil abaddon, incubus, succubus.")
+			"After clearing room, chance to spawn a familiar for current floor. #Possible familiars: demon baby, lil brimstone, lil abaddon, incubus, succubus.")
 	EID:addCollectible(mod.Items.CompoBombs,
-		"+5 bombs when picked up. #Place conjoined bombs. #Second bomb is regular bomb")
+			"+5 bombs when picked up. #Place 2 bombs at once. #Second bomb is red throwable bomb")
 	EID:addCollectible(mod.Items.MirrorBombs,
-		"+5 bombs when picked up. #When you place a bomb, copy it to opposite site of the room.")
+			"+5 bombs when picked up. #The placed bomb will be copied to the opposite side of the room.")
 	EID:addCollectible(mod.Items.GravityBombs,
-		"+3 giga bombs when picked up. #Bombs get Black Hole effect.")
+			"+1 giga bomb when picked up. #Bombs get {{Collectible512}} Black Hole effect.")
 	EID:addCollectible(mod.Items.AbihuFam,
-		"Decoy familiar. #Burn enemies on contact.")
+			"{{Collectible281}}Decoy familiar. #Can {{Burning}} burn enemies on contact.")
 	EID:addCollectible(mod.Items.NadabBody,
-		"Can be picked up and thrown. #When thrown explodes on contact.")
+			"{{Throwable}} Can be picked up and thrown. #Blocks enemy tears. #When thrown explodes on contact with enemy. #{{Warning}} The explosion can hurt you!")
 	EID:addCollectible(mod.Items.Limb,
-		"When you die and don't have any extra life, you will be turned into Soul. # - White Fireplace effect.")
+			"When you die and don't have any extra life, you will be turned into {{Player10}} soul for current level.")
 	EID:addCollectible(mod.Items.LongElk,
-		"Grants flight. #While moving leave bone spurs. #On use dash in movement direction, you will kill next contacted enemy.")
+			"Grants flight. #While moving leave {{Collectible683}} bone spurs. #On use do short dash in movement direction, and kill next contacted enemy.")
 	EID:addCollectible(mod.Items.FrostyBombs,
-		"+5 bombs when picked up. #Bombs freeze and slow down enemies. #Turn killed enemies into ice statues.")
+			"+5 bombs when picked up. #Bombs leave water creep. #Bombs {{Slow}} slow down enemies. #Turn killed enemies into ice statues.")
 	EID:addCollectible(mod.Items.VoidKarma,
-		"All stats up when entering new level. #Double it's effect if you didn't take damage on previous floor.")
+			"↑ All stats up when entering new level. #{{Damage}} +0.25 damage up #{{Tears}} +0.25 tears up #{{Range}} +2.5 range up #{{Shotspeed}} +0.1 shotspeed up #{{Speed}} +0.05 speed up #{{Luck}} +0.5 luck up #Double it's effect if you didn't take damage on previous floor.")
 	EID:addCollectible(mod.Items.CharonObol,
-		"Use 1 coin to spawn hungry soul. #If you don't have coins - pay with heart. #Remove this item if you die.")
+			"Pay {{Coin}} 1 coin to spawn {{Collectible684}} hungry soul. #Removes itself when you die.")
 	EID:addCollectible(mod.Items.Viridian,
-		"Grants flight. #Flip player's sprite.")
+			"Grants flight. #Flip player's sprite.")
 	EID:addCollectible(mod.Items.BookMemory,
-		"Erase all enemies in room from current run. #Can't erase bosses. #Add broken heart when used.")
-		--"Use to activate random effect from saved effects pool. #Saved effects pool - set of used active items, cards, runes or pills in current run. #Activated effect will be removed from saved effects pool. #Reuse item, card or pill to return it to saved effects pool. #If there isn't any saved effect, spawn Oblivion Card and turn into Memory Fragment trinket.")
+			"Erase all enemies in room from current run. #Can't erase bosses. #Add {{BrokenHeart}} broken heart when used.")
+	--"Use to activate random effect from saved effects pool. #Saved effects pool - set of used active items, cards, runes or pills in current run. #Activated effect will be removed from saved effects pool. #Reuse item, card or pill to return it to saved effects pool. #If there isn't any saved effect, spawn Oblivion Card and turn into Memory Fragment trinket.")
 	EID:addCollectible(mod.Items.MongoCells,
-		"#Copy your familiars.")
+			"Copy your familiars.")
 	EID:addCollectible(mod.Items.CosmicJam,
-		"Add item from 1 wisp. #Add Item Wisp from nearest item to player.")
-	--EID:addCollectible(mod.Items.Lobotomy,
-	--	"Erase all enemies in room from current run. #Can't erase bosses. #Add broken hearts when used. #After each use increases added broken hearts amount to 1")
+			"Add item from Item wisp to player. #Add Item Wisp from nearest item to player.")
 	EID:addCollectible(mod.Items.DMS,
-		"Enemies has 25% chance to spawn purgatory soul after death.")
+			"Enemies has 25% chance to spawn {{Collectible634}} purgatory soul after death.")
 	EID:addCollectible(mod.Items.MewGen,
-		"Activates telekinesis if don't shoot more than 5 seconds.")
+			"Grants flight. #If don't shoot more than 5 seconds, activates {{Collectible522}} Telekinesis effect.")
 	EID:addCollectible(mod.Items.ElderSign,
-		"Creates Pentagram for 3 seconds at position where you stand. #Pentagram spawn Purgatory Soul. #Freeze enemies inside pentagram.")
+			"Creates Pentagram for 3 seconds at position where you stand. #Pentagram spawn {{Collectible634}} purgatory Soul. #{{Freezing}} Freeze enemies inside pentagram.")
+	EID:addCollectible(mod.Items.Eclipse,
+		"Grants aura dealing 2 damage per tick. #Get {{Damage}} x1.5 damage boost when you have {{CurseDarkness}} Curse of Darkness.")
 
 	EID:addTrinket(mod.Trinkets.WitchPaper,
-		"Turn back time when you die. #Removes after triggering.")
+			"{{Collectible422}} Turn back time when you die. #Destroys itself after triggering.")
 	EID:addTrinket(mod.Trinkets.QueenSpades,
-		"Opens Boss Rush and Blue Womb doors while you holding this trinket. #Removes after triggering.")
-		--"Opens all alternative doors while you holding this trinket. #Removes after triggering.")
+			"Opens Alt.path, Boss Rush and Blue Womb doors while you holding this trinket.")
+	--"Opens all alternative doors while you holding this trinket. #Removes after triggering.")
 	EID:addTrinket(mod.Trinkets.RedScissors,
-		"Turn troll-bombs into red throwable bombs.")
+			"Turn troll-bombs into red throwable bombs.") -- inferior scissors, nah
 	EID:addTrinket(mod.Trinkets.Duotine,
-		"Replaces all future pills by Red pills while you holding this trinket.")
+			"Replaces all future {{Pill}} pills by Red pills while you holding this trinket.")
 	EID:addTrinket(mod.Trinkets.LostFlower,
-		"Give you full heart container when you get eternal heart. #Remove this trinket when you get hit. #Lost: activate Holy Card effect when you get eternal heart. #Lost: use Lost Mirror while holding this trinket to activate Holy Card effect.")
+			"Give you {{Heart}} full heart container when you get {{EternalHeart}} eternal heart. #Destroys itself when you take damage. #{{Player10}}{{Player31}} Lost: activate {{Card51}} Holy Card effect when you get eternal heart. #{{Player10}}{{Player31}} Lost: use Lost Mirror while holding this trinket to activate {{Card51}} Holy Card effect.")
 	EID:addTrinket(mod.Trinkets.TeaBag,
-		"Remove poison clouds near player.")
+			"Remove poison clouds near player.")
 	EID:addTrinket(mod.Trinkets.MilkTeeth,
-		"Enemies have a chance to drop vanishing coins when they die.")
+			"Enemies have a 15% chance to drop vanishing {{Coin}} coins when they die.")
 	EID:addTrinket(mod.Trinkets.BobTongue,
-		"Bombs get toxic aura.")
+			"Bombs get toxic aura, similar to {{Collectible446}} Dead Tooth effect.")
 	EID:addTrinket(mod.Trinkets.BinderClip,
-		"Increase chance to get double hearts, coins, keys and bombs. #Pickups with option choices no longer disappear.")
+			"10% chance to get double hearts, coins, keys and bombs. #Pickups with {{Collectible670}} option choices no longer disappear.")
 	EID:addTrinket(mod.Trinkets.MemoryFragment,
-		"Spawn last 3 used cards, runes, pills at the start of next floor.") -- +1 golden/mombox/stackable
+			"Spawn last 3 used {{Card}}{{Rune}}{{Pill}} cards, runes, pills at the start of next floor.") -- +1 golden/mombox/stackable
 	EID:addTrinket(mod.Trinkets.AbyssCart,
-		"If you have familiar when you die, remove him, drop eternal heart and revive you. #Removes after triggering.")
+			"If you have familiar when you die, remove him, drop {{EternalHeart}} eternal heart and revive you. #Destroys itself after triggering.")
 	EID:addTrinket(mod.Trinkets.RubikCubelet,
-		"Chance to reroll items into glitched items when you take damage")
+			"33% chance to reroll items into {{Collectible721}} glitched items when you take damage.")
 	EID:addTrinket(mod.Trinkets.TeaFungus,
-		"Rooms are flooded.")
+			"Rooms are flooded.")
 	EID:addTrinket(mod.Trinkets.DeadEgg,
-		"Spawn dead bird for 10 seconds when bomb explodes.")
-
+			"Spawn dead bird familiar for 10 seconds when bomb explodes.")
 
 	EID:addCard(mod.Pickups.OblivionCard,
-		"Throwable eraser card. #Erase enemies for current level")
+			"Throwable eraser card. #Erase enemies for current level.")
 	EID:addCard(mod.Pickups.Apocalypse,
-		"Fills the whole room with red poop.")
+			"Fills the whole room with red poop.")
 	EID:addCard(mod.Pickups.KingChess,
-		"Poop around you.")
+			"Poop around you.")
 	EID:addCard(mod.Pickups.KingChessW,
-		"Poop around you.")
+			"Poop around you.")
 	EID:addCard(mod.Pickups.Trapezohedron,
-		"Turn all trinkets into cracked keys.")
+			"Turn all {{Trinket}} trinkets into {{Card78}} cracked keys.")
 	EID:addCard(mod.Pickups.Domino34,
-		"Reroll items and pickups on current level.")
+			"Reroll items and pickups on current level.")
 	EID:addCard(mod.Pickups.Domino25,
-		"Respawn and reroll enemies in current room.")
+			"Respawn and reroll enemies in current room.")
 	EID:addCard(mod.Pickups.SoulUnbidden, -- The End?
-		"Add items from all item wisps to player. #Else, add item wisps from items in room.")
-	--EID:addCard(mod.Pickups.) --
-	--  "Add Items to player from all Item Wisps.")
+			"Add items from all item wisps to player. #If you don't have any item wisps, add item wisps from items in room.")
 
 	EID:addCard(mod.Pickups.SoulNadabAbihu,
-		"Fire and Explosion immunity. #Fire Mind and Hot Bombs effect for current room.")
+			"Fire and Explosion immunity. #{{Collectible257}} Fire Mind and {{Collectible256}} Hot Bombs effect for current room.")
 	EID:addCard(mod.Pickups.AscenderBane,
-		"Remove one broken heart.")
+			"Remove one {{BrokenHeart}} broken heart.")
 	EID:addCard(mod.Pickups.MultiCast,
-		"Spawn 3 wisps based on your active item. #Spawn regular wisps if you don't have an active item")
+			"Spawn 3 wisps based on your active item. #Spawn regular wisps if you don't have an active item.")
 	EID:addCard(mod.Pickups.Wish,
-		"Activate Mystery Gift.")
+			"{{Collectible515}} Mystery Gift effect.")
 	EID:addCard(mod.Pickups.Offering,
-		"Activate Sacrificial Altar.")
+			"{{Collectible536}} Sacrificial Altar effect.")
 	EID:addCard(mod.Pickups.InfiniteBlades,
-		"Shoot 28 knives in firing direction.")
+			"Shoot 28 knives in firing direction.")
 
 	EID:addCard(mod.Pickups.Transmutation,
-		"Reroll pickups and enemies into random pickups.")
+			"Reroll pickups and enemies into random pickups.")
 	EID:addCard(mod.Pickups.RitualDagger,
-		"Grants Mom's Knife for current room.")
+			"{{Collectible114}} Mom's Knife for current room.")
 	EID:addCard(mod.Pickups.Fusion,
-		"Throw a Black Hole")
+			"{{Collectible512}} Throw a Black Hole.")
 	EID:addCard(mod.Pickups.DeuxEx,
-		"Random effects based on room type. #Add 100 luck on regular rooms. #Item reroll on Treasure, Library. #Coupon on Shop, Devil deal. #Full heal on Sacrifice. #Teleport from Error, Cursed. #")
+			"↑ {{Luck}} +100 luck up for current room.")
 	EID:addCard(mod.Pickups.Adrenaline,
-		"Turn all your red health into batteries (full heart = battery). #Adrenaline item effect for current room.")
+			"Turn all your {{Heart}} red health into {{Battery}} batteries. #{{Collectible493}} Adrenaline effect for current room.")
 	EID:addCard(mod.Pickups.Corruption,
-		"You can use your active item unlimited times in current room. #On next room active item on main slot will be removed. #Pocket items can't be removed.")
+			"You can use your active item unlimited times in current room. #On next room, active item on main slot will be removed.") --{{Active1}}
 
 	EID:addCard(mod.Pickups.GhostGem,
-		"Spawn 4 purgatory souls.")
+			"Spawn 4 {{Collectible634}} purgatory souls.")
 	EID:addCard(mod.Pickups.BannedCard,
-		"Spawn 2 cards or runes.")
+			"Spawn 2 {{Card}} cards or {{Rune}} runes.")
 
 	EID:addCard(mod.Pickups.Domino16,
-		"Spawn 6 pickups of same type.")
+			"Spawn 6 pickups of same type.")
 	EID:addCard(mod.Pickups.BattlefieldCard,
-		"Teleport to out of map Boss Challenge.")
+			"Teleport to out of map {{ChallengeRoom}} Boss Challenge.")
 	EID:addCard(mod.Pickups.TreasuryCard,
-		"Teleport to out of map Treasury.")
+			"Teleport to out of map {{TreasureRoom}} Treasury.")
 	EID:addCard(mod.Pickups.BookeryCard,
-		"Teleport to out of map Library.")
+			"Teleport to out of map {{Library}} Library.")
 	EID:addCard(mod.Pickups.Decay,
-		"Turn your red hearts into rotten hearts. #Apply Apple of Sodom trinket effect for current room.")
+			"Turn your {{Heart}} red hearts into {{RottenHeart}} rotten hearts. #{{Trinket140}} Apple of Sodom effect for current room.")
 	EID:addCard(mod.Pickups.BloodGroveCard,
-		"Teleport to out of map Curse Room.")
+			"Teleport to out of map {{CursedRoom}} Curse Room.")
 	EID:addCard(mod.Pickups.StormTempleCard,
-		"Teleport to out of map Sacrifice Room.")
+			"Teleport to out of map {{SacrificeRoom}} Sacrifice Room.")
 	EID:addCard(mod.Pickups.ArsenalCard,
-		"Teleport to out of map Chest Room.")
+			"Teleport to out of map {{ChestRoom}} Chest Room.")
 	EID:addCard(mod.Pickups.OutpostCard,
-		"Teleport to out of map Bedroom.")
+			"Teleport to out of map {{IsaacsRoom}}{{BarrenRoom}} Bedroom.")
 	EID:addCard(mod.Pickups.CryptCard,
-		"Teleport to out of map Dungeon.")
+			"Teleport to out of map {{LadderRoom}} Dungeon.")
 	EID:addCard(mod.Pickups.MazeMemoryCard,
-		"Teleport to out of map room with 18 items from random pools. #You can pick up only one. #Apply Curse of Blind for current level.")
+			"Teleport to out of map {{TreasureRoom}} room with 18 items from random pools. #Only one can be taken. #Apply {{CurseBlind}} Curse of Blind for current level.")
 	EID:addCard(mod.Pickups.ZeroMilestoneCard,
-		"Genesis effect. #Next level is Void.")
+			"{{Collectible622}} Genesis effect. #Next level is Void.")
 
 	EID:addCard(mod.Pickups.RedPill,
-		"Grants tmporary 10.8 damage. #Apply 2 layers of Wavy Cap effect.")
+			"Temporary ↑ {{Damage}} +10.8 Damage up. #Damage up slowly fades away similarly to {{Collectible621}} Red Stew. #Apply 2 layers of {{Collectible582}} Wavy Cap effect. #While you have temporary Damage Up, entering a room with enemies increase {Collectible582}} Wavy Cap effect.")
 	EID:addCard(mod.Pickups.RedPillHorse,
-		"Grants tmporary 21.6 damage. #Apply 4 layers of Wavy Cap effect.")
+			"Temporary ↑ {{Damage}} +21.6 Damage up. #Damage up slowly fades away similarly to {{Collectible621}} Red Stew. #Apply 4 layers of {{Collectible582}} Wavy Cap effect. #While you have temporary Damage Up, entering a room with enemies increase {Collectible582}} Wavy Cap effect.")
 
 	--EID:addPill(mod.RedPills.RedEffect,
 	--	"Grants tmporary 10.8 damage. #Apply 2 layers of Wavy Cap effect. #Horse Pill doubles all effects.")
 end
---- EID ---
----INTEGRATIONS---
 -----------------------------------------------------------------------------------------
-
-
---- Elder Sign
-function mod:onUseElderSign(_, _, player)
-	--[[
-	local pent = Isaac.Spawn(EntityType.ENTITY_EFFECT, 144, 1, player.Position, Vector.Zero, player):ToEffect()
-	pent.SpriteScale = pent.SpriteScale * mod.ElderSign.AuraRange/100
-	pent.Color = Color(0,1,0,1)
-	local pent = Isaac.Spawn(EntityType.ENTITY_EFFECT, 34, 0, player.Position, Vector.Zero, player):ToEffect()
-	pent.Color = Color(0,1,0,1)
-	--]]
-    local pentagram = Isaac.Spawn(EntityType.ENTITY_EFFECT, mod.ElderSign.Pentagram, 0, player.Position, Vector.Zero, player):ToEffect()
-	pentagram.SpriteScale = pentagram.SpriteScale * mod.ElderSign.AuraRange/100
-	pentagram.Color = Color(0,1,0,1)
-	pentagram:GetData().ElderSign = mod.ElderSign.Timeout
-    return true
-end
-mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onUseElderSign, mod.Items.ElderSign)
-
---- Elder Sign
-function mod:onElderSignPentagramUpdate(pentagram)
-	if pentagram:GetData().ElderSign and pentagram.SpawnerEntity then
-		if pentagram.FrameCount == pentagram:GetData().ElderSign then
-			local purgesoul = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PURGATORY, 1, pentagram.Position, Vector.Zero, player):ToEffect() -- subtype = 0 is rift, 1 is soul
-			purgesoul.Color = Color(0.2,0.5,0.2,1)
-		end
-		-- get enemies in range
-		local enemies = Isaac.FindInRadius(pentagram.Position, mod.ElderSign.AuraRange-10, EntityPartition.ENEMY)
-		if #enemies > 0 then
-			for _, enemy in pairs(enemies) do
-				if enemy:IsVulnerableEnemy() and enemy:IsActiveEnemy() then
-					enemy:AddFreeze(EntityRef(pentagram.SpawnerEntity), 1)
-				end
-			end
-		end
-	end
-end
-mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onElderSignPentagramUpdate, mod.ElderSign.Pentagram)
-
---[[
-function mod:onInitEffect(pentagram)
-	print(pentagram.Type, pentagram.Variant, pentagram.SubType)
-end
-mod:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, mod.onInitEffect)
---]]
-
--- lil gish
--- rotten baby
--- juicy sack
--- boiled baby
--- lil loki
--- multidim baby
--- robo baby			-- tech
--- robo baby 2			-- tech 2
--- seraphim
--- lil abaddon
--- lil monstro
--- demon baby
--- bot fly				-- lost contact
--- brother bobby
--- sister maggy
--- mongo baby			-- ?
--- cain eye
--- fate reward
--- bloodshot eye
--- buddy box
--- fruit plum			-- neptune
--- lil portal
--- lil spewer
-
-mod.MongoCells = {}
-mod.MongoCells.HeadlessCreepFrame = 8
-mod.MongoCells.DryBabyChance = 0.33
-mod.MongoCells.FartBabyChance = 0.33
-mod.MongoCells.FartBabyBeans = {CollectibleType.COLLECTIBLE_BEAN, CollectibleType.COLLECTIBLE_BUTTER_BEAN, CollectibleType.COLLECTIBLE_KIDNEY_BEAN}
-mod.MongoCells.DepressionCreepFrame = 8
-mod.MongoCells.DepressionLightChance = 0.33
-mod.MongoCells.BBFDamage = 100
-
-local function AddFamiliarEffect(player, pointer, babyItem, effectItem)
-	local tempEffects = player:GetEffects()
-	if not pointer and (player:HasCollectible(babyItem) or tempEffects:HasCollectibleEffect(babyItem)) then
-		pointer = true
-		tempEffects:AddCollectibleEffect(effectItem, false)
-	elseif pointer and not player:HasCollectible(babyItem) and not tempEffects:HasCollectibleEffect(babyItem) then
-		pointer = false
-		tempEffects:RemoveCollectibleEffect(effectItem)
-	end
-	return pointer
-end
-
--- player effects
-function mod:onPEffectUpdate2(player)
-	local data = player:GetData()
-	local tempEffects = player:GetEffects()
-
-	if player:HasCollectible(mod.Items.MongoCells) and not player:HasCurseMistEffect() then
-		if game:GetFrameCount() %mod.MongoCells.HeadlessCreepFrame == 0 then
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_HEADLESS_BABY) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_HEADLESS_BABY) then
-				Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED, 0, player.Position, Vector.Zero, player)
-			end
-		end
-		--[
-		if game:GetFrameCount() %mod.MongoCells.DepressionCreepFrame == 0 then
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_DEPRESSION) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_DEPRESSION) then
-				creep = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_HOLYWATER_TRAIL, 0, player.Position, Vector.Zero, player):ToEffect()
-				creep.SpriteScale = creep.SpriteScale * 0.1
-			end
-		end
-		--]
-		data.MongoSteven = AddFamiliarEffect(player, data.MongoSteven, CollectibleType.COLLECTIBLE_LITTLE_STEVEN, CollectibleType.COLLECTIBLE_SPOON_BENDER)
-		data.MongoHarlequin = AddFamiliarEffect(player, data.MongoHarlequin, CollectibleType.COLLECTIBLE_HARLEQUIN_BABY, CollectibleType.COLLECTIBLE_THE_WIZ)
-		data.MongoFreezer = AddFamiliarEffect(player, data.MongoFreezer, CollectibleType.COLLECTIBLE_FREEZER_BABY, CollectibleType.COLLECTIBLE_URANUS)
-		data.MongoGhost = AddFamiliarEffect(player, data.MongoGhost, CollectibleType.COLLECTIBLE_GHOST_BABY, CollectibleType.COLLECTIBLE_OUIJA_BOARD)
-		data.MongoAbel = AddFamiliarEffect(player, data.MongoAbel, CollectibleType.COLLECTIBLE_ABEL, CollectibleType.COLLECTIBLE_MY_REFLECTION)
-		-- COLLECTIBLE_3_DOLLAR_BILL
-		data.MongoRainbow = AddFamiliarEffect(player, data.MongoRainbow, CollectibleType.COLLECTIBLE_RAINBOW_BABY, CollectibleType.COLLECTIBLE_FRUIT_CAKE)
-		data.MongoBrimstone = AddFamiliarEffect(player, data.MongoBrimstone, CollectibleType.COLLECTIBLE_LIL_BRIMSTONE, CollectibleType.COLLECTIBLE_BRIMSTONE)
-		if GetItemsCount(player, CollectibleType.COLLECTIBLE_BALL_OF_BANDAGES) > 1 then
-			data.MongoBallBandage = AddFamiliarEffect(player, data.MongoBallBandage, CollectibleType.COLLECTIBLE_BALL_OF_BANDAGES, CollectibleType.COLLECTIBLE_MOMS_EYESHADOW)
-		end
-		data.MongoHaunt = AddFamiliarEffect(player, data.MongoHaunt, CollectibleType.COLLECTIBLE_LIL_HAUNT, CollectibleType.COLLECTIBLE_MOMS_PERFUME)
-		-- COLLECTIBLE_VENUS
-		data.MongoSissy = AddFamiliarEffect(player, data.MongoSissy, CollectibleType.COLLECTIBLE_SISSY_LONGLEGS, CollectibleType.COLLECTIBLE_MOMS_WIG)
-	end
-end
-mod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, mod.onPEffectUpdate2)
-
---new room
-function mod:onNewRoom2()
-	--player
-	for playerNum = 0, game:GetNumPlayers()-1 do
-		local player = game:GetPlayer(playerNum)
-		local data = player:GetData()
-		local tempEffects = player:GetEffects()
-		if not player:HasCurseMistEffect() then
-			if data.MongoSteven then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_SPOON_BENDER, false) end
-			if data.MongoHarlequin then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_THE_WIZ, false) end
-			if data.MongoFreezer then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_URANUS, false) end
-			if data.MongoGhost then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_OUIJA_BOARD, false) end
-			if data.MongoAbel then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_MY_REFLECTION, false) end
-			if data.MongoRainbow then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_FRUIT_CAKE, false) end
-			if data.MongoBrimstone then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_BRIMSTONE, false) end
-			if data.MongoBallBandage then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_MOMS_EYESHADOW, false) end
-			if data.MongoHaunt then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_MOMS_PERFUME, false) end
-			if data.MongoSissy then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_MOMS_WIG, false) end
-		end
-	end
-end
-mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, mod.onNewRoom2)
-
-function mod:onPlayerTakeDamage2(entity, _, flags) --entity, amount, flags, source, countdown
-	local player = entity:ToPlayer()
-	local tempEffects = player:GetEffects()
-	if not player:HasCurseMistEffect() and (flags & DamageFlag.DAMAGE_NO_PENALTIES == 0) and (flags & DamageFlag.DAMAGE_RED_HEARTS == 0) then
-		if player:HasCollectible(mod.Items.MongoCells) then
-			local rng = player:GetCollectibleRNG(mod.Items.MongoCells)
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_DRY_BABY) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_DRY_BABY) then
-				if rng:RandomFloat() < mod.MongoCells.DryBabyChance then
-					player:UseActiveItem(CollectibleType.COLLECTIBLE_NECRONOMICON, myUseFlags)
-				end
-			end
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_FARTING_BABY) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_FARTING_BABY) then
-				if rng:RandomFloat() < mod.MongoCells.DryBabyChance then
-					local bean = mod.MongoCells.FartBabyBeans[rng:RandomInt(#mod.MongoCells.FartBabyBeans)+1]
-					player:UseActiveItem(bean, myUseFlags)
-				end
-			end
-
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_BBF) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_BBF) then
-				game:BombExplosionEffects(player.Position, mod.MongoCells.BBFDamage, player:GetBombFlags(), Color.Default, player, 1, true, false, DamageFlag.DAMAGE_EXPLOSION)
-			end
-
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_BOBS_BRAIN) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_BOBS_BRAIN) then
-				game:BombExplosionEffects(player.Position, mod.MongoCells.BBFDamage, player:GetBombFlags(), Color.Default, player, 1, true, false, DamageFlag.DAMAGE_EXPLOSION)
-				local cloud = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.SMOKE_CLOUD, 0, player.Position, Vector.Zero, player):ToEffect()
-				cloud:SetTimeout(150)
-			end
-
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_HOLY_WATER) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_WATER) then
-				Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_HOLYWATER, 0, player.Position, Vector.Zero, player):SetColor(Color(1,1,1,0), 5, 1, false, false)
-			end
-
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_DEPRESSION) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_DEPRESSION) then
-				if rng:RandomFloat() < mod.MongoCells.DepressionLightChance then
-					Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 0, player.Position, Vector.Zero, player)
-				end
-			end
-
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_RAZOR) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_MOMS_RAZOR) then
-				player:AddEntityFlags(EntityFlag.FLAG_BLEED_OUT)
-			end
-
-		end
-	end
-end
-mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, mod.onPlayerTakeDamage2, EntityType.ENTITY_PLAYER)
 
 local function ExplosionEffect(player, bombPos, bombDamage, bombFlags)
 	local data = player:GetData()
@@ -6469,7 +6340,7 @@ local function ExplosionEffect(player, bombPos, bombDamage, bombFlags)
 		holeData.GravityGridRange = mod.GravityBombs.AttractorGridRange
 	end
 
---[[
+	--[[
 	if player:HasCollectible(mod.Items.DiceBombs) then
 		DiceyReroll(player:GetCollectibleRNG(mod.Items.DiceBombs), bombPos, mod.DiceBombs.AreaRadius)
 	end
@@ -7593,7 +7464,6 @@ local function GodHeadAura(player)
 	--]
 end
 
-
 local function TechDot5Shot(player)
 	local laser = player:FireTechXLaser(player.Position, Vector.Zero, player.TearRange/2, player, 1):ToLaser()
 	--local laser = player:FireTechLaser(player.Position, LaserOffset.LASER_TECH5_OFFSET, player:GetShootingInput(), false, false, player, 1)
@@ -7617,7 +7487,6 @@ local function WeaponAura(player, auraPos, frameCount, maxCharge, range, blockLa
 	end
 end
 
-
 local function Technology2Aura(player)
 	local range = player.TearRange*0.33
 	local laser = player:FireTechXLaser(player.Position, Vector.Zero, range, player, 1):ToLaser()
@@ -7628,7 +7497,6 @@ local function Technology2Aura(player)
 	--laser.Color = mod.ObliviousData.Stats.LASER_COLOR
 	--WhatSoundIsIt()
 end
-
 
 function mod:onLaserUpdate(laser) -- low
 	local laserData = laser:GetData()
@@ -7691,7 +7559,6 @@ function mod:onLaserUpdate(laser) -- low
 end
 mod:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, mod.onLaserUpdate )
 
-
 ---KNIFE
 function mod:onKnifeUpdate(knife, _) -- low
 	if knife.SpawnerEntity and knife.SpawnerEntity:ToPlayer() then
@@ -7704,7 +7571,6 @@ function mod:onKnifeUpdate(knife, _) -- low
 	end
 end
 mod:AddCallback(ModCallbacks.MC_PRE_KNIFE_COLLISION, mod.onKnifeUpdate) --KnifeSubType --MC_POST_KNIFE_UPDATE
----KNIFE
 
 ---FETUS BOMB
 function mod:onFetusBombUpdate(bomb) -- low
@@ -7716,10 +7582,8 @@ function mod:onFetusBombUpdate(bomb) -- low
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, mod.onFetusBombUpdate)
----FETUS BOMB
 
 ---FETUS TEAR
---[
 function mod:onTearUpdate(tear)
 	if tear.SpawnerEntity and tear.SpawnerEntity:ToPlayer() and tear.SpawnerEntity:ToPlayer():GetPlayerType() == mod.Characters.Oblivious then
 		local player = tear.SpawnerEntity:ToPlayer()
@@ -7738,11 +7602,7 @@ function mod:onTearUpdate(tear)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, mod.onTearUpdate)
---]
----FETUS TEAR
 
-
---[
 ---Target Mark
 function mod:onTargetEffectUpdate(effect)
 	if effect.SpawnerEntity and effect.SpawnerEntity:ToPlayer() and effect.SpawnerEntity:ToPlayer():GetPlayerType() == mod.Characters.Oblivious then
@@ -7754,9 +7614,8 @@ function mod:onTargetEffectUpdate(effect)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onTargetEffectUpdate, EffectVariant.TARGET)
----Target Mark
---]
 
+---Target Occult
 function mod:onTargetEffectUpdate(effect)
 	if effect.SpawnerEntity and effect.SpawnerEntity:ToPlayer() and effect.SpawnerEntity:ToPlayer():GetPlayerType() == mod.Characters.Oblivious then
 		local player = effect.SpawnerEntity:ToPlayer()
@@ -7766,8 +7625,6 @@ function mod:onTargetEffectUpdate(effect)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onTargetEffectUpdate, EffectVariant.OCCULT_TARGET)
----Target Occult
---]
 
 function mod:onPEffectUpdate3(player)
 	local level = game:GetLevel()
@@ -8562,7 +8419,7 @@ function mod:onUpdate2()
 	for playerNum = 0, game:GetNumPlayers()-1 do
 		local player = game:GetPlayer(playerNum):ToPlayer()
 		local data = player:GetData()
-		if player:GetPlayerType() == mod.Characters.Oblivious and not player:HasCollectible(mod.Items.Threshold) and player:CanAddCollectible(mod.Items.Threshold) and not player:HasCurseMistEffect() then
+		if player:GetPlayerType() == mod.Characters.Oblivious and not player:HasCollectible(mod.Items.Threshold) and player:CanAddCollectible(mod.Items.Threshold) and not player:HasCurseMistEffect() and not player:IsCoopGhost() then
 			player:SetPocketActiveItem(mod.Items.Threshold, ActiveSlot.SLOT_POCKET, false)
 		end
 
@@ -8891,7 +8748,7 @@ function mod:onPlayerRender(player) --renderOffset
 end
 mod:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, mod.onPlayerRender)
 
-function mod:onPlayerTakeDamage(entity,_, flags) --entity, amount, flags, source, countdown
+function mod:onPlayerTakeDamage(entity, _, flags) --entity, amount, flags, source, countdown
 	--- abihu drops nadab when you take damage, so set holding to -1
 	local player = entity:ToPlayer()
 	if player:GetPlayerType() == mod.Characters.Nadab and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and (flags & DamageFlag.DAMAGE_EXPLOSION == DamageFlag.DAMAGE_EXPLOSION or flags & DamageFlag.DAMAGE_TNT == DamageFlag.DAMAGE_TNT) then
@@ -8984,11 +8841,9 @@ function mod:onAbihuFlame(flame)
 			local nearestNPC = GetNearestEnemy(flame.Position, 120)
 			flame:AddVelocity((nearestNPC - flame.Position):Resized(1))
 		end
-
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onAbihuFlame, EffectVariant.BLUE_FLAME)
-
 
 function mod:onAbihuFlameDamage(entity, _, _, source, _)
 	if entity:IsVulnerableEnemy() and entity:IsActiveEnemy() and source.Entity and source.Entity:ToEffect() then
@@ -9373,7 +9228,6 @@ mod:AddCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, mod.onRoomClear2)
 --]]
 end
 
-do
 ---EXECUTE COMMAND---
 function mod:onExecuteCommand(command, args)
 	--- console commands ---
@@ -9388,13 +9242,12 @@ function mod:onExecuteCommand(command, args)
 			print("finish Wax Hearts")
 			print("finish curses UI")
 			print("Abihu flame synergy")
-			print("Mongo Cells full desc")
-			print("EID russian")
+			print("Mongo Cells effects full desc")
 		elseif args == "debug" then
 			if debug then
-				debug = true
-			else
 				debug = false
+			else
+				debug = true
 			end
 			print('debug:', debug)
 		--[[
@@ -9440,7 +9293,6 @@ function mod:onExecuteCommand(command, args)
 end
 mod:AddCallback(ModCallbacks.MC_EXECUTE_CMD, mod.onExecuteCommand)
 ---EXECUTE COMMAND---
-end
 
 --[[
 shaders to flip by screen PositionX
@@ -9473,5 +9325,173 @@ if #mamaMega > 0 then
 end
 --]]
 
---5989  check domino 1/6 spawn of pickups -1
--- banned card check use
+--[[
+check unbidden with maze of memory / battlefield
+
+check binder clip
+
+check a.prism with ludo (4176)
+
+check domino 1/6 spawn of pickups -1 (5989)
+
+banned card check use
+
+local room = game:GetRoom()
+if not room:HasCurseMist() then
+
+if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+
+beggars:
+Mongo Beggar - take 1 coin, chance to add familiar for current level (Monster Manual). has a chance to prize: [mongo baby]. if killed spawn blended hearts
+Zealot Beggar (Pandora Box Beggar) - can be interacted for free. on interaction give random curse and item wisps. if killed spawn enemy ghost.
+Glitched Beggar - take random pickup [coin, key, bomb]. has a chance to prize: [glitched item (TMTRAINER)] Guaranteed to give prize after total 10 interactions. Leaves as Terminator.
+Box Beggar (Dungeon Beggar) - take 1 coin, chance to activate random pressure plate effect. has a chance to prize: [dice items]. Guaranteed to give 3 dice shards after total 10 no prize interactions.
+Delirious beggar - take 1 coin, spawn random friendly charmed monster
+Hunter Beggar - take 1 coin, gives death list mark on next room for each coin. death list marks only for current level.
+Suck Beggar - tale hearts, gives random blood clot familiars
+
+slot machines:
+Iron Maiden - 1 time interaction, gives 1 broken heart and cricket's head damage up
+Toilet - take 1 coin, can drop 1-2 dip familiars. chance to gives random poop transformation item.
+--]]
+
+--mod.Trinkets.Penance
+
+mod.Penance = {}
+mod.Penance.Chance = 0.1
+mod.Penance.Effect = EffectVariant.REDEMPTION
+mod.Penance.Color = Color(1.25, 0.05, 0.15, 1, 0, 0, 0)
+
+
+function mod:onNewRoom()
+	--player
+	for playerNum = 0, game:GetNumPlayers()-1 do
+		local player = game:GetPlayer(playerNum)
+		if not player:HasCurseMistEffect() and not player:IsCoopGhost() and not room:IsClear() then
+			if player:HasTrinket(mod.Trinkets.Penance) then
+				local rngTrinket = player:GetTrinketRNG(mod.Trinkets.Penance)
+				for _, entity in pairs(Isaac.GetRoomEntities()) do
+					if entity:ToNPC() and entity:IsActiveEnemy() and entity:IsVulnerableEnemy() and not entity:GetData().PenanceRedCross and rngTrinket:RandomFloat() < mod.Penance.Chance then
+						entity:GetData().PenanceRedCross = true
+						local redCross = Isaac.Spawn(EntityType.ENTITY_EFFECT, mod.Penance.Effect, 0, entity.Position, Vector.Zero, nil):ToEffect()
+						redCross.Color = mod.Penance.Color
+						redCross:GetData().PenanceRedCross = true
+						redCross.Parent = entity
+					end
+				end
+			end
+		end
+	end
+end
+mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, mod.onNewRoom)
+
+function mod:onNPCDeath2(entity)
+	if entity:GetData().PenanceRedCross then
+		local variant = 4
+		local timeout = 30
+		local redLaser = Isaac.Spawn(EntityType.ENTITY_LASER, variant, 0, entity.Position, Vector.Zero, nil):ToEffect()
+		redLaser:SetTimeout(timeout)
+		--.AngleDegrees
+		--:ShootAngle(Variant, SourcePos, AngleDegrees, Timeout, PosOffset, Source)
+		redLaser:ShootAngle(variant, redLaser.Position, 90, timeout, Vector.Zero, nil)
+		redLaser:ShootAngle(variant, redLaser.Position, 180, timeout, Vector.Zero, nil)
+		redLaser:ShootAngle(variant, redLaser.Position, 270, timeout, Vector.Zero, nil)
+	end
+end
+mod:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, mod.onNPCDeath2)
+
+function mod:onRedCrossEffect(effect)
+	if effect:GetData().PenanceRedCross then
+		if effect.Parent then
+			effect:FollowParent(effect.Parent)
+			--effect.Position = effect.Parent.Position
+		else
+			effect:Remove()
+		end
+	end
+end
+mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onRedCrossEffect, mod.Penance.Effect)
+
+
+--- Eclipse
+local function EclipseAura(player)
+	local data = player:GetData()
+
+	-- delay - firerate analog
+	local maxCharge = math.floor(player.MaxFireDelay) + mod.Eclipse.DamageDelay
+	data.EclipseDamageDelay = data.EclipseDamageDelay or 0
+	if data.EclipseDamageDelay < maxCharge then data.EclipseDamageDelay = data.EclipseDamageDelay + 1 end
+
+	-- damage boosts count (work only with Curse of Darkness)
+	data.EclipseBoost = data.EclipseBoost or 0
+	if data.EclipseBoost > 0 and game:GetLevel():GetCurses() & LevelCurse.CURSE_OF_DARKNESS == 0 then
+		data.EclipseBoost = 0
+	end
+
+	-- dark aura
+	local pos = player.Position
+	local range = mod.Eclipse.AuraRange
+	local glowa = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.HALO, 2, pos, Vector.Zero, player):ToEffect()
+	glowa:GetData().EclipseAura = true
+	glowa.SpriteScale = glowa.SpriteScale * range/100
+	glowa.Color = Color(0,0,0,1)
+
+	-- do pulse damage to enemies in aura range
+	if player:GetFireDirection() == -1 and data.EclipseDamageDelay >= maxCharge then
+		local enemies = Isaac.FindInRadius(pos, range, EntityPartition.ENEMY)
+		local pulse = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.HALO, 8, pos, Vector.Zero, player):ToEffect()
+		pulse.SpriteScale = pulse.SpriteScale * range/100
+		if #enemies > 0 then
+			for _, enemy in pairs(enemies) do
+				if enemy:IsVulnerableEnemy() and enemy:IsActiveEnemy() then
+					enemy:TakeDamage(player.Damage, 0, EntityRef(player), 1)
+					enemy:AddVelocity((enemy.Position - pos):Resized(player.ShotSpeed * mod.Eclipse.Knockback))
+				end
+			end
+		end
+	end
+end
+
+--- Eclipse
+function mod:onEclipseHaloUpdate(effect)
+	-- check if it's right aura and curse of darkness is active
+	if effect:GetData().EclipseAura and game:GetLevel():GetCurses() & LevelCurse.CURSE_OF_DARKNESS > 0 then
+		-- get all players in room/game
+		local players = Isaac.FindByType(EntityType.ENTITY_PLAYER)
+		if #players > 0 then
+			for _, player in pairs(players) do
+				player = player:ToPlayer()
+				local data = player:GetData()
+				-- if they don't have damage boost set it to 0
+				data.EclipseBoost = data.EclipseBoost or 0
+				-- check distance and add/remove boost count
+				if player.Position:Distance(effect.Position) < mod.Eclipse.AuraRange then
+					data.EclipseBoost = data.EclipseBoost + 1
+				elseif data.EclipseBoost > 0 then
+					data.EclipseBoost = data.EclipseBoost - 1
+				end
+				-- call evaluate
+				player:AddCacheFlags(CacheFlag.CACHE_DAMAGE)
+				player:EvaluateItems()
+			end
+		end
+	end
+end
+mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onEclipseHaloUpdate, EffectVariant.HALO)
+
+function mod:onCache22(player, cacheFlag)
+	local data = player:GetData()
+    if cacheFlag == CacheFlag.CACHE_DAMAGE and data.EclipseBoost and data.EclipseBoost > 0 then
+	    -- add damage with boost count
+        player.Damage = player.Damage + player.Damage * (mod.Eclipse.DamageBoost * data.EclipseBoost)
+    end
+end
+
+mod:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, mod.onCache22)
+
+function mod:onPEffectUpdate(player)
+	if player:HasCollectible(mod.Items.Eclipse) then
+		EclipseAura(player)
+	end
+end
+mod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, mod.onPEffectUpdate22)

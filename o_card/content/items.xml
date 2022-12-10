@@ -12,12 +12,12 @@
 	<active  id="11" quality="2" craftquality="2" description="I bleed pixels" gfx="Bleeding_Grimoire.png" name="Bleeding Grimoire"  devilprice="1" maxcharges="3" tags="book"/>
 	<active  id="12" quality="2" craftquality="1" description="Lord of the Words" gfx="Black_Book.png" name="Black Book" maxcharges="2" tags="book"/>
 	<active  id="13" quality="0" craftquality="-1"  description="D4.326×10^19" gfx="Rubik_Dice.png" name="Rubik's Dice" maxcharges="3"/>
-	<active  id="14" quality="0" craftquality="-1" description="D4.326×10^19" gfx="Scrambled_Rubik_Dice.png" name="Scrambled Rubik's Dice" maxcharges="12" hidden="true"/>
-	<active  id="15" quality="0" craftquality="0" description="D4.326×10^19" gfx="Scrambled_Rubik_Dice1.png" name="Scrambled Rubik's Dice " maxcharges="8" hidden="true"/>
-	<active  id="16" quality="0" craftquality="-1" description="D4.326×10^19" gfx="Scrambled_Rubik_Dice2.png" name="Scrambled Rubik's Dice  " maxcharges="8" hidden="true"/>
-	<active  id="17" quality="0" craftquality="-1" description="D4.326×10^19" gfx="Scrambled_Rubik_Dice3.png" name="Scrambled Rubik's Dice   " maxcharges="6" hidden="true"/>
-	<active  id="18" quality="0" craftquality="-1" description="D4.326×10^19" gfx="Scrambled_Rubik_Dice4.png" name="Scrambled Rubik's Dice    " maxcharges="6" hidden="true"/>
-	<active  id="19" quality="0" craftquality="-1" description="D4.326×10^19" gfx="Scrambled_Rubik_Dice5.png" name="Scrambled Rubik's Dice     " maxcharges="4" hidden="true"/>
+	<active  id="14" quality="0" craftquality="-1" description="D4.326×10^19" gfx="Scrambled_Rubik_Dice.png" name="Rubik's Dice " maxcharges="12" hidden="true"/>
+	<active  id="15" quality="0" craftquality="0" description="D4.326×10^19" gfx="Scrambled_Rubik_Dice1.png" name="Rubik's Dice  " maxcharges="8" hidden="true"/>
+	<active  id="16" quality="0" craftquality="-1" description="D4.326×10^19" gfx="Scrambled_Rubik_Dice2.png" name="Rubik's Dice   " maxcharges="8" hidden="true"/>
+	<active  id="17" quality="0" craftquality="-1" description="D4.326×10^19" gfx="Scrambled_Rubik_Dice3.png" name="Rubik's Dice    " maxcharges="6" hidden="true"/>
+	<active  id="18" quality="0" craftquality="-1" description="D4.326×10^19" gfx="Scrambled_Rubik_Dice4.png" name="Rubik's Dice     " maxcharges="6" hidden="true"/>
+	<active  id="19" quality="0" craftquality="-1" description="D4.326×10^19" gfx="Scrambled_Rubik_Dice5.png" name="Rubik's Dice      " maxcharges="4" hidden="true"/>
 	<active  id="20" quality="0" craftquality="-1" description="Jammed record" gfx="VHS_Cassette.png" name="VHS Cassette" maxcharges="0" tags="nogreed"/>
 	<active  id="21" quality="4" craftquality="4" description="Flight + bones" gfx="Long_Elk.png" name="Long Elk" maxcharges="6" devilprice="2" cache="flying"/>
 	<active  id="22" quality="0" craftquality="-1" description="Return" gfx="netherwell.png" name="Threshold" maxcharges="6"/>
@@ -33,7 +33,7 @@
 	<passive id="31" quality="2" craftquality="2" description="Popularity up" gfx="Duckling.png" name="Duckling" cache="luck" tags="summonable"/>
 	<passive id="32" quality="2" craftquality="1" description="Please, don't touch the button" gfx="Red_Button.png" name="Red Button" devilprice="2" tags="summonable"/>
 	<passive id="33" quality="1" craftquality="1" description="Combo blast +5 bombs" gfx="cherry_bombs.png" name="Compo Bombs" bombs="5"/>
-	<passive id="34" quality="0" craftquality="0" description="Afterdeath" gfx="Limb.png" name="Limbus"/>
+	<passive id="34" quality="0" craftquality="0" description="Here to stay" gfx="Limb.png" name="Limbus"/>
 	<passive id="35" quality="3" craftquality="3" description="Absorbing blast +1 giga bomb" gfx="gravity_bombs.png" name="Black Hole Bombs" bombs="1"/>
 	<passive id="36" quality="2" craftquality="3" description="Reflected blast +5 bombs" gfx="mirror_bombs.png" name="Glass Bombs" bombs="5"/>
 	<passive id="37" quality="3" craftquality="3" description="Frosty blast +5 bombs" gfx="cube_bombs.png" name="Ice Cube Bombs" bombs="5"/>
@@ -49,6 +49,7 @@
 	<passive id="46" quality="2" craftquality="2" description="Dis Manibus" gfx="DMS.png" name="Death's Sickle" /> 
 	<passive id="47" quality="3" craftquality="3" description="Mewolution!" gfx="mewgen.png" name="Mew-Gen" cache="flying" /> 
 	<active  id="48" quality="1" craftquality="1" description="The Seal" gfx="eldersign.png" name="Elder Sign" shopprice="10" maxcharges="210" chargetype="timed"/>
+	<passive id="49" quality="3" craftquality="3" description="Darkest Basement!" gfx="eclipse.png" name="Eclipse"/> 
 	
 	<!--
 	<familiar quality="1" description="Giga bombs generator!" gfx="Little_Gagger.png" name="Little Gagger" devilprice="2" cache="familiars"/>
@@ -57,7 +58,7 @@
 	<trinket id="45" description="Eternal blessing" gfx="Lost_Flower.png" name="Lost Flower" cache="color"/>
 	<trinket description="Turn back" gfx="Witch_Paper.png" name="Witch Paper"/>
 	<trinket description="Side effects is guaranteed" gfx="Duotine.png" name="Duotine"/>
-	<trinket description="Crossroads" gfx="Queen_Spades.png" name="Queen of Spades"/>
+	<trinket description="Breach" gfx="Queen_Spades.png" name="Torn Spades"/>
 	<trinket description="Fuse Cutter 2.0" gfx="Red_Scissors.png" name="Red Scissors"/>
 	<trinket description="Aroma eraser" gfx="Tea_Bag.png" name="Tea Bag"/>
 	<trinket description="Blessing of Tooth Fairy" gfx="Milk_Teeth.png" name="Milk Teeth"/>
@@ -68,5 +69,6 @@
 	<trinket description="Curse of the Abyss" gfx="abyss_cartridge.png" name="Cartridge?" />
 	<trinket description="You are cursed... kinda" gfx="rubik_cubelet.png" name="Rubik's Cubelet" />
 	<trinket description="Revenge from blast" gfx="dead_egg.png" name="Dead Egg" />
+	<trinket description="From evil to good" gfx="red_cross.png" name="Penance" />
 	
 </items>
