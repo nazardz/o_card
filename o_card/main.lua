@@ -11,7 +11,7 @@ local myUseFlags = UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER | UseFlag.USE_MI
 local RECOMMENDED_SHIFT_IDX = 35
 local modRNG = RNG()
 
-print('[Eclipsed v.0.9] Type `eclipsed` or `eclipsed help` for a list of commands ')
+print('[Eclipsed v.0.9] Type `eclipsed` or `eclipsed help` for a list of commands')
 
 local function modDataLoad()
 	if mod:HasData() then
