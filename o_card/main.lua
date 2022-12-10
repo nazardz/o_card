@@ -11,7 +11,7 @@ local myUseFlags = UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER | UseFlag.USE_MI
 local RECOMMENDED_SHIFT_IDX = 35
 local modRNG = RNG()
 
-print('[OblivionCard v.0.9] Type `ocard` or `ocard help` for a list of commands')
+print('[Eclipsed v.0.9] Type `eclipsed` or `eclipsed help` for a list of commands')
 
 local function modDataLoad()
 	if mod:HasData() then
@@ -689,7 +689,7 @@ mod.ElderSign.Timeout = 20
 mod.ElderSign.AuraRange = 60
 
 mod.WhiteKnight = {}
-mod.WhiteKnight.Costume = Isaac.GetItemConfig():GetNullItem(NullItemID.ID_REVERSE_CHARIOT_ALT)
+mod.WhiteKnight.Costume = NullItemID.ID_REVERSE_CHARIOT_ALT
 --mod.WhiteKnight.Costume = NullItemID.ID_REVERSE_CHARIOT_ALT --Isaac.GetCostumeIdByPath("gfx/characters/whiteknight.anm2")
 
 mod.BlackKnight = {}
@@ -3252,6 +3252,8 @@ function mod:onPEffectUpdate(player)
 		if player:HasCollectible(mod.Items.WhiteKnight, true) then
 			if not data.HasWhiteKnight then
 				data.HasWhiteKnight = true
+				--player:AddCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_GLITTER_BOMBS))
+				--player:AddCostume(Isaac.GetItemConfig():GetNullItem(NullItemID.ID_REVERSE_CHARIOT_ALT))
 				player:AddNullCostume(mod.WhiteKnight.Costume)
 				-- remove cache flag
 			end
@@ -3346,6 +3348,7 @@ function mod:onPEffectUpdate(player)
 		else
 			if data.HasWhiteKnight then
 				player:TryRemoveNullCostume(mod.WhiteKnight.Costume)
+				--player:TryRemoveNullCostume(Isaac.GetItemConfig():GetNullItem(NullItemID.ID_REVERSE_CHARIOT_ALT))
 				data.HasWhiteKnight = false
 			end
 		end
@@ -6113,7 +6116,7 @@ if EID then -- External Item Description
 	EID:addCollectible(mod.Items.BlackBook,
 			"Apply random status effects on enemies in room. #Possible effects: {{Freezing}}Freeze; {{Poison}}Poison; {{Slow}}Slow; {{Charm}}Charm; {{Confusion}}Confusion; {{Collectible202}}Midas Touch; {{Fear}}Fear; {{Burning}}Burn; {{Collectible398}}Shrink; {{BleedingOut}}Bleed; {{Collectible596}}Frozen; {{Magnetize}}Magnetized; {{Bait}}Bait.")
 
-	local description = "In 'solved' state {{Collectible105}} reroll items. #Have a 16% chance to turn into {{Collectible".. mod.Items.RubikDiceScrambled0 .."}} 'scrambled' Rubik's Dice, increasing it's charge bar. #In 'scrambled' state it can be used without full charge, but will reroll items into {{Collectible721}} glitched items. #After fully recharging, it returns to 'solved' state."
+	local description = "In 'solved' state {{Collectible105}} reroll items. #{{Warning}} Have a 16% chance to turn into {{Collectible".. mod.Items.RubikDiceScrambled0 .."}} 'scrambled' Rubik's Dice, increasing it's charge bar. #In 'scrambled' state it can be used without full charge, but will reroll items into {{Collectible721}} glitched items. #After fully recharging, it returns to 'solved' state."
 	EID:addCollectible(mod.Items.RubikDice, description)
 	EID:addCollectible(mod.Items.RubikDiceScrambled0, description)
 	EID:addCollectible(mod.Items.RubikDiceScrambled1, description)
@@ -6123,7 +6126,7 @@ if EID then -- External Item Description
 	EID:addCollectible(mod.Items.RubikDiceScrambled5, description)
 
 	EID:addCollectible(mod.Items.VHSCassette,
-			"Move to later floor. #Void - is last possible floor. #On ascension you will be send to Home.")
+			"!!! SINGLE USE !!! #Move to later floor. #Void - is last possible floor. #On ascension you will be send to Home. #{{Warning}} Effect can be triggered only 1 time per game.")
 	EID:addCollectible(mod.Items.Lililith,
 			"After clearing room, chance to spawn a familiar for current floor. #Possible familiars: demon baby, lil brimstone, lil abaddon, incubus, succubus.")
 	EID:addCollectible(mod.Items.CompoBombs,
@@ -6163,6 +6166,12 @@ if EID then -- External Item Description
 			"Creates Pentagram for 3 seconds at position where you stand. #Pentagram spawn {{Collectible634}} purgatory Soul. #{{Freezing}} Freeze enemies inside pentagram.")
 	EID:addCollectible(mod.Items.Eclipse,
 		"Grants aura dealing 2 damage per tick. #Get {{Damage}} x1.5 damage boost when you have {{CurseDarkness}} Curse of Darkness.")
+	
+	EID:addCollectible(mod.Items.Threshold,
+		"Give actual item from Item Wisp.")
+
+
+	
 
 	EID:addTrinket(mod.Trinkets.WitchPaper,
 			"{{Collectible422}} Turn back time when you die. #Destroys itself after triggering.")
@@ -8201,6 +8210,10 @@ function mod:onPEffectUpdate3(player)
 		--]]
 
 		if data.BlindUnbidden then
+		
+			--data.BlindUnbidden = true
+		
+			
 			-- change position if you has ludo
 			local auraPos = player.Position
 
@@ -8389,6 +8402,7 @@ function mod:onPEffectUpdate3(player)
 			player:AnimateTeleport(false)
 			data.NoAnimReset = data.NoAnimReset - 1
 			if data.NoAnimReset == 0 then
+				SetBlindfold(player, true) 
 				if not player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
 					--AddItemFromWisp(player, false, true, false)
 					local pocketCharge = player:GetActiveCharge(2)
@@ -9231,11 +9245,11 @@ end
 ---EXECUTE COMMAND---
 function mod:onExecuteCommand(command, args)
 	--- console commands ---
-	if command == "ocard" then
+	if command == "eclipsed" then
 		if args == "help" or args == "" then
-			print('ocard todo -> list of thing to complete/implement/change')
-			--print('ocard reset [all, nadab, abihu, unbid, tunbid]')
-			--print('ocard unlock [all, nadab, abihu, unbid, tunbid]')
+			print('eclipsed todo -> list of thing to complete/implement/change')
+			--print('eclipsed reset [all, nadab, abihu, unbid, tunbid]')
+			--print('eclipsed unlock [all, nadab, abihu, unbid, tunbid]')
 		elseif args == "todo" then
 			print('VVV costume flip, idk how')
 			print('Lil Gagger sprite')
@@ -9243,6 +9257,8 @@ function mod:onExecuteCommand(command, args)
 			print("finish curses UI")
 			print("Abihu flame synergy")
 			print("Mongo Cells effects full desc")
+			print("Oblivious bug sunergy Brimstone + C section")
+			print("Oblivious bug sunergy Marked + Monstro Lung")
 		elseif args == "debug" then
 			if debug then
 				debug = false
@@ -9357,6 +9373,8 @@ Toilet - take 1 coin, can drop 1-2 dip familiars. chance to gives random poop tr
 
 --mod.Trinkets.Penance
 
+--[[
+
 mod.Penance = {}
 mod.Penance.Chance = 0.1
 mod.Penance.Effect = EffectVariant.REDEMPTION
@@ -9364,6 +9382,7 @@ mod.Penance.Color = Color(1.25, 0.05, 0.15, 1, 0, 0, 0)
 
 
 function mod:onNewRoom()
+	local room = game:GetRoom()
 	--player
 	for playerNum = 0, game:GetNumPlayers()-1 do
 		local player = game:GetPlayer(playerNum)
@@ -9495,3 +9514,5 @@ function mod:onPEffectUpdate(player)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, mod.onPEffectUpdate22)
+
+--]]
