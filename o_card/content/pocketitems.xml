@@ -2,7 +2,7 @@
 	<card 
 		type="special"
 		id="1"		
-		pickup="171" 
+		pickup="9717"
 		description="Forget" 
 		hud="01_OblivionCard" 
 		name="Oblivion Card" 
@@ -20,7 +20,7 @@
 	<card 
 		type="object" 
 		id="3"
-		pickup="193"
+		pickup="9713"
 		description="Fortify" 
 		hud="X_KingChessW" 
 		name="White King" 
@@ -29,7 +29,7 @@
 	<card 
 		type="object" 
 		id="4"
-		pickup="177"
+		pickup="9714"
 		description="Fortify" 
 		hud="03_KingChess" 
 		name="Black King" 
@@ -38,7 +38,7 @@
 	<card 
 		type="rune" 
 		id="5"
-		pickup="173"
+		pickup="9715"
 		description="???" 
 		hud="04_Trapezohedron" 
 		name="Trapezohedron" 
@@ -47,7 +47,7 @@
 	<card 
 		type="object" 
 		id="6"
-		pickup="174"
+		pickup="9716"
 		description="P3+P4" 
 		hud="X_Domino34" 
 		name="Domino Tile 3 | 4" 
@@ -56,7 +56,7 @@
 	<card 
 		type="object" 
 		id="7"
-		pickup="174"
+		pickup="9716"
 		description="D7+D10" 
 		hud="X_Domino25" 
 		name="Domino Tile 2 | 5" 
@@ -66,7 +66,7 @@
 	<card 
 		type="object" 
 		id="8"
-		pickup="174"
+		pickup="9716"
 		description="Special delivery" 
 		hud="X_Domino12" 
 		name="Domino Tile 1 | 2" 
@@ -76,8 +76,8 @@
 	<card 
 		type="rune" 
 		id="9"
-		pickup="175"
-		description="Wisp unsummoner" 
+		pickup="9718"
+		description="Wisp?"
 		hud="X_SoulUnbidden" 
 		name="Soul of Unbidden" 
 		mimiccharge="6"
@@ -85,8 +85,8 @@
 	<card 
 		type="rune" 
 		id="10"
-		pickup="178"
-		description="Pyroman" 
+		pickup="9719"
+		description="Pyromancer"
 		hud="X_SoulNadabAbihu" 
 		name="Soul of Nadab and Abihu" 
 		mimiccharge="6"
@@ -94,7 +94,7 @@
 	<card 
 		type="special"
 		id="11"		
-		pickup="176" 
+		pickup="9720"
 		description="Ethereal curse" 
 		hud="X_AscenderBane" 
 		name="Ascender's Bane" 
@@ -103,7 +103,7 @@
 	<card 
 		type="special"
 		id="12"		
-		pickup="176" 
+		pickup="9720"
 		description="Evoke your wisps" 
 		hud="X_MultiCast" 
 		name="Multi-Cast" 
@@ -112,7 +112,7 @@
 	<card 
 		type="special"
 		id="13"		
-		pickup="176" 
+		pickup="9720"
 		description="??" 
 		hud="X_Wish" 
 		name="Wish" 
@@ -121,7 +121,7 @@
 	<card 
 		type="special"
 		id="14"		
-		pickup="176" 
+		pickup="9720"
 		description="Goods for blood" 
 		hud="X_Offering" 
 		name="Offering" 
@@ -130,7 +130,7 @@
 	<card 
 		type="special"
 		id="15"		
-		pickup="176" 
+		pickup="9720"
 		description="Rain of blades" 
 		hud="X_InfiniteBlades" 
 		name="Infinite Blades" 
@@ -139,7 +139,7 @@
 	<card 
 		type="special"
 		id="16"		
-		pickup="176" 
+		pickup="9720"
 		description="All at once" 
 		hud="X_Transmutation" 
 		name="Transmutation" 
@@ -148,7 +148,7 @@
 	<card 
 		type="special"
 		id="17"		
-		pickup="176" 
+		pickup="9720"
 		description="The Ritual" 
 		hud="X_RitualDagger" 
 		name="Ritual Dagger" 
@@ -157,7 +157,7 @@
 	<card 
 		type="special"
 		id="18"		
-		pickup="176" 
+		pickup="9720"
 		description="The Orb" 
 		hud="X_Fusion" 
 		name="Fusion" 
@@ -166,7 +166,7 @@
 	<card 
 		type="special"
 		id="19"		
-		pickup="176" 
+		pickup="9720"
 		description="The Miracle" 
 		hud="X_DeuxExMachina" 
 		name="Deus Ex Machina" 
@@ -175,7 +175,7 @@
 	<card 
 		type="special"
 		id="20"		
-		pickup="176" 
+		pickup="9720"
 		description="Power = panic!" 
 		hud="X_Adrenaline" 
 		name="Adrenaline" 
@@ -185,7 +185,7 @@
 	<card 
 		type="special"
 		id="21"		
-		pickup="176" 
+		pickup="9720"
 		description="Power exhaustion!" 
 		hud="X_Corruption" 
 		name="Corruption" 
@@ -195,7 +195,7 @@
 	<card 
 		type="rune"
 		id="22"		
-		pickup="179" 
+		pickup="9721"
 		description="Spectral rune" 
 		hud="X_GhostGem" 
 		name="Ghost Gem" 
@@ -205,7 +205,7 @@
 	<card
 		type="special"
 		id="23"
-		pickup="171"
+		pickup="9717"
 		description="Arena"
 		hud="X_BattlefieldCard"
 		name="Battlefield Card"
@@ -214,7 +214,7 @@
 	<card
 		type="special"
 		id="24"
-		pickup="171"
+		pickup="9717"
 		description="Loot"
 		hud="X_TreasuryCard"
 		name="Treasury Card"
@@ -223,7 +223,7 @@
 	<card
 		type="special"
 		id="25"
-		pickup="171"
+		pickup="9717"
 		description="Library"
 		hud="X_BookeryCard"
 		name="Bookery Card"
@@ -241,7 +241,7 @@
 	<card 
 		type="special" 
 		id="27"
-		pickup="171"
+		pickup="9717"
 		description="Devour" 
 		hud="X_BloodGroveCard" 
 		name="Blood Grove Card" 
@@ -250,7 +250,7 @@
 	<card 
 		type="special" 
 		id="28"
-		pickup="171"
+		pickup="9717"
 		description="Worship" 
 		hud="X_StormTempleCard" 
 		name="Storm Temple Card" 
@@ -259,7 +259,7 @@
 	<card 
 		type="special" 
 		id="29"
-		pickup="171"
+		pickup="9717"
 		description="Inventory" 
 		hud="X_ArsenalCard" 
 		name="Arsenal Card" 
@@ -268,7 +268,7 @@
 	<card 
 		type="special" 
 		id="30"
-		pickup="171"
+		pickup="9717"
 		description="Camp" 
 		hud="X_OutpostCard" 
 		name="Outpost Card" 
@@ -277,7 +277,7 @@
 	<card 
 		type="special" 
 		id="31"
-		pickup="171"
+		pickup="9717"
 		description="Dynasty" 
 		hud="X_CryptCard" 
 		name="Ancestral Crypt Card" 
@@ -286,7 +286,7 @@
 	<card 
 		type="special" 
 		id="32"
-		pickup="171"
+		pickup="9717"
 		description="Chaos" 
 		hud="X_MazeMemoryCard" 
 		name="Maze of Memories Card" 
@@ -295,7 +295,7 @@
 	<card 
 		type="special" 
 		id="33"
-		pickup="171"
+		pickup="9717"
 		description="Destination" 
 		hud="X_ZeroMilestoneCard" 
 		name="Zero Milestone Card" 
@@ -304,7 +304,7 @@
 	<card 
 		type="special" 
 		id="34"
-		pickup="176"
+		pickup="9720"
 		description="Rotten Curse" 
 		hud="X_Decay" 
 		name="Decay" 
@@ -313,7 +313,7 @@
 	<card 
 		type="special" 
 		id="35"
-		pickup="174"
+		pickup="9716"
 		description="One of All" 
 		hud="X_Domino16" 
 		name="Domino Tile 1 | 6" 
@@ -322,7 +322,7 @@
 	<card
 		type="object"
 		id="36"
-		pickup="180"
+		pickup="9722"
 		description="Side effects?"
 		hud="X_RedPill"
 		name="Side effects?"
@@ -331,7 +331,7 @@
 	<card
 		type="object"
 		id="37"
-		pickup="181"
+		pickup="9723"
 		description="Side effects??"
 		hud="X_RedPillHorse"
 		name="Side effects?"
@@ -340,7 +340,7 @@
 	<card 
 		type="object" 
 		id="38"
-		pickup="174"
+		pickup="9716"
 		description="Domino theory" 
 		hud="X_Domino00" 
 		name="Domino Tile 0 | 0" 

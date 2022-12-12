@@ -15,7 +15,7 @@
 		shadowSize="16" 
 		stageHP="0"
 		variant="300" 
-		subtype="171">
+		subtype="9717">
 		<preload-snd id="8" />
 	</entity>
 	<entity 
@@ -51,12 +51,10 @@
 		shadowSize="16" 
 		stageHP="0" 
 		variant="300" 
-		subtype="193">
+		subtype="9713">
 		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
-	
-	
-	
+
 	<entity
 		anm2path="trapezohedron.anm2"
 		baseHP="0" 
@@ -72,7 +70,7 @@
 		shadowSize="16" 
 		stageHP="0" 
 		variant="300" 
-		subtype="173">
+		subtype="9715">
 		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
 	
@@ -91,7 +89,7 @@
 		shadowSize="16" 
 		stageHP="0" 
 		variant="300" 
-		subtype="174">
+		subtype="9716">
 		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
 	
@@ -110,7 +108,7 @@
 		shadowSize="16" 
 		stageHP="0" 
 		variant="300" 
-		subtype="175">
+		subtype="9718">
 		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
 	
@@ -129,7 +127,7 @@
 		shadowSize="16" 
 		stageHP="0"
 		variant="300" 
-		subtype="176">
+		subtype="9720">
 		<preload-snd id="8" />
 	</entity>
 	
@@ -148,7 +146,7 @@
 		shadowSize="16" 
 		stageHP="0" 
 		variant="300" 
-		subtype="177">
+		subtype="9714">
 		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
 	<entity 
@@ -166,7 +164,7 @@
 		shadowSize="16" 
 		stageHP="0" 
 		variant="300" 
-		subtype="178">
+		subtype="9719">
 		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
 	
@@ -185,7 +183,7 @@
 		shadowSize="16" 
 		stageHP="0" 
 		variant="300" 
-		subtype="179">
+		subtype="9721">
 		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
 	
@@ -204,7 +202,7 @@
 		shadowSize="14" 
 		stageHP="0"
 		variant="300" 
-		subtype="180">
+		subtype="9722">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0"/>
 	</entity>
 	
@@ -223,7 +221,7 @@
 		shadowSize="20" 
 		stageHP="0" 
 		variant="300" 
-		subtype="181">
+		subtype="9723">
 	</entity>
 	
 	<!-- EFFECTS -->

@@ -19,12 +19,13 @@
 		<Item Name="Compo Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Glass Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Black Hole Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		<!--<Item Name="Little Gagger" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>-->
 		<Item Name="Nadab's Brain" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Ice Cube Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Space Jam" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		<Item Name="Mew-Gen" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		<Item Name="Eclipse" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Mew-Gen" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+
+		<!--<Item Name="Little Gagger" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>-->
+		<!--<Item Name="Zooma" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>-->
 	</Pool>
 	<Pool Name="shop">
 		<Item Name="Moonlighter" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
@@ -56,6 +57,7 @@
 		<Item Name="Karma Level" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Limbus" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Elder Sign" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Eclipse" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="library">
 		<Item Name="Bleeding Grimoire" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
