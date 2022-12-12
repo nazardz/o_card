@@ -198,6 +198,56 @@ mod.Curses.Envy,
 --]]
 --- LOCAL TABLES --
 do
+mod.NadabData = {}
+--mod.NadabData.CompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0} --1:Isaac, 2:BlueBaby, 3:Satan, 4:Lamb, 5:BossRush, 6:Hush, 7:MegaSatan, 8:Delirium, 9:Mother, 10:Beast, 11:Greed/Greedier, 12:Heart, 13:AllMarksHard
+mod.NadabData.CostumeHead = Isaac.GetCostumeIdByPath("gfx/characters/nadab_head.anm2")
+mod.NadabData.ExplosionCountdown = 30 -- so don't spam
+mod.NadabData.MrMegaDmgMultiplier = 0.75
+mod.NadabData.SadBombsFiredelay = -1.0
+mod.NadabData.FastBombsSpeed = 1.0
+mod.NadabData.RingCapFrameCount = 10
+mod.NadabData.StickySpiderRadius = 60
+mod.NadabData.BombBeggarSprites = {
+['Idle'] = true,
+['PayNothing'] = true }
+mod.NadabData.Stats = {}
+mod.NadabData.Stats.DAMAGE = 1.2
+mod.NadabData.Stats.SPEED = -0.35
+
+mod.AbihuData = {}
+--mod.AbihuData.CompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0}
+mod.AbihuData.CostumeHead = Isaac.GetCostumeIdByPath("gfx/characters/abihu_costume.anm2")
+mod.AbihuData.DamageDelay = 30
+mod.AbihuData.HoldBombDelay = 20
+mod.AbihuData.ChargeBar = Sprite()
+mod.AbihuData.ChargeBar:Load("gfx/chargebar.anm2", true)
+mod.AbihuData.Stats = {}
+mod.AbihuData.Stats.DAMAGE = 1.14286
+mod.AbihuData.Stats.SPEED = 1.0
+mod.AbihuData.Unlocked = false
+
+mod.UnbiddenData = {}
+--mod.UnbiddenData.CompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0}
+mod.UnbiddenData.RadiusWisp = 100
+mod.UnbiddenData.Stats = {}
+mod.UnbiddenData.Stats.DAMAGE = 1.35
+mod.UnbiddenData.Stats.LUCK = -1
+
+mod.ObliviousData = {}
+mod.ObliviousData.DamageDelay = 12
+mod.ObliviousData.Knockback = 4
+mod.ObliviousData.TearVariant = TearVariant.MULTIDIMENSIONAL
+--mod.ObliviousData.CompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0}
+mod.ObliviousData.ChargeBar = Sprite()
+mod.ObliviousData.ChargeBar:Load("gfx/chargebar.anm2", true)
+mod.ObliviousData.Stats = {}
+mod.ObliviousData.Stats.DAMAGE = 1
+mod.ObliviousData.Stats.LUCK = -3
+mod.ObliviousData.Stats.TRAR_FLAG = TearFlags.TEAR_WAIT | TearFlags.TEAR_CONTINUUM
+mod.ObliviousData.Stats.TEAR_COLOR = Color(0.5,1,2,1,0,0,0)
+mod.ObliviousData.Stats.LASER_COLOR = Color(1,1,1,1,-0.5,0.7,1)
+
+
 mod.CurseIcons = Sprite()
 mod.CurseIcons:Load("gfx/ui/oc_curse_icons.anm2", true) -- render it somewhere ?
 mod.RedColor = Color(1.5,0,0,1,0,0,0) -- red color I guess
@@ -6378,7 +6428,7 @@ local function ExplosionEffect(player, bombPos, bombDamage, bombFlags)
 	end
 
 	if bombFlags & TearFlags.TEAR_STICKY == TearFlags.TEAR_STICKY then
-		for _, entity in pairs(Isaac.FindInRadius(bombPos, 150, EntityPartition.ENEMY)) do
+		for _, entity in pairs(Isaac.FindInRadius(bombPos, mod.NadabData.StickySpiderRadius, EntityPartition.ENEMY)) do
 			if entity:IsVulnerableEnemy() and entity:IsActiveEnemy() then
 				entity:AddEntityFlags(EntityFlag.FLAG_SPAWN_STICKY_SPIDERS)
 			end
@@ -6691,55 +6741,7 @@ end
 mod:AddCallback(ModCallbacks.MC_PRE_BOMB_COLLISION, mod.onBombCollision, BombVariant.BOMB_DECOY)
 
 -------------------------------------------------------------------------------------------
-mod.NadabData = {}
---mod.NadabData.CompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0} --1:Isaac, 2:BlueBaby, 3:Satan, 4:Lamb, 5:BossRush, 6:Hush, 7:MegaSatan, 8:Delirium, 9:Mother, 10:Beast, 11:Greed/Greedier, 12:Heart, 13:AllMarksHard
-mod.NadabData.CostumeHead = Isaac.GetCostumeIdByPath("gfx/characters/nadab_head.anm2")
-mod.NadabData.ExplosionCountdown = 30 -- so don't spam
-mod.NadabData.MrMegaDmgMultiplier = 0.75
-mod.NadabData.SadBombsFiredelay = -1.0
-mod.NadabData.FastBombsSpeed = 1.0
-mod.NadabData.RingCapFrameCount = 10
-mod.NadabData.BombBeggarSprites = {
-['Idle'] = true,
-['PayNothing'] = true }
-mod.NadabData.Stats = {}
-mod.NadabData.Stats.DAMAGE = 1.2
-mod.NadabData.Stats.SPEED = -0.35
 
-mod.AbihuData = {}
---mod.AbihuData.CompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0}
-mod.AbihuData.CostumeHead = Isaac.GetCostumeIdByPath("gfx/characters/abihu_costume.anm2")
-mod.AbihuData.DamageDelay = 30
-mod.AbihuData.HoldBombDelay = 20
-mod.AbihuData.ChargeBar = Sprite()
-mod.AbihuData.ChargeBar:Load("gfx/chargebar.anm2", true)
-mod.AbihuData.Stats = {}
-mod.AbihuData.Stats.DAMAGE = 1.14286
-mod.AbihuData.Stats.SPEED = 1.0
-mod.AbihuData.Unlocked = false
-
-mod.UnbiddenData = {}
---mod.UnbiddenData.CompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0}
-mod.UnbiddenData.RadiusWisp = 100
-mod.UnbiddenData.Stats = {}
-mod.UnbiddenData.Stats.DAMAGE = 1.35
-mod.UnbiddenData.Stats.LUCK = -1
-
-mod.ObliviousData = {}
-mod.ObliviousData.DamageDelay = 12
-mod.ObliviousData.Knockback = 4
-mod.ObliviousData.TearVariant = TearVariant.MULTIDIMENSIONAL
---mod.ObliviousData.CompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0}
-mod.ObliviousData.ChargeBar = Sprite()
-mod.ObliviousData.ChargeBar:Load("gfx/chargebar.anm2", true)
-mod.ObliviousData.Stats = {}
-mod.ObliviousData.Stats.DAMAGE = 1
-mod.ObliviousData.Stats.LUCK = -3
-mod.ObliviousData.Stats.TRAR_FLAG = TearFlags.TEAR_WAIT | TearFlags.TEAR_CONTINUUM
-mod.ObliviousData.Stats.TEAR_COLOR = Color(0.5,1,2,1,0,0,0)
-mod.ObliviousData.Stats.LASER_COLOR = Color(1,1,1,1,-0.5,0.7,1)
-
-mod.ObliviousData.Unlocked = false
 
 --Nadab
 local function NadabExplosion(player, useGiga, bombPos)
