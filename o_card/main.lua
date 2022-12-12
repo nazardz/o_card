@@ -2248,8 +2248,8 @@ local function AddItemFromWisp(player, add, kill, stop)
 	if #itemWisps > 0 then
 		for _, witem in pairs(itemWisps) do
 			if witem.Variant == FamiliarVariant.ITEM_WISP then
-				sfx:Play(SoundEffect.SOUND_THUMBSUP)
 				if add then
+					sfx:Play(SoundEffect.SOUND_THUMBSUP)
 					player:AddCollectible(witem.SubType)
 				end
 				if kill then
@@ -3505,7 +3505,7 @@ function mod:onPEffectUpdate(player)
 				player:AddCacheFlags(CacheFlag.CACHE_FLYING)
 				player:EvaluateItems()
 				player.SpriteOffset = Vector(player.SpriteOffset.X, player.SpriteOffset.Y + mod.Viridian.FlipOffsetY)
-				player:GetSprite().FlipX = true
+				--player:GetSprite().FlipX = true
 				player:GetSprite().FlipY = true
 			end
 			--local mySprite = player:GetSprite()
@@ -4045,10 +4045,10 @@ function mod:onNewRoom()
 		-- zero milestone
 		if level:GetCurrentRoomIndex() == GridRooms.ROOM_GENESIS_IDX and mod.ZeroStoneUsed then
 			mod.ZeroStoneUsed = false
-			if level:IsAscent() then
-				level:SetStage(LevelStage.STAGE8, 0)
+			if game:IsGreedMode() then
+				level:SetStage(LevelStage.STAGE7_GREED, 0)
 			else
-				level:SetStage(LevelStage.STAGE7, 0)
+				level:SetStage(LevelStage.STAGE8, 0)
 			end
 		end
 		-- decay
@@ -6155,9 +6155,9 @@ function mod:onZeroMilestoneCard(_, player) -- card, player, useflag
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onZeroMilestoneCard, mod.Pickups.ZeroMilestoneCard)
 ---pot of greed
-function mod:onBannedCard(_, player) -- card, player, useflag
+function mod:onBannedCard(card, player) -- card, player, useflag
 	for _ = 1, mod.BannedCard.NumCards do
-		Isaac.Spawn(5, 300, 0, player.Position, RandomVector()*3, nil)
+		Isaac.Spawn(5, 300, card, player.Position, RandomVector()*3, nil)
 	end
 	game:GetHUD():ShowFortuneText("POT OF GREED ALLOWS ME","TO DRAW TWO MORE CARDS!")
 end
@@ -6371,7 +6371,7 @@ if EID then -- External Item Description
 	EID:addCard(mod.Pickups.Adrenaline,
 			"Turn all your {{Heart}} red health into {{Battery}} batteries. #{{Collectible493}} Adrenaline effect for current room.")
 	EID:addCard(mod.Pickups.Corruption,
-			"You can use your active item unlimited times in current room. #On next room, active item on main slot will be removed.") --{{Active1}}
+			"You can use your active item unlimited times in current room. #{{Warning}} Remove your active item on next room. #{{Warning}} Doesn't affect pocket active item.") --{{Active1}}
 
 	EID:addCard(mod.Pickups.GhostGem,
 			"Spawn 4 {{Collectible634}} purgatory souls.")
@@ -6395,13 +6395,13 @@ if EID then -- External Item Description
 	EID:addCard(mod.Pickups.ArsenalCard,
 			"Teleport to out of map {{ChestRoom}} Chest Room.")
 	EID:addCard(mod.Pickups.OutpostCard,
-			"Teleport to out of map {{IsaacsRoom}}{{BarrenRoom}} Bedroom.")
+			"Teleport to out of map {{IsaacsRoom}} {{BarrenRoom}} Bedroom.")
 	EID:addCard(mod.Pickups.CryptCard,
-			"Teleport to out of map {{LadderRoom}} Dungeon.")
+			"Teleport to out of map {{LadderRoom}} Crawlspace.")
 	EID:addCard(mod.Pickups.MazeMemoryCard,
 			"Teleport to out of map {{TreasureRoom}} room with 18 items from random pools. #Only one can be taken. #Apply {{CurseBlind}} Curse of Blind for current level.")
 	EID:addCard(mod.Pickups.ZeroMilestoneCard,
-			"{{Collectible622}} Genesis effect. #Next level is Void.")
+			"{{Collectible622}} Genesis effect. #Next level is Home.")
 
 	EID:addCard(mod.Pickups.RedPill,
 			"Temporary ↑ {{Damage}} +10.8 Damage up. #Damage up slowly fades away similarly to {{Collectible621}} Red Stew. #Apply 2 layers of {{Collectible582}} Wavy Cap effect. #While you have temporary Damage Up, entering a room with enemies increase {Collectible582}} Wavy Cap effect.")
@@ -9532,3 +9532,13 @@ function mod:peffectUpdateBeggars(player)
 
 end
 mod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, mod.peffectUpdateBeggars)
+
+
+--[[
+function mod:onGetCard(rng, card, includePlayingCards, includeRunes, onlyRunes)
+	if game:IsGreedMode() and card.SubType == mod.Pickups.BannedCard then
+		return Card.CARD_RANDOM
+	end
+end
+mod:AddCallback(ModCallbacks.MC_GET_CARD, mod.onGetCard)
+--]]
