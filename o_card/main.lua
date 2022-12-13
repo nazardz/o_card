@@ -2306,6 +2306,7 @@ local function SetBlindfold(player, enabled)
 		player:TryRemoveNullCostume(NullItemID.ID_BLINDFOLD)
 	end
 end
+
 ---Eclipse
 local function EclipseAura(player)
 	local data = player:GetData()
@@ -2353,6 +2354,7 @@ local function EclipseAura(player)
 		end
 	end
 end
+
 --- LOCAL FUNCTIONS --
 
 --- MOD CALLBACKS --
@@ -3848,11 +3850,6 @@ function mod:onNewRoom()
 	mod.PreRoomState = room:IsClear()
 	--familiars
 	--red bag
-
-
-
-
-
 	if not room:HasCurseMist() then
 		for _, fam in pairs(Isaac.FindByType(EntityType.ENTITY_FAMILIAR, mod.RedBag.Variant)) do
 			if fam:GetData().GenPickup then fam:GetData().GenPickup = false end
@@ -3887,9 +3884,6 @@ function mod:onNewRoom()
 		local player = game:GetPlayer(playerNum)
 		local data = player:GetData()
 		local tempEffects = player:GetEffects()
-
-
-
 		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
 			--mongo cells
 			if data.MongoSteven then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_SPOON_BENDER, false) end
@@ -7831,6 +7825,16 @@ function mod:onPEffectUpdate3(player)
 				end
 			end
 		end
+		
+		--glowing
+		if data.ResetBlind then
+			data.ResetBlind = data.ResetBlind -1
+			if data.ResetBlind <= 0 then
+				data.BlindAbihu = true
+				SetBlindfold(player, true)
+				data.ResetBlind = nil
+			end
+		end
 	end
 
 	if player:GetPlayerType() == mod.Characters.Nadab then
@@ -8224,7 +8228,6 @@ function mod:onPEffectUpdate3(player)
 		end
 
 		if data.BlindUnbidden then
-
 			-- change position if you has ludo
 			local auraPos = player.Position
 
@@ -9293,7 +9296,7 @@ slot machines:
 Toilet - take 1 coin, can drop 1-2 dip familiars. chance to gives random poop transformation item.
 --]]
 
---[
+
 mod.Penance = {}
 mod.Penance.Chance = 0.16
 mod.Penance.LaserVariant = 5
@@ -9353,10 +9356,12 @@ function mod:onRedCrossEffect(effect)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onRedCrossEffect, mod.Penance.Effect)
+
 --]
 
 -- bomb gagger
 --mod.Items.Gagger = Isaac.GetItemIdByName("Little Gagger")
+
 
 --[[
 mod.Gagger = {}
@@ -9417,6 +9422,7 @@ function mod:onCache3(player, cacheFlag)
 	if cacheFlag == CacheFlag.CACHE_FAMILIARS then
 		local gaggers = GetItemsCount(player, mod.Items.Gagger)
 		player:CheckFamiliar(mod.Gagger.Variant, gaggers, player:GetCollectibleRNG(mod.Items.Gagger), Isaac.GetItemConfig():GetCollectible(mod.Items.Gagger))
+
 	end
 	--]
 end
@@ -9535,7 +9541,6 @@ function mod:peffectUpdateBeggars(player)
 		end
 
 	end
-
 end
 mod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, mod.peffectUpdateBeggars)
 
