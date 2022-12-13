@@ -95,7 +95,7 @@ mod.Items.MongoCells = Isaac.GetItemIdByName("Mongo Cells") -- copy your familia
 mod.Items.NadabBody = Isaac.GetItemIdByName("Nadab's Body")
 mod.Items.CosmicJam = Isaac.GetItemIdByName("Space Jam") -- "lf it weren't real, could it do this?"
 mod.Items.DMS = Isaac.GetItemIdByName("Death's Sickle")
-mod.Items.MewGen = Isaac.GetItemIdByName("Mew-Gen") 
+mod.Items.MewGen = Isaac.GetItemIdByName("Mew-Gen")
 mod.Items.ElderSign = Isaac.GetItemIdByName("Elder Sign")
 mod.Items.Eclipse = Isaac.GetItemIdByName("Eclipse") -- "Darkest Basement" grants aura dealing 2 damage. boost player damage if you have curse of darkness
 
@@ -198,6 +198,56 @@ mod.Curses.Envy,
 --]]
 --- LOCAL TABLES --
 do
+mod.NadabData = {}
+--mod.NadabData.CompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0} --1:Isaac, 2:BlueBaby, 3:Satan, 4:Lamb, 5:BossRush, 6:Hush, 7:MegaSatan, 8:Delirium, 9:Mother, 10:Beast, 11:Greed/Greedier, 12:Heart, 13:AllMarksHard
+mod.NadabData.CostumeHead = Isaac.GetCostumeIdByPath("gfx/characters/nadab_head.anm2")
+mod.NadabData.ExplosionCountdown = 30 -- so don't spam
+mod.NadabData.MrMegaDmgMultiplier = 0.75
+mod.NadabData.SadBombsFiredelay = -1.0
+mod.NadabData.FastBombsSpeed = 1.0
+mod.NadabData.RingCapFrameCount = 10
+mod.NadabData.StickySpiderRadius = 60
+mod.NadabData.BombBeggarSprites = {
+['Idle'] = true,
+['PayNothing'] = true }
+mod.NadabData.Stats = {}
+mod.NadabData.Stats.DAMAGE = 1.2
+mod.NadabData.Stats.SPEED = -0.35
+
+mod.AbihuData = {}
+--mod.AbihuData.CompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0}
+mod.AbihuData.CostumeHead = Isaac.GetCostumeIdByPath("gfx/characters/abihu_costume.anm2")
+mod.AbihuData.DamageDelay = 30
+mod.AbihuData.HoldBombDelay = 20
+mod.AbihuData.ChargeBar = Sprite()
+mod.AbihuData.ChargeBar:Load("gfx/chargebar.anm2", true)
+mod.AbihuData.Stats = {}
+mod.AbihuData.Stats.DAMAGE = 1.14286
+mod.AbihuData.Stats.SPEED = 1.0
+mod.AbihuData.Unlocked = false
+
+mod.UnbiddenData = {}
+--mod.UnbiddenData.CompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0}
+mod.UnbiddenData.RadiusWisp = 100
+mod.UnbiddenData.Stats = {}
+mod.UnbiddenData.Stats.DAMAGE = 1.35
+mod.UnbiddenData.Stats.LUCK = -1
+
+mod.ObliviousData = {}
+mod.ObliviousData.DamageDelay = 12
+mod.ObliviousData.Knockback = 4
+mod.ObliviousData.TearVariant = TearVariant.MULTIDIMENSIONAL
+--mod.ObliviousData.CompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0}
+mod.ObliviousData.ChargeBar = Sprite()
+mod.ObliviousData.ChargeBar:Load("gfx/chargebar.anm2", true)
+mod.ObliviousData.Stats = {}
+mod.ObliviousData.Stats.DAMAGE = 1
+mod.ObliviousData.Stats.LUCK = -3
+mod.ObliviousData.Stats.TRAR_FLAG = TearFlags.TEAR_WAIT | TearFlags.TEAR_CONTINUUM
+mod.ObliviousData.Stats.TEAR_COLOR = Color(0.5,1,2,1,0,0,0)
+mod.ObliviousData.Stats.LASER_COLOR = Color(1,1,1,1,-0.5,0.7,1)
+
+
 mod.CurseIcons = Sprite()
 mod.CurseIcons:Load("gfx/ui/oc_curse_icons.anm2", true) -- render it somewhere ?
 mod.RedColor = Color(1.5,0,0,1,0,0,0) -- red color I guess
@@ -277,7 +327,7 @@ lil spewer
 --]]
 mod.Eclipse = {}
 mod.Eclipse.AuraRange = 125
-mod.Eclipse.DamageDelay = 12
+mod.Eclipse.DamageDelay = 22
 mod.Eclipse.DamageBoost = 0.5
 mod.Eclipse.Knockback = 4
 
@@ -2072,6 +2122,15 @@ function mod:onAnyItem(item, _, player, useFlag) --item, rng, player, useFlag, a
 	end
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onAnyItem)
+-- glowing hourglass removes blindfold, so this function resets blindfold
+function mod:onGlowingHourglassUse(_, _, player) --item, rng, player, useFlag, activeSlot, customVarData
+	--- abihu drops nadab when you use item, so set holding to -1
+	local data = player:GetData()
+	if data.BlindAbihu or data.BlindUnbidden then
+		data.ResetBlind = 60
+	end
+end
+mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onGlowingHourglassUse, CollectibleType.COLLECTIBLE_GLOWING_HOUR_GLASS)
 -- spawn item in position with option index
 local function SpawnMyItem(poolType, position, optionIndex)
 	--- if in isaac's room
@@ -2189,8 +2248,8 @@ local function AddItemFromWisp(player, add, kill, stop)
 	if #itemWisps > 0 then
 		for _, witem in pairs(itemWisps) do
 			if witem.Variant == FamiliarVariant.ITEM_WISP then
-				sfx:Play(SoundEffect.SOUND_THUMBSUP)
 				if add then
+					sfx:Play(SoundEffect.SOUND_THUMBSUP)
 					player:AddCollectible(witem.SubType)
 				end
 				if kill then
@@ -2203,7 +2262,7 @@ local function AddItemFromWisp(player, add, kill, stop)
 				end
 			end
 		end
-	
+
 	end
 end
 ---Soul of Unbidden
@@ -2245,6 +2304,54 @@ local function SetBlindfold(player, enabled)
 		player:ChangePlayerType(character)
 		game.Challenge = challenge
 		player:TryRemoveNullCostume(NullItemID.ID_BLINDFOLD)
+	end
+end
+
+---Eclipse
+local function EclipseAura(player)
+	local data = player:GetData()
+
+	-- delay - firerate analog
+	--local maxCharge = math.floor(player.MaxFireDelay) + mod.Eclipse.DamageDelay
+	data.EclipseDamageDelay = data.EclipseDamageDelay or 0
+	if data.EclipseDamageDelay < mod.Eclipse.DamageDelay then data.EclipseDamageDelay = data.EclipseDamageDelay + 1 end
+	--print(maxCharge, data.EclipseDamageDelay)
+	-- damage boosts count (work only with Curse of Darkness)
+	data.EclipseBoost = data.EclipseBoost or 0
+	if data.EclipseBoost > 0 and game:GetLevel():GetCurses() & LevelCurse.CURSE_OF_DARKNESS == 0 then
+		data.EclipseBoost = 0
+	end
+
+	-- dark aura
+	local pos = player.Position
+	local range = mod.Eclipse.AuraRange
+
+	if game:GetLevel():GetCurses() & LevelCurse.CURSE_OF_DARKNESS > 0 then
+		if not data.EclipseBoost or data.EclipseBoost ~= GetItemsCount(player, mod.Items.Eclipse) then
+			data.EclipseBoost = GetItemsCount(player, mod.Items.Eclipse)
+			player:AddCacheFlags(CacheFlag.CACHE_DAMAGE)
+			player:EvaluateItems()
+		end
+	elseif data.EclipseBoost then
+		data.EclipseBoost = nil
+		player:AddCacheFlags(CacheFlag.CACHE_DAMAGE)
+		player:EvaluateItems()
+	end
+
+	-- do pulse damage to enemies in aura range
+	if player:GetFireDirection() ~= -1 and data.EclipseDamageDelay >= mod.Eclipse.DamageDelay then
+		data.EclipseDamageDelay = 0
+		local enemies = Isaac.FindInRadius(pos, range, EntityPartition.ENEMY)
+		local pulse = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.HALO, 8, Vector(pos.X, pos.Y-28), Vector.Zero, player):ToEffect()
+		pulse.SpriteScale = pulse.SpriteScale * range/100
+		if #enemies > 0 then
+			for _, enemy in pairs(enemies) do
+				if enemy:IsVulnerableEnemy() and enemy:IsActiveEnemy() then
+					enemy:TakeDamage(player.Damage, 0, EntityRef(player), 1)
+					enemy:AddVelocity((enemy.Position - pos):Resized(player.ShotSpeed * mod.Eclipse.Knockback))
+				end
+			end
+		end
 	end
 end
 
@@ -2453,6 +2560,9 @@ function mod:onCache(player, cacheFlag)
 		if player:HasCollectible(mod.Items.VoidKarma) and data.KarmaStats then
 			player.Damage = player.Damage + data.KarmaStats.Damage
 		end
+		if data.EclipseBoost and data.EclipseBoost > 0 then
+	        player.Damage = player.Damage + player.Damage * (mod.Eclipse.DamageBoost * data.EclipseBoost)
+	    end
 	end
 	if cacheFlag == CacheFlag.CACHE_FIREDELAY then
 		if player:HasCollectible(mod.Items.VoidKarma) and data.KarmaStats then
@@ -2585,6 +2695,8 @@ function mod:onPlayerTakeDamage(entity, _, flags) --entity, amount, flags, sourc
 				--sfx:Play(SoundEffect.SOUND_DICE_SHARD)
 			end
 		end
+
+
 	end
 end
 mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, mod.onPlayerTakeDamage, EntityType.ENTITY_PLAYER)
@@ -3395,7 +3507,7 @@ function mod:onPEffectUpdate(player)
 				player:AddCacheFlags(CacheFlag.CACHE_FLYING)
 				player:EvaluateItems()
 				player.SpriteOffset = Vector(player.SpriteOffset.X, player.SpriteOffset.Y + mod.Viridian.FlipOffsetY)
-				player:GetSprite().FlipX = true
+				--player:GetSprite().FlipX = true
 				player:GetSprite().FlipY = true
 			end
 			--local mySprite = player:GetSprite()
@@ -3430,6 +3542,12 @@ function mod:onPEffectUpdate(player)
 				end
 			end
 		end
+
+		--- Eclipsed
+		if player:HasCollectible(mod.Items.Eclipse) then
+			EclipseAura(player)
+		end
+
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, mod.onPEffectUpdate)
@@ -3532,6 +3650,7 @@ function mod:onUpdate()
 		--local tempEffects = player:GetEffects()
 		--local pType = player:GetPlayerType()
 		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+			-- tea fungus
 			if player:HasTrinket(mod.Trinkets.TeaFungus) and not room:HasWater() and not room:IsClear() and room:GetFrameCount() <= 2  then
 				if room:GetFrameCount() == 1 then
 					local enemies = Isaac.FindInRadius(player.Position, 5000, EntityPartition.ENEMY)
@@ -3731,11 +3850,6 @@ function mod:onNewRoom()
 	mod.PreRoomState = room:IsClear()
 	--familiars
 	--red bag
-	
-	
-	
-	
-	
 	if not room:HasCurseMist() then
 		for _, fam in pairs(Isaac.FindByType(EntityType.ENTITY_FAMILIAR, mod.RedBag.Variant)) do
 			if fam:GetData().GenPickup then fam:GetData().GenPickup = false end
@@ -3770,9 +3884,6 @@ function mod:onNewRoom()
 		local player = game:GetPlayer(playerNum)
 		local data = player:GetData()
 		local tempEffects = player:GetEffects()
-		
-		
-		
 		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
 			--mongo cells
 			if data.MongoSteven then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_SPOON_BENDER, false) end
@@ -3928,10 +4039,10 @@ function mod:onNewRoom()
 		-- zero milestone
 		if level:GetCurrentRoomIndex() == GridRooms.ROOM_GENESIS_IDX and mod.ZeroStoneUsed then
 			mod.ZeroStoneUsed = false
-			if level:IsAscent() then
-				level:SetStage(LevelStage.STAGE8, 0)
+			if game:IsGreedMode() then
+				level:SetStage(LevelStage.STAGE7_GREED, 0)
 			else
-				level:SetStage(LevelStage.STAGE7, 0)
+				level:SetStage(LevelStage.STAGE8, 0)
 			end
 		end
 		-- decay
@@ -5609,21 +5720,14 @@ mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onRedPillPlacebo, CollectibleType.
 ---Space Jam
 function mod:onCosmicJam(_, _, player) --item, rng, player, useFlag, activeSlot, customVarData
 	local items = Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE)
-	local distance = 5000
-	local nearestItem
 	if #items > 0 then
 		for _, item in pairs(items) do
-			if item.SubType ~= 0 and not CheckItemTags(item.SubType, ItemConfig.TAG_QUEST) and player.Position:Distance(item.Position) < distance then
-				nearestItem = item
-				distance = player.Position:Distance(item.Position)
+			if item.SubType ~= 0 and not CheckItemTags(item.SubType, ItemConfig.TAG_QUEST) then
+				player:AddItemWisp(item.SubType, item.Position)
+				sfx:Play(579)
 			end
 		end
-		if nearestItem then
-			player:AddItemWisp(nearestItem.SubType, nearestItem.Position)
-			sfx:Play(579)
-		end
 	end
-	AddItemFromWisp(player, true, true, true)
 	return true
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onCosmicJam, mod.Items.CosmicJam)
@@ -5737,12 +5841,8 @@ end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onDomino00, mod.Pickups.Domino00)
 ---Soul of Unbidden
 function mod:onSoulUnbidden(_, player) -- card, player, useflag
-	
 	if #Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.ITEM_WISP)> 0 then
 		AddItemFromWisp(player, true, false, false)
-	else
-		--sfx:Play(SoundEffect.SOUND_DEATH_CARD, 1, 2, false, 1, 0) --sfx:Play(ID, Volume, FrameDelay, Loop, Pitch, Pan)
-		SpawnItemWisps(player)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onSoulUnbidden, mod.Pickups.SoulUnbidden)
@@ -6049,9 +6149,9 @@ function mod:onZeroMilestoneCard(_, player) -- card, player, useflag
 end
 mod:AddCallback(ModCallbacks.MC_USE_CARD, mod.onZeroMilestoneCard, mod.Pickups.ZeroMilestoneCard)
 ---pot of greed
-function mod:onBannedCard(_, player) -- card, player, useflag
+function mod:onBannedCard(card, player) -- card, player, useflag
 	for _ = 1, mod.BannedCard.NumCards do
-		Isaac.Spawn(5, 300, 0, player.Position, RandomVector()*3, nil)
+		Isaac.Spawn(5, 300, card, player.Position, RandomVector()*3, nil)
 	end
 	game:GetHUD():ShowFortuneText("POT OF GREED ALLOWS ME","TO DRAW TWO MORE CARDS!")
 end
@@ -6181,7 +6281,7 @@ if EID then -- External Item Description
 	EID:addCollectible(mod.Items.MongoCells,
 			"Copy your familiars.")
 	EID:addCollectible(mod.Items.CosmicJam,
-			"Add item from Item wisp to player. #Add Item Wisp from nearest item to player.")
+			"Add Item Wisp from all items in room to player.")
 	EID:addCollectible(mod.Items.DMS,
 			"Enemies has 25% chance to spawn {{Collectible634}} purgatory soul after death.")
 	EID:addCollectible(mod.Items.MewGen,
@@ -6189,13 +6289,10 @@ if EID then -- External Item Description
 	EID:addCollectible(mod.Items.ElderSign,
 			"Creates Pentagram for 3 seconds at position where you stand. #Pentagram spawn {{Collectible634}} purgatory Soul. #{{Freezing}} Freeze enemies inside pentagram.")
 	EID:addCollectible(mod.Items.Eclipse,
-		"While shooting grants pulsing aura, dealing player's damage. #Aura gets {{Damage}} x1.5 damage boost when you have {{CurseDarkness}} Curse of Darkness.")
-	
+			"While shooting grants pulsing aura, dealing player's damage. #Aura gets {{Damage}} x1.5 damage boost when you have {{CurseDarkness}} Curse of Darkness.")
 	EID:addCollectible(mod.Items.Threshold,
-		"Give actual item from Item Wisp.")
+			"Give actual item from Item Wisp.")
 
-
-	
 
 	EID:addTrinket(mod.Trinkets.WitchPaper,
 			"{{Collectible422}} Turn back time when you die. #Destroys itself after triggering.")
@@ -6241,8 +6338,8 @@ if EID then -- External Item Description
 			"Reroll items and pickups on current level.")
 	EID:addCard(mod.Pickups.Domino25,
 			"Respawn and reroll enemies in current room.")
-	EID:addCard(mod.Pickups.SoulUnbidden, -- The End?
-			"Add items from all item wisps to player. #If you don't have any item wisps, add item wisps from items in room.")
+	EID:addCard(mod.Pickups.SoulUnbidden,
+			"Add items from all item wisps to player.")
 
 	EID:addCard(mod.Pickups.SoulNadabAbihu,
 			"Fire and Explosion immunity. #{{Collectible257}} Fire Mind and {{Collectible256}} Hot Bombs effect for current room.")
@@ -6268,7 +6365,7 @@ if EID then -- External Item Description
 	EID:addCard(mod.Pickups.Adrenaline,
 			"Turn all your {{Heart}} red health into {{Battery}} batteries. #{{Collectible493}} Adrenaline effect for current room.")
 	EID:addCard(mod.Pickups.Corruption,
-			"You can use your active item unlimited times in current room. #On next room, active item on main slot will be removed.") --{{Active1}}
+			"You can use your active item unlimited times in current room. #{{Warning}} Remove your active item on next room. #{{Warning}} Doesn't affect pocket active item.") --{{Active1}}
 
 	EID:addCard(mod.Pickups.GhostGem,
 			"Spawn 4 {{Collectible634}} purgatory souls.")
@@ -6292,13 +6389,13 @@ if EID then -- External Item Description
 	EID:addCard(mod.Pickups.ArsenalCard,
 			"Teleport to out of map {{ChestRoom}} Chest Room.")
 	EID:addCard(mod.Pickups.OutpostCard,
-			"Teleport to out of map {{IsaacsRoom}}{{BarrenRoom}} Bedroom.")
+			"Teleport to out of map {{IsaacsRoom}} {{BarrenRoom}} Bedroom.")
 	EID:addCard(mod.Pickups.CryptCard,
-			"Teleport to out of map {{LadderRoom}} Dungeon.")
+			"Teleport to out of map {{LadderRoom}} Crawlspace.")
 	EID:addCard(mod.Pickups.MazeMemoryCard,
 			"Teleport to out of map {{TreasureRoom}} room with 18 items from random pools. #Only one can be taken. #Apply {{CurseBlind}} Curse of Blind for current level.")
 	EID:addCard(mod.Pickups.ZeroMilestoneCard,
-			"{{Collectible622}} Genesis effect. #Next level is Void.")
+			"{{Collectible622}} Genesis effect. #Next level is Home.")
 
 	EID:addCard(mod.Pickups.RedPill,
 			"Temporary ↑ {{Damage}} +10.8 Damage up. #Damage up slowly fades away similarly to {{Collectible621}} Red Stew. #Apply 2 layers of {{Collectible582}} Wavy Cap effect. #While you have temporary Damage Up, entering a room with enemies increase {Collectible582}} Wavy Cap effect.")
@@ -6325,7 +6422,7 @@ local function ExplosionEffect(player, bombPos, bombDamage, bombFlags)
 	end
 
 	if bombFlags & TearFlags.TEAR_STICKY == TearFlags.TEAR_STICKY then
-		for _, entity in pairs(Isaac.FindInRadius(bombPos, 150, EntityPartition.ENEMY)) do
+		for _, entity in pairs(Isaac.FindInRadius(bombPos, mod.NadabData.StickySpiderRadius, EntityPartition.ENEMY)) do
 			if entity:IsVulnerableEnemy() and entity:IsActiveEnemy() then
 				entity:AddEntityFlags(EntityFlag.FLAG_SPAWN_STICKY_SPIDERS)
 			end
@@ -6638,55 +6735,7 @@ end
 mod:AddCallback(ModCallbacks.MC_PRE_BOMB_COLLISION, mod.onBombCollision, BombVariant.BOMB_DECOY)
 
 -------------------------------------------------------------------------------------------
-mod.NadabData = {}
---mod.NadabData.CompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0} --1:Isaac, 2:BlueBaby, 3:Satan, 4:Lamb, 5:BossRush, 6:Hush, 7:MegaSatan, 8:Delirium, 9:Mother, 10:Beast, 11:Greed/Greedier, 12:Heart, 13:AllMarksHard
-mod.NadabData.CostumeHead = Isaac.GetCostumeIdByPath("gfx/characters/nadab_head.anm2")
-mod.NadabData.ExplosionCountdown = 30 -- so don't spam
-mod.NadabData.MrMegaDmgMultiplier = 0.75
-mod.NadabData.SadBombsFiredelay = -1.0
-mod.NadabData.FastBombsSpeed = 1.0
-mod.NadabData.RingCapFrameCount = 10
-mod.NadabData.BombBeggarSprites = {
-['Idle'] = true,
-['PayNothing'] = true }
-mod.NadabData.Stats = {}
-mod.NadabData.Stats.DAMAGE = 1.2
-mod.NadabData.Stats.SPEED = -0.35
 
-mod.AbihuData = {}
---mod.AbihuData.CompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0}
-mod.AbihuData.CostumeHead = Isaac.GetCostumeIdByPath("gfx/characters/abihu_costume.anm2")
-mod.AbihuData.DamageDelay = 30
-mod.AbihuData.HoldBombDelay = 20
-mod.AbihuData.ChargeBar = Sprite()
-mod.AbihuData.ChargeBar:Load("gfx/chargebar.anm2", true)
-mod.AbihuData.Stats = {}
-mod.AbihuData.Stats.DAMAGE = 1.14286
-mod.AbihuData.Stats.SPEED = 1.0
-mod.AbihuData.Unlocked = false
-
-mod.UnbiddenData = {}
---mod.UnbiddenData.CompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0}
-mod.UnbiddenData.RadiusWisp = 100
-mod.UnbiddenData.Stats = {}
-mod.UnbiddenData.Stats.DAMAGE = 1.35
-mod.UnbiddenData.Stats.LUCK = -1
-
-mod.ObliviousData = {}
-mod.ObliviousData.DamageDelay = 12
-mod.ObliviousData.Knockback = 4
-mod.ObliviousData.TearVariant = TearVariant.MULTIDIMENSIONAL
---mod.ObliviousData.CompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0}
-mod.ObliviousData.ChargeBar = Sprite()
-mod.ObliviousData.ChargeBar:Load("gfx/chargebar.anm2", true)
-mod.ObliviousData.Stats = {}
-mod.ObliviousData.Stats.DAMAGE = 1
-mod.ObliviousData.Stats.LUCK = -3
-mod.ObliviousData.Stats.TRAR_FLAG = TearFlags.TEAR_WAIT | TearFlags.TEAR_CONTINUUM
-mod.ObliviousData.Stats.TEAR_COLOR = Color(0.5,1,2,1,0,0,0)
-mod.ObliviousData.Stats.LASER_COLOR = Color(1,1,1,1,-0.5,0.7,1)
-
-mod.ObliviousData.Unlocked = false
 
 --Nadab
 local function NadabExplosion(player, useGiga, bombPos)
@@ -7490,7 +7539,8 @@ local function TechDot5Shot(player)
 	--laser:SetColor(mod.ObliviousData.Stats.LASER_COLOR, 5000, 100, true, false)
 end
 
-local function WeaponAura(player, auraPos, frameCount, maxCharge, range, blockLasers)
+local function WeaponAura(player, auraPos, frameCount, maxCharge, range, blockLasers, delayOff)
+	delayOff = delayOff or nil
 	range = range or player.TearRange*0.33
 	frameCount = frameCount or game:GetFrameCount()
 	maxCharge = maxCharge or mod.ObliviousData.DamageDelay + math.floor(player.MaxFireDelay)
@@ -7500,7 +7550,7 @@ local function WeaponAura(player, auraPos, frameCount, maxCharge, range, blockLa
 		local tearsNum = GetMultiShotNum(player)
 		for _ = 0, tearsNum do -- start from 0. cause you must have at least 1 multiplier
 			--UnbiddenAura(player, auraPos) -- idk why knife is attacks 2 times (updates 2 times?)
-			UnbiddenAura(player, auraPos, nil, nil, range, blockLasers)
+			UnbiddenAura(player, auraPos, delayOff, nil, range, blockLasers)
 		end
 	end
 end
@@ -7565,12 +7615,13 @@ function mod:onLaserUpdate(laser) -- low
 		--elseif laserData.UnbiddenTechDot5Laser then
 		elseif laserData.UnbiddenBrimLaser then
 			if laser.Timeout < 4 and player:HasCollectible(CollectibleType.COLLECTIBLE_C_SECTION) and player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
-				local fetusTear = player:FireTear(laser.Position, RandomVector()*player.ShotSpeed*14, false, false, false, player, 1 ):ToTear()
-				--local fetusTear = Isaac.Spawn(EntityType.ENTITY_TEAR, 50, 2, pos, Vector.Zero, player):ToTear()
-				fetusTear:ChangeVariant(50)
+				local fetusTear = player:FireTear(laser.Position, RandomVector()*player.ShotSpeed*14, false, false, false, player, 1):ToTear()
+				fetusTear:ChangeVariant(TearVariant.FETUS)
 				fetusTear:AddTearFlags(TearFlags.TEAR_FETUS)
 				fetusTear:GetData().BrimFetus = true
-				--fetusTear:GetSprite()
+				local tearSprite = fetusTear:GetSprite()
+				tearSprite:ReplaceSpritesheet(0, "gfx/characters/costumes_unbidden/fetus_tears.png")
+				tearSprite:LoadGraphics()
 			end
 		end
 	end
@@ -7609,7 +7660,7 @@ function mod:onTearUpdate(tear)
 		tear.SplatColor = mod.ObliviousData.Stats.LASER_COLOR
 		if tear:HasTearFlags(TearFlags.TEAR_FETUS) then
 			if tear:GetData().BrimFetus then
-				WeaponAura(player, tear.Position, tear.FrameCount, 22, nil, true)
+				WeaponAura(player, tear.Position, tear.FrameCount, 22, nil, true, true)
 				--WeaponAura(player, auraPos, frameCount, maxCharge, range, blockLasers)
 			elseif not player:GetData().UnbiddenBrimCircle then
 				WeaponAura(player, tear.Position, tear.FrameCount)
@@ -7627,7 +7678,7 @@ function mod:onTargetEffectUpdate(effect)
 		local player = effect.SpawnerEntity:ToPlayer()
 		effect.Color = mod.ObliviousData.Stats.TEAR_COLOR
 		--effect:SetColor(mod.ObliviousData.Stats.TEAR_COLOR, 3, 99, false, true)
-		WeaponAura(player, effect.Position, effect.FrameCount, nil, player.TearRange*0.5)
+		WeaponAura(player, effect.Position, effect.FrameCount, nil, player.TearRange*0.5) -- true
 		--WeaponAura(player, auraPos, frameCount, maxCharge, range, blockLasers)
 	end
 end
@@ -7638,7 +7689,7 @@ function mod:onTargetEffectUpdate(effect)
 	if effect.SpawnerEntity and effect.SpawnerEntity:ToPlayer() and effect.SpawnerEntity:ToPlayer():GetPlayerType() == mod.Characters.Oblivious then
 		local player = effect.SpawnerEntity:ToPlayer()
 		effect.Color = mod.ObliviousData.Stats.TEAR_COLOR
-		WeaponAura(player, effect.Position, effect.FrameCount, nil, player.TearRange*0.5)
+		WeaponAura(player, effect.Position, effect.FrameCount, nil, player.TearRange*0.5) -- true
 		--WeaponAura(player, auraPos, frameCount, maxCharge, range, blockLasers)
 	end
 end
@@ -7685,12 +7736,12 @@ function mod:onPEffectUpdate3(player)
 	---Nadab's Body
 	if player:HasCollectible(mod.Items.NadabBody) then
 		if player:GetPlayerType() ~= mod.Characters.Abihu then
-			
+
 			if data.HoldBomd == 0 and not player:IsHoldingItem() and data.NadabReHold and game:GetFrameCount() - data.NadabReHold > 30 then
 				data.HoldBomd = -1
 				data.NadabReHold = nil
 			end
-			
+
 			-- holding bomb
 			data.HoldBomd = data.HoldBomd or -1
 			if data.HoldBomd == 1 then
@@ -7741,7 +7792,6 @@ function mod:onPEffectUpdate3(player)
 				bomb.Parent = player
 			end
 		end
-
 
 		if Input.IsActionPressed(ButtonAction.ACTION_BOMB, 0) and player:GetPlayerType() == mod.Characters.Abihu then --Input.IsActionPressed(action, controllerId) IsActionTriggered
 			local checkBombsNum = player:GetHearts()
@@ -7877,14 +7927,6 @@ function mod:onPEffectUpdate3(player)
 			end
 		end
 
-	--[[
-	else
-		if data.NadabCostumeEquipped then
-			player:TryRemoveNullCostume(mod.NadabData.CostumeHead)
-			data.NadabCostumeEquipped = false
-			if player:HasCollectible(mod.Items.AbihuFam) then player:RemoveCollectible(mod.Items.AbihuFam) end
-		end
-	--]]
 	end
 
 	if player:GetPlayerType() == mod.Characters.Abihu then
@@ -8004,14 +8046,15 @@ function mod:onPEffectUpdate3(player)
 			end
 		end
 
-	--[[
-	else
-		if data.AbihuCostumeEquipped then
-			player:TryRemoveNullCostume(mod.AbihuData.CostumeHead)
-			data.AbihuCostumeEquipped = false
-			if player:HasCollectible(mod.Items.NadabBody) then player:RemoveCollectible(mod.Items.NadabBody) end
+		--glowing
+		if data.ResetBlind then
+			data.ResetBlind = data.ResetBlind -1
+			if data.ResetBlind <= 0 then
+				data.BlindAbihu = true
+				SetBlindfold(player, true)
+				data.ResetBlind = nil
+			end
 		end
-	--]]
 	end
 
 	if player:GetPlayerType() == mod.Characters.Unbidden then
@@ -8068,14 +8111,6 @@ function mod:onPEffectUpdate3(player)
 
 	if player:GetPlayerType() == mod.Characters.Oblivious then
 
-
-
-		--[[
-		if player:GetActiveItem(ActiveSlot.SLOT_POCKET) ~= mod.Items.Threshold then
-			player:SetPocketActiveItem(mod.Items.Threshold, ActiveSlot.SLOT_POCKET, false)
-		end
-		--]]
-
 		if player:GetSoulHearts() == 0 then
 			player:AddSoulHearts(2)
 		elseif player:GetSoulHearts() > 2 then
@@ -8107,9 +8142,12 @@ function mod:onPEffectUpdate3(player)
 		ludo+brim
 		ludo+knife+brim
 
-		rockets - remove blind --OR aura spawn rockets on an enemies position
+		rockets - remove blind, target mark spawn aura
 		axe - remove blind
 		urn - remove blind
+
+		marked - target mark spawn aura
+		eye of occlult - target mark spawn aura
 
 		sword -  remove blind, sword creates aura when you shoot(?)
 		c section - remove blind, fetus creates aura every x frames
@@ -8151,17 +8189,11 @@ function mod:onPEffectUpdate3(player)
 		15 	WeaponType.WEAPON_UMBILICAL_WHIP        familiar creates aura︎ [COLLECTIBLE_INCUBUS] [CAIN_OTHER_EYE] [FATE_REWARD]
 		--]]
 
-
-		--print(player:HasWeaponType(WeaponType.WEAPON_FETUS))
-		--[
-		--player:HasWeaponType(WeaponType)
 		if player:HasWeaponType(WeaponType.WEAPON_BOMBS) or
 			player:HasWeaponType(WeaponType.WEAPON_ROCKETS) or
 			player:HasWeaponType(WeaponType.WEAPON_FETUS) or
 			player:HasWeaponType(WeaponType.WEAPON_SPIRIT_SWORD) or
 			player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
-			--if player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE︎) then
-			--print('b')
 
 			if data.BlindUnbidden then
 				data.BlindUnbidden = false
@@ -8171,8 +8203,6 @@ function mod:onPEffectUpdate3(player)
 			data.BlindUnbidden = true
 			SetBlindfold(player, true)
 		end
-		--]
-
 
 		-- urn of souls and nocthed axe. idk how to remove tech2 laser when you use this items.
 		--(i can remove all lasers while you have weapon but it's not a proper solution)
@@ -8181,7 +8211,6 @@ function mod:onPEffectUpdate3(player)
 			if (weapon:ToKnife() or weapon:ToEffect()) then
 				data.ObliviousDamageDelay = 0
 				data.HoldingWeapon = true
-
 			end
 		else
 			data.HoldingWeapon = false
@@ -8198,40 +8227,7 @@ function mod:onPEffectUpdate3(player)
 			data.UnbiddenBrimCircle = false
 		end
 
-
-
-		--[[
-			local targets = Isaac.FindByType(1000, EffectVariant.TARGET)
-			if #targets > 0 then
-				for _, effect in pairs(targets) do
-					if effect.SpawnerEntity and effect.SpawnerEntity:ToPlayer() and effect.SpawnerEntity:ToPlayer():GetPlayerType() == mod.Characters.Oblivious then
-						effect.Color = mod.ObliviousData.Stats.TEAR_COLOR
-						--effect:SetColor(mod.ObliviousData.Stats.TEAR_COLOR, 3, 99, false, true)
-						--WeaponAura(player, effect.Position, effect.FrameCount)
-						auraPos = effect.Position
-					end
-				end
-			end
-		end
-		--]]
-
-		--[[
-		local epicRokets = Isaac.FindByType(EntityType.ENTITY_EFFECT, EffectVariant.ROCKET)
-		if #epicRokets > 0 then
-			for _, rocket in pairs(epicRokets) do
-				if rocket.SpawnerEntity and rocket.SpawnerEntity:ToPlayer() and rocket.SpawnerEntity:ToPlayer():GetPlayerType() == mod.Characters.Oblivious then
-
-					WeaponAura(player, rocket.Position, rocket.FrameCount, 10)
-				end
-			end
-		end
-		--]]
-
 		if data.BlindUnbidden then
-		
-			--data.BlindUnbidden = true
-		
-			
 			-- change position if you has ludo
 			local auraPos = player.Position
 
@@ -8239,8 +8235,6 @@ function mod:onPEffectUpdate3(player)
 				data.DeadEyeCounter = data.DeadEyeCounter or 0
 				data.DeadEyeMissCounter = data.DeadEyeMissCounter or 0
 			end
-
-
 
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_MARKED) or player:HasCollectible(CollectibleType.COLLECTIBLE_CHOCOLATE_MILK) or player:HasCollectible(CollectibleType.COLLECTIBLE_TECH_X) or player:HasCollectible(CollectibleType.COLLECTIBLE_CURSED_EYE) then -- semi-charge
 				data.UnbiddenSemiCharge = true
@@ -8320,7 +8314,7 @@ function mod:onPEffectUpdate3(player)
 
 			-- if not shooting
 			if player:GetFireDirection() == -1 then
-			
+
 				if data.ObliviousTechDot5Delay then data.ObliviousTechDot5Delay = 0 end
 				if data.HasTech2Laser then data.HasTech2Laser = false end
 				if data.UnbiddenSemiCharge and data.ObliviousDamageDelay > 0 then
@@ -8450,7 +8444,7 @@ function mod:onPEffectUpdate3(player)
 				data.ResetBlind = nil
 			end
 		end
-		
+
 	--[[
 	else
 		if data.ObliviousCostumeEquipped then
@@ -8475,7 +8469,6 @@ function mod:onUpdate2()
 		if player:IsDead() and not player:HasTrinket(mod.Trinkets.WitchPaper) and player:GetBrokenHearts() < 11 then
 			if player:GetPlayerType() == mod.Characters.Unbidden or player:GetPlayerType() == mod.Characters.Oblivious then
 				player:UseActiveItem(CollectibleType.COLLECTIBLE_GLOWING_HOUR_GLASS, myUseFlags)
-				--Isaac.ExecuteCommand("rewind") -- it works but there isn't any effects
 				data.NoAnimReset = 2
 			end
 		end
@@ -8534,13 +8527,6 @@ function mod:onPlayerInit(player)
 		--player:AddNullCostume(mod.ObliviousData.CostumeHead)
 		data.BlindUnbidden = true
 		SetBlindfold(player, true)
-
-		--if not player:HasCollectible(mod.Items.Threshold) then
-			--player:AddCollectible(mod.Items.Threshold, 6, false)
-			--player:SetPocketActiveItem(mod.Items.Threshold, ActiveSlot.SLOT_POCKET, false)
-		--end
-
-		--player:AddCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_GLITTER_BOMBS))
 	else
 		if data.BlindUnbidden then
 			data.BlindUnbidden = nil
@@ -8714,10 +8700,6 @@ function mod:onItemCollision2(pickup, collider, _) --add --PickupVariant.PICKUP_
 				else
 					pickup:Remove()
 					player:AddItemWisp(pickup.SubType, pickup.Position):ToFamiliar()
-					--local wispy = player:AddItemWisp(pickup.SubType, pickup.Position):ToFamiliar()
-					--wispy.Color = mod.OblivionCard.PoofColor
-					--wispy.SplatColor = mod.OblivionCard.PoofColor
-					--pickup.SubType = 0
 					sfx:Play(579)
 					return true
 				end
@@ -8922,76 +8904,6 @@ function mod:onRender()
 end
 mod:AddCallback(ModCallbacks.MC_POST_RENDER, mod.onRender)
 --]]
-
-do
--- bomb gagger
---mod.Items.Gagger = Isaac.GetItemIdByName("Little Gagger")
-
---[[
-mod.Gagger = {}
-mod.Gagger.Variant = Isaac.GetEntityVariantByName("lilGagger") -- shoot bomb tears, chance to generate giga bomb after clearing room
-mod.Gagger.GenChance = 0.10 -- overall chance
-mod.Gagger.ChanceUp = 0.1
-]]
-
---[[
---Gagger
-function mod:onGaggerInit(fam)
-	fam:GetSprite():Play("FloatDown")
-	fam:GetData().GenPickup = false
-	fam:GetData().GenChanceUp = 0
-	fam:AddToFollowers()
-end
-mod:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, mod.onGaggerInit, mod.Gagger.Variant)
---Gagger loop update
-function mod:onGaggerUpdate(fam)
-	local player = fam.Player -- get player
-	--local tempEffects = player:GetEffects()
-	local famData = fam:GetData() -- get fam data
-	local room = game:GetRoom()
-	local famSprite = fam:GetSprite()
-	CheckForParent(fam)
-	fam:FollowParent()
-	if not mod.PreRoomState and not famData.GenPickup and room:IsClear() then
-		local rng = player:GetCollectibleRNG(mod.Items.Gagger)
-		famData.GenPickup = true
-		famData.GenChanceUp = famData.GenChanceUp or 0
-		if rng:RandomFloat() < mod.Gagger.GenChance + famData.GenChanceUp then
-			famData.GenChanceUp = 0
-			famData.GenIndex = true
-			famSprite:Play("Spawn")
-		else
-			famData.GenChanceUp = famData.GenChanceUp + mod.Gagger.ChanceUp
-		end
-	end
-	if famSprite:IsFinished("Spawn") and famData.GenPickup then
-		if famData.GenIndex then
-			Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_GIGA, fam.Position, Vector.Zero, fam)
-			famSprite:Play("AfterSpawn")
-			famData.GenIndex = nil
-		end
-	end
-	if famSprite:IsFinished("AfterSpawn") then
-		famSprite:Play("FloatDown") --"AfterSpawn"
-	end
-end
-mod:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, mod.onGaggerUpdate, mod.Gagger.Variant)
---]]
-
---[[
-function mod:onCache3(player, cacheFlag)
-	player = player:ToPlayer()
-	-- bombgagger
-	--[[
-	if cacheFlag == CacheFlag.CACHE_FAMILIARS then
-		local gaggers = GetItemsCount(player, mod.Items.Gagger)
-		player:CheckFamiliar(mod.Gagger.Variant, gaggers, player:GetCollectibleRNG(mod.Items.Gagger), Isaac.GetItemConfig():GetCollectible(mod.Items.Gagger))
-	end
-	--]
-end
-mod:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, mod.onCache3)
-]]
-end
 
 do
 --[[
@@ -9346,11 +9258,6 @@ mod:AddCallback(ModCallbacks.MC_EXECUTE_CMD, mod.onExecuteCommand)
 ---EXECUTE COMMAND---
 
 --[[
-shaders to flip by screen PositionX
-check Rotation?
---]]
-
---[[
 local explosions = Isaac.FindByType(EntityType.ENTITY_EFFECT, EffectVariant.BOMB_EXPLOSION)
 local mamaMega = Isaac.FindByType(EntityType.ENTITY_EFFECT, EffectVariant.MAMA_MEGA_EXPLOSION)
 
@@ -9389,15 +9296,12 @@ slot machines:
 Toilet - take 1 coin, can drop 1-2 dip familiars. chance to gives random poop transformation item.
 --]]
 
---mod.Trinkets.Penance
-
---[[
 
 mod.Penance = {}
-mod.Penance.Chance = 0.1
+mod.Penance.Chance = 0.16
+mod.Penance.LaserVariant = 5
 mod.Penance.Effect = EffectVariant.REDEMPTION
-mod.Penance.Color = Color(1.25, 0.05, 0.15, 1, 0, 0, 0)
-
+mod.Penance.Color = Color(1.25, 0.05, 0.15, 0.5)
 
 function mod:onNewRoom()
 	local room = game:GetRoom()
@@ -9409,10 +9313,10 @@ function mod:onNewRoom()
 				local rngTrinket = player:GetTrinketRNG(mod.Trinkets.Penance)
 				for _, entity in pairs(Isaac.GetRoomEntities()) do
 					if entity:ToNPC() and entity:IsActiveEnemy() and entity:IsVulnerableEnemy() and not entity:GetData().PenanceRedCross and rngTrinket:RandomFloat() < mod.Penance.Chance then
-						entity:GetData().PenanceRedCross = true
+						entity:GetData().PenanceRedCross = player
 						local redCross = Isaac.Spawn(EntityType.ENTITY_EFFECT, mod.Penance.Effect, 0, entity.Position, Vector.Zero, nil):ToEffect()
 						redCross.Color = mod.Penance.Color
-						redCross:GetData().PenanceRedCross = true
+						redCross:GetData().PenanceRedCrossEffect = true
 						redCross.Parent = entity
 					end
 				end
@@ -9422,106 +9326,230 @@ function mod:onNewRoom()
 end
 mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, mod.onNewRoom)
 
-function mod:onNPCDeath2(entity)
-	if entity:GetData().PenanceRedCross then
-		local variant = 4
+
+local function PenanceShootLaser(angle, timeout, pos, ppl)
+	local laser = Isaac.Spawn(EntityType.ENTITY_LASER, mod.Penance.LaserVariant, 0, pos, Vector.Zero, ppl):ToLaser()
+	laser.Color = mod.Penance.Color
+	laser:SetTimeout(timeout)
+	laser.Angle = angle
+end
+
+function mod:onNPCUpdate2(entity)
+	if entity:HasMortalDamage() and entity:GetData().PenanceRedCross then
+		local ppl = entity:GetData().PenanceRedCross
 		local timeout = 30
-		local redLaser = Isaac.Spawn(EntityType.ENTITY_LASER, variant, 0, entity.Position, Vector.Zero, nil):ToEffect()
-		redLaser:SetTimeout(timeout)
-		--.AngleDegrees
-		--:ShootAngle(Variant, SourcePos, AngleDegrees, Timeout, PosOffset, Source)
-		redLaser:ShootAngle(variant, redLaser.Position, 90, timeout, Vector.Zero, nil)
-		redLaser:ShootAngle(variant, redLaser.Position, 180, timeout, Vector.Zero, nil)
-		redLaser:ShootAngle(variant, redLaser.Position, 270, timeout, Vector.Zero, nil)
+		PenanceShootLaser(0, 30, entity.Position, ppl)
+		PenanceShootLaser(90, 30, entity.Position, ppl)
+		PenanceShootLaser(180, 30, entity.Position, ppl)
+		PenanceShootLaser(270, 30, entity.Position, ppl)
+		entity:GetData().PenanceRedCross = false		
 	end
 end
-mod:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, mod.onNPCDeath2)
+mod:AddCallback(ModCallbacks.MC_PRE_NPC_UPDATE, mod.onNPCUpdate2)
 
 function mod:onRedCrossEffect(effect)
-	if effect:GetData().PenanceRedCross then
-		if effect.Parent then
-			effect:FollowParent(effect.Parent)
-			--effect.Position = effect.Parent.Position
-		else
+	if effect:GetData().PenanceRedCrossEffect then
+		--effect.Color = mod.Penance.Color
+		if not effect.Parent then
 			effect:Remove()
 		end
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onRedCrossEffect, mod.Penance.Effect)
+
+--]
+
+-- bomb gagger
+--mod.Items.Gagger = Isaac.GetItemIdByName("Little Gagger")
+
+
+--[[
+mod.Gagger = {}
+mod.Gagger.Variant = Isaac.GetEntityVariantByName("lilGagger") -- shoot bomb tears, chance to generate giga bomb after clearing room
+mod.Gagger.GenChance = 0.10 -- overall chance
+mod.Gagger.ChanceUp = 0.1
+]]
+
+--[[
+--Gagger
+function mod:onGaggerInit(fam)
+	fam:GetSprite():Play("FloatDown")
+	fam:GetData().GenPickup = false
+	fam:GetData().GenChanceUp = 0
+	fam:AddToFollowers()
+end
+mod:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, mod.onGaggerInit, mod.Gagger.Variant)
+--Gagger loop update
+function mod:onGaggerUpdate(fam)
+	local player = fam.Player -- get player
+	--local tempEffects = player:GetEffects()
+	local famData = fam:GetData() -- get fam data
+	local room = game:GetRoom()
+	local famSprite = fam:GetSprite()
+	CheckForParent(fam)
+	fam:FollowParent()
+	if not mod.PreRoomState and not famData.GenPickup and room:IsClear() then
+		local rng = player:GetCollectibleRNG(mod.Items.Gagger)
+		famData.GenPickup = true
+		famData.GenChanceUp = famData.GenChanceUp or 0
+		if rng:RandomFloat() < mod.Gagger.GenChance + famData.GenChanceUp then
+			famData.GenChanceUp = 0
+			famData.GenIndex = true
+			famSprite:Play("Spawn")
+		else
+			famData.GenChanceUp = famData.GenChanceUp + mod.Gagger.ChanceUp
+		end
+	end
+	if famSprite:IsFinished("Spawn") and famData.GenPickup then
+		if famData.GenIndex then
+			Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_GIGA, fam.Position, Vector.Zero, fam)
+			famSprite:Play("AfterSpawn")
+			famData.GenIndex = nil
+		end
+	end
+	if famSprite:IsFinished("AfterSpawn") then
+		famSprite:Play("FloatDown") --"AfterSpawn"
+	end
+end
+mod:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, mod.onGaggerUpdate, mod.Gagger.Variant)
 --]]
 
---- Eclipse
-local function EclipseAura(player)
-	local data = player:GetData()
+--[[
+function mod:onCache3(player, cacheFlag)
+	player = player:ToPlayer()
+	-- bombgagger
+	--[[
+	if cacheFlag == CacheFlag.CACHE_FAMILIARS then
+		local gaggers = GetItemsCount(player, mod.Items.Gagger)
+		player:CheckFamiliar(mod.Gagger.Variant, gaggers, player:GetCollectibleRNG(mod.Items.Gagger), Isaac.GetItemConfig():GetCollectible(mod.Items.Gagger))
 
-	-- delay - firerate analog
-	local maxCharge = math.floor(player.MaxFireDelay) + mod.Eclipse.DamageDelay
-	data.EclipseDamageDelay = data.EclipseDamageDelay or 0
-	if data.EclipseDamageDelay < maxCharge then data.EclipseDamageDelay = data.EclipseDamageDelay + 1 end
-	--print(maxCharge, data.EclipseDamageDelay)
-	-- damage boosts count (work only with Curse of Darkness)
-	data.EclipseBoost = data.EclipseBoost or 0
-	if data.EclipseBoost > 0 and game:GetLevel():GetCurses() & LevelCurse.CURSE_OF_DARKNESS == 0 then
-		data.EclipseBoost = 0
 	end
+	--]
+end
+mod:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, mod.onCache3)
+]]
 
-	-- dark aura
-	local pos = player.Position
-	local range = mod.Eclipse.AuraRange
-	
-	if game:GetLevel():GetCurses() & LevelCurse.CURSE_OF_DARKNESS > 0 then
-		if not data.EclipseBoost or data.EclipseBoost ~= GetItemsCount(player, mod.Items.Eclipse) then
-			data.EclipseBoost = GetItemsCount(player, mod.Items.Eclipse) 
-			player:AddCacheFlags(CacheFlag.CACHE_DAMAGE)
-			player:EvaluateItems()
-		end
-	elseif data.EclipseBoost then
-		data.EclipseBoost = nil
-		player:AddCacheFlags(CacheFlag.CACHE_DAMAGE)
-		player:EvaluateItems()
-	end
+mod.Slots = {}
 
-	-- do pulse damage to enemies in aura range
-	if player:GetFireDirection() ~= -1 and data.EclipseDamageDelay >= maxCharge then
-		data.EclipseDamageDelay = 0
-		local enemies = Isaac.FindInRadius(pos, range, EntityPartition.ENEMY)
-		local pulse = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.HALO, 8, Vector(pos.X, pos.Y-28), Vector.Zero, player):ToEffect()
-		pulse.SpriteScale = pulse.SpriteScale * range/100
-		if #enemies > 0 then
-			for _, enemy in pairs(enemies) do
-				if enemy:IsVulnerableEnemy() and enemy:IsActiveEnemy() then
-					enemy:TakeDamage(player.Damage, 0, EntityRef(player), 1)
-					enemy:AddVelocity((enemy.Position - pos):Resized(player.ShotSpeed * mod.Eclipse.Knockback))
+mod.Slots.MongoBeggar = Isaac.GetEntityVariantByName("Mongo Beggar")
+mod.MongoBeggar= {}
+mod.MongoBeggar.ReplaceChance = 0.1
+mod.MongoBeggar.PityCounter = 6
+mod.MongoBeggar.PrizeCounter = 6
+mod.MongoBeggar.PrizeChance = 0.05
+mod.MongoBeggar.ActivateChance = 0.33
+mod.BeggarCheck = {
+[mod.Slots.MongoBeggar] = true
+}
+
+local function BeggarWasBombed(beggar)
+	local level = game:GetLevel()
+	local explosions = Isaac.FindByType(EntityType.ENTITY_EFFECT, EffectVariant.BOMB_EXPLOSION)
+	local mamaMega = Isaac.FindByType(EntityType.ENTITY_EFFECT, EffectVariant.MAMA_MEGA_EXPLOSION)
+
+	if #mamaMega > 0 then
+		beggar:Kill()
+		beggar:Remove()
+		level:SetStateFlag(LevelStateFlag.STATE_BUM_KILLED, true)
+	elseif #explosions > 0 then
+		for _, explos in pairs(explosions) do
+			local frame = explos:GetSprite():GetFrame()
+			if frame < 3 then
+				if explos.Position:Distance(beggar.Position) <= 90 * explos.SpriteScale.X then
+					beggar:Kill()
+					beggar:Remove()
+					level:SetStateFlag(LevelStateFlag.STATE_BUM_KILLED, true)
 				end
 			end
 		end
 	end
 end
 
-function mod:onCache22(player, cacheFlag)
-	local data = player:GetData()
-    if cacheFlag == CacheFlag.CACHE_DAMAGE and data.EclipseBoost and data.EclipseBoost > 0 then
-	    -- add damage with boost count
-        player.Damage = player.Damage + player.Damage * (mod.Eclipse.DamageBoost * data.EclipseBoost)
-    end
-end
-
-mod:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, mod.onCache22)
-
-function mod:onPEffectUpdate22(player)
-	if player:HasCollectible(mod.Items.Eclipse) then
-		EclipseAura(player)
+function mod:onEntSpawn(entType, var, subType, pos, velocity, spawner, seed)
+	if entType == EntityType.ENTITY_SLOT and var == 4 then
+		--local rng = RNG()
+		--rng:SetSeed(seed, RECOMMENDED_SHIFT_IDX)
+		if modRNG:RandomFloat() <= mod.MongoBeggar.ReplaceChance then
+			return {entType, mod.Slots.MongoBeggar, 0, seed}
+		end
 	end
 end
-mod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, mod.onPEffectUpdate22)
+mod:AddCallback(ModCallbacks.MC_PRE_ENTITY_SPAWN, mod.onEntSpawn)
 
+function mod:peffectUpdateBeggars(player)
+	local level = game:GetLevel()
+	local mongoBeggars = Isaac.FindByType(EntityType.ENTITY_SLOT, mod.Slots.MongoBeggar)
 
-function mod:onGlowingHourglassUse(_, _, player) --item, rng, player, useFlag, activeSlot, customVarData
-	--- abihu drops nadab when you use item, so set holding to -1
-	local data = player:GetData()
-	if data.BlindAbihu or data.BlindUnbidden then
-		data.ResetBlind = 60
+	if #mongoBeggars > 0 then
+		for _, beggar in pairs(mongoBeggars) do
+			local sprite = beggar:GetSprite()
+			local rng = beggar:GetDropRNG()
+			local randNum = rng:RandomFloat()
+			local beggarData = beggar:GetData()
+			
+			beggarData.PityCounter = beggarData.PityCounter or 0
+			beggarData.PrizeCounter = beggarData.PrizeCounter or 0
+			
+
+			if sprite:IsFinished("PayNothing") then sprite:Play("Idle")	end
+			if sprite:IsFinished("PayPrize") then sprite:Play("Prize") end
+
+			if sprite:IsFinished("Prize") then
+				
+				
+				if beggarData.PityCounter >= mod.MongoBeggar.PityCounter or randNum <= mod.MongoBeggar.PrizeChance then --Spawn item
+					local spawnpos = Isaac.GetFreeNearPosition(beggar.Position, 35)
+					sprite:Play("Teleport")
+					DebugSpawn(100, CollectibleType.COLLECTIBLE_MONGO_BABY, spawnpos)
+					level:SetStateFlag(LevelStateFlag.STATE_BUM_LEFT, true)
+				else -- from all cards
+					player:UseActiveItem(CollectibleType.COLLECTIBLE_MONSTER_MANUAL, myUseFlags)
+					sprite:Play("Idle")
+					sfx:Play(SoundEffect.SOUND_SLOTSPAWN)
+					beggarData.PrizeCounter = beggarData.PrizeCounter + 1
+					if beggarData.PrizeCounter >= mod.MongoBeggar.PrizeCounter then
+						sprite:Play("Teleport")
+						level:SetStateFlag(LevelStateFlag.STATE_BUM_LEFT, true)
+					else
+						sprite:Play("Idle")
+					end
+				end
+			end
+			
+			if sprite:IsFinished("Teleport") then
+				beggar:Remove()
+			else
+				if beggar.Position:Distance(player.Position) <= 20 then --(beggar.Position - player.Position):Length() <= 20 then
+					if sprite:IsPlaying("Idle") and player:GetNumCoins() > 0 then
+						player:AddCoins(-1)
+						SFXManager():Play(SoundEffect.SOUND_SCAMPER)
+						if beggarData.PityCounter >= mod.MongoBeggar.PityCounter then
+							sprite:Play("PayPrize")
+						elseif rng:RandomFloat() < mod.MongoBeggar.ActivateChance then --randNum == 0 then
+							sprite:Play("PayPrize")
+							beggarData.PityCounter = 0
+						else
+							sprite:Play("PayNothing")
+							beggarData.PityCounter = beggarData.PityCounter + 1
+						end
+					end
+				end
+				 
+				BeggarWasBombed(beggar)
+				
+			end
+		end
+
 	end
 end
-mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onGlowingHourglassUse, CollectibleType.COLLECTIBLE_GLOWING_HOUR_GLASS)
+mod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, mod.peffectUpdateBeggars)
 
+
+--[[
+function mod:onGetCard(rng, card, includePlayingCards, includeRunes, onlyRunes)
+	if game:IsGreedMode() and card.SubType == mod.Pickups.BannedCard then
+		return Card.CARD_RANDOM
+	end
+end
+mod:AddCallback(ModCallbacks.MC_GET_CARD, mod.onGetCard)
+--]]

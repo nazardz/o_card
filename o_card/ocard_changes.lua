@@ -12,35 +12,9 @@ check dice bombs/ sticky bombs (ExplosionEffect)
 Pandora's Jar - purple jar
 "Deceptive expectations"
 2 charge.
-70% chance to add random wisp.
-25% chance to add special curse for level
-5% chance to become unusable on current level
+66% chance to add random wisp. (100% after all curses was added)
+33% chance to add special curse for level
 --]]
---[[
-Curse of the Fool             - Wise
-Curse of the Magician         - Knight
-Curse of the High Priestess   - Witch
-Curse of the Empress          - Mother
-Curse of the Emperor          - Slave
-Curse of the Hierophant       - Merchant
-Curse of the Lovers           - Rivals
-Curse of the Chariot          - Gate
-Curse of the Justice          - Ignorance
-Curse of the Hermit           - Town
-Curse of the Wheel of Fortune - Sealed Destiny
-Curse of the Strength         - Plague
-Curse of the Hanged Man       - Drowned Man
-Curse of the Death            - Birth
-Curse of the Temperance       - Rush
-Curse of the Devil            - Saint
-Curse of the Tower            - Dungeon
-Curse of the Stars            - Storm
-Curse of the Moon             - Eclipse
-Curse of the Sun              - Fog
-Curse of the Judgement        - Chaos
-Curse of the World            - Void
---]]
-
 --[[
 <curses>
 	<curse name="Curse of the Fool!" />
@@ -100,17 +74,10 @@ mod.PandoraJar.CurseChance = 0.2
 mod.PandoraJar.Curses = {}
 
 
-mod.Eclipse = {}
-mod.Eclipse.AuraRange = 125
-mod.Eclipse.DamageDelay = 12
-mod.Eclipse.DamageBoost = 0.5
-mod.Eclipse.Knockback = 4
 
 if EID then
-	EID:addCollectible(mod.Items.Eclipse,
-		"Grants aura dealing 2 damage per tick. #Get x1.5 damage boost when you have Curse of Darkness.")
 	EID:addCollectible(mod.Items.PandoraJar,
-		"Add random wisps. #20% chance to add curse when used.")
+		"Add random wisp. #33% chance to add curse when used.")
 end
 
 
@@ -165,95 +132,6 @@ mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onPandoraJar, mod.Items.PandoraJar
 
 
 
---- Eclipse
-local function EclipseAura(player)
-	local data = player:GetData()
-
-	-- delay - firerate analog
-	local maxCharge = math.floor(player.MaxFireDelay) + mod.Eclipse.DamageDelay
-	data.EclipseDamageDelay = data.EclipseDamageDelay or 0
-	if data.EclipseDamageDelay < maxCharge then data.EclipseDamageDelay = data.EclipseDamageDelay + 1 end
-
-	-- damage boosts count (work only with Curse of Darkness)
-	data.EclipseBoost = data.EclipseBoost or 0
-	if data.EclipseBoost > 0 and game:GetLevel():GetCurses() & LevelCurse.CURSE_OF_DARKNESS == 0 then
-		data.EclipseBoost = 0
-	end
-
-	-- dark aura
-	local pos = player.Position
-	local range = mod.Eclipse.AuraRange
-	local glowa = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.HALO, 2, pos, Vector.Zero, player):ToEffect()
-	glowa:GetData().EclipseAura = true
-	glowa.SpriteScale = glowa.SpriteScale * range/100
-	glowa.Color = Color(0,0,0,1)
-
-	-- do pulse damage to enemies in aura range
-	if player:GetFireDirection() == -1 and data.EclipseDamageDelay >= maxCharge then
-		local enemies = Isaac.FindInRadius(pos, range, EntityPartition.ENEMY)
-		local pulse = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.HALO, 8, pos, Vector.Zero, player):ToEffect()
-		pulse.SpriteScale = pulse.SpriteScale * range/100
-		if #enemies > 0 then
-			for _, enemy in pairs(enemies) do
-				if enemy:IsVulnerableEnemy() and enemy:IsActiveEnemy() then
-					enemy:TakeDamage(player.Damage, 0, EntityRef(player), 1)
-					enemy:AddVelocity((enemy.Position - pos):Resized(player.ShotSpeed * mod.Eclipse.Knockback))
-				end
-			end
-		end
-	end
-end
-
---- Eclipse
-function mod:onEclipseHaloUpdate(effect)
-	-- check if it's right aura and curse of darkness is active
-	if effect:GetData().EclipseAura and game:GetLevel():GetCurses() & LevelCurse.CURSE_OF_DARKNESS > 0 then
-		-- get all players in room/game
-		local players = Isaac.FindByType(EntityType.ENTITY_PLAYER)
-		if #players > 0 then
-			for _, player in pairs(players) do
-				player = player:ToPlayer()
-				local data = player:GetData()
-				-- if they don't have damage boost set it to 0
-				data.EclipseBoost = data.EclipseBoost or 0
-				-- check distance and add/remove boost count
-				if player.Position:Distance(effect.Position) < mod.Eclipse.AuraRange then
-					data.EclipseBoost = data.EclipseBoost + 1
-				elseif data.EclipseBoost > 0 then
-					data.EclipseBoost = data.EclipseBoost - 1
-				end
-				-- call evaluate
-				player:AddCacheFlags(CacheFlag.CACHE_DAMAGE)
-				player:EvaluateItems()
-			end
-		end
-	end
-end
-mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onEclipseHaloUpdate, EffectVariant.HALO)
-
-
-function mod:onCache22(player, cacheFlag)
-	local data = player:GetData()
-    if cacheFlag == CacheFlag.CACHE_DAMAGE and data.EclipseBoost and data.EclipseBoost > 0 then
-	    -- add damage with boost count
-        player.Damage = player.Damage + player.Damage * (mod.Eclipse.DamageBoost * data.EclipseBoost)
-    end
-end
-
-mod:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, mod.onCache22)
-
-
-function mod:onPEffectUpdate(player)
-	if player:HasCollectible(mod.Items.Eclipse) then
-		EclipseAura(player)
-	end
-end
-mod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, mod.onPEffectUpdate22)
-
-
-
-
-
 
 local function modDataLoad()
 	if mod:HasData() then
@@ -277,7 +155,7 @@ local function modDataLoad()
 end
 
 function mod:onNewLevel()
-	if #savetable.VoidCurseBackdrop > 0 then
+	if savetable.VoidCurseBackdrop and #savetable.VoidCurseBackdrop > 0 then
 		savetable.VoidCurseBackdrop = {}
 		modDataSave()
 	end

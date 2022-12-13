@@ -24,7 +24,7 @@
 	<active  id="23" quality="2" craftquality="2" description="Pay for life" gfx="chobol.png" name="Charon's Obol" maxcharges="0"/>
 	<active  id="24" quality="3" craftquality="3" description="Memory Managment" gfx="BookMemoryGame.png" name="Book of Memories" maxcharges="6" tags="book"/>
 	<active  id="25" quality="3" craftquality="3" description="Ethereal substance" gfx="space_jam.png" name="Space Jam" maxcharges="6"/>
-	
+
 	<passive id="26" quality="3" craftquality="3" description="Power of Friendship!" gfx="Mongo_Cells.png" name="Mongo Cells" cache="firedelay damage size"/>
 	<passive id="27" quality="3" craftquality="3" description="Wax tears" gfx="Melted_Candle.png" name="Melted Candle" cache="tearcolor tearflag" tags="summonable"/>
 	<passive id="28" quality="4" craftquality="4" description="Charge up" gfx="Ivory_Oil.png" name="Ivory Oil" tags="summonable"/>
@@ -44,15 +44,16 @@
 	<familiar id="41" quality="3" craftquality="3" description="Hellspawner" gfx="Lililith.png" name="Lililith" devilprice="2" cache="familiars" />
 	<familiar id="42" quality="2" craftquality="2" description="Profane" gfx="abihu_fam.png" name="Abihu" cache="familiars" tags="uniquefamiliar"/>
 	<familiar id="43" quality="1" craftquality="1" description="Heavy thoughts" gfx="nadab_brain.png" name="Nadab's Brain" cache="familiars" tags="monstermanual summonable"/>
-	<passive id="44" quality="3" craftquality="3" description="Profane" gfx="nadab_body.png" name="Nadab's Body" /> 
-	
-	<passive id="46" quality="2" craftquality="2" description="Dis Manibus" gfx="DMS.png" name="Death's Sickle" /> 
+	<passive id="44" quality="3" craftquality="3" description="Profane" gfx="nadab_body.png" name="Nadab's Body" />
+	<!--Lost Flower trinket-->
+
+	<passive id="46" quality="2" craftquality="2" description="Dis Manibus" gfx="DMS.png" name="Death's Sickle" />
 	<passive id="47" quality="3" craftquality="3" description="Mewolution!" gfx="mewgen.png" name="Mew-Gen" cache="flying" /> 
 	<active  id="48" quality="1" craftquality="1" description="The Seal" gfx="eldersign.png" name="Elder Sign" shopprice="10" maxcharges="210" chargetype="timed"/>
-	<passive id="49" quality="3" craftquality="3" description="Darkest Basement!" gfx="eclipse.png" name="Eclipse"/> 
-	
+	<passive id="49" quality="3" craftquality="3" description="Darkest Basement!" gfx="eclipse.png" name="Eclipse"/>
 	<!--
 	<familiar quality="1" description="Giga bombs generator!" gfx="Little_Gagger.png" name="Little Gagger" devilprice="2" cache="familiars"/>
+	<familiar quality="1" description="Ballistic friend" gfx="Stone_toad.png" name="Zooma" cache="familiars"/>
 	-->
 	
 	<trinket id="45" description="Eternal blessing" gfx="Lost_Flower.png" name="Lost Flower" cache="color"/>
