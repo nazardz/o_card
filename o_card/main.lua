@@ -2338,7 +2338,7 @@ local function EclipseAura(player)
 	end
 
 	-- do pulse damage to enemies in aura range
-	if player:GetFireDirection() ~= -1 and data.EclipseDamageDelay >= maxCharge then
+	if player:GetFireDirection() ~= -1 and data.EclipseDamageDelay >= mod.Eclipse.DamageDelay then
 		data.EclipseDamageDelay = 0
 		local enemies = Isaac.FindInRadius(pos, range, EntityPartition.ENEMY)
 		local pulse = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.HALO, 8, Vector(pos.X, pos.Y-28), Vector.Zero, player):ToEffect()
@@ -7622,11 +7622,12 @@ function mod:onLaserUpdate(laser) -- low
 		elseif laserData.UnbiddenBrimLaser then
 			if laser.Timeout < 4 and player:HasCollectible(CollectibleType.COLLECTIBLE_C_SECTION) and player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
 				local fetusTear = player:FireTear(laser.Position, RandomVector()*player.ShotSpeed*14, false, false, false, player, 1):ToTear()
-				--local fetusTear = Isaac.Spawn(EntityType.ENTITY_TEAR, 50, 2, pos, Vector.Zero, player):ToTear()
-				-- fetusTear:ChangeVariant(TearVariant.FETUS)
+				fetusTear:ChangeVariant(TearVariant.FETUS)
 				fetusTear:AddTearFlags(TearFlags.TEAR_FETUS)
 				fetusTear:GetData().BrimFetus = true
-				--fetusTear:GetSprite()
+				local tearSprite = fetusTear:GetSprite()
+				tearSprite:ReplaceSpritesheet(0, "gfx/characters/costumes_unbidden/fetus_tears.png")
+				tearSprite:LoadGraphics()
 			end
 		end
 	end
@@ -9294,10 +9295,10 @@ Toilet - take 1 coin, can drop 1-2 dip familiars. chance to gives random poop tr
 
 --[
 mod.Penance = {}
-mod.Penance.Chance = 0.1
-mod.Penance.LaserVariant = 4
+mod.Penance.Chance = 0.16
+mod.Penance.LaserVariant = 5
 mod.Penance.Effect = EffectVariant.REDEMPTION
-mod.Penance.Color = Color(1.25, 0.05, 0.15, 1, 0, 0, 0)
+mod.Penance.Color = Color(1.25, 0.05, 0.15, 0.5)
 
 function mod:onNewRoom()
 	local room = game:GetRoom()
@@ -9309,7 +9310,7 @@ function mod:onNewRoom()
 				local rngTrinket = player:GetTrinketRNG(mod.Trinkets.Penance)
 				for _, entity in pairs(Isaac.GetRoomEntities()) do
 					if entity:ToNPC() and entity:IsActiveEnemy() and entity:IsVulnerableEnemy() and not entity:GetData().PenanceRedCross and rngTrinket:RandomFloat() < mod.Penance.Chance then
-						entity:GetData().PenanceRedCross = true
+						entity:GetData().PenanceRedCross = player
 						local redCross = Isaac.Spawn(EntityType.ENTITY_EFFECT, mod.Penance.Effect, 0, entity.Position, Vector.Zero, nil):ToEffect()
 						redCross.Color = mod.Penance.Color
 						redCross:GetData().PenanceRedCrossEffect = true
@@ -9322,32 +9323,31 @@ function mod:onNewRoom()
 end
 mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, mod.onNewRoom)
 
-function mod:onNPCDeath2(entity)
-	if entity:GetData().PenanceRedCross then
 
+local function PenanceShootLaser(angle, timeout, pos, ppl)
+	local laser = Isaac.Spawn(EntityType.ENTITY_LASER, mod.Penance.LaserVariant, 0, pos, Vector.Zero, ppl):ToLaser()
+	laser.Color = mod.Penance.Color
+	laser:SetTimeout(timeout)
+	laser.Angle = angle
+end
+
+function mod:onNPCUpdate2(entity)
+	if entity:HasMortalDamage() and entity:GetData().PenanceRedCross then
+		local ppl = entity:GetData().PenanceRedCross
 		local timeout = 30
-		local redLaser = Isaac.Spawn(EntityType.ENTITY_LASER, mod.Penance.LaserVariant, 0, entity.Position, Vector.Zero, nil):ToEffect()
-		redLaser:SetTimeout(timeout)
-		--.AngleDegrees
-		--:ShootAngle(Variant, SourcePos, AngleDegrees, Timeout, PosOffset, Source)
-		redLaser:ShootAngle(mod.Penance.LaserVariant, redLaser.Position, 90, timeout, Vector.Zero, nil)
-		redLaser:ShootAngle(mod.Penance.LaserVariant, redLaser.Position, 180, timeout, Vector.Zero, nil)
-		redLaser:ShootAngle(mod.Penance.LaserVariant, redLaser.Position, 270, timeout, Vector.Zero, nil)
+		PenanceShootLaser(0, 30, entity.Position, ppl)
+		PenanceShootLaser(90, 30, entity.Position, ppl)
+		PenanceShootLaser(180, 30, entity.Position, ppl)
+		PenanceShootLaser(270, 30, entity.Position, ppl)
+		entity:GetData().PenanceRedCross = false		
 	end
 end
-mod:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, mod.onNPCDeath2)
+mod:AddCallback(ModCallbacks.MC_PRE_NPC_UPDATE, mod.onNPCUpdate2)
 
 function mod:onRedCrossEffect(effect)
 	if effect:GetData().PenanceRedCrossEffect then
 		--effect.Color = mod.Penance.Color
-		if effect.Parent then
-			local pos = effect.Parent.Position
-			local vecX = pos.X -- + (effect.Parent.SpriteScale.X * 12)
-			local vecY = pos.Y - (effect.Parent.SpriteScale.Y * 38)
-			effect.Position = Vector(vecX, vecY)
-			--effect:FollowParent(effect.Parent)
-			--effect.Position = effect.Parent.Position
-		else
+		if not effect.Parent then
 			effect:Remove()
 		end
 	end
@@ -9429,9 +9429,9 @@ mod.Slots.MongoBeggar = Isaac.GetEntityVariantByName("Mongo Beggar")
 mod.MongoBeggar= {}
 mod.MongoBeggar.ReplaceChance = 0.1
 mod.MongoBeggar.PityCounter = 6
-mod.MongoBeggar.PrizeChance = 0.15
+mod.MongoBeggar.PrizeCounter = 6
+mod.MongoBeggar.PrizeChance = 0.05
 mod.MongoBeggar.ActivateChance = 0.33
-
 mod.BeggarCheck = {
 [mod.Slots.MongoBeggar] = true
 }
@@ -9449,30 +9449,26 @@ local function BeggarWasBombed(beggar)
 		for _, explos in pairs(explosions) do
 			local frame = explos:GetSprite():GetFrame()
 			if frame < 3 then
-				local size = explos.SpriteScale.X
-				local nearby = Isaac.FindInRadius(explos.Position, 75 * size)
-				for _, ent in pairs(nearby) do
-					if ent.Type == EntityType.ENTITY_SLOT and mod.BeggarCheck[ent.Variant] then
-						beggar:Kill()
-						beggar:Remove()
-						level:SetStateFlag(LevelStateFlag.STATE_BUM_KILLED, true)
-					end
+				if explos.Position:Distance(beggar.Position) <= 90 * explos.SpriteScale.X then
+					beggar:Kill()
+					beggar:Remove()
+					level:SetStateFlag(LevelStateFlag.STATE_BUM_KILLED, true)
 				end
 			end
 		end
 	end
 end
 
-function mod:onEntSpawn(entType, var, subType, gIndex, seed)
+function mod:onEntSpawn(entType, var, subType, pos, velocity, spawner, seed)
 	if entType == EntityType.ENTITY_SLOT and var == 4 then
 		--local rng = RNG()
 		--rng:SetSeed(seed, RECOMMENDED_SHIFT_IDX)
 		if modRNG:RandomFloat() <= mod.MongoBeggar.ReplaceChance then
-			return {EntityType.ENTITY_SLOT, mod.Slots.MongoBeggar, 0}
+			return {entType, mod.Slots.MongoBeggar, 0, seed}
 		end
 	end
 end
-mod:AddCallback(ModCallbacks.MC_PRE_ROOM_ENTITY_SPAWN, mod.onEntSpawn)
+mod:AddCallback(ModCallbacks.MC_PRE_ENTITY_SPAWN, mod.onEntSpawn)
 
 function mod:peffectUpdateBeggars(player)
 	local level = game:GetLevel()
@@ -9484,26 +9480,36 @@ function mod:peffectUpdateBeggars(player)
 			local rng = beggar:GetDropRNG()
 			local randNum = rng:RandomFloat()
 			local beggarData = beggar:GetData()
-
+			
 			beggarData.PityCounter = beggarData.PityCounter or 0
+			beggarData.PrizeCounter = beggarData.PrizeCounter or 0
+			
 
 			if sprite:IsFinished("PayNothing") then sprite:Play("Idle")	end
 			if sprite:IsFinished("PayPrize") then sprite:Play("Prize") end
 
 			if sprite:IsFinished("Prize") then
+				
+				
 				if beggarData.PityCounter >= mod.MongoBeggar.PityCounter or randNum <= mod.MongoBeggar.PrizeChance then --Spawn item
 					local spawnpos = Isaac.GetFreeNearPosition(beggar.Position, 35)
 					sprite:Play("Teleport")
 					DebugSpawn(100, CollectibleType.COLLECTIBLE_MONGO_BABY, spawnpos)
 					level:SetStateFlag(LevelStateFlag.STATE_BUM_LEFT, true)
-
 				else -- from all cards
 					player:UseActiveItem(CollectibleType.COLLECTIBLE_MONSTER_MANUAL, myUseFlags)
 					sprite:Play("Idle")
 					sfx:Play(SoundEffect.SOUND_SLOTSPAWN)
+					beggarData.PrizeCounter = beggarData.PrizeCounter + 1
+					if beggarData.PrizeCounter >= mod.MongoBeggar.PrizeCounter then
+						sprite:Play("Teleport")
+						level:SetStateFlag(LevelStateFlag.STATE_BUM_LEFT, true)
+					else
+						sprite:Play("Idle")
+					end
 				end
 			end
-
+			
 			if sprite:IsFinished("Teleport") then
 				beggar:Remove()
 			else
@@ -9522,9 +9528,9 @@ function mod:peffectUpdateBeggars(player)
 						end
 					end
 				end
-				--[
+				 
 				BeggarWasBombed(beggar)
-				--]
+				
 			end
 		end
 
