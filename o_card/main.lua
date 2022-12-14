@@ -121,6 +121,7 @@ mod.Trinkets.RubikCubelet = Isaac.GetTrinketIdByName("Rubik's Cubelet") -- TMTRA
 mod.Trinkets.TeaFungus = Isaac.GetTrinketIdByName("Tea Fungus")
 mod.Trinkets.DeadEgg = Isaac.GetTrinketIdByName("Dead Egg") -- chance to spawn dead bird effect when bomb explodes (soul of eve birds)
 mod.Trinkets.Penance = Isaac.GetTrinketIdByName("Penance")
+mod.Trinkets.Pompom = Isaac.GetTrinketIdByName("Pomegranate") -- turn red hearts into random red wisps when try pick
 end
 --- PICKUPS --
 do
@@ -168,8 +169,10 @@ mod.Pickups.Domino00 = Isaac.GetCardIdByName("X_Domino00")
 end
 --- CHALLENGES --
 do
-mod.Challenges.Potatoes = Isaac.GetChallengeIdByName("When life gives you Potatoes!")
-mod.Challenges.Magician = Isaac.GetChallengeIdByName("Curse of The Magician")
+mod.Challenges.Potatoes = Isaac.GetChallengeIdByName("When life gives you Potatoes!") -- unlock
+mod.Challenges.Magician = Isaac.GetChallengeIdByName("Curse of The Magician") -- unlock Mew-Gen
+mod.Challenges.Lobotomy = Isaac.GetChallengeIdByName("Lobotomy")
+--mod.Challenges.IsaacIO = Isaac.GetChallengeIdByName("Isaac.io")
 end
 --- CURSES --
 do
@@ -280,12 +283,12 @@ mod.ActiveItemWisps = {
 	[mod.Items.BleedingGrimoire] = CollectibleType.COLLECTIBLE_RAZOR_BLADE,
 	[mod.Items.BlackBook] = CollectibleType.COLLECTIBLE_DEAD_SEA_SCROLLS,
 	[mod.Items.RubikDice] = CollectibleType.COLLECTIBLE_D6,
-	[mod.Items.RubikDiceScrambled0] = CollectibleType.COLLECTIBLE_D6,
-	[mod.Items.RubikDiceScrambled1] = CollectibleType.COLLECTIBLE_D6,
-	[mod.Items.RubikDiceScrambled2] = CollectibleType.COLLECTIBLE_D6,
-	[mod.Items.RubikDiceScrambled3] = CollectibleType.COLLECTIBLE_D6,
-	[mod.Items.RubikDiceScrambled4] = CollectibleType.COLLECTIBLE_D6,
-	[mod.Items.RubikDiceScrambled5] = CollectibleType.COLLECTIBLE_D6,
+	[mod.Items.RubikDiceScrambled0] = CollectibleType.COLLECTIBLE_UNDEFINED,
+	[mod.Items.RubikDiceScrambled1] = CollectibleType.COLLECTIBLE_UNDEFINED,
+	[mod.Items.RubikDiceScrambled2] = CollectibleType.COLLECTIBLE_UNDEFINED,
+	[mod.Items.RubikDiceScrambled3] = CollectibleType.COLLECTIBLE_UNDEFINED,
+	[mod.Items.RubikDiceScrambled4] = CollectibleType.COLLECTIBLE_UNDEFINED,
+	[mod.Items.RubikDiceScrambled5] = CollectibleType.COLLECTIBLE_UNDEFINED,
 	[mod.Items.VHSCassette] = CollectibleType.COLLECTIBLE_CLICKER,
 	[mod.Items.LongElk] = CollectibleType.COLLECTIBLE_NECRONOMICON,
 	[mod.Items.CharonObol] = CollectibleType.COLLECTIBLE_WOODEN_NICKEL,
@@ -294,7 +297,8 @@ mod.ActiveItemWisps = {
 	[mod.Items.FloppyDisk] = CollectibleType.COLLECTIBLE_D4,
 	[mod.Items.FloppyDiskFull] = CollectibleType.COLLECTIBLE_D4,
 	[mod.Items.BookMemory] = CollectibleType.COLLECTIBLE_ERASER,
-	--[mod.Items.Lobotomy] = CollectibleType.COLLECTIBLE_ERASER,
+	[mod.Items.CosmicJam] = CollectibleType.COLLECTIBLE_LEMEGETON,
+	[mod.Items.ElderSign] = CollectibleType.COLLECTIBLE_PAUSE,
 }
 
 ------------PASSIVE------------
@@ -693,6 +697,49 @@ mod.RedBag.RedPickups = { -- possible items
 end
 --- TRINKETS --
 do
+
+mod.Pompom = {}
+mod.Pompom.Chance = 0.5
+mod.Pompom.WispsList = {
+CollectibleType.COLLECTIBLE_BLOOD_RIGHTS,
+CollectibleType.COLLECTIBLE_CONVERTER,
+CollectibleType.COLLECTIBLE_MOMS_BRA,
+CollectibleType.COLLECTIBLE_KAMIKAZE,
+CollectibleType.COLLECTIBLE_YUM_HEART,
+CollectibleType.COLLECTIBLE_D6,
+CollectibleType.COLLECTIBLE_RAZOR_BLADE,
+CollectibleType.COLLECTIBLE_REMOTE_DETONATOR,
+CollectibleType.COLLECTIBLE_D20,
+CollectibleType.COLLECTIBLE_RED_CANDLE,
+CollectibleType.COLLECTIBLE_THE_JAR,
+CollectibleType.COLLECTIBLE_SCISSORS,
+CollectibleType.COLLECTIBLE_MEGA_BLAST,
+CollectibleType.COLLECTIBLE_PLAN_C,
+CollectibleType.COLLECTIBLE_POTATO_PEELER,
+CollectibleType.COLLECTIBLE_SHARP_STRAW,
+CollectibleType.COLLECTIBLE_SULFUR,
+CollectibleType.COLLECTIBLE_RED_KEY,
+CollectibleType.COLLECTIBLE_LARYNX,
+CollectibleType.COLLECTIBLE_MEAT_CLEAVER,
+CollectibleType.COLLECTIBLE_VENGEFUL_SPIRIT,
+CollectibleType.COLLECTIBLE_SUMPTORIUM,
+--[[
+"s4", -- Notched Axe: Red dust
+"s13", -- Friendly Ball: Brimstone
+CollectibleType.COLLECTIBLE_GELLO,
+CollectibleType.COLLECTIBLE_ANIMA_SOLA,
+CollectibleType.COLLECTIBLE_ABYSS,
+CollectibleType.COLLECTIBLE_PLUM_FLUTE,
+CollectibleType.COLLECTIBLE_YUCK_HEART,
+CollectibleType.COLLECTIBLE_DAMOCLES,
+CollectibleType.COLLECTIBLE_SACRIFICIAL_ALTAR,
+CollectibleType.COLLECTIBLE_HEAD_OF_KRAMPUS,
+CollectibleType.COLLECTIBLE_SATANIC_BIBLE,
+CollectibleType.COLLECTIBLE_IV_BAG,
+CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL,
+--]]
+}
+
 mod.LostFlower = {}
 mod.LostFlower.DespawnTimer = 35 -- timer after which trinket will be removed (effect similar to A+ trinket)
 mod.LostFlower.ItemGiveEternalHeart ={ -- items which give eternal hearts
@@ -2123,10 +2170,32 @@ function mod:onAnyItem(item, _, player, useFlag) --item, rng, player, useFlag, a
 	--- activates on any item use. checks if it's mod item and player has book of virtues
 	if mod.ActiveItemWisps[item] and player:HasCollectible(CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES) and useFlag & myUseFlags ~= myUseFlags then
 		--:AddWisp(Collectible, Position, AdjustOrbitLayer, DontUpdate)
-		player:AddWisp(mod.ActiveItemWisps[item], player.Position, false, false)--:ToFamiliar()
+		local wisp = player:AddWisp(mod.ActiveItemWisps[item], player.Position, false, false):ToFamiliar()
+		--wisp:GetData().ModWisp = true
+		if Isaac.GetItemConfig():GetCollectible(item).ChargeType == 1 then
+			wisp:GetData().RemoveAll = item
+		end
 	end
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onAnyItem)
+
+function mod:onModWispsUpdate(wisp)
+	local wispData = wisp:GetData()
+	if wispData.RemoveAll then
+		if wisp:HasMortalDamage() then
+			local sameWisps = Isaac.FindByType(wisp.Type, wisp.Variant, wisp.SubType)
+			if #sameWisps > 0 then
+				for _, wisp2 in pairs(sameWisps) do
+					if wisp2:GetData().RemoveAll == wispData.RemoveAll then
+						wisp2:Kill()
+					end
+				end
+			end
+		end
+	end
+end
+mod:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, mod.onModWispsUpdate, FamiliarVariant.WISP)
+
 -- glowing hourglass removes blindfold, so this function resets blindfold
 function mod:onGlowingHourglassUse(_, _, player) --item, rng, player, useFlag, activeSlot, customVarData
 	--- abihu drops nadab when you use item, so set holding to -1
@@ -4255,6 +4324,15 @@ function mod:onCurseEval(curseFlags)
 	end
 	--]]
 
+	if Isaac.GetChallenge() == mod.Challenges.Lobotomy then
+		mod.VoidThreshold = 1
+		curseFlags = curseFlags | mod.Curses.Void
+	else
+		if mod.VoidThreshold > 0.15 then
+			mod.VoidThreshold = 0.15
+		end
+	end
+
 	local player = game:GetPlayer(0)
 	if player:GetPlayerType() == mod.Characters.Oblivious and not player:HasCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE) and not player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
 		curseFlags = curseFlags | LevelCurse.CURSE_OF_DARKNESS | LevelCurse.CURSE_OF_THE_LOST | LevelCurse.CURSE_OF_THE_UNKNOWN | LevelCurse.CURSE_OF_MAZE | LevelCurse.CURSE_OF_BLIND
@@ -4398,10 +4476,10 @@ function mod:onNPCDeath(enemy)
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, mod.onNPCDeath)
---- NPC TAKE DMG FROM LASER --
+--- NPC TAKE DMG --
 function mod:onLaserDamage(entity, _, flags, source, _)
 	local level = game:GetLevel()
-	
+
 	if level:GetCurses() & mod.Curses.Bishop > 0 and entity:IsVulnerableEnemy() and entity:IsActiveEnemy() and modRNG:RandomFloat() < mod.BishopThreshold then
 		entity:SetColor(Color(0.3,0.3,1,1), 10, 100, true, false)
 		return false
@@ -4837,6 +4915,26 @@ function mod:onHeartCollision(pickup, collider)
 						player:UseCard(Card.CARD_HOLY,  myUseFlags) -- give holy card effect
 					end
 				end
+			end
+
+			if player:HasTrinket(mod.Trinkets.Pompom) and player:GetTrinketRNG(mod.Trinkets.Pompom):RandomFloat() < mod.Pompom.Chance then
+				local rng = player:GetTrinketRNG(mod.Trinkets.Pompom)
+				if pickup.SubType == HeartSubType.HEART_HALF then
+					local wisp = mod.Pompom.WispsList[rng:RandomInt(#mod.Pompom.WispsList)+1]
+					player:AddWisp(wisp, pickup.Position)
+				elseif pickup.SubType == HeartSubType.HEART_FULL   or pickup.SubType == HeartSubType.HEART_SCARED or pickup.SubType == HeartSubType.HEART_ROTTEN then
+					for _ = 1, 2 do
+						local wisp = mod.Pompom.WispsList[rng:RandomInt(#mod.Pompom.WispsList)+1]
+						player:AddWisp(wisp, pickup.Position)
+					end
+				elseif pickup.SubType == HeartSubType.HEART_DOUBLEPACK then
+					for _ = 1, 4 do
+						local wisp = mod.Pompom.WispsList[rng:RandomInt(#mod.Pompom.WispsList)+1]
+						player:AddWisp(wisp, pickup.Position)
+					end
+				end
+				pickup:Remove()
+				return true
 			end
 		end
 	end
@@ -8903,6 +9001,8 @@ function mod:onHeartCollision2(pickup, collider, _)
 		end
 		return false
 	end
+
+
 end
 mod:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, mod.onHeartCollision2, PickupVariant.PICKUP_HEART)
 

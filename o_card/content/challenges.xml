@@ -31,4 +31,8 @@
 <challenges version="1">
 	<challenge name="When life gives you Potatoes!" startingitems="487" endstage="8" roomfilter="4" canshoot="false"/>
 	<challenge name="Curse of The Magician" startingitems="3,522" endstage="6" roomfilter="2,4" />
+	<challenge name="Lobotomy" playertype="30" startingitems="258,283" startingtrinkets="75" endstage="12" roomfilter="13" getcurse="32"/>
+	<!--
+	<challenge name="Isaac.io" startingitems="157,411,493" endstage="6"/>
+	-->
 </challenges>

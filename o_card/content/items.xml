@@ -52,8 +52,9 @@
 	<active  id="48" quality="1" craftquality="1" description="The Seal" gfx="eldersign.png" name="Elder Sign" shopprice="10" maxcharges="210" chargetype="timed"/>
 	<passive id="49" quality="3" craftquality="3" description="Darkest Basement!" gfx="eclipse.png" name="Eclipse"/>
 	<!--
-	<familiar quality="1" description="Giga bombs generator!" gfx="Little_Gagger.png" name="Little Gagger" devilprice="2" cache="familiars"/>
-	<familiar quality="1" description="Ballistic friend" gfx="Stone_toad.png" name="Zooma" cache="familiars"/>
+	<passive quality="3" craftquality="3" description="Reroll blast +5 bombs" gfx="dice_bombs.png" name="Dice Bombs"/>
+	<familiar quality="1" craftquality="1" description="Giga bombs generator!" gfx="Little_Gagger.png" name="Little Gagger" devilprice="2" cache="familiars"/>
+	<familiar quality="1" craftquality="1" description="Ballistic friend" gfx="Stone_toad.png" name="Zooma" cache="familiars"/>
 	-->
 	
 	<trinket id="45" description="Eternal blessing" gfx="Lost_Flower.png" name="Lost Flower" cache="color"/>
@@ -71,5 +72,5 @@
 	<trinket description="You are cursed... kinda" gfx="rubik_cubelet.png" name="Rubik's Cubelet" />
 	<trinket description="Revenge from blast" gfx="dead_egg.png" name="Dead Egg" />
 	<trinket description="From evil to good" gfx="red_cross.png" name="Penance" />
-	
+	<trinket description="Boon of Underworld" gfx="pom_fruit.png" name="Pomegranate" />
 </items>
