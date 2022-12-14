@@ -21,7 +21,7 @@ Pandora's Jar - purple jar
 	<curse name="Curse of the Magician!" />
 	<curse name="Curse of Carrion!" />
 	<curse name="Curse of the Emperor!" />
-	<curse name="Curse of the Ghost!" />
+	<curse name="Curse of the Bishop!" />
 	<curse name="Curse of the Chariot!" />
 	<curse name="Curse of the Envy!" />
 	<curse name="Curse of Misfortune!" />
@@ -34,38 +34,45 @@ Pandora's Jar - purple jar
 	<curse name="Curse of Secrets!" />
 	<curse name="Curse of the Wisps!" />
 	<curse name="Curse of the Void!" />
+	<curse name="Curse of Devil!" />
+	<curse name="Curse of the Oblivion!" />
+	
+	
 	<!--
 	<curse name="Curse of the High Priestess!" />
-	<curse name="Curse of the Lovers!" />
+	<curse name="Curse of the Lovers!" /> --Broken Heart
 	<curse name="Curse of Justice!" />
-	<curse name="Curse of Devil!" />
 	<curse name="Curse of the Sun!" />
 	-->
 </curses>
 --]]
 
 do
-	mod.Curses.Fool = Isaac.GetCurseIdByName("Curse of the Fool!") -- 16% chance to respawn enemies in cleared room, can't close doors (except boss)
+	
 	mod.Curses.Magician = Isaac.GetCurseIdByName("Curse of the Magician!") -- 100% homing enemy tears (except boss)
 	mod.Curses.Carrion = Isaac.GetCurseIdByName("Curse of Carrion!") -- 100% turn all normal poops into red
 	mod.Curses.Emperor = Isaac.GetCurseIdByName("Curse of the Emperor!") --100% no exit door from boss room
-	mod.Curses.Ghost = Isaac.GetCurseIdByName("Curse of the Ghost!") --100% chance to turn you into soul after taking non-self damage
-	mod.Curses.Chariot = Isaac.GetCurseIdByName("Curse of the Chariot!") --100% slippery ground
+	mod.Curses.Bishop = Isaac.GetCurseIdByName("Curse of the Bishop!") --50% chance to enemies prevent status effects
+	mod.Curses.Montezuma = Isaac.GetCurseIdByName("Curse of Montezuma!") --slippery ground
 	mod.Curses.Envy = Isaac.GetCurseIdByName("Curse of the Envy!") --100% other shop items disappear when you buy one
 	mod.Curses.Misfortune = Isaac.GetCurseIdByName("Curse of Misfortune!") --100% luck down, -5 luck
 	mod.Curses.Strength = Isaac.GetCurseIdByName("Curse of Champions!") -- 100% turn enemies into champions (except boss)
-	mod.Curses.Keeper = Isaac.GetCurseIdByName("Curse of the Keeper!") -- 100% turn shopkeepers into greed enemies
-	mod.Curses.Reaper = Isaac.GetCurseIdByName("Curse of the Reaper!") --100% spawn death's scythe after 1 min on floor, it will follow you, kills you if touched, deal damage to enemies
+	mod.Curses.HangedMan = Isaac.GetCurseIdByName("Curse of the Hanged Man!") -- greed enemy tears
 	mod.Curses.Jamming = Isaac.GetCurseIdByName("Curse of the Jamming!") --16% chance to respawn enemies after clearing room (except boss)
 	mod.Curses.Bell = Isaac.GetCurseIdByName("Curse of the Bell!") --100% turn troll bombs into golden troll bombs
-	mod.Curses.Warden = Isaac.GetCurseIdByName("Curse of the Warden!") --100% all locked doors need 2 keys
-	mod.Curses.Secrets = Isaac.GetCurseIdByName("Curse of Secrets!") --100% close secret doors after leaving secret room
-	mod.Curses.Wisps = Isaac.GetCurseIdByName("Curse of the Wisps!") --16% chance to turn item into wisp item when you try to pick it up
 	mod.Curses.Void = Isaac.GetCurseIdByName("Curse of the Void!") --16% chance to reroll enemies and grid. 100% on void stage
+	mod.Curses.Fool = Isaac.GetCurseIdByName("Curse of the Fool!") -- 16% chance to respawn enemies in cleared rooms, can't close doors (except boss)
+	mod.Curses.Secrets = Isaac.GetCurseIdByName("Curse of Secrets!") --100% hide secret doors after leaving secret room
+	mod.Curses.Warden = Isaac.GetCurseIdByName("Curse of the Warden!") --100% all locked doors need 2 keys
+	mod.Curses.Wisps = Isaac.GetCurseIdByName("Curse of Wisps!") --16% chance to turn item into wisp item when you try to pick it up
+	
+	mod.Curses.Reaper = Isaac.GetCurseIdByName("Curse of the Reaper!") --100% spawn death's scythe after 1 min on floor, it will follow you, kills you if touched, deal damage to enemies
+	mod.Curses.Devil = Isaac.GetCurseIdByName("Curse of the Devil!") --33 chance to spawn Big Horn hands when entering room. --EffectVariant.BIG_HORN_HOLE_HELPER ?
+	mod.Curses.Oblivion = Isaac.GetCurseIdByName("Curse of the Oblivion!") --1% chance to remove all grid rocks, pits; turn everything [enemies, pickups] upon entering a room into dark slimes (i.blob), killing them gives loop hero cards.
+	
 end
 
 
-mod.Items.Eclipse = Isaac.GetItemIdByName("Eclipse") -- "Darkest Basement" grants aura dealing 2 damage. boost player damage if you have curse of darkness
 mod.Items.PandoraJar = Isaac.GetItemIdByName("Pandora's Jar") -- "Deceptive expectations". 2 charge. 70% chance to add random wisp. 25% chance to add special curse for level. 5% chance to become unusable on current level
 
 mod.PandoraJar = {}
@@ -238,3 +245,28 @@ mod:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, mod.onFamUpdate, mod.Eyekey.Fam
 	</entity>
 --]]
 
+mod.Curses.Void = 1 << (Isaac.GetCurseIdByName("Curse of the Void!")-1) -- reroll enemies and grid, apply delirium spritesheet, always active on void floors?
+mod.Curses.Jamming = 1 << (Isaac.GetCurseIdByName("Curse of the Jamming!")-1) -- respawn enemies in room after clearing
+mod.Curses.Emperor = 1 << (Isaac.GetCurseIdByName("Curse of the Emperor!")-1) -- no exit door from boss room
+mod.Curses.Magician = 1 << (Isaac.GetCurseIdByName("Curse of the Magician!")-1) -- homing enemy tears (except boss)
+mod.Curses.Strength = 1 << (Isaac.GetCurseIdByName("Curse of Champions!")-1) -- all enemies is champion (except boss) - without health buff
+mod.Curses.Bell = 1 << (Isaac.GetCurseIdByName("Curse of the Bell!")-1) -- all troll bombs is golden
+mod.Curses.Envy = 1 << (Isaac.GetCurseIdByName("Curse of the Envy!")-1) -- other shop items disappear when you buy one
+mod.Curses.Carrion = 1 << (Isaac.GetCurseIdByName("Curse of Carrion!")-1) -- turn normal poops into red
+mod.Curses.Bishop = 1 << (Isaac.GetCurseIdByName("Curse of the Bishop!")-1) -- 16% cahance to enemies prevent damage
+mod.Curses.Montezuma = 1 << (Isaac.GetCurseIdByName("Curse of Montezuma!")-1) -- slippery ground
+mod.Curses.Misfortune = 1 << (Isaac.GetCurseIdByName("Curse of Misfortune!")-1) -- -5 luck
+mod.Curses.HangedMan = 1 << (Isaac.GetCurseIdByName("Curse of Hanged Man!")-1) -- greed enemy tears
+mod.Curses.Fool = 1 << (Isaac.GetCurseIdByName("Curse of the Fool!")-1) -- 16% chance to respawn enemies in cleared rooms, don't close doors (except boss)
+mod.Curses.Secrets = 1 << (Isaac.GetCurseIdByName("Curse of Secrets!")-1) -- hide secret/supersecret room doors
+mod.Curses.Warden = 1 << (Isaac.GetCurseIdByName("Curse of the Warden!")-1) -- all locked doors need 2 keys
+mod.Curses.Lemegeton = 1 << (Isaac.GetCurseIdByName("Curse of the Lemegeton!")-1) -- 16% chance to turn item into Item Wisp when picked up. Add wisped item after clearing room
+
+
+	if mod.SpawnNewDoor then
+		mod.SpawnNewDoor = mod.SpawnNewDoor - 1
+		if mod.SpawnNewDoor <= 0 then
+			mod.SpawnNewDoor = nil
+			Isaac.GridSpawn(GridEntityType.GRID_DOOR, DoorVariant.DOOR_LOCKED_DOUBLE, mod.SpawnNewDoorPosition, true)
+		end
+	end

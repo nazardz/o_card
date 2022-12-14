@@ -180,24 +180,33 @@ mod.Curses.Magician = 1 << (Isaac.GetCurseIdByName("Curse of the Magician!")-1) 
 mod.Curses.Strength = 1 << (Isaac.GetCurseIdByName("Curse of Champions!")-1) -- all enemies is champion (except boss) - without health buff
 mod.Curses.Bell = 1 << (Isaac.GetCurseIdByName("Curse of the Bell!")-1) -- all troll bombs is golden
 mod.Curses.Envy = 1 << (Isaac.GetCurseIdByName("Curse of the Envy!")-1) -- other shop items disappear when you buy one
+mod.Curses.Carrion = 1 << (Isaac.GetCurseIdByName("Curse of Carrion!")-1) -- turn normal poops into red
+mod.Curses.Bishop = 1 << (Isaac.GetCurseIdByName("Curse of the Bishop!")-1) -- 16% cahance to enemies prevent damage
+mod.Curses.Montezuma = 1 << (Isaac.GetCurseIdByName("Curse of Montezuma!")-1) -- slippery ground
+mod.Curses.Misfortune = 1 << (Isaac.GetCurseIdByName("Curse of Misfortune!")-1) -- -5 luck
+mod.Curses.HangedMan = 1 << (Isaac.GetCurseIdByName("Curse of Hanged Man!")-1) -- greed enemy tears
+mod.Curses.Fool = 1 << (Isaac.GetCurseIdByName("Curse of the Fool!")-1) -- 16% chance to respawn enemies in cleared rooms, don't close doors (except boss)
+mod.Curses.Secrets = 1 << (Isaac.GetCurseIdByName("Curse of Secrets!")-1) -- hide secret/supersecret room doors
+mod.Curses.Warden = 1 << (Isaac.GetCurseIdByName("Curse of the Warden!")-1) -- all locked doors need 2 keys
+mod.Curses.Lemegeton = 1 << (Isaac.GetCurseIdByName("Curse of the Lemegeton!")-1) -- 16% chance to turn item into Item Wisp when picked up. Add wisped item after clearing room
+
 --mod.Curses.Reaper = 1 << (Isaac.GetCurseIdByName("Curse of the Reaper!")-1) -- death's scythe will follow you
 end
---[[
-mod.MyCurses = { -- curse table use it on CURSE_EVAL callback
-mod.Curses.Void,
-mod.Curses.Jamming,
---mod.Curses.Emperor,
-mod.Curses.Magician,
-mod.Curses.Strength,
-mod.Curses.Bell,
-mod.Curses.Envy,
---mod.Curses.Reaper -- death scythe slowly follows you. deals 1 heart damage. stops at < 25 range
---curse of the reaper
---EffectVariant.ULTRA_DEATH_SCYTHE
-}
---]]
 --- LOCAL TABLES --
 do
+mod.CurseIcons = Sprite()
+mod.CurseIcons:Load("gfx/ui/oc_curse_icons.anm2", true) -- render it somewhere ?
+mod.RedColor = Color(1.5,0,0,1,0,0,0) -- red color I guess
+mod.TrinketDespawnTimer = 35 -- x>25; x=35 -- it will be removed
+mod.CurseChance = 0.5 -- chances to mod curses to apply
+mod.VoidThreshold = 0.15  -- chance to trigger void curse when entering room
+mod.JammingThreshold = 0.15 -- chance to trigger jamming curse after clearing room
+mod.StrengthThreshold = 0.5 -- chance to become champion
+mod.BishopThreshold = 0.15
+mod.MisfortuneLuck = -5
+mod.FoolThreshold = 0.15
+mod.LemegetonThreshold = 0.15
+
 mod.NadabData = {}
 --mod.NadabData.CompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0} --1:Isaac, 2:BlueBaby, 3:Satan, 4:Lamb, 5:BossRush, 6:Hush, 7:MegaSatan, 8:Delirium, 9:Mother, 10:Beast, 11:Greed/Greedier, 12:Heart, 13:AllMarksHard
 mod.NadabData.CostumeHead = Isaac.GetCostumeIdByPath("gfx/characters/nadab_head.anm2")
@@ -247,17 +256,6 @@ mod.ObliviousData.Stats.TRAR_FLAG = TearFlags.TEAR_WAIT | TearFlags.TEAR_CONTINU
 mod.ObliviousData.Stats.TEAR_COLOR = Color(0.5,1,2,1,0,0,0)
 mod.ObliviousData.Stats.LASER_COLOR = Color(1,1,1,1,-0.5,0.7,1)
 
-
-mod.CurseIcons = Sprite()
-mod.CurseIcons:Load("gfx/ui/oc_curse_icons.anm2", true) -- render it somewhere ?
-mod.RedColor = Color(1.5,0,0,1,0,0,0) -- red color I guess
-mod.TrinketDespawnTimer = 35 -- x>25; x=35 -- it will be removed
-mod.ChaosVoid = true -- Void curse always active on Void floor
-mod.CurseChance = 0.5 -- chances to mod curses to apply
-mod.VoidThreshold = 0.15  -- chance to trigger void curse when entering room
-mod.JammingThreshold = 0.15 -- chance to trigger jamming curse after clearing room
-mod.StrengthThreshold = 0.15 -- chance to become champion
---mod.RetroThreshold = 0.05  --
 
 mod.BellCurse = { -- bell curse turns next bombs into golden trollbombs
 	[BombVariant.BOMB_TROLL] = true,
@@ -730,6 +728,12 @@ mod.BinderClip.DoublerChance = 0.1
 
 mod.DeadEgg = {}
 mod.DeadEgg.Timeout = 150
+
+mod.Penance = {}
+mod.Penance.Chance = 0.16
+mod.Penance.LaserVariant = 5
+mod.Penance.Effect = EffectVariant.REDEMPTION
+mod.Penance.Color = Color(1.25, 0.05, 0.15, 0.5)
 end
 --- ACTIVE --
 do
@@ -1024,60 +1028,68 @@ local function InitDebugCall()
 	Isaac.ExecuteCommand("debug 7")
 	Isaac.ExecuteCommand("debug 9")
 	Isaac.ExecuteCommand("debug 3")
-	--[[
+	--[
 	DebugSpawn(100, mod.Items.FloppyDisk)
+	DebugSpawn(100, mod.Items.RedMirror)
+	DebugSpawn(100, mod.Items.BlackKnight)
+	DebugSpawn(100, mod.Items.WhiteKnight)
+	DebugSpawn(100, mod.Items.KeeperMirror)
+	DebugSpawn(100, mod.Items.MiniPony)
+	DebugSpawn(100, mod.Items.StrangeBox)
+	--DebugSpawn(100, mod.Items.Pizza)
+	DebugSpawn(100, mod.Items.LostMirror)
+	DebugSpawn(100, mod.Items.BleedingGrimoire)
+	DebugSpawn(100, mod.Items.BlackBook)
+	DebugSpawn(100, mod.Items.RubikDice)
+	DebugSpawn(100, mod.Items.VHSCassette)
+	DebugSpawn(100, mod.Items.LongElk)
+	DebugSpawn(100, mod.Items.Threshold)
+	DebugSpawn(100, mod.Items.CharonObol)
+	DebugSpawn(100, mod.Items.BookMemory)
+	DebugSpawn(100, mod.Items.CosmicJam)
+	DebugSpawn(100, mod.Items.MongoCells) -- fcuk u
+	DebugSpawn(100, mod.Items.MeltedCandle)
+	DebugSpawn(100, mod.Items.IvoryOil)
 	DebugSpawn(100, mod.Items.RedLotus)
 	DebugSpawn(100, mod.Items.MidasCurse)
-	DebugSpawn(100, mod.Items.LostMirror)
-	DebugSpawn(100, mod.Items.MiniPony)
-	DebugSpawn(100, mod.Items.MeltedCandle)
-	DebugSpawn(100, mod.Items.KeeperMirror)
-	DebugSpawn(100, mod.Items.RedBag)
-	DebugSpawn(100, mod.Items.StrangeBox)
-	DebugSpawn(100, mod.Items.RedButton)
-	DebugSpawn(100, mod.Items.VHSCassette)
-	DebugSpawn(100, mod.Items.BlackBook)
-	DebugSpawn(100, mod.Items.BleedingGrimoire)
-	DebugSpawn(100, mod.Items.RubikDice)
-	DebugSpawn(100, mod.Items.RedMirror)
 	DebugSpawn(100, mod.Items.RubberDuck)
-	DebugSpawn(100, mod.Items.IvoryOil)
-	DebugSpawn(100, mod.Items.Lililith)
-	DebugSpawn(100, mod.Items.BlackKnight)
+	DebugSpawn(100, mod.Items.RedButton)
 	DebugSpawn(100, mod.Items.CompoBombs)
-	DebugSpawn(100, mod.Items.MirrorBombs)
-	DebugSpawn(100, mod.Items.AbihuFam)
-	DebugSpawn(100, mod.Items.VoidKarma)
-	DebugSpawn(100, mod.Items.WhiteKnight)
 	DebugSpawn(100, mod.Items.Limb)
-	DebugSpawn(100, mod.Items.CharonObol)
-	DebugSpawn(100, mod.Items.MongoCells) -- fcuk u
-	DebugSpawn(100, mod.Items.LongElk)
 	DebugSpawn(100, mod.Items.GravityBombs)
+	DebugSpawn(100, mod.Items.MirrorBombs)
 	DebugSpawn(100, mod.Items.FrostyBombs)
-	DebugSpawn(100, mod.Items.BookMemory)
-	DebugSpawn(100, mod.Items.MeltedCandle)
+	DebugSpawn(100, mod.Items.VoidKarma)
 	DebugSpawn(100, mod.Items.Viridian)
-	--]]
+	DebugSpawn(100, mod.Items.RedBag)
+	DebugSpawn(100, mod.Items.Lililith)
+	DebugSpawn(100, mod.Items.AbihuFam)
+	DebugSpawn(100, mod.Items.NadabBrain)
+	DebugSpawn(100, mod.Items.NadabBody)
+	DebugSpawn(100, mod.Items.DMS)
+	DebugSpawn(100, mod.Items.MewGen)
+	DebugSpawn(100, mod.Items.ElderSign)
+	DebugSpawn(100, mod.Items.Eclipse)
+	--DebugSpawn(100, mod.Items.DiceBombs)
+	--DebugSpawn(100, mod.Items.LilGagger)
+	--DebugSpawn(100, mod.Items.Zooma)
 
-	--[[
+	DebugSpawn(350, mod.Trinkets.LostFlower)
 	DebugSpawn(350, mod.Trinkets.WitchPaper)
 	DebugSpawn(350, mod.Trinkets.Duotine)
 	DebugSpawn(350, mod.Trinkets.RedScissors)
-	DebugSpawn(350, mod.Trinkets.LostFlower)
-	DebugSpawn(350, mod.Trinkets.MilkTeeth)
 	DebugSpawn(350, mod.Trinkets.TeaBag)
-	DebugSpawn(350, mod.Trinkets.QueenSpades)
+	DebugSpawn(350, mod.Trinkets.MilkTeeth)
 	DebugSpawn(350, mod.Trinkets.BobTongue)
+	DebugSpawn(350, mod.Trinkets.QueenSpades)
 	DebugSpawn(350, mod.Trinkets.MemoryFragment)
-	DebugSpawn(350, mod.Trinkets.WitchPaper)
+	DebugSpawn(350, mod.Trinkets.AbyssCart)
 	DebugSpawn(350, mod.Trinkets.TeaFungus)
 	DebugSpawn(350, mod.Trinkets.BinderClip)
 	DebugSpawn(350, mod.Trinkets.RubikCubelet)
-	--]]
+	DebugSpawn(350, mod.Trinkets.DeadEgg)
+	DebugSpawn(350, mod.Trinkets.Penance)
 
-	--]]
-	--[[
 	DebugSpawn(300, mod.Pickups.RedPill)
 	DebugSpawn(300, mod.Pickups.RedHorsePill)
 	DebugSpawn(300, mod.Pickups.OblivionCard)
@@ -1085,8 +1097,6 @@ local function InitDebugCall()
 	DebugSpawn(300, mod.Pickups.KingChess)
 	DebugSpawn(300, mod.Pickups.KingChessW)
 	DebugSpawn(300, mod.Pickups.Apocalypse)
-	DebugSpawn(300, mod.Pickups.Domino34)
-	DebugSpawn(300, mod.Pickups.Domino25)
 	DebugSpawn(300, mod.Pickups.SoulUnbidden)
 	DebugSpawn(300, mod.Pickups.AscenderBane)
 	DebugSpawn(300, mod.Pickups.SoulNadabAbihu)
@@ -1101,7 +1111,6 @@ local function InitDebugCall()
 	DebugSpawn(300, mod.Pickups.GhostGem)
 	DebugSpawn(300, mod.Pickups.Corruption)
 	DebugSpawn(300, mod.Pickups.MultiCast)
-	--]
 	DebugSpawn(300, mod.Pickups.BattlefieldCard)
 	DebugSpawn(300, mod.Pickups.TreasuryCard)
 	DebugSpawn(300, mod.Pickups.BookeryCard)
@@ -1111,18 +1120,14 @@ local function InitDebugCall()
 	DebugSpawn(300, mod.Pickups.OutpostCard)
 	DebugSpawn(300, mod.Pickups.ZeroMilestoneCard)
 	DebugSpawn(300, mod.Pickups.Domino16)
+	DebugSpawn(300, mod.Pickups.Domino25)
+	DebugSpawn(300, mod.Pickups.Domino34)
+	DebugSpawn(300, mod.Pickups.Domino00)
 	DebugSpawn(300, mod.Pickups.Decay)
 	DebugSpawn(300, mod.Pickups.MazeMemoryCard)
 	DebugSpawn(300, mod.Pickups.BannedCard)
 	DebugSpawn(300, mod.Pickups.CryptCard)
-	--]]
-
-	--local level = game:GetLevel()
-	--level:AddCurse(mod.Curses.Bell | mod.Curses.Envy | mod.Curses.Jamming | mod.Curses.Void | mod.Curses.Emperor | mod.Curses.Magician | mod.Curses.Strength,  false)
-	--level:AddCurse(LevelCurse.CURSE_OF_THE_LOST , false)
-	--level:AddCurse(LevelCurse.CURSE_OF_DARKNESS | LevelCurse.CURSE_OF_THE_LOST , false)
-	--level:AddCurse(mod.Curses.Void, false)
-	--level:AddCurse( mod.Curses.Jamming | mod.Curses.Void, false)
+	--]
 end
 -- init some variables
 local function InitCall()
@@ -2353,6 +2358,13 @@ local function EclipseAura(player)
 		end
 	end
 end
+--- penance
+local function PenanceShootLaser(angle, timeout, pos, ppl)
+	local laser = Isaac.Spawn(EntityType.ENTITY_LASER, mod.Penance.LaserVariant, 0, pos, Vector.Zero, ppl):ToLaser()
+	laser.Color = mod.Penance.Color
+	laser:SetTimeout(timeout)
+	laser.Angle = angle
+end
 --- LOCAL FUNCTIONS --
 
 --- MOD CALLBACKS --
@@ -2537,6 +2549,7 @@ mod:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, mod.onPlayerInit)
 function mod:onCache(player, cacheFlag)
 	player = player:ToPlayer()
 	local data = player:GetData()
+	local level = game:GetLevel()
 	if cacheFlag == CacheFlag.CACHE_LUCK then
 		if player:HasCollectible(mod.Items.RubberDuck) and data.DuckCurrentLuck then
 			player.Luck = player.Luck + data.DuckCurrentLuck
@@ -2546,6 +2559,9 @@ function mod:onCache(player, cacheFlag)
 		end
 		if data.DeuxExLuck then
 			player.Luck = player.Luck + data.DeuxExLuck
+		end
+		if data.MisfortuneLuck then
+			player.Luck = player.Luck + mod.MisfortuneLuck
 		end
 	end
 	if cacheFlag == CacheFlag.CACHE_DAMAGE then
@@ -2647,7 +2663,7 @@ function mod:onPlayerTakeDamage(entity, _, flags) --entity, amount, flags, sourc
 	end
 	if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
 		--- mongo cells
-		if player:HasCollectible(mod.Items.MongoCells) and (flags & DamageFlag.DAMAGE_NO_PENALTIES == 0) and (flags & DamageFlag.DAMAGE_RED_HEARTS == 0) then
+		if player:HasCollectible(mod.Items.MongoCells) and flags & DamageFlag.DAMAGE_NO_PENALTIES == 0 then
 			local rng = player:GetCollectibleRNG(mod.Items.MongoCells)
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_DRY_BABY) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_DRY_BABY) then
 				if rng:RandomFloat() < mod.MongoCells.DryBabyChance then
@@ -2705,6 +2721,12 @@ function mod:onPEffectUpdate(player)
 	local data = player:GetData()
 	local sprite = player:GetSprite()
 	local tempEffects = player:GetEffects()
+
+	if level:GetCurses() & mod.Curses.Montezuma > 0 and not player.CanFly and game:GetFrameCount()%10 == 0 then
+		--player:AddEntityFlags(EntityFlag.FLAG_SLIPPERY_PHYSICS)
+		local creep = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CREEP_SLIPPERY_BROWN, 0, player.Position, Vector.Zero, nil):ToEffect() 
+		creep.SpriteScale = creep.SpriteScale * 0.1
+	end
 
 	-- infinite blades
 	if data.InfiniteBlades and player:GetMovementDirection() ~= -1 then -- player:GetShootingInput() ~= -1
@@ -3609,6 +3631,18 @@ function mod:onUpdate()
 		end
 	end
 
+	if level:GetCurses() & mod.Curses.Carrion > 0 then
+		for gridIndex = 1, room:GetGridSize() do -- get room size
+			local grid = room:GetGridEntity(gridIndex)
+			if grid and grid:ToPoop() and grid:GetVariant() == 0 then
+				grid:SetVariant(1)
+				grid:Init(modRNG:RandomInt(Random())+1)
+				grid:PostInit()
+				grid:Update()
+			end
+		end
+	end
+
 	if level:GetCurses() & mod.Curses.Envy > 0 then
 		local shopItems = Isaac.FindInRadius(room:GetCenterPos(), 5000, EntityPartition.PICKUP)
 		if #shopItems > 0 then
@@ -3625,6 +3659,23 @@ function mod:onUpdate()
 			end
 		end
 	end
+
+	--[
+	if mod.FoolCurseActive then
+		mod.FoolCurseActive = mod.FoolCurseActive - 1
+		if mod.FoolCurseActive <= 0 then
+			mod.FoolCurseActive = nil
+			mod.FoolCurseNoRewards = true
+			room:SetAmbushDone(false)
+			for _, enemy in pairs(Isaac.FindInRadius(room:GetCenterPos(), 5000, EntityPartition.ENEMY)) do
+				if enemy:ToNPC() then
+					enemy:ToNPC().CanShutDoors = false
+				end
+			end
+		end
+	end
+	--]
+
 	--curse void reroll countdown
 	if not room:HasCurseMist() then
 		if mod.VoidCurseReroll then
@@ -3756,7 +3807,18 @@ function mod:onNewLevel()
 		local player = game:GetPlayer(playerNum)
 		local data = player:GetData()
 		local tempEffects = player:GetEffects()
-
+		
+		
+		if level:GetCurses() & mod.Curses.Misfortune > 0 and not data.MisfortuneLuck then
+			data.MisfortuneLuck = true
+			player:AddCacheFlags(CacheFlag.CACHE_LUCK)
+			player:EvaluateItems()
+		elseif data.MisfortuneLuck then
+			data.MisfortuneLuck = nil
+			player:AddCacheFlags(CacheFlag.CACHE_LUCK)
+			player:EvaluateItems()
+		end
+		
 		--lililith
 		if data.LililithDemonSpawn then
 			for i = 1, #data.LililithDemonSpawn do -- remove all item effects
@@ -3840,6 +3902,7 @@ function mod:onNewLevel()
 	end
 end
 mod:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, mod.onNewLevel)
+
 --- NEW ROOM --
 function mod:onNewRoom()
 	local room = game:GetRoom()
@@ -3848,16 +3911,50 @@ function mod:onNewRoom()
 	mod.PreRoomState = room:IsClear()
 	--familiars
 	--red bag
-
-
-
-
-
 	if not room:HasCurseMist() then
 		for _, fam in pairs(Isaac.FindByType(EntityType.ENTITY_FAMILIAR, mod.RedBag.Variant)) do
 			if fam:GetData().GenPickup then fam:GetData().GenPickup = false end
 		end
 		--curses
+		--mod.Curses.Warden
+		if level:GetCurses() & mod.Curses.Warden > 0 then
+			for gridIndex = 1, room:GetGridSize() do -- get room size
+				local grid = room:GetGridEntity(gridIndex)
+				
+				if grid and grid:ToDoor() then -- and grid:GetVariant() == DoorVariant.DOOR_LOCKED then -- and grid.State == 1 then
+					local door = grid:ToDoor()
+					--print(grid:GetVariant(), grid:GetGridIndex())
+					if door:GetVariant() == DoorVariant.DOOR_LOCKED then
+						--local doorPos = room:GetDoorSlotPosition(door.Slot)
+						door:SetVariant(DoorVariant.DOOR_LOCKED_DOUBLE)
+						door:Init(door:GetRNG():RandomInt(Random())+1)
+						door:PostInit()
+						door:Update()
+						--]
+					end
+				end
+			end
+		end
+
+		-- secrets curse
+		if level:GetCurses() & mod.Curses.Secrets > 0 then --and (room:GetType() ~= RoomType.ROOM_SECRET or room:GetType() ~= RoomType.ROOM_SUPERSECRET) then
+			for gridIndex = 1, room:GetGridSize() do -- get room size
+				local grid = room:GetGridEntity(gridIndex)
+				if grid and grid:ToDoor() and (grid:ToDoor().TargetRoomType == RoomType.ROOM_SECRET or grid:ToDoor().TargetRoomType == RoomType.ROOM_SUPERSECRET) then 
+					grid:ToDoor():SetVariant(DoorVariant.DOOR_HIDDEN)
+					grid:ToDoor():Close(true)
+					grid:PostInit()
+				end
+			end
+		end
+
+		-- fool curse
+		if level:GetCurses() & mod.Curses.Fool > 0 and room:GetType() ~= RoomType.ROOM_BOSS then
+			if not room:IsFirstVisit() and modRNG:RandomFloat() < mod.FoolThreshold then
+				room:RespawnEnemies()
+				mod.FoolCurseActive = 2
+			end
+		end
 		--Void curse
 		if level:GetCurses() & mod.Curses.Void > 0 and not room:IsClear() then
 			if modRNG:RandomFloat() < mod.VoidThreshold then
@@ -3867,11 +3964,12 @@ function mod:onNewRoom()
 			end
 		end
 		--[ curse Emperor
-		if level:GetCurses() & mod.Curses.Emperor > 0 and not level:IsAscent() and room:GetType() == RoomType.ROOM_BOSS and not level:GetStage(LevelStage.STAGE3_2) and not level:GetStage(LevelStage.STAGE7) and not level:GetStage(LevelStage.STAGE7_GREED) then
-			--SeedEffect.SEED_NO_BOSS_ROOM_EXITS
-			local door = room:GetDoor(level.EnterDoor) --:ToDoor()
-			if door then
-				room:RemoveDoor(door:ToDoor().Slot)
+		if level:GetCurses() & mod.Curses.Emperor > 0 and not level:IsAscent() and room:GetType() == RoomType.ROOM_BOSS and level:GetStage() ~= LevelStage.STAGE3_2 and level:GetStage() ~= LevelStage.STAGE7 and level:GetStage() ~= LevelStage.STAGE7_GREED then
+			for gridIndex = 1, room:GetGridSize() do -- get room size
+				local grid = room:GetGridEntity(gridIndex)
+				if grid and grid:ToDoor() and grid:ToDoor().TargetRoomType == RoomType.ROOM_DEFAULT then 
+					room:RemoveDoor(grid:ToDoor().Slot)
+				end
 			end
 		end
 		--]]
@@ -3888,9 +3986,22 @@ function mod:onNewRoom()
 		local data = player:GetData()
 		local tempEffects = player:GetEffects()
 
-
-
 		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+
+			--penance
+			if not room:IsClear() and player:HasTrinket(mod.Trinkets.Penance) then
+				local rngTrinket = player:GetTrinketRNG(mod.Trinkets.Penance)
+				for _, entity in pairs(Isaac.GetRoomEntities()) do
+					if entity:ToNPC() and entity:IsActiveEnemy() and entity:IsVulnerableEnemy() and not entity:GetData().PenanceRedCross and rngTrinket:RandomFloat() < mod.Penance.Chance then
+						entity:GetData().PenanceRedCross = player
+						local redCross = Isaac.Spawn(EntityType.ENTITY_EFFECT, mod.Penance.Effect, 0, entity.Position, Vector.Zero, nil):ToEffect()
+						redCross.Color = mod.Penance.Color
+						redCross:GetData().PenanceRedCrossEffect = true
+						redCross.Parent = entity
+					end
+				end
+			end
+
 			--mongo cells
 			if data.MongoSteven then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_SPOON_BENDER, false) end
 			if data.MongoHarlequin then tempEffects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_THE_WIZ, false) end
@@ -4095,13 +4206,23 @@ function mod:onRoomClear() --rng, spawnPosition
 	--red button
 	RemoveRedButton(room)
 	-- jamming curse
-	if level:GetCurses() & mod.Curses.Jamming > 0 and not room:HasCurseMist() then
+	if level:GetCurses() & mod.Curses.Jamming > 0 and not room:HasCurseMist() and room:GetType() ~= RoomType.ROOM_BOSS then --room:GetType() ~= RoomType.ROOM_BOSSRUSH
 		if modRNG:RandomFloat() < mod.JammingThreshold and not mod.NoJamming then
 			game:ShowHallucination(5, 0)
 			room:RespawnEnemies()
 			mod.NoJamming = true
+			for _, ppl in pairs(Isaac.FindInRadius(room:GetCenterPos(), 5000, EntityPartition.PLAYER)) do
+				ppl:ToPlayer():SetMinDamageCooldown(60)
+			end
+			return true
 		end
 	end
+
+	if mod.FoolCurseNoRewards then
+		mod.FoolCurseNoRewards = nil
+		return true
+	end
+
 	---players
 	for playerNum = 0, game:GetNumPlayers()-1 do
 		local player = game:GetPlayer(playerNum)
@@ -4119,22 +4240,18 @@ mod:AddCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, mod.onRoomClear)
 function mod:onCurseEval(curseFlags)
 	local newCurse = LevelCurse.CURSE_NONE
 	--local level = game:GetLevel()
-	--[
+	
+	--curseFlags = mod.Curses.Warden
+
+	--[[
 	if curseFlags == LevelCurse.CURSE_NONE then
 		if modRNG:RandomFloat() < mod.CurseChance then
 			local curseTable = {}
 			for _, value in pairs(mod.Curses) do
-				--print(key, value)
 				table.insert(curseTable, value)
 			end
-			--newCurse = mod.MyCurses[modRNG:RandomInt(#mod.MyCurses)+1]
 			newCurse = curseTable[modRNG:RandomInt(#curseTable)+1]
 		end
-	end
-	--]
-	--[[
-	if level:GetStage() == LevelStage.STAGE7 and mod.ChaosVoid then
-		curseFlags = curseFlags | mod.Curses.Void
 	end
 	--]]
 
@@ -4170,16 +4287,20 @@ function mod:onUpdateNPC(entityNPC)
 	-- unbidden backstab aura
 	if eData.BackStabbed then
 		eData.BackStabbed = eData.BackStabbed - 1
-		if eData.BackStabbed == 0 and entityNPC:HasEntityFlags(EntityFlag.FLAG_BLEED_OUT) then
-			entityNPC:ClearEntityFlags(EntityFlag.FLAG_BLEED_OUT)
+		if eData.BackStabbed == 0 then
 			eData.BackStabbed = nil
+			if entityNPC:HasEntityFlags(EntityFlag.FLAG_BLEED_OUT) then
+				entityNPC:ClearEntityFlags(EntityFlag.FLAG_BLEED_OUT)
+			end
 		end
 	end
 	if eData.BaitedTomato then
 		eData.BaitedTomato = eData.BaitedTomato - 1
-		if eData.BaitedTomato == 0 and entityNPC:HasEntityFlags(EntityFlag.FLAG_BAITED) then
-			entityNPC:ClearEntityFlags(EntityFlag.FLAG_BAITED)
+		if eData.BaitedTomato == 0 then
 			eData.BaitedTomato = nil
+			if entityNPC:HasEntityFlags(EntityFlag.FLAG_BAITED) then
+				entityNPC:ClearEntityFlags(EntityFlag.FLAG_BAITED)
+			end
 		end
 	end
 	-- melted candle waxed
@@ -4192,6 +4313,16 @@ function mod:onUpdateNPC(entityNPC)
 			flame:SetTimeout(360)
 		end
 		if eData.Waxed <= 0 then eData.Waxed = nil end
+	end
+	-- penance
+	if entityNPC:HasMortalDamage() and entityNPC:GetData().PenanceRedCross then
+		local ppl = entityNPC:GetData().PenanceRedCross
+		local timeout = 30
+		PenanceShootLaser(0, timeout, entity.Position, ppl)
+		PenanceShootLaser(90, timeout, entity.Position, ppl)
+		PenanceShootLaser(180, timeout, entity.Position, ppl)
+		PenanceShootLaser(270, timeout, entity.Position, ppl)
+		entityNPC:GetData().PenanceRedCross = false
 	end
 end
 mod:AddCallback(ModCallbacks.MC_PRE_NPC_UPDATE, mod.onUpdateNPC)
@@ -4223,8 +4354,10 @@ function mod:onEnemyInit(entity)
 	if not room:HasCurseMist() then
 		-- curse of strength
 		if level:GetCurses() & mod.Curses.Strength > 0  then
-			if entity:IsActiveEnemy() and entity:IsVulnerableEnemy() and not entity:IsBoss() and not entity:IsChampion() and modRNG:RandomFloat() > mod.StrengthThreshold then
-				entity:Morph(entity.Type, entity.Variant, entity.SubType, modRNG:RandomInt(26))
+			if entity:IsActiveEnemy() and entity:IsVulnerableEnemy() and not entity:IsBoss() and not entity:IsChampion() and modRNG:RandomFloat() < mod.StrengthThreshold then
+				--entity:Morph(entity.Type, entity.Variant, entity.SubType, modRNG:RandomInt(26))
+				--print(entity.InitSeed)
+				entity:MakeChampion(Random()+1, -1, true)
 			end
 		end
 	end
@@ -4267,6 +4400,13 @@ end
 mod:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, mod.onNPCDeath)
 --- NPC TAKE DMG FROM LASER --
 function mod:onLaserDamage(entity, _, flags, source, _)
+	local level = game:GetLevel()
+	
+	if level:GetCurses() & mod.Curses.Bishop > 0 and entity:IsVulnerableEnemy() and entity:IsActiveEnemy() and modRNG:RandomFloat() < mod.BishopThreshold then
+		entity:SetColor(Color(0.3,0.3,1,1), 10, 100, true, false)
+		return false
+	end
+	
 	if flags & DamageFlag.DAMAGE_LASER == DamageFlag.DAMAGE_LASER and entity:IsVulnerableEnemy() and entity:IsActiveEnemy() and source.Entity and source.Entity:ToPlayer() then
 		local player = source.Entity:ToPlayer()
 		local data = player:GetData()
@@ -4507,13 +4647,14 @@ mod:AddCallback(ModCallbacks.MC_POST_TEAR_INIT, mod.onOblivionTearInit, mod.Obli
 function mod:onProjectileInit(projectile)
 	local level = game:GetLevel()
 	local room = game:GetRoom()
-	if not room:HasCurseMist() then
+	if not room:HasCurseMist() and projectile.SpawnerEntity then
 		if Isaac.GetChallenge() == mod.Challenges.Magician or level:GetCurses() & mod.Curses.Magician > 0 then
-			if projectile.SpawnerEntity then
-				if not projectile.SpawnerEntity:IsBoss() and Isaac.GetChallenge() ~= mod.Challenges.Magician then
-					projectile:AddProjectileFlags(ProjectileFlags.SMART)
-				end
+			if not projectile.SpawnerEntity:IsBoss() and Isaac.GetChallenge() ~= mod.Challenges.Magician then
+				projectile:AddProjectileFlags(ProjectileFlags.SMART)
 			end
+		end
+		if level:GetCurses() & mod.Curses.HangedMan > 0 then
+			projectile:AddProjectileFlags(ProjectileFlags.GREED)
 		end
 	end
 end
@@ -4639,6 +4780,17 @@ function mod:onItemCollision(pickup, collider)
 	if collider:ToPlayer() then
 		local player = collider:ToPlayer()
 		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+			local room = game:GetRoom()
+			local level = game:GetLevel()
+			--mod.Curses.Lemegeton
+			if level:GetCurses() & mod.Curses.Lemegeton > 0 and modRNG:RandomFloat() < mod.LemegetonThreshold and pickup.SubType ~= 0 and GetCurrentDimension() ~= 2 and level:GetCurrentRoomIndex() ~= GridRooms.ROOM_GENESIS_IDX and room:GetType() ~= RoomType.ROOM_CHALLENGE and room:GetType() ~= RoomType.ROOM_BOSSRUSH and not pickup:IsShopItem() and not CheckItemTags(pickup.SubType, ItemConfig.TAG_QUEST) then
+				pickup:Remove()
+				local wispItem = player:AddItemWisp(pickup.SubType, pickup.Position):ToFamiliar()
+				wispItem:GetData().AddAfterOneRoom = level:GetCurrentRoomIndex()
+				sfx:Play(579)
+				return false
+			end
+
 			if CheckItemTags(pickup.SubType, ItemConfig.TAG_FOOD) then
 				if player:HasCollectible(mod.Items.MidasCurse) and mod.MidasCurse.TurnGoldChance == mod.MidasCurse.MaxGold then
 					pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, CoinSubType.COIN_GOLDEN)
@@ -4651,11 +4803,11 @@ function mod:onItemCollision(pickup, collider)
 					end
 				end
 			end
-		end
-		--local tempEffects = player:GetEffects()
-		if player:HasTrinket(mod.Trinkets.LostFlower) and (player:GetPlayerType() == PlayerType.PLAYER_THELOST or player:GetPlayerType() == PlayerType.PLAYER_THELOST_B or player:GetPlayerType() == mod.Characters.Oblivious) then
-			if mod.LostFlower.ItemGiveEternalHeart[pickup.SubType] then
-				player:UseCard(Card.CARD_HOLY, myUseFlags) -- give holy card effect
+			--local tempEffects = player:GetEffects()
+			if player:HasTrinket(mod.Trinkets.LostFlower) and (player:GetPlayerType() == PlayerType.PLAYER_THELOST or player:GetPlayerType() == PlayerType.PLAYER_THELOST_B or player:GetPlayerType() == mod.Characters.Oblivious) then
+				if mod.LostFlower.ItemGiveEternalHeart[pickup.SubType] then
+					player:UseCard(Card.CARD_HOLY, myUseFlags) -- give holy card effect
+				end
 			end
 		end
 	end
@@ -4952,6 +5104,23 @@ function mod:onBombUpdate(bomb)
 end
 mod:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, mod.onBombUpdate)
 
+--[[
+--- EFFECT UPDATE --penance
+function mod:onRedCrossEffect(effect)
+	WhatSoundIsIt()
+end
+mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onRedCrossEffect, 160)
+--]]
+
+--- EFFECT UPDATE --penance
+function mod:onRedCrossEffect(effect)
+	if effect:GetData().PenanceRedCrossEffect then
+		if not effect.Parent then
+			effect:Remove()
+		end
+	end
+end
+mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onRedCrossEffect, mod.Penance.Effect)
 --- EFFECT UPDATE --dead egg
 function mod:onDeadEggEffect(effect)
 	local data = effect:GetData()
@@ -5101,6 +5270,25 @@ function mod:onElderSignPentagramUpdate(pentagram)
 end
 mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onElderSignPentagramUpdate, mod.ElderSign.Pentagram)
 
+
+
+--- FAMILIAR UPDATE --lemegeton curse
+function mod:onVertebraeUpdate(fam)
+	local famData = fam:GetData() -- get fam data
+	if famData.AddAfterOneRoom then
+		local level = game:GetLevel()
+		local room = game:GetRoom()
+		if level:GetCurrentRoomIndex() ~= famData.AddAfterOneRoom and room:IsClear() and room:IsFirstVisit() then
+			local item = fam.SubType
+			fam:Remove()
+			fam:Kill()
+			fam.Player:AnimateCollectible(item)
+			fam.Player:AddCollectible(item)
+			sfx:Play(SoundEffect.SOUND_THUMBSUP)
+		end
+	end
+end
+mod:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, mod.onVertebraeUpdate, FamiliarVariant.ITEM_WISP)
 --- FAMILIAR UPDATE --long elk
 function mod:onVertebraeUpdate(fam)
 	local famData = fam:GetData() -- get fam data
@@ -5725,15 +5913,7 @@ end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onRedPillPlacebo, CollectibleType.COLLECTIBLE_PLACEBO)
 ---Space Jam
 function mod:onCosmicJam(_, _, player) --item, rng, player, useFlag, activeSlot, customVarData
-	local items = Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE)
-	if #items > 0 then
-		for _, item in pairs(items) do
-			if item.SubType ~= 0 and not CheckItemTags(item.SubType, ItemConfig.TAG_QUEST) then
-				player:AddItemWisp(item.SubType, item.Position)
-				sfx:Play(579)
-			end
-		end
-	end
+	SpawnItemWisps(player)
 	return true
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onCosmicJam, mod.Items.CosmicJam)
@@ -6295,7 +6475,7 @@ if EID then -- External Item Description
 	EID:addCollectible(mod.Items.ElderSign,
 			"Creates Pentagram for 3 seconds at position where you stand. #Pentagram spawn {{Collectible634}} purgatory Soul. #{{Freezing}} Freeze enemies inside pentagram.")
 	EID:addCollectible(mod.Items.Eclipse,
-			"While shooting grants pulsing aura, dealing player's damage. #Aura gets {{Damage}} x1.5 damage boost when you have {{CurseDarkness}} Curse of Darkness.")
+			"While shooting grants pulsing aura, dealing player's damage. #{{Damage}} x1.5 damage boost when level has {{CurseDarkness}} Curse of Darkness.")
 	EID:addCollectible(mod.Items.Threshold,
 			"Give actual item from Item Wisp.")
 
@@ -6329,6 +6509,8 @@ if EID then -- External Item Description
 			"Rooms are flooded.")
 	EID:addTrinket(mod.Trinkets.DeadEgg,
 			"Spawn dead bird familiar for 10 seconds when bomb explodes.")
+	EID:addTrinket(mod.Trinkets.Penance,
+			"16% chance to apply Red Cross indicator to enemies upon entering a room. #When marked enemies die, they shoot beams of light in 4 directions.")
 
 	EID:addCard(mod.Pickups.OblivionCard,
 			"Throwable eraser card. #Erase enemies for current level.")
@@ -8954,39 +9136,33 @@ local function CompletionMarkUnlock(completionTable, markIndex, textTable)
 		else
 			completionTable[markIndex] = 1
 		end
-		--if debug then
-			if markIndex == 1 or markIndex == 2 or markIndex == 3 or markIndex == 4 then
-				if completionTable[1] > 0 and completionTable[2] > 0 and completionTable[3] > 0 and completionTable[4] > 0 then
-					game:GetHUD():ShowFortuneText(textTable[1])
+		if markIndex == 1 or markIndex == 2 or markIndex == 3 or markIndex == 4 then
+			if completionTable[1] > 0 and completionTable[2] > 0 and completionTable[3] > 0 and completionTable[4] > 0 then
+				game:GetHUD():ShowFortuneText(textTable[1])
+			end
+		elseif markIndex == 5 or markIndex == 6 then
+			if completionTable[5] > 0 and completionTable[6] > 0  then
+				game:GetHUD():ShowFortuneText(textTable[5])
+			end
+		elseif markIndex == 11 and completionTable[markIndex] > 1 then
+			game:GetHUD():ShowFortuneText(textTable[14])
+		else
+			game:GetHUD():ShowFortuneText(textTable[markIndex])
+		end
+	else
+		if game.Difficulty == Difficulty.DIFFICULTY_HARD or game.Difficulty == Difficulty.DIFFICULTY_GREEDIER then
+			if markIndex == 11 then
+				if completionTable[markIndex] < 1 then
+					game:GetHUD():ShowFortuneText(textTable[14])
+				else
+					game:GetHUD():ShowFortuneText(textTable[markIndex], textTable[14])
 				end
-			elseif markIndex == 5 or markIndex == 6 then
-				if completionTable[5] > 0 and completionTable[6] > 0  then
-					game:GetHUD():ShowFortuneText(textTable[5])
-				end
-			elseif markIndex == 11 and completionTable[markIndex] > 1 then
-				game:GetHUD():ShowFortuneText(textTable[14])
 			else
 				game:GetHUD():ShowFortuneText(textTable[markIndex])
 			end
-		--end
-	else
-		if game.Difficulty == Difficulty.DIFFICULTY_HARD or game.Difficulty == Difficulty.DIFFICULTY_GREEDIER then
-			--if debug then
-				if markIndex == 11 then
-					if completionTable[markIndex] < 1 then
-						game:GetHUD():ShowFortuneText(textTable[14])
-					else
-						game:GetHUD():ShowFortuneText(textTable[markIndex], textTable[14])
-					end
-				else
-					game:GetHUD():ShowFortuneText(textTable[markIndex])
-				end
-			--end
 			completionTable[markIndex] = 2
 		else
-			--if debug then
-				game:GetHUD():ShowFortuneText(textTable[markIndex])
-			--end
+			game:GetHUD():ShowFortuneText(textTable[markIndex])
 			completionTable[markIndex] = 1
 		end
 	end
@@ -9004,9 +9180,7 @@ local function CheckCompletionRoomClear(completionTable, textTable)
 	end
 	if completionTable[13] < 2 and HasFullCompletion(completionTable) then --AllMarksHard
 		completionTable[13] = 2
-		--if debug then
-			game:GetHUD():ShowFortuneText(textTable[13])
-		--end
+		game:GetHUD():ShowFortuneText(textTable[13])
 	end
 end
 
@@ -9041,9 +9215,7 @@ local function CheckCompletionBossKill(completionTable, npc, textTable)
 	end
 	if completionTable[13] < 2 and HasFullCompletion(completionTable) then --AllMarksHard
 		completionTable[13] = 2
-		--if debug then
-			game:GetHUD():ShowFortuneText(textTable[13])
-		--end
+		game:GetHUD():ShowFortuneText(textTable[13])
 	end
 end
 
@@ -9186,12 +9358,24 @@ mod:AddCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, mod.onRoomClear2)
 --]]
 end
 
+local function AddModCurse(curse)
+	local level = game:GetLevel()
+	if level:GetCurses() & curse > 0 then
+		level:RemoveCurses(curse)
+		print("curse disable")
+	else
+		level:AddCurse(curse, true)
+		print("curse enable")
+	end
+end
+
 ---EXECUTE COMMAND---
 function mod:onExecuteCommand(command, args)
 	--- console commands ---
 	if command == "eclipsed" then
 		if args == "help" or args == "" then
 			print('eclipsed todo -> list of thing to complete/implement/change')
+			print('eclipsed curse [curse number] -> enable/disable mod curses')
 			--print('eclipsed reset [all, nadab, abihu, unbid, tunbid]')
 			--print('eclipsed unlock [all, nadab, abihu, unbid, tunbid]')
 		elseif args == "todo" then
@@ -9201,7 +9385,6 @@ function mod:onExecuteCommand(command, args)
 			print("finish curses UI")
 			print("Abihu flame synergy")
 			print("Mongo Cells effects full desc")
-			print("Oblivious bug sunergy Brimstone + C section")
 			print("Oblivious bug sunergy Marked + Monstro Lung")
 		elseif args == "debug" then
 			if debug then
@@ -9210,6 +9393,55 @@ function mod:onExecuteCommand(command, args)
 				debug = true
 			end
 			print('debug:', debug)
+		elseif args == "curse" or args == "curse 1" then
+			AddModCurse(mod.Curses.Void)
+			print("Curse of the Void! - 16% chance to reroll enemies and grid upon entering room")
+		elseif args == "curse 2" then
+			AddModCurse(mod.Curses.Jamming)
+			print("Curse of the Jamming! - 16% chance to respawn enemies after clearing room")
+		elseif args == "curse 3" then
+			AddModCurse(mod.Curses.Emperor)
+			print("Curse of the Emperor! - remove exit door from boss room")
+		elseif args == "curse 4" then
+			AddModCurse(mod.Curses.Magician)
+			print("Curse of the Magician! - homing enemy tears (except boss)")
+		elseif args == "curse 5" then
+			AddModCurse(mod.Curses.Strength)
+			print("Curse of Champions! - 50% chance to enemies become champion (except boss)")
+		elseif args == "curse 6" then
+			AddModCurse(mod.Curses.Bell)
+			print("Curse of the Bell! - all troll bombs is golden")
+		elseif args == "curse 7" then
+			AddModCurse(mod.Curses.Envy)
+			print("Curse of the Envy! - other shop items disappear when you buy one [shop, black market, member card, devil deal]")
+		elseif args == "curse 8" then
+			AddModCurse(mod.Curses.Carrion)
+			print("Curse of Carrion! - turn normal poops into red")
+		elseif args == "curse 9" then
+			AddModCurse(mod.Curses.Bishop)
+			print("Curse of the Bishop! - 16% chance to prevent enemy taking damage")
+		elseif args == "curse 10" then
+			AddModCurse(mod.Curses.Montezuma)
+			print("Curse of Montezuma! - slippery floor")
+		elseif args == "curse 11" then
+			AddModCurse(mod.Curses.Misfortune)
+			print("Curse of Misfortune! - -5 luck for floor")
+		elseif args == "curse 12" then
+			AddModCurse(mod.Curses.HangedMan)
+			print("Curse of Hanged Man! - greed enemy tears")
+		elseif args == "curse 13" then
+			AddModCurse(mod.Curses.Fool)
+			print("Curse of the Fool! - 16% chance to respawn enemies in cleared rooms (except boss room), don't close doors")
+		elseif args == "curse 14" then
+			AddModCurse(mod.Curses.Secrets)
+			print("Curse of Secrets! - hide secret/supersecret room doors")
+		elseif args == "curse 15" then
+			AddModCurse(mod.Curses.Warden)
+			print("Curse of the Warden! - all locked doors need 2 keys")
+		elseif args == "curse 16" then
+			AddModCurse(mod.Curses.Lemegeton)
+			print("Curse of the Lemegeton! - 16% chance to turn item into Item Wisp when collided. Add wisped item after clearing room")
+
 		--[[
 		elseif args == "reset" or args == "reset all" then
 		    savetable.NadabCompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0}
@@ -9253,107 +9485,6 @@ function mod:onExecuteCommand(command, args)
 end
 mod:AddCallback(ModCallbacks.MC_EXECUTE_CMD, mod.onExecuteCommand)
 ---EXECUTE COMMAND---
-
---[[
-local explosions = Isaac.FindByType(EntityType.ENTITY_EFFECT, EffectVariant.BOMB_EXPLOSION)
-local mamaMega = Isaac.FindByType(EntityType.ENTITY_EFFECT, EffectVariant.MAMA_MEGA_EXPLOSION)
-
-for _, splosion in pairs(explosions) do
-	local frame = splosion:GetSprite():GetFrame()
-	if frame < 3 then
-		local size = splosion.SpriteScale.X
-		local nearby = Isaac.FindInRadius(splosion.Position, 75 * size)
-		for _, ent in pairs(nearby) do
-			if ent.Type == EntityType.ENTITY_SLOT and ent.Variant == WISP_WIZARD then
-				beggar:Kill()
-				beggar:Remove()
-				game:GetLevel():SetStateFlag(LevelStateFlag.STATE_BUM_KILLED, true)
-			end
-		end
-	end
-end
-
-if #mamaMega > 0 then
-	beggar:Kill()
-	beggar:Remove()
-	game:GetLevel():SetStateFlag(LevelStateFlag.STATE_BUM_KILLED, true)
-end
---]]
-
---[[
-
-beggars:
-Mongo Beggar - take 1 coin, chance to add familiar for current level (Monster Manual). has a chance to prize: [mongo baby]. if killed spawn blended hearts
-Zealot Beggar (Pandora Box Beggar) - can be interacted for free. on interaction give random curse and item wisps. if killed spawn enemy ghost.
-Glitched Beggar - take random pickup [coin, key, bomb]. has a chance to prize: [glitched item (TMTRAINER)] Guaranteed to give prize after total 10 interactions. Leaves as Terminator.
-Box Beggar (Dungeon Beggar) - take 1 coin, chance to activate random pressure plate effect. has a chance to prize: [dice items]. Guaranteed to give 3 dice shards after total 10 no prize interactions.
-Delirious beggar - take 1 coin, spawn random friendly charmed monster
-
-slot machines:
-Toilet - take 1 coin, can drop 1-2 dip familiars. chance to gives random poop transformation item.
---]]
-
---[
-mod.Penance = {}
-mod.Penance.Chance = 0.16
-mod.Penance.LaserVariant = 5
-mod.Penance.Effect = EffectVariant.REDEMPTION
-mod.Penance.Color = Color(1.25, 0.05, 0.15, 0.5)
-
-function mod:onNewRoom()
-	local room = game:GetRoom()
-	--player
-	for playerNum = 0, game:GetNumPlayers()-1 do
-		local player = game:GetPlayer(playerNum)
-		if not player:HasCurseMistEffect() and not player:IsCoopGhost() and not room:IsClear() then
-			if player:HasTrinket(mod.Trinkets.Penance) then
-				local rngTrinket = player:GetTrinketRNG(mod.Trinkets.Penance)
-				for _, entity in pairs(Isaac.GetRoomEntities()) do
-					if entity:ToNPC() and entity:IsActiveEnemy() and entity:IsVulnerableEnemy() and not entity:GetData().PenanceRedCross and rngTrinket:RandomFloat() < mod.Penance.Chance then
-						entity:GetData().PenanceRedCross = player
-						local redCross = Isaac.Spawn(EntityType.ENTITY_EFFECT, mod.Penance.Effect, 0, entity.Position, Vector.Zero, nil):ToEffect()
-						redCross.Color = mod.Penance.Color
-						redCross:GetData().PenanceRedCrossEffect = true
-						redCross.Parent = entity
-					end
-				end
-			end
-		end
-	end
-end
-mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, mod.onNewRoom)
-
-
-local function PenanceShootLaser(angle, timeout, pos, ppl)
-	local laser = Isaac.Spawn(EntityType.ENTITY_LASER, mod.Penance.LaserVariant, 0, pos, Vector.Zero, ppl):ToLaser()
-	laser.Color = mod.Penance.Color
-	laser:SetTimeout(timeout)
-	laser.Angle = angle
-end
-
-function mod:onNPCUpdate2(entity)
-	if entity:HasMortalDamage() and entity:GetData().PenanceRedCross then
-		local ppl = entity:GetData().PenanceRedCross
-		local timeout = 30
-		PenanceShootLaser(0, 30, entity.Position, ppl)
-		PenanceShootLaser(90, 30, entity.Position, ppl)
-		PenanceShootLaser(180, 30, entity.Position, ppl)
-		PenanceShootLaser(270, 30, entity.Position, ppl)
-		entity:GetData().PenanceRedCross = false		
-	end
-end
-mod:AddCallback(ModCallbacks.MC_PRE_NPC_UPDATE, mod.onNPCUpdate2)
-
-function mod:onRedCrossEffect(effect)
-	if effect:GetData().PenanceRedCrossEffect then
-		--effect.Color = mod.Penance.Color
-		if not effect.Parent then
-			effect:Remove()
-		end
-	end
-end
-mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onRedCrossEffect, mod.Penance.Effect)
---]
 
 -- bomb gagger
 --mod.Items.Gagger = Isaac.GetItemIdByName("Little Gagger")
@@ -9425,6 +9556,36 @@ mod:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, mod.onCache3)
 
 mod.Slots = {}
 
+mod.ReplaceBeggarVariants = {
+	[4] = true, --beggar
+	[5] = true, --devil beggar
+	[7] = true, --key master
+	[9] = true, --bomb bum
+	[13] = true, -- battery bum
+	[18] = true -- rotten beggar
+}
+
+--[[
+mod.Slots.GlitchBeggar = Isaac.GetEntityVariantByName("Glitch Beggar")
+mod.GlitchBeggar = {}
+mod.GlitchBeggar.ReplaceChance = 0.01
+mod.GlitchBeggar.PityCounter = 10
+mod.GlitchBeggar.ActivateChance = 0.05
+mod.GlitchBeggar.PickupRotateTimeout = 300
+
+mod.GlitchBeggar.RandomPickup = {
+	"Idle", --IdleCoin
+	"IdleBomb",
+	"IdleKey",
+	"IdleHeart"
+}
+mod.GlitchBeggar.RandomPickupCheck = {
+	["Idle"] = true, --IdleCoin
+	["IdleBomb"] = true,
+	["IdleKey"] = true,
+	["IdleHeart"] = true
+}
+--]]
 mod.Slots.MongoBeggar = Isaac.GetEntityVariantByName("Mongo Beggar")
 mod.MongoBeggar= {}
 mod.MongoBeggar.ReplaceChance = 0.1
@@ -9432,8 +9593,10 @@ mod.MongoBeggar.PityCounter = 6
 mod.MongoBeggar.PrizeCounter = 6
 mod.MongoBeggar.PrizeChance = 0.05
 mod.MongoBeggar.ActivateChance = 0.33
+
 mod.BeggarCheck = {
-[mod.Slots.MongoBeggar] = true
+[mod.Slots.MongoBeggar] = true,
+--[mod.Slots.GlitchBeggar] = true,
 }
 
 local function BeggarWasBombed(beggar)
@@ -9458,11 +9621,22 @@ local function BeggarWasBombed(beggar)
 		end
 	end
 end
-
-function mod:onEntSpawn(entType, var, subType, pos, velocity, spawner, seed)
-	if entType == EntityType.ENTITY_SLOT and var == 4 then
-		--local rng = RNG()
-		--rng:SetSeed(seed, RECOMMENDED_SHIFT_IDX)
+--[[
+local function GlitchBeggarState(beggarData, sprite, rng)
+	sfx:Play(SoundEffect.SOUND_SCAMPER)
+	if beggarData.PityCounter >= mod.GlitchBeggar.PityCounter or rng:RandomFloat() < mod.GlitchBeggar.ActivateChance then
+		sprite:Play("PayPrize")
+	else
+		sprite:Play("PayNothing")
+		beggarData.PityCounter = beggarData.PityCounter + 1
+	end
+end
+--]]
+function mod:onEntSpawn(entType, var, _, _, _, _, seed)
+	if entType == EntityType.ENTITY_SLOT and var == 4 then --mod.ReplaceBeggarVariants[var] then
+		--if modRNG:RandomFloat() <= mod.GlitchBeggar.ReplaceChance then
+		--	return {entType, mod.Slots.GlitchBeggar, 0, seed}
+		--else
 		if modRNG:RandomFloat() <= mod.MongoBeggar.ReplaceChance then
 			return {entType, mod.Slots.MongoBeggar, 0, seed}
 		end
@@ -9473,6 +9647,70 @@ mod:AddCallback(ModCallbacks.MC_PRE_ENTITY_SPAWN, mod.onEntSpawn)
 function mod:peffectUpdateBeggars(player)
 	local level = game:GetLevel()
 	local mongoBeggars = Isaac.FindByType(EntityType.ENTITY_SLOT, mod.Slots.MongoBeggar)
+	--local glitchBeggars = Isaac.FindByType(EntityType.ENTITY_SLOT, mod.Slots.GlitchBeggar)
+
+--[[
+	if #glitchBeggars > 0 then
+		for _, beggar in pairs(glitchBeggars) do
+			local sprite = beggar:GetSprite()
+			local rng = beggar:GetDropRNG()
+			local beggarData = beggar:GetData()
+
+			beggarData.PickupRotateTimeout = beggarData.PickupRotateTimeout or mod.GlitchBeggar.PickupRotateTimeout --0
+			beggarData.PityCounter = beggarData.PityCounter or 0
+
+			if mod.GlitchBeggar.RandomPickupCheck[sprite:GetAnimation()] then
+				beggarData.PickupRotateTimeout = beggarData.PickupRotateTimeout + 1
+				if beggarData.PickupRotateTimeout >= mod.GlitchBeggar.PickupRotateTimeout then
+					sprite:Play("ChangePickup")
+					beggarData.PickupRotateTimeout = 0
+				end
+			end
+
+			if sprite:IsFinished("PayNothing") or sprite:IsFinished("ChangePickup") then
+				local randNum = rng:RandomInt(#mod.GlitchBeggar.RandomPickup)+1
+				sprite:Play(mod.GlitchBeggar.RandomPickup[randNum])
+			end
+			if sprite:IsFinished("PayPrize") then sprite:Play("Prize") end
+
+			if sprite:IsFinished("Prize") then
+				local pos = Isaac.GetFreeNearPosition(beggar.Position, 35)
+				sprite:Play("Teleport")
+				player:AddCollectible(CollectibleType.COLLECTIBLE_TMTRAINER)
+				DebugSpawn(100, 0, pos)
+				player:RemoveCollectible(CollectibleType.COLLECTIBLE_TMTRAINER) -- remove tmtrainer
+				level:SetStateFlag(LevelStateFlag.STATE_BUM_LEFT, true)
+			end
+
+			if sprite:IsFinished("Teleport") then
+				beggar:Remove()
+			else
+				if beggar.Position:Distance(player.Position) <= 20 then --(beggar.Position - player.Position):Length() <= 20 then
+					if sprite:IsPlaying("Idle") then
+						if player:GetNumCoins() > 0 then
+							player:AddCoins(-1)
+							GlitchBeggarState(beggarData, sprite, rng)
+						end
+					elseif sprite:IsPlaying("IdleBomb") then
+						if player:GetNumBombs() > 0 then
+							player:AddBombs(-1)
+							GlitchBeggarState(beggarData, sprite, rng)
+						end
+					elseif sprite:IsPlaying("IdleKey") then
+						if player:GetNumKeys() > 0 then
+							player:AddKeys(-1)
+							GlitchBeggarState(beggarData, sprite, rng)
+						end
+					elseif sprite:IsPlaying("IdleHeart") then
+						player:TakeDamage(1, DamageFlag.DAMAGE_NO_PENALTIES | DamageFlag.DAMAGE_IV_BAG, EntityRef(player), 1)
+						GlitchBeggarState(beggarData, sprite, rng)
+					end
+				end
+				BeggarWasBombed(beggar)
+			end
+		end
+	end
+	--]]
 
 	if #mongoBeggars > 0 then
 		for _, beggar in pairs(mongoBeggars) do
@@ -9516,7 +9754,7 @@ function mod:peffectUpdateBeggars(player)
 				if beggar.Position:Distance(player.Position) <= 20 then --(beggar.Position - player.Position):Length() <= 20 then
 					if sprite:IsPlaying("Idle") and player:GetNumCoins() > 0 then
 						player:AddCoins(-1)
-						SFXManager():Play(SoundEffect.SOUND_SCAMPER)
+						sfx:Play(SoundEffect.SOUND_SCAMPER)
 						if beggarData.PityCounter >= mod.MongoBeggar.PityCounter then
 							sprite:Play("PayPrize")
 						elseif rng:RandomFloat() < mod.MongoBeggar.ActivateChance then --randNum == 0 then
@@ -9528,17 +9766,12 @@ function mod:peffectUpdateBeggars(player)
 						end
 					end
 				end
-				 
 				BeggarWasBombed(beggar)
-				
 			end
 		end
-
 	end
-
 end
 mod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, mod.peffectUpdateBeggars)
-
 
 --[[
 function mod:onGetCard(rng, card, includePlayingCards, includeRunes, onlyRunes)
