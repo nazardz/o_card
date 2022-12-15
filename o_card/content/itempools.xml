@@ -1,16 +1,73 @@
 <ItemPools>
-	<Pool Name="ultraSecret">
-		<Item Name="Floppy Disk" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		<Item Name="Red Mirror" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
-		<Item Name="Red Lotus" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
-		<Item Name="Red Bag" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		<Item Name="Red Button" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
-		<Item Name="Lililith" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
+	<!--
+	<Pool Name="treasure">
 	</Pool>
+	<Pool Name="shop">
+	</Pool>
+	<Pool Name="boss">
+	</Pool>
+	<Pool Name="devil">
+	</Pool>
+	<Pool Name="angel">
+	</Pool>
+	<Pool Name="secret">
+	</Pool>
+	<Pool Name="library">
+	</Pool>
+	<Pool Name="shellGame">
+	</Pool>
+	<Pool Name="goldenChest">
+	</Pool>
+	<Pool Name="redChest">
+	</Pool>
+	<Pool Name="beggar">
+	</Pool>
+	<Pool Name="demonBeggar">
+	</Pool>
+	<Pool Name="curse">
+	</Pool>
+	<Pool Name="keyMaster">
+	</Pool>
+	<Pool Name="batteryBum">
+	</Pool>
+	<Pool Name="momsChest">
+	</Pool>
+	<Pool Name="greedTreasure">
+	</Pool>
+	<Pool Name="greedBoss">
+	</Pool>
+	<Pool Name="greedShop">
+	</Pool>
+	<Pool Name="greedCurse">
+	</Pool>
+	<Pool Name="greedDevil">
+	</Pool>
+	<Pool Name="greedAngel">
+	</Pool>
+	<Pool Name="greedSecret">
+	</Pool>
+	<Pool Name="craneGame">
+	</Pool>
+	<Pool Name="ultraSecret">
+	</Pool>
+	<Pool Name="bombBum">
+	</Pool>
+	<Pool Name="planetarium">
+	</Pool>
+	<Pool Name="oldChest">
+	</Pool>
+	<Pool Name="babyShop">
+	</Pool>
+	<Pool Name="woodenChest">
+	</Pool>
+	<Pool Name="rottenBeggar">
+	</Pool>
+	-->
+
 	<Pool Name="treasure">
 		<Item Name="Unicorn" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Red Mirror" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		<Item Name="Melted Candle" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Melted Candle" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
 		<Item Name="Curse of the Midas" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Duckling" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Mongo Cells" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
@@ -18,19 +75,19 @@
 		<Item Name="VVV" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Compo Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Glass Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		<Item Name="Black Hole Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Black Hole Bombs" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
 		<Item Name="Nadab's Brain" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Ice Cube Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Space Jam" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Mew-Gen" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
-
 		<!--<Item Name="Little Gagger" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>-->
 		<!--<Item Name="Zooma" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>-->
 	</Pool>
 	<Pool Name="shop">
 		<Item Name="Moonlighter" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		<Item Name="VHS Cassette" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="VHS Cassette" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
 		<Item Name="Charon's Obol" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Witch's Pot" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="devil">
 		<Item Name="Black Knight" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
@@ -44,14 +101,15 @@
 		<Item Name="Eclipse" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="angel">
-		<Item Name="Ivory Oil" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
+		<Item Name="Ivory Oil" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
 		<Item Name="White Knight" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Lost Mirror" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Limbus" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		<Item Name="Mew-Gen" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Mew-Gen" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+		<Item Name="Pandora's Jar" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
 	</Pool>
 	<Pool Name="secret">
-		<Item Name="Red Lotus" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
+		<Item Name="Red Lotus" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
 		<Item Name="Strange Box" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Lost Mirror" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Karma Level" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
@@ -60,33 +118,101 @@
 		<Item Name="Eclipse" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="library">
-		<Item Name="Bleeding Grimoire" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		<Item Name="Black Book" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		<Item Name="Book of Memories" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Bleeding Grimoire" Weight="1" DecreaseBy="0.1" RemoveOn="0.1"/>
+		<Item Name="Black Book" Weight="1" DecreaseBy="0.1" RemoveOn="0.1"/>
+		<Item Name="Book of Memories" Weight="0.2" DecreaseBy="0.02" RemoveOn="0.02"/>
 	</Pool>
 	<Pool Name="goldenChest">
-		<Item Name="Duckling" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		<Item Name="Nadab's Brain" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		<Item Name="Mongo Cells" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Duckling" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
+		<Item Name="Nadab's Brain" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
+		<Item Name="Mongo Cells" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="redChest">
-		<Item Name="Bleeding Grimoire" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		<Item Name="Death's Sickle" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Bleeding Grimoire" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
+		<Item Name="Death's Sickle" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="demonBeggar">
-		<Item Name="Bleeding Grimoire" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Bleeding Grimoire" Weight="1" DecreaseBy="0.5" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="curse">
-		<Item Name="Curse of the Midas" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		<Item Name="Bleeding Grimoire" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		<Item Name="Long Elk" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Curse of the Midas" Weight="1" DecreaseBy="0.5" RemoveOn="0.1"/>
+		<Item Name="Bleeding Grimoire" Weight="1" DecreaseBy="0.5" RemoveOn="0.1"/>
+		<Item Name="Long Elk" Weight="0.5" DecreaseBy="0.25" RemoveOn="0.05"/>
+		<Item Name="Charon's Obol" Weight="1" DecreaseBy="0.5" RemoveOn="0.1"/>
+	</Pool>
+	<Pool Name="keyMaster">
+		<!--<Item Name="Eye Key" Weight="1" DecreaseBy="0.5" RemoveOn="0.1"/> -->
+	</Pool>
+	<Pool Name="greedTreasure">
+		<Item Name="Unicorn" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Melted Candle" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Curse of the Midas" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+		<Item Name="Duckling" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Rubik's Dice" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Compo Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Glass Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Black Hole Bombs" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+		<Item Name="Nadab's Brain" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Ice Cube Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Mew-Gen" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+	</Pool>
+	<Pool Name="greedShop">
+		<Item Name="Mongo Cells" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Red Mirror" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Space Jam" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+		<Item Name="Moonlighter" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Charon's Obol" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Witch's Pot" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+	</Pool>
+	<Pool Name="greedCurse">
+		<Item Name="Curse of the Midas" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Bleeding Grimoire" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+		<Item Name="Long Elk" Weight="0.2" DecreaseBy="0.2" RemoveOn="0.02"/>
+		<Item Name="Charon's Obol" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+	</Pool>
+	<Pool Name="greedDevil">
+		<Item Name="Black Knight" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+		<Item Name="Red Bag" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+		<Item Name="Red Button" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+		<Item Name="Bleeding Grimoire" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+		<Item Name="Black Book" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+		<Item Name="Lililith" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+		<Item Name="Death's Sickle" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+		<Item Name="Charon's Obol" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+		<Item Name="Eclipse" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+	</Pool>
+	<Pool Name="greedAngel">
+		<Item Name="White Knight" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+		<Item Name="Limbus" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+		<Item Name="Mew-Gen" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+		<Item Name="Pandora's Jar" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+	</Pool>
+	<Pool Name="greedSecret">
+		<Item Name="Strange Box" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Karma Level" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Limbus" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Elder Sign" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Eclipse" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+	</Pool>
+	<Pool Name="ultraSecret">
+		<Item Name="Floppy Disk" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Red Mirror" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
+		<Item Name="Red Lotus" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
+		<Item Name="Red Bag" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
+		<Item Name="Red Button" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
+		<Item Name="Lililith" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
+		<Item Name="Compo Bombs" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="bombBum">
 		<Item Name="Compo Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Glass Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		<Item Name="Black Hole Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Black Hole Bombs" Weight="0.2" DecreaseBy="0.1" RemoveOn="0.02"/>
 		<Item Name="Ice Cube Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<!--<Item Name="Little Gagger" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>-->
+		<!--<Item Name="Dice Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>-->
+	</Pool>
+	<Pool Name="babyShop">
+		<Item Name="Nadab's Brain" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Lililith" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 	</Pool>
 </ItemPools>

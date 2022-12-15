@@ -9,42 +9,7 @@ active items wisp checks
 
 check dice bombs/ sticky bombs (ExplosionEffect)
 
-Pandora's Jar - purple jar
-"Deceptive expectations"
-2 charge.
-66% chance to add random wisp. (100% after all curses was added)
-33% chance to add special curse for level
---]]
---[[
-<curses>
-	<curse name="Curse of the Fool!" />
-	<curse name="Curse of the Magician!" />
-	<curse name="Curse of Carrion!" />
-	<curse name="Curse of the Emperor!" />
-	<curse name="Curse of the Bishop!" />
-	<curse name="Curse of the Chariot!" />
-	<curse name="Curse of the Envy!" />
-	<curse name="Curse of Misfortune!" />
-	<curse name="Curse of Champions!" />
-	<curse name="Curse of the Keeper!" />
-	<curse name="Curse of the Reaper!" />
-	<curse name="Curse of the Jamming!" />
-	<curse name="Curse of the Bell!" />
-	<curse name="Curse of the Warden!" />
-	<curse name="Curse of Secrets!" />
-	<curse name="Curse of the Wisps!" />
-	<curse name="Curse of the Void!" />
-	<curse name="Curse of Devil!" />
-	<curse name="Curse of the Oblivion!" />
-	
-	
-	<!--
-	<curse name="Curse of the High Priestess!" />
-	<curse name="Curse of the Lovers!" /> --Broken Heart
-	<curse name="Curse of Justice!" />
-	<curse name="Curse of the Sun!" />
-	-->
-</curses>
+
 --]]
 
 do
@@ -73,69 +38,6 @@ do
 end
 
 
-mod.Items.PandoraJar = Isaac.GetItemIdByName("Pandora's Jar") -- "Deceptive expectations". 2 charge. 70% chance to add random wisp. 25% chance to add special curse for level. 5% chance to become unusable on current level
-
-mod.PandoraJar = {}
-mod.PandoraJar.ItemWispChance = 0.33
-mod.PandoraJar.CurseChance = 0.2
-mod.PandoraJar.Curses = {}
-
-
-
-if EID then
-	EID:addCollectible(mod.Items.PandoraJar,
-		"Add random wisp. #33% chance to add curse when used.")
-end
-
-
-local function PandoraJarManager(currentCurses)
-	local level = game:GetLevel()
-	currentCurses = currentCurses or level:GetCurses()
-	mod.PandoraJar.Curses = {}
-	for _, curse in pairs(mod.Curses) do
-		if currentCurses & curse == 0 then
-			table.insert(mod.PandoraJar.Curses, curse)
-		end
-	end
-end
-
-function mod:onCurseEval(curseFlags)
-
-	PandoraJarManager(curseFlags)
-	return curseFlags
-end
-mod:AddCallback(ModCallbacks.MC_POST_CURSE_EVAL, mod.onCurseEval)
-
----Pandora's Jar
-function mod:onPandoraJar(_, rng, player) --item, rng, player, useFlag, activeSlot, customVarData
-	local data = player:GetData()
-	local randNum = rng:RandomFloat()
-
-	if randNum <= mod.PandoraJar.CurseChance and #mod.PandoraJar.Curses > 0 then
-		local curseNum = #mod.PandoraJar.Curses
-		local level = game:GetLevel()
-		local currentCurses = level:GetCurses()
-		local randIndex = rng:RandomInt(curseNum)+1
-		local addCurse = mod.PandoraJar.Curses[randIndex]
-		while currentCurses & addCurse > 0 do
-			randIndex = rng:RandomInt(curseNum)+1
-			addCurse = mod.PandoraJar.Curses[randIndex]
-		end
-		table.remove(mod.PandoraJar.Curses, randIndex)
-		level:AddCurse(addCurse, true)
-	end
-
-	local allItems = Isaac.GetItemConfig():GetCollectibles().Size - 1
-	local pos = player.Position
-	local item = rng:RandomInt(allItems)+1
-	if randNum > mod.PandoraJar.ItemWispChance then
-		player:AddWisp(item, pos)
-	else
-		player:AddItemWisp(item, pos)
-	end
-
-end
-mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onPandoraJar, mod.Items.PandoraJar)
 
 
 

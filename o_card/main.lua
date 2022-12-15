@@ -98,6 +98,8 @@ mod.Items.DMS = Isaac.GetItemIdByName("Death's Sickle")
 mod.Items.MewGen = Isaac.GetItemIdByName("Mew-Gen")
 mod.Items.ElderSign = Isaac.GetItemIdByName("Elder Sign")
 mod.Items.Eclipse = Isaac.GetItemIdByName("Eclipse") -- "Darkest Basement" grants aura dealing 2 damage. boost player damage if you have curse of darkness
+mod.Items.WitchPot = Isaac.GetItemIdByName("Witch's Pot")
+mod.Items.PandoraJar = Isaac.GetItemIdByName("Pandora's Jar")
 
 --mod.Items.DiceBombs = Isaac.GetItemIdByName("Dice Bombs") -- "Reroll blast +5 bombs"
 --mod.Items.Pizza = Isaac.GetItemIdByName("Pizza Pepperoni") -- active 12 seconds. Shoot Pizza boomerang
@@ -327,6 +329,11 @@ fruit plum			-- neptune
 lil portal
 lil spewer
 --]]
+
+mod.PandoraJar = {}
+mod.PandoraJar.CurseChance = 0.33
+mod.PandoraJar.ItemWispChance = 0.25
+
 mod.Eclipse = {}
 mod.Eclipse.AuraRange = 125
 mod.Eclipse.DamageDelay = 22
@@ -784,6 +791,16 @@ mod.Penance.Color = Color(1.25, 0.05, 0.15, 0.5)
 end
 --- ACTIVE --
 do
+mod.WitchPot = {}
+-- only when you have pocket trinkets
+mod.WitchPot.KillThreshold = 0.1 -- 0.0 + 0.1
+mod.WitchPot.GulpThreshold = 0.5 -- 0.1 + 0.4
+mod.WitchPot.SpitThreshold = 0.9 -- 0.5 + 0.4
+--mod.WitchPot.RollThreshold = 1 -- 0.9 + 0.1
+-- only when you don't have pocket trinkets (spit out gulped trinket)
+mod.WitchPot.SpitChance = 0.4 -- 0.0 + 0.4
+
+
 mod.ElderSign = {}
 mod.ElderSign.Pentagram = EffectVariant.HERETIC_PENTAGRAM --EffectVariant.PENTAGRAM_BLACKPOWDER
 mod.ElderSign.Timeout = 20
@@ -1054,12 +1071,12 @@ local function WhatSoundIsIt()
 	end
 end
 -- spawn pickup
-local function DebugSpawn(var, subtype, position)
+local function DebugSpawn(var, subtype, position, marg, velocity)
 	--- spawn pickup near given position
-	if position == nil then
-		position = game:GetRoom():GetCenterPos()
-	end
-	Isaac.Spawn(5, var, subtype, Isaac.GetFreeNearPosition(position, 0), Vector.Zero, nil)
+	velocity = velocity or Vector.Zero
+	marg = marg or 0
+	position = position or game:GetRoom():GetCenterPos()
+	Isaac.Spawn(5, var, subtype, Isaac.GetFreeNearPosition(position, marg), velocity, nil)
 end
 -- drop any used card if debug is active
 function mod:onAnyCard(card, player, useFlag)
@@ -1120,6 +1137,7 @@ local function InitDebugCall()
 	--DebugSpawn(100, mod.Items.DiceBombs)
 	--DebugSpawn(100, mod.Items.LilGagger)
 	--DebugSpawn(100, mod.Items.Zooma)
+	DebugSpawn(100, mod.Items.WitchPot)
 
 	DebugSpawn(350, mod.Trinkets.LostFlower)
 	DebugSpawn(350, mod.Trinkets.WitchPaper)
@@ -1136,6 +1154,7 @@ local function InitDebugCall()
 	DebugSpawn(350, mod.Trinkets.RubikCubelet)
 	DebugSpawn(350, mod.Trinkets.DeadEgg)
 	DebugSpawn(350, mod.Trinkets.Penance)
+	DebugSpawn(350, mod.Trinkets.Pompom)
 
 	DebugSpawn(300, mod.Pickups.RedPill)
 	DebugSpawn(300, mod.Pickups.RedHorsePill)
@@ -1648,6 +1667,7 @@ local function SesameOpen(room, level, player)
 			if room:GetGridEntity(gridIndex) then
 				if room:GetGridEntity(gridIndex):ToDoor() then
 					room:GetGridEntity(gridIndex):ToDoor():Open()
+					--room:GetGridEntity(gridIndex):ToDoor():(player, true)
 				end
 			end
 		end
@@ -4922,19 +4942,23 @@ function mod:onHeartCollision(pickup, collider)
 				if pickup.SubType == HeartSubType.HEART_HALF then
 					local wisp = mod.Pompom.WispsList[rng:RandomInt(#mod.Pompom.WispsList)+1]
 					player:AddWisp(wisp, pickup.Position)
-				elseif pickup.SubType == HeartSubType.HEART_FULL   or pickup.SubType == HeartSubType.HEART_SCARED or pickup.SubType == HeartSubType.HEART_ROTTEN then
+					pickup:Remove()
+					return true
+				elseif pickup.SubType == HeartSubType.HEART_FULL or pickup.SubType == HeartSubType.HEART_SCARED or pickup.SubType == HeartSubType.HEART_ROTTEN then
 					for _ = 1, 2 do
 						local wisp = mod.Pompom.WispsList[rng:RandomInt(#mod.Pompom.WispsList)+1]
 						player:AddWisp(wisp, pickup.Position)
 					end
+					pickup:Remove()
+					return true
 				elseif pickup.SubType == HeartSubType.HEART_DOUBLEPACK then
 					for _ = 1, 4 do
 						local wisp = mod.Pompom.WispsList[rng:RandomInt(#mod.Pompom.WispsList)+1]
 						player:AddWisp(wisp, pickup.Position)
 					end
+					pickup:Remove()
+					return true
 				end
-				pickup:Remove()
-				return true
 			end
 		end
 	end
@@ -5653,6 +5677,64 @@ mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, mod.onFamiliarTakeDamage, Entit
 
 ---USE ITEM---
 do
+---Witch's Pot
+function mod:onWitchPot(_, rng, player) --item, rng, player, useFlag, activeSlot, customVarData
+	local chance = rng:RandomFloat()
+	local pocketTrinket = player:GetTrinket(0)
+	local pocketTrinket2 = player:GetTrinket(1)
+	local hudText = "Cantrip!"
+
+	if pocketTrinket ~= 0 then
+		if chance <= mod.WitchPot.KillThreshold then
+			RemoveThrowTrinket(player, pocketTrinket, mod.TrinketDespawnTimer)
+			hudText = "Cantripped!"
+		elseif chance <= mod.WitchPot.GulpThreshold then
+			player:UseActiveItem(CollectibleType.COLLECTIBLE_SMELTER, myUseFlags)
+			hudText = "Gulp!"
+		elseif chance <= mod.WitchPot.SpitThreshold then
+			local hastrinkets = {}
+			for gulpedTrinket = 1, TrinketType.NUM_TRINKETS do
+				if player:HasTrinket(gulpedTrinket, true) and gulpedTrinket ~= pocketTrinket and gulpedTrinket ~= pocketTrinket2 then
+					table.insert(hastrinkets, gulpedTrinket)
+				end
+			end
+			if #hastrinkets > 0 then
+				local removeTrinket = hastrinkets[rng:RandomInt(#hastrinkets)+1]
+				player:TryRemoveTrinket(removeTrinket)
+				DebugSpawn(PickupVariant.PICKUP_TRINKET, removeTrinket, player.Position, 35, RandomVector()*5)
+				hudText = "Spit out!"
+			end
+		else
+			local newTrinket = rng:RandomInt(TrinketType.NUM_TRINKETS)+1
+			player:TryRemoveTrinket(pocketTrinket)
+			player:AddTrinket(newTrinket, true)
+			hudText = "Can trip?"
+		end
+	else
+		if chance <= mod.WitchPot.SpitChance then
+			local hastrinkets = {}
+			for gulpedTrinket = 1, TrinketType.NUM_TRINKETS do
+				if player:HasTrinket(gulpedTrinket, true) then
+					table.insert(hastrinkets, gulpedTrinket)
+				end
+			end
+			if #hastrinkets > 0 then
+				local removeTrinket = hastrinkets[rng:RandomInt(#hastrinkets)+1]
+				player:TryRemoveTrinket(removeTrinket)
+				DebugSpawn(PickupVariant.PICKUP_TRINKET, removeTrinket, player.Position, 35, RandomVector()*5)
+				hudText = "Spit out!"
+			end
+		end
+	end
+
+	if hudText == "Cantrip!" then
+		player:UseActiveItem(CollectibleType.COLLECTIBLE_MOMS_BOX, myUseFlags)
+	end
+
+	game:GetHUD():ShowFortuneText(hudText)
+	return true
+end
+mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onWitchPot, mod.Items.WitchPot)
 ---book of memories
 function mod:onBookMemoryItem(_, _, player) --item, rng, player, useFlag, activeSlot, customVarData
 	local entities = Isaac.FindInRadius(player.Position, 5000, EntityPartition.ENEMY)
@@ -6576,13 +6658,16 @@ if EID then -- External Item Description
 			"While shooting grants pulsing aura, dealing player's damage. #{{Damage}} x1.5 damage boost when level has {{CurseDarkness}} Curse of Darkness.")
 	EID:addCollectible(mod.Items.Threshold,
 			"Give actual item from Item Wisp.")
-
+	EID:addCollectible(mod.Items.WitchPot,
+			"Spawn new trinket. #40% chance to smelt current trinket. #40% chance to spit out smelted trinket. #10% Chance to reroll your current trinket. #{{Warning}} 10% Chance to destroy your current trinket.")
+	EID:addCollectible(mod.Items.PandoraJar,
+			"Add random wisp. #If wisp was destroyed, wisp will respawn in the next room. #Wisp lasts for current level. #{{Warning}} 33% chance to add special curse instead.")
 
 	EID:addTrinket(mod.Trinkets.WitchPaper,
 			"{{Collectible422}} Turn back time when you die. #Destroys itself after triggering.")
 	EID:addTrinket(mod.Trinkets.QueenSpades,
 			"Opens Alt.path, Boss Rush and Blue Womb doors while you holding this trinket.")
-	--"Opens all alternative doors while you holding this trinket. #Removes after triggering.")
+			--"Opens all alternative doors while you holding this trinket. #Removes after triggering.")
 	EID:addTrinket(mod.Trinkets.RedScissors,
 			"Turn troll-bombs into red throwable bombs.") -- inferior scissors, nah
 	EID:addTrinket(mod.Trinkets.Duotine,
@@ -9881,3 +9966,42 @@ function mod:onGetCard(rng, card, includePlayingCards, includeRunes, onlyRunes)
 end
 mod:AddCallback(ModCallbacks.MC_GET_CARD, mod.onGetCard)
 --]]
+
+local function PandoraJarManager(currentCurses)
+	local curseTable = {}
+	for _, curse in pairs(mod.Curses) do
+		if currentCurses & curse == 0 then
+			table.insert(curseTable, curse)
+		end
+	end
+	return curseTable
+end
+
+---Pandora's Jar
+function mod:onPandoraJar(_, rng, player) --item, rng, player, useFlag, activeSlot, customVarData
+	if not player:HasCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE) then
+		local randNum = rng:RandomFloat()
+		if randNum <= mod.PandoraJar.CurseChance then
+			local level = game:GetLevel()
+			mod.PandoraJar.Curses = PandoraJarManager(level:GetCurses())
+			if #mod.PandoraJar.Curses > 0 then
+				local addCurse = mod.PandoraJar.Curses[rng:RandomInt(#mod.PandoraJar.Curses)+1]
+				level:AddCurse(addCurse, true)
+			end
+		end
+	end
+
+	player:AddWisp(CollectibleType.COLLECTIBLE_GLASS_CANNON, player.Position)
+
+	--[[
+	local allItems = Isaac.GetItemConfig():GetCollectibles().Size - 1
+	local pos = player.Position
+	local item = rng:RandomInt(allItems)+1
+	if randNum > mod.PandoraJar.ItemWispChance then
+		player:AddWisp(item, pos) -- CollectibleType.COLLECTIBLE_EDENS_SOUL
+	else
+		player:AddItemWisp(item, pos)
+	end
+	--]]
+end
+mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onPandoraJar, mod.Items.PandoraJar)

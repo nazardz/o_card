@@ -11,7 +11,7 @@
 	<active  id="10" quality="0" craftquality="1" description="Through the looking glass" gfx="Lost_Mirror.png" name="Lost Mirror" maxcharges="1"/>
 	<active  id="11" quality="2" craftquality="2" description="I bleed pixels" gfx="Bleeding_Grimoire.png" name="Bleeding Grimoire"  devilprice="1" maxcharges="3" tags="book"/>
 	<active  id="12" quality="2" craftquality="1" description="Lord of the Words" gfx="Black_Book.png" name="Black Book" maxcharges="2" tags="book"/>
-	<active  id="13" quality="0" craftquality="-1"  description="D4.326×10^19" gfx="Rubik_Dice.png" name="Rubik's Dice" maxcharges="3"/>
+	<active  id="13" quality="0" craftquality="-1" description="D4.326×10^19" gfx="Rubik_Dice.png" name="Rubik's Dice" maxcharges="3"/>
 	<active  id="14" quality="0" craftquality="-1" description="D4.326×10^19" gfx="Scrambled_Rubik_Dice.png" name="Rubik's Dice " maxcharges="12" hidden="true"/>
 	<active  id="15" quality="0" craftquality="0" description="D4.326×10^19" gfx="Scrambled_Rubik_Dice1.png" name="Rubik's Dice  " maxcharges="8" hidden="true"/>
 	<active  id="16" quality="0" craftquality="-1" description="D4.326×10^19" gfx="Scrambled_Rubik_Dice2.png" name="Rubik's Dice   " maxcharges="8" hidden="true"/>
@@ -51,6 +51,9 @@
 	<passive id="47" quality="3" craftquality="3" description="Mewolution!" gfx="mewgen.png" name="Mew-Gen" cache="flying" /> 
 	<active  id="48" quality="1" craftquality="1" description="The Seal" gfx="eldersign.png" name="Elder Sign" shopprice="10" maxcharges="210" chargetype="timed"/>
 	<passive id="49" quality="3" craftquality="3" description="Darkest Basement!" gfx="eclipse.png" name="Eclipse"/>
+	<active  id="50" quality="1" craftquality="1" description="Cantrip" gfx="witch_pot.png" name="Witch's Pot" shopprice="10" maxcharges="4"/>
+	<active  id="51" quality="1" craftquality="1" description="Deceptive expectations" gfx="pandora_jar.png" name="Pandora's Jar" maxcharges="1"/>
+
 	<!--
 	<passive quality="3" craftquality="3" description="Reroll blast +5 bombs" gfx="dice_bombs.png" name="Dice Bombs"/>
 	<familiar quality="1" craftquality="1" description="Giga bombs generator!" gfx="Little_Gagger.png" name="Little Gagger" devilprice="2" cache="familiars"/>
