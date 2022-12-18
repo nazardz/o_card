@@ -2196,10 +2196,10 @@ function mod:onAnyItem(item, _, player, useFlag) --item, rng, player, useFlag, a
 	--- activates on any item use. checks if it's mod item and player has book of virtues
 	if mod.ActiveItemWisps[item] and player:HasCollectible(CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES) and useFlag & myUseFlags ~= myUseFlags then
 		--:AddWisp(Collectible, Position, AdjustOrbitLayer, DontUpdate)
-		local wisp = player:AddWisp(mod.ActiveItemWisps[item], player.Position, false, false):ToFamiliar()
+		local wisp = player:AddWisp(mod.ActiveItemWisps[item], player.Position, false, false)
 		--wisp:GetData().ModWisp = true
-		if Isaac.GetItemConfig():GetCollectible(item).ChargeType == 1 then
-			wisp:GetData().RemoveAll = item
+		if wisp and Isaac.GetItemConfig():GetCollectible(item).ChargeType == 1 then
+			wisp:ToFamiliar():GetData().RemoveAll = item
 		end
 	end
 end
@@ -9803,10 +9803,10 @@ mod.GlitchBeggar.RandomPickupCheck = {
 mod.Slots.MongoBeggar = Isaac.GetEntityVariantByName("Mongo Beggar")
 mod.MongoBeggar= {}
 mod.MongoBeggar.ReplaceChance = 0.1
-mod.MongoBeggar.PityCounter = 6
+mod.MongoBeggar.PityCounter = 7
 mod.MongoBeggar.PrizeCounter = 6
 mod.MongoBeggar.PrizeChance = 0.05
-mod.MongoBeggar.ActivateChance = 0.33
+mod.MongoBeggar.ActivateChance = 0.2
 
 mod.BeggarCheck = {
 [mod.Slots.MongoBeggar] = true,
@@ -9941,17 +9941,21 @@ function mod:peffectUpdateBeggars(player)
 			if sprite:IsFinished("PayPrize") then sprite:Play("Prize") end
 
 			if sprite:IsFinished("Prize") then
+				sfx:Play(SoundEffect.SOUND_SLOTSPAWN)
 				
-				
-				if beggarData.PityCounter >= mod.MongoBeggar.PityCounter or randNum <= mod.MongoBeggar.PrizeChance then --Spawn item
+				if randNum <= mod.MongoBeggar.PrizeChance then --Spawn item
 					local spawnpos = Isaac.GetFreeNearPosition(beggar.Position, 35)
 					sprite:Play("Teleport")
 					DebugSpawn(100, CollectibleType.COLLECTIBLE_MONGO_BABY, spawnpos)
 					level:SetStateFlag(LevelStateFlag.STATE_BUM_LEFT, true)
+					
 				else -- from all cards
+					
 					player:UseActiveItem(CollectibleType.COLLECTIBLE_MONSTER_MANUAL, myUseFlags)
+					if sfx:IsPlaying(241) then sfx:Stop(241) end
+					
 					sprite:Play("Idle")
-					sfx:Play(SoundEffect.SOUND_SLOTSPAWN)
+					--sfx:Play(SoundEffect.SOUND_SLOTSPAWN)
 					beggarData.PrizeCounter = beggarData.PrizeCounter + 1
 					if beggarData.PrizeCounter >= mod.MongoBeggar.PrizeCounter then
 						sprite:Play("Teleport")
@@ -9969,9 +9973,7 @@ function mod:peffectUpdateBeggars(player)
 					if sprite:IsPlaying("Idle") and player:GetNumCoins() > 0 then
 						player:AddCoins(-1)
 						sfx:Play(SoundEffect.SOUND_SCAMPER)
-						if beggarData.PityCounter >= mod.MongoBeggar.PityCounter then
-							sprite:Play("PayPrize")
-						elseif rng:RandomFloat() < mod.MongoBeggar.ActivateChance then --randNum == 0 then
+						if beggarData.PityCounter >= mod.MongoBeggar.PityCounter or rng:RandomFloat() < mod.MongoBeggar.ActivateChance then --randNum == 0 then
 							sprite:Play("PayPrize")
 							beggarData.PityCounter = 0
 						else
@@ -10011,12 +10013,11 @@ function mod:onPandoraJar(_, rng, player) --item, rng, player, useFlag, activeSl
 	local wisp
 	if mod.PandoraJarGift and mod.PandoraJarGift == 1 then
 		game:GetHUD():ShowFortuneText("Elpis!")
-		--player:TriggerBookOfVirtues(CollectibleType.COLLECTIBLE_MYSTERY_GIFT, 1)
 		player:UseActiveItem(CollectibleType.COLLECTIBLE_MYSTERY_GIFT, myUseFlags)
 		wisp = player:AddWisp(CollectibleType.COLLECTIBLE_MYSTERY_GIFT, player.Position, true)
 		mod.PandoraJarGift = 2
 	else
-		wisp = player:AddWisp(CollectibleType.COLLECTIBLE_GLASS_CANNON, player.Position, true)--:ToFamiliar()
+		wisp = player:AddWisp(CollectibleType.COLLECTIBLE_GLASS_CANNON, player.Position, true)
 	end
 	if wisp then
 		sfx:Play(471)
@@ -10025,7 +10026,6 @@ function mod:onPandoraJar(_, rng, player) --item, rng, player, useFlag, activeSl
 			if randNum <= mod.PandoraJar.CurseChance then
 				local level = game:GetLevel()
 				mod.PandoraJar.Curses = PandoraJarManager(level:GetCurses())
-				print(#mod.PandoraJar.Curses)
 				if #mod.PandoraJar.Curses > 0 then
 					local addCurse = mod.PandoraJar.Curses[rng:RandomInt(#mod.PandoraJar.Curses)+1]
 					game:GetHUD():ShowFortuneText(mod.CurseText[addCurse])
