@@ -195,6 +195,25 @@ mod.Curses.Secrets = 1 << (Isaac.GetCurseIdByName("Curse of Secrets!")-1) -- hid
 mod.Curses.Warden = 1 << (Isaac.GetCurseIdByName("Curse of the Warden!")-1) -- all locked doors need 2 keys
 mod.Curses.Lemegeton = 1 << (Isaac.GetCurseIdByName("Curse of the Lemegeton!")-1) -- 16% chance to turn item into Item Wisp when picked up. Add wisped item after clearing room
 
+mod.CurseText = {}
+mod.CurseText[mod.Curses.Void] = "Curse of the Void!"
+mod.CurseText[mod.Curses.Jamming] = "Curse of the Jamming!"
+mod.CurseText[mod.Curses.Emperor] = "Curse of the Emperor!"
+mod.CurseText[mod.Curses.Magician] = "Curse of the Magician!"
+mod.CurseText[mod.Curses.Strength] = "Curse of Champions!"
+mod.CurseText[mod.Curses.Bell] = "Curse of the Bell!"
+mod.CurseText[mod.Curses.Envy] = "Curse of the Envy!"
+mod.CurseText[mod.Curses.Carrion] = "Curse of Carrion!"
+mod.CurseText[mod.Curses.Bishop] = "Curse of the Bishop!"
+mod.CurseText[mod.Curses.Montezuma] = "Curse of Montezuma!"
+mod.CurseText[mod.Curses.Misfortune] = "Curse of Misfortune!"
+mod.CurseText[mod.Curses.HangedMan] = "Curse of Hanged Man!"
+mod.CurseText[mod.Curses.Fool] = "Curse of the Fool!"
+mod.CurseText[mod.Curses.Secrets] = "Curse of Secrets!"
+mod.CurseText[mod.Curses.Warden] = "Curse of the Warden!"
+mod.CurseText[mod.Curses.Lemegeton] = "Curse of the Lemegeton!"
+
+
 --mod.Curses.Reaper = 1 << (Isaac.GetCurseIdByName("Curse of the Reaper!")-1) -- death's scythe will follow you
 end
 --- LOCAL TABLES --
@@ -331,7 +350,7 @@ lil spewer
 --]]
 
 mod.PandoraJar = {}
-mod.PandoraJar.CurseChance = 0.33
+mod.PandoraJar.CurseChance = 0.15
 mod.PandoraJar.ItemWispChance = 0.25
 
 mod.Eclipse = {}
@@ -708,43 +727,30 @@ do
 mod.Pompom = {}
 mod.Pompom.Chance = 0.5
 mod.Pompom.WispsList = {
+
+--[
 CollectibleType.COLLECTIBLE_BLOOD_RIGHTS,
 CollectibleType.COLLECTIBLE_CONVERTER,
 CollectibleType.COLLECTIBLE_MOMS_BRA,
-CollectibleType.COLLECTIBLE_KAMIKAZE,
+--CollectibleType.COLLECTIBLE_KAMIKAZE,
 CollectibleType.COLLECTIBLE_YUM_HEART,
-CollectibleType.COLLECTIBLE_D6,
+CollectibleType.COLLECTIBLE_D6, 
+--CollectibleType.COLLECTIBLE_D20,
 CollectibleType.COLLECTIBLE_RAZOR_BLADE,
-CollectibleType.COLLECTIBLE_REMOTE_DETONATOR,
-CollectibleType.COLLECTIBLE_D20,
 CollectibleType.COLLECTIBLE_RED_CANDLE,
 CollectibleType.COLLECTIBLE_THE_JAR,
 CollectibleType.COLLECTIBLE_SCISSORS,
-CollectibleType.COLLECTIBLE_MEGA_BLAST,
-CollectibleType.COLLECTIBLE_PLAN_C,
-CollectibleType.COLLECTIBLE_POTATO_PEELER,
-CollectibleType.COLLECTIBLE_SHARP_STRAW,
-CollectibleType.COLLECTIBLE_SULFUR,
 CollectibleType.COLLECTIBLE_RED_KEY,
-CollectibleType.COLLECTIBLE_LARYNX,
-CollectibleType.COLLECTIBLE_MEAT_CLEAVER,
-CollectibleType.COLLECTIBLE_VENGEFUL_SPIRIT,
-CollectibleType.COLLECTIBLE_SUMPTORIUM,
---[[
-"s4", -- Notched Axe: Red dust
-"s13", -- Friendly Ball: Brimstone
-CollectibleType.COLLECTIBLE_GELLO,
-CollectibleType.COLLECTIBLE_ANIMA_SOLA,
-CollectibleType.COLLECTIBLE_ABYSS,
-CollectibleType.COLLECTIBLE_PLUM_FLUTE,
-CollectibleType.COLLECTIBLE_YUCK_HEART,
-CollectibleType.COLLECTIBLE_DAMOCLES,
-CollectibleType.COLLECTIBLE_SACRIFICIAL_ALTAR,
-CollectibleType.COLLECTIBLE_HEAD_OF_KRAMPUS,
-CollectibleType.COLLECTIBLE_SATANIC_BIBLE,
-CollectibleType.COLLECTIBLE_IV_BAG,
-CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL,
---]]
+CollectibleType.COLLECTIBLE_MEGA_BLAST, 
+--CollectibleType.COLLECTIBLE_SULFUR,
+CollectibleType.COLLECTIBLE_SHARP_STRAW, -- outer ring
+CollectibleType.COLLECTIBLE_MEAT_CLEAVER, 
+-- CollectibleType.COLLECTIBLE_PLAN_C, 
+--CollectibleType.COLLECTIBLE_SUMPTORIUM,
+65540,
+--]
+-- CollectibleType.COLLECTIBLE_VENGEFUL_SPIRIT, -- unkillable
+-- CollectibleType.COLLECTIBLE_POTATO_PEELER, -- unkillable
 }
 
 mod.LostFlower = {}
@@ -3749,7 +3755,7 @@ function mod:onUpdate()
 		end
 	end
 
-	--[
+	--[[
 	if mod.FoolCurseActive then
 		mod.FoolCurseActive = mod.FoolCurseActive - 1
 		if mod.FoolCurseActive <= 0 then
@@ -3763,7 +3769,7 @@ function mod:onUpdate()
 			end
 		end
 	end
-	--]
+	--]]
 
 	--curse void reroll countdown
 	if not room:HasCurseMist() then
@@ -3890,7 +3896,11 @@ function mod:onNewLevel()
 	for _, fam in pairs(Isaac.FindByType(EntityType.ENTITY_FAMILIAR)) do
 		if fam:GetData().GenChanceUp then fam:GetData().GenChanceUp = 0 end
 	end
-	--]]
+	
+	if mod.PandoraJarGift then
+		mod.PandoraJarGift = nil
+	end
+	
 	-- player
 	for playerNum = 0, game:GetNumPlayers()-1 do
 		local player = game:GetPlayer(playerNum)
@@ -4041,7 +4051,15 @@ function mod:onNewRoom()
 		if level:GetCurses() & mod.Curses.Fool > 0 and room:GetType() ~= RoomType.ROOM_BOSS then
 			if not room:IsFirstVisit() and modRNG:RandomFloat() < mod.FoolThreshold then
 				room:RespawnEnemies()
-				mod.FoolCurseActive = 2
+				for gridIndex = 1, room:GetGridSize() do -- get room size
+					local grid = room:GetGridEntity(gridIndex)
+					if grid and grid:ToDoor()  then 
+						grid:ToDoor():Open()
+					end
+				end
+				room:SetClear(true)
+				mod.FoolCurseNoRewards = true
+				--mod.FoolCurseActive = 2
 			end
 		end
 		--Void curse
@@ -4936,28 +4954,32 @@ function mod:onHeartCollision(pickup, collider)
 					end
 				end
 			end
-
-			if player:HasTrinket(mod.Trinkets.Pompom) and player:GetTrinketRNG(mod.Trinkets.Pompom):RandomFloat() < mod.Pompom.Chance then
+			
+			if player:HasTrinket(mod.Trinkets.Pompom) and player:GetHearts() == player:GetEffectiveMaxHearts() and player:GetTrinketRNG(mod.Trinkets.Pompom):RandomFloat() < mod.Pompom.Chance then
 				local rng = player:GetTrinketRNG(mod.Trinkets.Pompom)
 				if pickup.SubType == HeartSubType.HEART_HALF then
 					local wisp = mod.Pompom.WispsList[rng:RandomInt(#mod.Pompom.WispsList)+1]
 					player:AddWisp(wisp, pickup.Position)
+					sfx:Play(579)
 					pickup:Remove()
-					return true
+					--return true
 				elseif pickup.SubType == HeartSubType.HEART_FULL or pickup.SubType == HeartSubType.HEART_SCARED or pickup.SubType == HeartSubType.HEART_ROTTEN then
 					for _ = 1, 2 do
 						local wisp = mod.Pompom.WispsList[rng:RandomInt(#mod.Pompom.WispsList)+1]
 						player:AddWisp(wisp, pickup.Position)
 					end
 					pickup:Remove()
-					return true
+					sfx:Play(579)
+					--return true
 				elseif pickup.SubType == HeartSubType.HEART_DOUBLEPACK then
 					for _ = 1, 4 do
 						local wisp = mod.Pompom.WispsList[rng:RandomInt(#mod.Pompom.WispsList)+1]
 						player:AddWisp(wisp, pickup.Position)
+						
 					end
+					sfx:Play(579)
 					pickup:Remove()
-					return true
+					--return true
 				end
 			end
 		end
@@ -5395,6 +5417,13 @@ mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.onElderSignPentagramUpda
 
 
 --- FAMILIAR UPDATE --lemegeton curse
+--[[
+function mod:onWispo(fam)
+	print(fam.Varitant, fam.SubType)
+end
+mod:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, mod.onWispo, FamiliarVariant.WISP)
+--]]
+
 function mod:onVertebraeUpdate(fam)
 	local famData = fam:GetData() -- get fam data
 	if famData.AddAfterOneRoom then
@@ -5694,14 +5723,14 @@ function mod:onWitchPot(_, rng, player) --item, rng, player, useFlag, activeSlot
 		elseif chance <= mod.WitchPot.SpitThreshold then
 			local hastrinkets = {}
 			for gulpedTrinket = 1, TrinketType.NUM_TRINKETS do
-				if player:HasTrinket(gulpedTrinket, true) and gulpedTrinket ~= pocketTrinket and gulpedTrinket ~= pocketTrinket2 then
+				if player:HasTrinket(gulpedTrinket, false) and gulpedTrinket ~= pocketTrinket and gulpedTrinket ~= pocketTrinket2 then
 					table.insert(hastrinkets, gulpedTrinket)
 				end
 			end
 			if #hastrinkets > 0 then
 				local removeTrinket = hastrinkets[rng:RandomInt(#hastrinkets)+1]
 				player:TryRemoveTrinket(removeTrinket)
-				DebugSpawn(PickupVariant.PICKUP_TRINKET, removeTrinket, player.Position, 35, RandomVector()*5)
+				DebugSpawn(PickupVariant.PICKUP_TRINKET, removeTrinket, player.Position, 0, RandomVector()*5)
 				hudText = "Spit out!"
 			end
 		else
@@ -5713,15 +5742,15 @@ function mod:onWitchPot(_, rng, player) --item, rng, player, useFlag, activeSlot
 	else
 		if chance <= mod.WitchPot.SpitChance then
 			local hastrinkets = {}
-			for gulpedTrinket = 1, TrinketType.NUM_TRINKETS do
-				if player:HasTrinket(gulpedTrinket, true) then
+			for gulpedTrinket = 1, 205 do --TrinketType.NUM_TRINKETS do
+				if player:HasTrinket(gulpedTrinket, false) then
 					table.insert(hastrinkets, gulpedTrinket)
 				end
 			end
 			if #hastrinkets > 0 then
 				local removeTrinket = hastrinkets[rng:RandomInt(#hastrinkets)+1]
 				player:TryRemoveTrinket(removeTrinket)
-				DebugSpawn(PickupVariant.PICKUP_TRINKET, removeTrinket, player.Position, 35, RandomVector()*5)
+				DebugSpawn(PickupVariant.PICKUP_TRINKET, removeTrinket, player.Position, 0, RandomVector()*5)
 				hudText = "Spit out!"
 			end
 		end
@@ -6661,7 +6690,7 @@ if EID then -- External Item Description
 	EID:addCollectible(mod.Items.WitchPot,
 			"Spawn new trinket. #40% chance to smelt current trinket. #40% chance to spit out smelted trinket. #10% Chance to reroll your current trinket. #{{Warning}} 10% Chance to destroy your current trinket.")
 	EID:addCollectible(mod.Items.PandoraJar,
-			"Add random wisp. #If wisp was destroyed, wisp will respawn in the next room. #Wisp lasts for current level. #{{Warning}} 33% chance to add special curse instead.")
+			"Add Glass Cannon wisp. #{{Warning}} 15% chance to add curse. #If all curses was added, triggers Mystery Gift. This effect can be triggered only once per level.")
 
 	EID:addTrinket(mod.Trinkets.WitchPaper,
 			"{{Collectible422}} Turn back time when you die. #Destroys itself after triggering.")
@@ -9979,29 +10008,37 @@ end
 
 ---Pandora's Jar
 function mod:onPandoraJar(_, rng, player) --item, rng, player, useFlag, activeSlot, customVarData
-	if not player:HasCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE) then
-		local randNum = rng:RandomFloat()
-		if randNum <= mod.PandoraJar.CurseChance then
-			local level = game:GetLevel()
-			mod.PandoraJar.Curses = PandoraJarManager(level:GetCurses())
-			if #mod.PandoraJar.Curses > 0 then
-				local addCurse = mod.PandoraJar.Curses[rng:RandomInt(#mod.PandoraJar.Curses)+1]
-				level:AddCurse(addCurse, true)
+	local wisp
+	if mod.PandoraJarGift and mod.PandoraJarGift == 1 then
+		game:GetHUD():ShowFortuneText("Elpis!")
+		--player:TriggerBookOfVirtues(CollectibleType.COLLECTIBLE_MYSTERY_GIFT, 1)
+		player:UseActiveItem(CollectibleType.COLLECTIBLE_MYSTERY_GIFT, myUseFlags)
+		wisp = player:AddWisp(CollectibleType.COLLECTIBLE_MYSTERY_GIFT, player.Position, true)
+		mod.PandoraJarGift = 2
+	else
+		wisp = player:AddWisp(CollectibleType.COLLECTIBLE_GLASS_CANNON, player.Position, true)--:ToFamiliar()
+	end
+	if wisp then
+		sfx:Play(471)
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE) and not mod.PandoraJarGift then
+			local randNum = rng:RandomFloat()
+			if randNum <= mod.PandoraJar.CurseChance then
+				local level = game:GetLevel()
+				mod.PandoraJar.Curses = PandoraJarManager(level:GetCurses())
+				print(#mod.PandoraJar.Curses)
+				if #mod.PandoraJar.Curses > 0 then
+					local addCurse = mod.PandoraJar.Curses[rng:RandomInt(#mod.PandoraJar.Curses)+1]
+					game:GetHUD():ShowFortuneText(mod.CurseText[addCurse])
+					level:AddCurse(addCurse, false)
+				else
+					mod.PandoraJarGift = 1
+					return {ShowAnim = true, Remove = false, Discharge = false}
+				end
 			end
 		end
 	end
-
-	player:AddWisp(CollectibleType.COLLECTIBLE_GLASS_CANNON, player.Position)
-
-	--[[
-	local allItems = Isaac.GetItemConfig():GetCollectibles().Size - 1
-	local pos = player.Position
-	local item = rng:RandomInt(allItems)+1
-	if randNum > mod.PandoraJar.ItemWispChance then
-		player:AddWisp(item, pos) -- CollectibleType.COLLECTIBLE_EDENS_SOUL
-	else
-		player:AddItemWisp(item, pos)
+	if mod.PandoraJarGift and mod.PandoraJarGift == 2 then
+		return {ShowAnim = true, Remove = false, Discharge = false}
 	end
-	--]]
 end
 mod:AddCallback(ModCallbacks.MC_USE_ITEM, mod.onPandoraJar, mod.Items.PandoraJar)
