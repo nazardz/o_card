@@ -82,6 +82,7 @@
 		<Item Name="Mew-Gen" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
 		<!--<Item Name="Little Gagger" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>-->
 		<!--<Item Name="Zooma" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>-->
+		<Item Name="Secret Love Letter" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="shop">
 		<Item Name="Moonlighter" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
@@ -163,6 +164,7 @@
 		<Item Name="Moonlighter" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Charon's Obol" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Witch's Pot" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Secret Love Letter" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="greedCurse">
 		<Item Name="Curse of the Midas" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
@@ -202,6 +204,7 @@
 		<Item Name="Red Button" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
 		<Item Name="Lililith" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
 		<Item Name="Compo Bombs" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
+		<Item Name="Secret Love Letter" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="bombBum">
 		<Item Name="Compo Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>

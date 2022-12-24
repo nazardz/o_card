@@ -5,7 +5,7 @@
 	<active  id="4" quality="2" craftquality="3" description="Checkmate!" gfx="Knightmare.png" name="Black Knight" maxcharges="60" chargetype="timed"/>
 	<active  id="5" quality="2" craftquality="3" description="Checkmate!" gfx="KnightmareWhite.png" name="White Knight" maxcharges="160" chargetype="timed"/>
 	<active  id="6" quality="2" craftquality="1" description="Exchanger" gfx="Moonlighter_Mirror.png" name="Moonlighter" maxcharges="4"/>
-	<active  id="7" quality="2" craftquality="2" description="Flight + temporary badass" gfx="Mini-Pony.png" name="Unicorn" cache="speed flying" maxcharges="2"/>
+	<active  id="7" quality="2" craftquality="2" description="Flight + temporary badass" gfx="Mini-Pony.png" name="Unicorn" cache="speed flying" maxcharges="4"/>
 	<active  id="8" quality="3" craftquality="4" description="Shift options" gfx="Strange_Box.png" name="Strange Box" maxcharges="6"/>
 	<!-- pizza -->
 	<active  id="10" quality="0" craftquality="1" description="Through the looking glass" gfx="Lost_Mirror.png" name="Lost Mirror" maxcharges="1"/>
@@ -40,7 +40,7 @@
 	<passive id="38" quality="3" craftquality="1" description="Survivor" gfx="voidkarma.png" name="Karma Level"/>
 	<passive id="39" quality="2" craftquality="2" description="Flipped gravity" gfx="Viridian.png" name="VVV" cache="flying"/>
 
-	<familiar id="40" quality="3" craftquality="3" description="Red generator!" gfx="Red_Bag.png" name="Red Bag" devilprice="2" cache="familiars" tags="summonable"/>
+	<familiar id="40" quality="3" craftquality="3" description="Gives reds" gfx="Red_Bag.png" name="Red Bag" devilprice="2" cache="familiars" tags="summonable"/>
 	<familiar id="41" quality="3" craftquality="3" description="Hellspawner" gfx="Lililith.png" name="Lililith" devilprice="2" cache="familiars" />
 	<familiar id="42" quality="2" craftquality="2" description="Profane" gfx="abihu_fam.png" name="Abihu" cache="familiars" tags="uniquefamiliar"/>
 	<familiar id="43" quality="1" craftquality="1" description="Heavy thoughts" gfx="nadab_brain.png" name="Nadab's Brain" cache="familiars" tags="monstermanual summonable"/>
@@ -53,9 +53,10 @@
 	<passive id="49" quality="3" craftquality="3" description="Darkest Basement!" gfx="eclipse.png" name="Eclipse"/>
 	<active  id="50" quality="1" craftquality="1" description="Cantrip" gfx="witch_pot.png" name="Witch's Pot" shopprice="10" maxcharges="4"/>
 	<active  id="51" quality="1" craftquality="1" description="Deceptive expectations" gfx="pandora_jar.png" name="Pandora's Jar" maxcharges="1"/>
-
+	<active  id="52" quality="1" craftquality="1" description="Hidden affections" gfx="secret_love_letter.png" name="Secret Love Letter" maxcharges="6"/>
+	<passive id="53" quality="3" craftquality="3" description="Reroll blast +5 bombs" gfx="dice_bombs.png" name="Dice Bombs" bombs="5"/>
 	<!--
-	<passive quality="3" craftquality="3" description="Reroll blast +5 bombs" gfx="dice_bombs.png" name="Dice Bombs"/>
+	
 	<familiar quality="1" craftquality="1" description="Giga bombs generator!" gfx="Little_Gagger.png" name="Little Gagger" devilprice="2" cache="familiars"/>
 	<familiar quality="1" craftquality="1" description="Ballistic friend" gfx="Stone_toad.png" name="Zooma" cache="familiars"/>
 	-->
