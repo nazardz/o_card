@@ -10274,7 +10274,7 @@ function EclipsedMod:peffectUpdateBeggars(player)
 					level:SetStateFlag(LevelStateFlag.STATE_BUM_LEFT, true)
 				else
 					sprite:Play("Idle")
-					if randNum <= 1 then --EclipsedMod.DeliriumBeggar.DeliPickupChance then
+					if randNum <= EclipsedMod.DeliriumBeggar.DeliPickupChance then
 						--DebugSpawn(300, EclipsedMod.Pickups.BannedCard, spawnpos)
 						DebugSpawn(300, EclipsedMod.DeliObject.Variants[rng:RandomInt(#EclipsedMod.DeliObject.Variants)+1], spawnpos)
 					else
@@ -10294,9 +10294,6 @@ function EclipsedMod:peffectUpdateBeggars(player)
 					if sprite:IsPlaying("Idle") and player:GetNumCoins() > 0 then
 						player:AddCoins(-1)
 						sfx:Play(SoundEffect.SOUND_SCAMPER)
-
-						sprite:Play("PayPrize")
-						--[[
 						if beggarData.PityCounter >= EclipsedMod.DeliriumBeggar.PityCounter or rng:RandomFloat() < EclipsedMod.DeliriumBeggar.ActivateChance then --randNum == 0 then
 							sprite:Play("PayPrize")
 							beggarData.PityCounter = 0
@@ -10304,7 +10301,6 @@ function EclipsedMod:peffectUpdateBeggars(player)
 							sprite:Play("PayNothing")
 							beggarData.PityCounter = beggarData.PityCounter + 1
 						end
-						--]]
 					end
 				end
 				if BeggarWasBombed(beggar) then
