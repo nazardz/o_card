@@ -82,7 +82,7 @@
 		<Item Name="Mew-Gen" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
 		<!--<Item Name="Little Gagger" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>-->
 		<!--<Item Name="Zooma" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>-->
-		<Item Name="Secret Love Letter" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Dice Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="shop">
 		<Item Name="Moonlighter" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
@@ -117,6 +117,7 @@
 		<Item Name="Limbus" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Elder Sign" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Eclipse" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Secret Love Letter" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="library">
 		<Item Name="Bleeding Grimoire" Weight="1" DecreaseBy="0.1" RemoveOn="0.1"/>
@@ -156,6 +157,7 @@
 		<Item Name="Nadab's Brain" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Ice Cube Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Mew-Gen" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
+		<Item Name="Dice Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="greedShop">
 		<Item Name="Mongo Cells" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
@@ -164,7 +166,7 @@
 		<Item Name="Moonlighter" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Charon's Obol" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Witch's Pot" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
-		<Item Name="Secret Love Letter" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+
 	</Pool>
 	<Pool Name="greedCurse">
 		<Item Name="Curse of the Midas" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
@@ -195,6 +197,7 @@
 		<Item Name="Limbus" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Elder Sign" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Eclipse" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Secret Love Letter" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="ultraSecret">
 		<Item Name="Floppy Disk" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
@@ -205,6 +208,7 @@
 		<Item Name="Lililith" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
 		<Item Name="Compo Bombs" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
 		<Item Name="Secret Love Letter" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
+		<Item Name="Dice Bombs" Weight="1" DecreaseBy="0.4" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="bombBum">
 		<Item Name="Compo Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
@@ -212,7 +216,7 @@
 		<Item Name="Black Hole Bombs" Weight="0.2" DecreaseBy="0.1" RemoveOn="0.02"/>
 		<Item Name="Ice Cube Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<!--<Item Name="Little Gagger" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>-->
-		<!--<Item Name="Dice Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>-->
+		<Item Name="Dice Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="babyShop">
 		<Item Name="Nadab's Brain" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>

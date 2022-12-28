@@ -7,6 +7,7 @@ local sfx = SFXManager()
 local savetable = {}
 local renderText = 'No Text'
 local myUseFlags = UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER | UseFlag.USE_MIMIC
+local myUseFlags2 = UseFlag.USE_NOANIM | UseFlag.USE_MIMIC
 
 local RECOMMENDED_SHIFT_IDX = 35
 local myrng = RNG()
@@ -21,14 +22,12 @@ local function modDataLoad()
 		savetable.AbihuCompletionMarks = localtable.AbihuCompletionMarks
 		savetable.UnbiddenCompletionMarks = localtable.UnbiddenCompletionMarks
 		savetable.ObliviousCompletionMarks = localtable.ObliviousCompletionMarks
-		savetable.HasItemBirthright = localtable.HasItemBirthright
 	else
 		savetable.FloppyDiskItems = savetable.FloppyDiskItems or {}
 		savetable.NadabCompletionMarks = savetable.NadabCompletionMarks or {0,0,0,0,0,0,0,0,0,0,0,0,0}
 		savetable.AbihuCompletionMarks = savetable.AbihuCompletionMarks or {0,0,0,0,0,0,0,0,0,0,0,0,0}
 		savetable.UnbiddenCompletionMarks = savetable.UnbiddenCompletionMarks or {0,0,0,0,0,0,0,0,0,0,0,0,0}
 		savetable.ObliviousCompletionMarks = savetable.ObliviousCompletionMarks or {0,0,0,0,0,0,0,0,0,0,0,0,0}
-		savetable.HasItemBirthright = savetable.HasItemBirthright or {}
 	end
 end
 
@@ -100,6 +99,7 @@ EclipsedMod.Items.ElderSign = Isaac.GetItemIdByName("Elder Sign")
 EclipsedMod.Items.Eclipse = Isaac.GetItemIdByName("Eclipse") -- "Darkest Basement" grants aura dealing 2 damage. boost player damage if you have curse of darkness
 EclipsedMod.Items.WitchPot = Isaac.GetItemIdByName("Witch's Pot")
 EclipsedMod.Items.PandoraJar = Isaac.GetItemIdByName("Pandora's Jar")
+EclipsedMod.Items.SecretLoveLetter = Isaac.GetItemIdByName("Secret Love Letter")
 
 EclipsedMod.Items.DiceBombs = Isaac.GetItemIdByName("Dice Bombs") -- "Reroll blast +5 bombs"
 --EclipsedMod.Items.Pizza = Isaac.GetItemIdByName("Pizza Pepperoni") -- active 12 seconds. Shoot Pizza boomerang
@@ -160,6 +160,17 @@ EclipsedMod.Pickups.Trapezohedron = Isaac.GetCardIdByName("04_Trapezohedron")
 EclipsedMod.Pickups.SoulUnbidden = Isaac.GetCardIdByName("X_SoulUnbidden")
 EclipsedMod.Pickups.SoulNadabAbihu = Isaac.GetCardIdByName("X_SoulNadabAbihu")
 EclipsedMod.Pickups.GhostGem = Isaac.GetCardIdByName("X_GhostGem") -- flinthook
+
+EclipsedMod.Pickups.DeliObjectCell = Isaac.GetCardIdByName("Dell_Object")
+EclipsedMod.Pickups.DeliObjectBomb = Isaac.GetCardIdByName("Dell_Bomb")
+EclipsedMod.Pickups.DeliObjectKey = Isaac.GetCardIdByName("Dell_Key")
+EclipsedMod.Pickups.DeliObjectCard = Isaac.GetCardIdByName("Dell_Card")
+EclipsedMod.Pickups.DeliObjectPill = Isaac.GetCardIdByName("Dell_Pill")
+EclipsedMod.Pickups.DeliObjectRune = Isaac.GetCardIdByName("Dell_Rune")
+EclipsedMod.Pickups.DeliObjectHeart = Isaac.GetCardIdByName("Dell_Heart")
+EclipsedMod.Pickups.DeliObjectCoin = Isaac.GetCardIdByName("Dell_Coin")
+EclipsedMod.Pickups.DeliObjectBattery = Isaac.GetCardIdByName("Dell_Battery")
+
 EclipsedMod.Pickups.RedPill = Isaac.GetCardIdByName("X_RedPill")
 EclipsedMod.Pickups.RedPillHorse = Isaac.GetCardIdByName("X_RedPillHorse")
 
@@ -301,10 +312,10 @@ EclipsedMod.ActiveItemWisps = {
 	[EclipsedMod.Items.KeeperMirror] = CollectibleType.COLLECTIBLE_KEEPERS_BOX,
 	[EclipsedMod.Items.MiniPony] = CollectibleType.COLLECTIBLE_MY_LITTLE_UNICORN,
 	[EclipsedMod.Items.StrangeBox] = CollectibleType.COLLECTIBLE_UNDEFINED,
-	[EclipsedMod.Items.LostMirror] = CollectibleType.COLLECTIBLE_BREATH_OF_LIFE,
+	[EclipsedMod.Items.LostMirror] = CollectibleType.COLLECTIBLE_GLASS_CANNON,
 	[EclipsedMod.Items.BleedingGrimoire] = CollectibleType.COLLECTIBLE_RAZOR_BLADE,
 	[EclipsedMod.Items.BlackBook] = CollectibleType.COLLECTIBLE_DEAD_SEA_SCROLLS,
-	[EclipsedMod.Items.RubikDice] = CollectibleType.COLLECTIBLE_D6,
+	[EclipsedMod.Items.RubikDice] = CollectibleType.COLLECTIBLE_UNDEFINED,
 	[EclipsedMod.Items.RubikDiceScrambled0] = CollectibleType.COLLECTIBLE_UNDEFINED,
 	[EclipsedMod.Items.RubikDiceScrambled1] = CollectibleType.COLLECTIBLE_UNDEFINED,
 	[EclipsedMod.Items.RubikDiceScrambled2] = CollectibleType.COLLECTIBLE_UNDEFINED,
@@ -313,15 +324,26 @@ EclipsedMod.ActiveItemWisps = {
 	[EclipsedMod.Items.RubikDiceScrambled5] = CollectibleType.COLLECTIBLE_UNDEFINED,
 	[EclipsedMod.Items.VHSCassette] = CollectibleType.COLLECTIBLE_CLICKER,
 	[EclipsedMod.Items.LongElk] = CollectibleType.COLLECTIBLE_NECRONOMICON,
-	[EclipsedMod.Items.CharonObol] = CollectibleType.COLLECTIBLE_WOODEN_NICKEL,
-	[EclipsedMod.Items.WhiteKnight] = CollectibleType.COLLECTIBLE_WHITE_PONY,
+	[EclipsedMod.Items.CharonObol] = CollectibleType.COLLECTIBLE_IV_BAG,
+	[EclipsedMod.Items.WhiteKnight] = CollectibleType.COLLECTIBLE_PONY,
 	[EclipsedMod.Items.BlackKnight] = CollectibleType.COLLECTIBLE_PONY,
-	[EclipsedMod.Items.FloppyDisk] = CollectibleType.COLLECTIBLE_D4,
-	[EclipsedMod.Items.FloppyDiskFull] = CollectibleType.COLLECTIBLE_D4,
+	[EclipsedMod.Items.FloppyDisk] = CollectibleType.COLLECTIBLE_EDENS_SOUL,
+	[EclipsedMod.Items.FloppyDiskFull] = CollectibleType.COLLECTIBLE_EDENS_SOUL,
 	[EclipsedMod.Items.BookMemory] = CollectibleType.COLLECTIBLE_ERASER,
 	[EclipsedMod.Items.CosmicJam] = CollectibleType.COLLECTIBLE_LEMEGETON,
 	[EclipsedMod.Items.ElderSign] = CollectibleType.COLLECTIBLE_PAUSE,
+	[EclipsedMod.Items.WitchPot] = CollectibleType.COLLECTIBLE_MOMS_BOX,
+	[EclipsedMod.Items.PandoraJar] = CollectibleType.COLLECTIBLE_GLASS_CANNON,
+	[EclipsedMod.Items.SecretLoveLetter] = CollectibleType.COLLECTIBLE_KIDNEY_BEAN,
 }
+------------SLOTS--------------
+
+EclipsedMod.DeliriumBeggar = {}
+EclipsedMod.DeliriumBeggar.ReplaceChance = 0.1
+EclipsedMod.DeliriumBeggar.PityCounter = 6
+EclipsedMod.DeliriumBeggar.ActivateChance = 0.33 --activation chance - charmed enemy (chance to activate)
+EclipsedMod.DeliriumBeggar.PrizeChance = 0.05 --reward chance - charmed boss (chance after activation)
+EclipsedMod.DeliriumBeggar.DeliPickupChance = 0.25 --delirium pickup chance (chance after activation)
 
 ------------PASSIVE------------
 --[[
@@ -838,6 +860,14 @@ EclipsedMod.Penance.Color = Color(1.25, 0.05, 0.15, 0.5)
 end
 --- ACTIVE --
 do
+EclipsedMod.SecretLoveLetter = {}
+EclipsedMod.SecretLoveLetter.TearVariant = TearVariant.CHAOS_CARD
+EclipsedMod.SecretLoveLetter.SpritePath = "gfx/LoveLetterTear.png"
+EclipsedMod.SecretLoveLetter.AffectedEnemies = {} -- type, variant
+EclipsedMod.SecretLoveLetter.BannedEnemies = {
+[260] = true, -- lil ghosts.  for haunt boos, cause he just don't switch to 2nd phase
+}
+
 EclipsedMod.WitchPot = {}
 -- only when you have pocket trinkets
 EclipsedMod.WitchPot.KillThreshold = 0.1 -- 0.0 + 0.1
@@ -889,7 +919,6 @@ EclipsedMod.BlackKnight.ChestVariant = { -- chests
 [PickupVariant.PICKUP_BOMBCHEST] = true,
 [PickupVariant.PICKUP_LOCKEDCHEST] = true,
 [PickupVariant.PICKUP_MEGACHEST] = true,
-[PickupVariant.PICKUP_LOCKEDCHEST] = true,
 [PickupVariant.PICKUP_REDCHEST] = true,
 [PickupVariant.PICKUP_CHEST] = true,
 [PickupVariant.PICKUP_SPIKEDCHEST] = true,
@@ -999,6 +1028,60 @@ EclipsedMod.SecretLoveLetter.AffectedEnemies = {}
 end
 --- CARDS --
 do
+
+EclipsedMod.DeliObject = {}
+EclipsedMod.DeliObject.Chance = 0.1
+EclipsedMod.DeliObject.CheckGetCard = {
+	[EclipsedMod.Pickups.DeliObjectCell] = true,
+	[EclipsedMod.Pickups.DeliObjectBomb] = true,
+	[EclipsedMod.Pickups.DeliObjectKey] = true,
+	[EclipsedMod.Pickups.DeliObjectCard] = true,
+	[EclipsedMod.Pickups.DeliObjectPill] = true,
+	[EclipsedMod.Pickups.DeliObjectRune] = true,
+	[EclipsedMod.Pickups.DeliObjectHeart] = true,
+	[EclipsedMod.Pickups.DeliObjectCoin] = true,
+	[EclipsedMod.Pickups.DeliObjectBattery] = true,
+}
+EclipsedMod.DeliObject.Variants = {
+	EclipsedMod.Pickups.DeliObjectCell,
+	EclipsedMod.Pickups.DeliObjectBomb,
+	EclipsedMod.Pickups.DeliObjectKey,
+	EclipsedMod.Pickups.DeliObjectCard,
+	EclipsedMod.Pickups.DeliObjectPill,
+	EclipsedMod.Pickups.DeliObjectRune,
+	EclipsedMod.Pickups.DeliObjectHeart,
+	EclipsedMod.Pickups.DeliObjectCoin,
+	EclipsedMod.Pickups.DeliObjectBattery,
+}
+EclipsedMod.DeliObject.AnimationCheck = {
+['WalkLeft'] = true,
+['WalkUp'] = true,
+['WalkRight'] = true,
+['WalkDown'] = true,
+--['HeadLeft'] = true,
+--['HeadUp'] = true,
+--['HeadRight'] = true,
+--['HeadDown'] = true,
+}
+EclipsedMod.DeliObject.TrollCBombChance = 0.1
+EclipsedMod.DeliObject.BombFlags = {
+TearFlags.TEAR_HOMING,
+TearFlags.TEAR_POISON,
+TearFlags.TEAR_BURN,
+TearFlags.TEAR_ATTRACTOR,
+TearFlags.TEAR_SAD_BOMB,
+TearFlags.TEAR_SCATTER_BOMB,
+TearFlags.TEAR_BUTT_BOMB,
+TearFlags.TEAR_GLITTER_BOMB,
+TearFlags.TEAR_STICKY,
+TearFlags.TEAR_CROSS_BOMB,
+TearFlags.TEAR_CREEP_TRAIL,
+TearFlags.TEAR_BLOOD_BOMB,
+TearFlags.TEAR_BRIMSTONE_BOMB,
+TearFlags.TEAR_GHOST_BOMB,
+--TearFlags.TEAR_GIGA_BOMB,
+}
+
 EclipsedMod.MultiCast = {}
 EclipsedMod.MultiCast.NumWisps = 3 -- multi cast card number of wisps to spawn
 
@@ -1033,6 +1116,7 @@ EclipsedMod.DeuxEx.LuckUp = 100 -- value of luck to add
 
 EclipsedMod.BannedCard = {}
 EclipsedMod.BannedCard.NumCards = 2
+EclipsedMod.BannedCard.Chance = 0.01
 
 EclipsedMod.RubikCubelet = {}
 EclipsedMod.RubikCubelet.TriggerChance = 0.33
@@ -1130,7 +1214,7 @@ local function DebugSpawn(var, subtype, position, marg, velocity)
 end
 -- drop any used card if debug is active
 function EclipsedMod:onAnyCard(card, player, useFlag)
-	if debug and useFlag & myUseFlags == 0 then
+	if debug and useFlag & myUseFlags == 0 and useFlag & myUseFlags2 == 0 then
 		DebugSpawn(PickupVariant.PICKUP_TAROTCARD, card, player.Position)
 	end
 end
@@ -1277,6 +1361,13 @@ local function InitCall()
 	{'10','10a'}, -- cathedral sheol
 	{'11','11a'}, -- chest dark room
 	{'12'} -- void
+	}
+
+	EclipsedMod.DeliriumBeggar.Enemies = {
+		{EntityType.ENTITY_GAPER, 0}
+	}
+	EclipsedMod.DeliriumBeggar.Enable = {
+		[tostring(EntityType.ENTITY_GAPER..0)] = true
 	}
 end
 -- remove add trinket
@@ -2535,16 +2626,57 @@ local function PandoraJarManager(currentCurses)
 end
 -- get bomb damage radius
 local function GetBombRadiusFromDamage(damage)
-						if 175.0 <= damage then
-							return 105.0
-						else
-							if damage <= 140.0 then
-								return 75.0
-							else
-								return 90.0
-							end
-						end
-					end
+	if 175.0 <= damage then
+		return 105.0
+	else
+		if damage <= 140.0 then
+			return 75.0
+		else
+			return 90.0
+		end
+	end
+end
+
+EclipsedMod.QueueItemsCheck = {
+[EclipsedMod.Items.GravityBombs] = true,
+[EclipsedMod.Items.MidasCurse] = true,
+[EclipsedMod.Items.RubberDuck] = true,
+[CollectibleType.COLLECTIBLE_BIRTHRIGHT] = true,
+
+}
+
+local function CheckPickupAbuse(player)
+	local queueData = player.QueuedItem
+	if queueData.Item and queueData.Item:IsCollectible() and EclipsedMod.QueueItemsCheck[queueData.Item.ID] and not queueData.Touched then
+		local itemId = queueData.Item.ID
+		local data = player:GetData()
+		local rng = player:GetCollectibleRNG(itemId)
+
+		if itemId == EclipsedMod.Items.GravityBombs then
+			player:AddGigaBombs(EclipsedMod.GravityBombs.GigaBombs)
+		elseif itemId == EclipsedMod.Items.MidasCurse then
+			player:AddGoldenHearts(3)
+		elseif itemId == EclipsedMod.Items.RubberDuck then
+			data.DuckCurrentLuck = data.DuckCurrentLuck or 0
+			data.DuckCurrentLuck = data.DuckCurrentLuck + EclipsedMod.RubberDuck.MaxLuck
+			EvaluateDuckLuck(player, data.DuckCurrentLuck)
+		elseif itemId == CollectibleType.COLLECTIBLE_BIRTHRIGHT then
+			if player:GetPlayerType() == EclipsedMod.Characters.Nadab then
+				SpawnOptionItems(ItemPoolType.POOL_BOMB_BUM, rng:RandomInt(Random())+1, player.Position)
+			elseif player:GetPlayerType() == EclipsedMod.Characters.Abihu then
+				player:SetFullHearts()
+			elseif player:GetPlayerType() == EclipsedMod.Characters.Unbidden then
+				local broken = player:GetBrokenHearts()
+                player:AddBrokenHearts(-broken)
+				player:AddSoulHearts(2*broken)
+				AddItemFromWisp(player, true, false, false)
+			elseif player:GetPlayerType() == EclipsedMod.Characters.Oblivious then
+
+			end
+
+		end
+	end
+end
 --- LOCAL FUNCTIONS --
 
 --- MOD CALLBACKS --
@@ -2556,7 +2688,9 @@ function EclipsedMod:onExit(isContinue)
 		savetable.LobotomyErasedEntities = EclipsedMod.Lobotomy.ErasedEntities
 		savetable.MidasCurseTurnGoldChance = EclipsedMod.MidasCurse.TurnGoldChance
 		savetable.SecretLoveLetterAffectedEnemies = EclipsedMod.SecretLoveLetter.AffectedEnemies
-
+		savetable.DeliriumBeggarData = {}
+		savetable.DeliriumBeggarData.Enemies = EclipsedMod.DeliriumBeggar.Enemies
+		savetable.DeliriumBeggarData.Enable = EclipsedMod.DeliriumBeggar.Enable
 		savetable.PandoraJarGift = EclipsedMod.PandoraJarGift
 
 		savetable.DemonSpawn = {} -- EclipsedMod.Lililith.DemonSpawn
@@ -2565,7 +2699,6 @@ function EclipsedMod:onExit(isContinue)
 		savetable.RedPillDamageUp = {}
 		savetable.UsedBG = {}
 		savetable.LimbActive = {}
-		savetable.HasItemGravityBombs = {}
 		savetable.ModdedBombas = {}
 		savetable.StateDamaged = {}
 		savetable.RedLotusDamage = {}
@@ -2578,16 +2711,15 @@ function EclipsedMod:onExit(isContinue)
 			local player = game:GetPlayer(playerNum)
 			local data = player:GetData()
 			local idx = getPlayerIndex(player)
-			--if data.HasItemBirthright then savetable.HasItemBirthright[idx] = data.HasItemBirthright end
 
 			if data.LililithDemonSpawn then
 				savetable.DemonSpawn[idx] = data.LililithDemonSpawn
 			end
 			if player:HasCollectible(EclipsedMod.Items.MidasCurse) then
-				savetable.MidasCurseActive[idx] = {data.GoldenHeartsAmount, data.HasItemMidasCurse}
+				savetable.MidasCurseActive[idx] = data.GoldenHeartsAmount
 			end
 			if player:HasCollectible(EclipsedMod.Items.RubberDuck) then
-				savetable.DuckCurrentLuck[idx] = {data.DuckCurrentLuck, data.HasItemRubberDuck}
+				savetable.DuckCurrentLuck[idx] = data.DuckCurrentLuck
 			end
 			if data.RedPillDamageUp then
 				savetable.RedPillDamageUp[idx] = {data.RedPillDamageUp, data.RedPillDamageDown}
@@ -2600,9 +2732,7 @@ function EclipsedMod:onExit(isContinue)
 			if data.LimbActive then
 				savetable.LimbActive[idx] = data.LimbActive
 			end
-			if data.HasItemGravityBombs then
-				savetable.HasItemGravityBombs[idx] = data.HasItemGravityBombs
-			end
+
 			if data.ModdedBombas then
 				savetable.ModdedBombas[idx] = data.ModdedBombas
 			end
@@ -2639,7 +2769,8 @@ function EclipsedMod:onStart(isSave)
 		EclipsedMod.Lobotomy.ErasedEntities = localtable.LobotomyErasedEntities
 		EclipsedMod.MidasCurse.TurnGoldChance = localtable.MidasCurseTurnGoldChance
 		EclipsedMod.SecretLoveLetter.AffectedEnemies = localtable.SecretLoveLetterAffectedEnemies
-
+		EclipsedMod.DeliriumBeggar.Enable = localtable.DeliriumBeggarData.Enable
+		EclipsedMod.DeliriumBeggar.Enemies = localtable.DeliriumBeggarData.Enemies
 		--[[
 		for playerNum = 0, game:GetNumPlayers()-1 do
 			local player = game:GetPlayer(playerNum)
@@ -2678,12 +2809,10 @@ function EclipsedMod:onPlayerInit(player)
 		end
 
 		if player:HasCollectible(EclipsedMod.Items.MidasCurse) then
-			data.HasItemMidasCurse = localtable.MidasCurseActive[idx][2]
-			data.GoldenHeartsAmount = localtable.MidasCurseActive[idx][1]
+			data.GoldenHeartsAmount = localtable.MidasCurseActive[idx]
 		end
 		if player:HasCollectible(EclipsedMod.Items.RubberDuck) then
-			data.HasItemRubberDuck = localtable.DuckCurrentLuck[idx][2]
-			EvaluateDuckLuck(player, localtable.DuckCurrentLuck[idx][1])
+			EvaluateDuckLuck(player, localtable.DuckCurrentLuck[idx])
 		end
 
 		if localtable.RedPillDamageUp then
@@ -2701,9 +2830,7 @@ function EclipsedMod:onPlayerInit(player)
 		if localtable.LimbActive then
 			data.LimbActive = localtable.LimbActive[idx]
 		end
-		if localtable.HasItemGravityBombs then
-			data.HasItemGravityBombs = localtable.HasItemGravityBombs[idx]
-		end
+
 		if localtable.ModdedBombas then
 			data.ModdedBombas = localtable.ModdedBombas[idx]
 		end
@@ -2726,11 +2853,7 @@ function EclipsedMod:onPlayerInit(player)
 			data.UsedLobotomyCount = localtable.UsedLobotomyCount[idx]
 		end
 		--]]
-		if localtable.HasItemBirthright then
-			if not savetable.HasItemBirthright then savetable.HasItemBirthright = {} end
-			savetable.HasItemBirthright[idx] = localtable.HasItemBirthright[idx]
-		end
-		--if localtable.HasItemBirthright[idx] then data.HasItemBirthright = localtable.HasItemBirthright[idx] end
+
 		if localtable.PandoraJarGift then
 			EclipsedMod.PandoraJarGift = localtable.PandoraJarGift
 		end
@@ -3065,7 +3188,32 @@ function EclipsedMod:onPEffectUpdate(player)
 		end
 	end
 
+	--- secret love letter
+	if data.UsedSecretLoveLetter and player:GetFireDirection() ~= Direction.NO_DIRECTION then
+		if player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == EclipsedMod.Items.SecretLoveLetter then
+			if player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY) >= Isaac.GetItemConfig():GetCollectible(EclipsedMod.Items.SecretLoveLetter).MaxCharges then--and player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == EclipsedMod.Items.SecretLoveLetter and tempEffects:HasCollectibleEffect(EclipsedMod.Items.SecretLoveLetter) then
+				local tear = player:FireTear(player.Position, player:GetAimDirection() * 14, false, true, false, nil, 0):ToTear()
+				tear:ChangeVariant(EclipsedMod.SecretLoveLetter.TearVariant)
+				local tearData = tear:GetData()
+				tearData.SecretLoveLetter = true
+				local tearSprite = tear:GetSprite()
+				tearSprite:ReplaceSpritesheet(0, EclipsedMod.SecretLoveLetter.SpritePath)
+				tearSprite:LoadGraphics() -- replace sprite
+				sfx:Play(SoundEffect.SOUND_SHELLGAME)
+			end
+			player:DischargeActiveItem(ActiveSlot.SLOT_PRIMARY)
+			--player:AnimateCollectible(EclipsedMod.Items.SecretLoveLetter, "HideItem")
+			--data.UsedSecretLoveLetter = false
+		end
+		player:AnimateCollectible(EclipsedMod.Items.SecretLoveLetter, "HideItem")
+		data.UsedSecretLoveLetter = false
+	end
+
 	if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
+
+
+		CheckPickupAbuse(player)
+
 		--- abyss cartridge
 		if player:HasTrinket(EclipsedMod.Trinkets.AbyssCart) then
 			if player:GetHearts() < 2 and player:GetSoulHearts() < 2 and game:GetFrameCount()%15 == 0 then
@@ -3179,25 +3327,7 @@ function EclipsedMod:onPEffectUpdate(player)
 				end
 			end
 		end
-		-- black hole bombs
-		if player:HasCollectible(EclipsedMod.Items.GravityBombs) then
-			if not data.HasItemGravityBombs then
-				data.HasItemGravityBombs = 1
-				player:AddGigaBombs(EclipsedMod.GravityBombs.GigaBombs )
-			end
-			local numGravityBombs =  GetItemsCount(player, EclipsedMod.Items.GravityBombs)
-			if numGravityBombs ~= data.HasItemGravityBombs then
-				if numGravityBombs > data.HasItemGravityBombs and GetItemsCount(player, EclipsedMod.Items.GravityBombs)  ~= 0 then
-					player:AddGigaBombs(EclipsedMod.GravityBombs.GigaBombs)
 
-				end
-				data.HasItemGravityBombs =  GetItemsCount(player, EclipsedMod.Items.GravityBombs)
-			end
-		else
-			if data.HasItemGravityBombs then
-				data.HasItemGravityBombs = nil
-			end
-		end
 		--long elk
 		if player:HasCollectible(EclipsedMod.Items.LongElk) then
 			--[
@@ -3276,18 +3406,9 @@ function EclipsedMod:onPEffectUpdate(player)
 
 		---MidasCurse
 		if player:HasCollectible(EclipsedMod.Items.MidasCurse) then
-			if not data.HasItemMidasCurse then
-				data.HasItemMidasCurse = 1
-				player:AddGoldenHearts(3)
-				data.GoldenHeartsAmount = player:GetGoldenHearts()
-			end
-			local numMidas = GetItemsCount(player, EclipsedMod.Items.MidasCurse)
-			if numMidas ~= data.HasItemMidasCurse then
-				if numMidas > data.HasItemMidasCurse and GetItemsCount(player, EclipsedMod.Items.MidasCurse)  ~= 0 then
-					player:AddGoldenHearts(3)
-				end
-				data.HasItemMidasCurse = GetItemsCount(player, EclipsedMod.Items.MidasCurse)
-			end
+
+			if not data.GoldenHeartsAmount then data.GoldenHeartsAmount = player:GetGoldenHearts() end
+
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE) and EclipsedMod.MidasCurse.TurnGoldChance ~= EclipsedMod.MidasCurse.MinGold then -- remove curse
 				EclipsedMod.MidasCurse.TurnGoldChance = EclipsedMod.MidasCurse.MinGold
 			elseif not player:HasCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE) and EclipsedMod.MidasCurse.TurnGoldChance ~= EclipsedMod.MidasCurse.MaxGold then
@@ -3318,34 +3439,16 @@ function EclipsedMod:onPEffectUpdate(player)
 				data.GoldenHeartsAmount = player:GetGoldenHearts()
 			end
 		else
-			if data.HasItemMidasCurse then
-				data.HasItemMidasCurse = false
+			if data.GoldenHeartsAmount and data.GoldenHeartsAmount > 0 then
 				data.GoldenHeartsAmount = 0
 			end
 		end
 		---Duckling
 		if player:HasCollectible(EclipsedMod.Items.RubberDuck) then
-			if not data.HasItemRubberDuck then
-				data.HasItemRubberDuck = 1
-				--data.DuckCurrentLuck = EclipsedMod.RubberDuck.MaxLuck
-				EvaluateDuckLuck(player, EclipsedMod.RubberDuck.MaxLuck)
-			end
-
-			local numDuck = GetItemsCount(player, EclipsedMod.Items.RubberDuck)
-			if numDuck ~= data.HasItemRubberDuck then
-				if numDuck > data.HasItemRubberDuck and GetItemsCount(player, EclipsedMod.Items.RubberDuck) ~= 0 then
-					EvaluateDuckLuck(player, data.DuckCurrentLuck + EclipsedMod.RubberDuck.MaxLuck)
-				end
-				data.HasItemRubberDuck = GetItemsCount(player, EclipsedMod.Items.RubberDuck)
-			end
-
-			if not data.DuckCurrentLuck then
-				data.DuckCurrentLuck = 0
-			end
+			data.DuckCurrentLuck = data.DuckCurrentLuck or 0
 		else
-			if data.HasItemRubberDuck then
-				data.HasItemRubberDuck = false
-				--data.DuckCurrentLuck = 0
+			if data.DuckCurrentLuck and data.DuckCurrentLuck > 0 then
+				-- data.DuckCurrentLuck = 0
 				EvaluateDuckLuck(player, 0)
 			end
 		end
@@ -3775,11 +3878,12 @@ function EclipsedMod:onPEffectUpdate(player)
 			end
 		end
 
+
+
 		--- Eclipsed
 		if player:HasCollectible(EclipsedMod.Items.Eclipse) then
 			EclipseAura(player)
 		end
-
 	end
 end
 EclipsedMod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, EclipsedMod.onPEffectUpdate)
@@ -4162,21 +4266,20 @@ function EclipsedMod:onNewRoom()
 		--curses
 		--EclipsedMod.Curses.Warden
 		if level:GetCurses() & EclipsedMod.Curses.Warden > 0 then
-			local roomUpdate = false
 			for gridIndex = 1, room:GetGridSize() do -- get room size
 				local grid = room:GetGridEntity(gridIndex)
 
 				if grid and grid:ToDoor() then -- and grid:GetVariant() == DoorVariant.DOOR_LOCKED then -- and grid.State == 1 then
 					local door = grid:ToDoor()
 					--print(grid:GetVariant(), grid:GetGridIndex())
+
 					if door:GetVariant() == DoorVariant.DOOR_LOCKED then
 						--local doorPos = room:GetDoorSlotPosition(door.Slot)
 						door:SetVariant(DoorVariant.DOOR_LOCKED_DOUBLE)
-						door:Init(door:GetRNG():RandomInt(Random())+1)
-						door:PostInit()
-						door:Update()
-						roomUpdate = true
-						--]
+						--door.ExtraVisible = true
+						-- so the issue is ExtraSprite not loading. I tried LoadGrapihics and etc. with sprite, but no luck
+						-- well We need fuction similar to door:SetLocked(true) or :Bar()
+						--door:SetLocked(true)
 					end
 				end
 			end
@@ -4239,6 +4342,8 @@ function EclipsedMod:onNewRoom()
 		local player = game:GetPlayer(playerNum)
 		local data = player:GetData()
 		local tempEffects = player:GetEffects()
+
+		if data.UsedSecretLoveLetter then data.UsedSecretLoveLetter = false end
 
 		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
 
@@ -4316,8 +4421,8 @@ function EclipsedMod:onNewRoom()
 			--duckling
 			if player:HasCollectible(EclipsedMod.Items.RubberDuck) then
 				if room:IsFirstVisit() then
-					EvaluateDuckLuck(player, data.DuckCurrentLuck + data.HasItemRubberDuck) -- add number of duck
-				elseif not room:IsFirstVisit() and data.DuckCurrentLuck > 0 then -- luck down while you have temp.luck
+					EvaluateDuckLuck(player, data.DuckCurrentLuck + 1)
+				elseif data.DuckCurrentLuck > 0 then -- luck down while you have temp.luck
 					EvaluateDuckLuck(player, data.DuckCurrentLuck - 1)
 				end
 			end
@@ -4624,8 +4729,8 @@ function EclipsedMod:onEnemyInit(entity)
 		sfx:Play(SoundEffect.SOUND_KISS_LIPS1)
 		if entity.Type == EclipsedMod.SecretLoveLetter.AffectedEnemies[1] and entity.Variant == EclipsedMod.SecretLoveLetter.AffectedEnemies[2] then
 			Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, entity.Position, Vector.Zero, nil):SetColor(EclipsedMod.PinkColor,50,1, false, false) --:ToEffect()
-			entity:AddEntityFlags(EntityFlag.FLAG_FRIENDLY | EntityFlag.FLAG_CHARM|  EntityFlag.FLAG_PERSISTENT)
-			--entity:AddCharmed(EntityRef(player), -1)
+			--entity:AddEntityFlags(EntityFlag.FLAG_FRIENDLY | EntityFlag.FLAG_CHARM|  EntityFlag.FLAG_PERSISTENT)
+			entity:AddCharmed(EntityRef(EclipsedMod.SecretLoveLetter.AffectedEnemies[3]), -1)
 			--break
 		end
 	end
@@ -4662,11 +4767,9 @@ function EclipsedMod:onNPCDeath(enemy)
 
 				if player:HasTrinket(EclipsedMod.Trinkets.MilkTeeth) then
 					local rng = player:GetTrinketRNG(EclipsedMod.Trinkets.MilkTeeth)
-					local coinChance = EclipsedMod.MilkTeeth.CoinChance
 					local numTrinket = player:GetTrinketMultiplier(EclipsedMod.Trinkets.MilkTeeth)
 					--if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_BOX) then numTrinket = numTrinket + 1 end
-					coinChance = coinChance * numTrinket
-					if rng:RandomFloat() < coinChance then
+					if rng:RandomFloat() < EclipsedMod.MilkTeeth.CoinChance * numTrinket then
 						local randVector = RandomVector()*5
 						local coin = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 1, enemy.Position, randVector, nil)
 						coin:GetData().MilkTeethDespawn = EclipsedMod.MilkTeeth.CoinDespawnTimer --= 35
@@ -4921,10 +5024,41 @@ function EclipsedMod:onOblivionTearInit(tear) -- card, player, useflag
 			sprite:LoadGraphics() -- replace sprite
 		end
 	end
-
-
 end
 EclipsedMod:AddCallback(ModCallbacks.MC_POST_TEAR_INIT, EclipsedMod.onOblivionTearInit, EclipsedMod.OblivionCard.TearVariant)
+
+--- SECRET LOVE LETTER TEAR COLLISION --
+function EclipsedMod:onLoveLetterCollision(tear, collider) --tear, collider, low
+	tear = tear:ToTear()
+	local tearData = tear:GetData()
+	if tearData.SecretLoveLetter then
+		if collider:ToNPC() and collider:IsActiveEnemy() and collider:IsVulnerableEnemy() and not collider:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
+			tear:ChangeVariant(0)
+			tear:Remove()
+			local player = tear.SpawnerEntity:ToPlayer()
+			local enemy = collider:ToNPC()
+			sfx:Play(SoundEffect.SOUND_KISS_LIPS1)
+			if not enemy:IsBoss() and not EclipsedMod.SecretLoveLetter.BannedEnemies[enemy.Type] then
+				EclipsedMod.SecretLoveLetter.AffectedEnemies[1] = enemy.Type
+				EclipsedMod.SecretLoveLetter.AffectedEnemies[2] = enemy.Variant
+				EclipsedMod.SecretLoveLetter.AffectedEnemies[3] = player
+				--table.insert(EclipsedMod.SecretLoveLetter.AffectedEnemies, {enemy.Type, enemy.Variant})
+				for _, entity in pairs(Isaac.FindInRadius(player.Position, 5000, EntityPartition.ENEMY)) do -- get monsters in room
+					if entity.Type == enemy.Type and entity.Variant == enemy.Variant then
+						Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, entity.Position, Vector.Zero, nil):SetColor(EclipsedMod.PinkColor,50,1, false, false)
+						--entity:AddEntityFlags(EntityFlag.FLAG_FRIENDLY | EntityFlag.FLAG_CHARM | EntityFlag.FLAG_PERSISTENT)
+						entity:AddCharmed(EntityRef(player), -1) -- makes the effect permanent and the enemy will follow you even to different rooms.
+					end
+				end
+			else
+				enemy:AddCharmed(EntityRef(player), 150)
+			end
+			return true
+		end
+	end
+end
+EclipsedMod:AddCallback(ModCallbacks.MC_PRE_TEAR_COLLISION, EclipsedMod.onLoveLetterCollision, EclipsedMod.SecretLoveLetter.TearVariant)
+
 --- PROJECTILES INIT --
 function EclipsedMod:onProjectileInit(projectile)
 	local level = game:GetLevel()
@@ -5128,28 +5262,31 @@ function EclipsedMod:onHeartCollision(pickup, collider)
 				pickup:Remove()
 				return true
 
-			elseif player:HasTrinket(EclipsedMod.Trinkets.Pompom) and player:GetTrinketRNG(EclipsedMod.Trinkets.Pompom):RandomFloat() < EclipsedMod.Pompom.Chance then --and player:GetHearts() == player:GetEffectiveMaxHearts()
+			elseif player:HasTrinket(EclipsedMod.Trinkets.Pompom) then
 				local rng = player:GetTrinketRNG(EclipsedMod.Trinkets.Pompom)
-				local numTrinket = player:GetTrinketMultiplier(EclipsedMod.Trinkets.Pompom) - 1
+				local numTrinket = player:GetTrinketMultiplier(EclipsedMod.Trinkets.Pompom) -- 1
+				if rng:RandomFloat() < EclipsedMod.Pompom.Chance * numTrinket then --and player:GetHearts() == player:GetEffectiveMaxHearts()
 
-				if pickup.SubType == HeartSubType.HEART_HALF then
-					numTrinket = numTrinket + 1
-				elseif pickup.SubType == HeartSubType.HEART_FULL or pickup.SubType == HeartSubType.HEART_SCARED or pickup.SubType == HeartSubType.HEART_ROTTEN then
-					numTrinket = numTrinket + 2
-				elseif pickup.SubType == HeartSubType.HEART_DOUBLEPACK then
-					numTrinket = numTrinket + 4
-				else
-					return nil
-				end
+					if pickup.SubType == HeartSubType.HEART_HALF then
+						numTrinket = numTrinket
+					elseif pickup.SubType == HeartSubType.HEART_FULL or pickup.SubType == HeartSubType.HEART_SCARED or pickup.SubType == HeartSubType.HEART_ROTTEN then
+						numTrinket = numTrinket + 1
+					elseif pickup.SubType == HeartSubType.HEART_DOUBLEPACK then
+						numTrinket = numTrinket + 3
+					else
+						return nil
+					end
 
-				for _ = 1, numTrinket do
-					local wisp = EclipsedMod.Pompom.WispsList[rng:RandomInt(#EclipsedMod.Pompom.WispsList)+1]
-					player:AddWisp(wisp, pickup.Position, true)
+					for _ = 1, numTrinket do
+						local wisp = EclipsedMod.Pompom.WispsList[rng:RandomInt(#EclipsedMod.Pompom.WispsList)+1]
+						player:AddWisp(wisp, pickup.Position, true)
+					end
+					pickup:Remove()
+					sfx:Play(SoundEffect.SOUND_SOUL_PICKUP)
+					pickup:GetData().Pomped = true
+					return true
+
 				end
-				pickup:Remove()
-				sfx:Play(SoundEffect.SOUND_SOUL_PICKUP)
-				pickup:GetData().Pomped = true
-				return true
 			end
 		end
 	end
@@ -5330,7 +5467,8 @@ function EclipsedMod:onBombUpdate(bomb)
 					local fartRingEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.FART_RING, 0, bomb.Position, Vector.Zero, bomb):ToEffect()
 					fartRingEffect:GetData().BobTongue = true
 					fartRingEffect.Parent = bomb
-					fartRingEffect.SpriteScale = fartRingEffect.SpriteScale * 0.8
+					local numTrinket = player:GetTrinketMultiplier(EclipsedMod.Trinkets.BobTongue)-1
+					fartRingEffect.SpriteScale = fartRingEffect.SpriteScale * (0.8 + numTrinket*0.2)
 					--fartRingEffect.Size = 0.5
 				end
 
@@ -5867,6 +6005,20 @@ EclipsedMod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, EclipsedMod.onFamiliarT
 
 ---USE ITEM---
 do
+---love letter
+function EclipsedMod:onSecretLoveLetter(item, _, player, useFlag) --item, rng, player, useFlag, activeSlot, customVarData
+	if useFlag & UseFlag.USE_CARBATTERY == 0 then
+		local data = player:GetData()
+		player:AnimateCollectible(item, player:IsHoldingItem() and "HideItem" or "LiftItem")
+		if data.UsedSecretLoveLetter then
+			data.UsedSecretLoveLetter = false
+		else
+			data.UsedSecretLoveLetter = true
+		end
+	end
+	return {ShowAnim = false, Remove = false, Discharge = false}
+end
+EclipsedMod:AddCallback(ModCallbacks.MC_USE_ITEM, EclipsedMod.onSecretLoveLetter, EclipsedMod.Items.SecretLoveLetter)
 ---Pandora's Jar
 function EclipsedMod:onPandoraJar(_, rng, player) --item, rng, player, useFlag, activeSlot, customVarData
 	local wisp
@@ -6482,11 +6634,9 @@ end
 EclipsedMod:AddCallback(ModCallbacks.MC_USE_CARD, EclipsedMod.onOffering, EclipsedMod.Pickups.Offering)
 ---infinite blades card
 function EclipsedMod:onInfiniteBlades(card, player) -- card, player, useflag
-	local data = player:GetData()
 	local rotationOffset = player:GetLastDirection() -- player:GetMovementInput()
 	local newV = player:GetLastDirection()
 	local rng = player:GetCardRNG(card)
-	local room = game:GetRoom()
 	for _ = 1, EclipsedMod.InfiniteBlades.MaxNumber do
 		local randX = rng:RandomInt(80) * (rng:RandomInt(3)-1)
 		local randY = rng:RandomInt(80) * (rng:RandomInt(3)-1)
@@ -8293,8 +8443,6 @@ function EclipsedMod:onPEffectUpdate3(player)
 	--local room = game:GetRoom()
 	local data = player:GetData()
 	local tempEffects = player:GetEffects()
-	local rng = myrng
-	local idx = getPlayerIndex(player)
 
 	if game:GetFrameCount() == 1 then player:RespawnFamiliars() end
 
@@ -8448,25 +8596,6 @@ function EclipsedMod:onPEffectUpdate3(player)
 			end
 		end
 
-		--birthright
-		if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
-			--data.HasItemBirthright = data.HasItemBirthright or 0
-			if not savetable.HasItemBirthright then modDataLoad() end
-			savetable.HasItemBirthright[idx] = savetable.HasItemBirthright[idx] or 0
-			--if GetItemsCount(player, CollectibleType.COLLECTIBLE_BIRTHRIGHT) ~= data.HasItemBirthright then
-			if GetItemsCount(player, CollectibleType.COLLECTIBLE_BIRTHRIGHT) ~= savetable.HasItemBirthright[idx] then
-				local numBirthright = GetItemsCount(player, CollectibleType.COLLECTIBLE_BIRTHRIGHT)
-				--if numBirthright > data.HasItemBirthright then
-				if numBirthright > savetable.HasItemBirthright[idx] then
-					rng = player:GetCollectibleRNG(CollectibleType.COLLECTIBLE_BIRTHRIGHT)
-					SpawnOptionItems(ItemPoolType.POOL_BOMB_BUM, rng:RandomInt(Random())+1, player.Position)
-				end
-				--data.HasItemBirthright = numBirthright
-				savetable.HasItemBirthright[idx] = numBirthright
-				modDataSave()
-			end
-		end
-
 		--some bomb modifications
 		data.HasFastBombs = NadabEvaluateStats(player, CollectibleType.COLLECTIBLE_FAST_BOMBS, CacheFlag.CACHE_SPEED, data.HasFastBombs)
 		data.HasSadBombs = NadabEvaluateStats(player, CollectibleType.COLLECTIBLE_SAD_BOMBS, CacheFlag.CACHE_FIREDELAY, data.HasSadBombs)
@@ -8609,23 +8738,9 @@ function EclipsedMod:onPEffectUpdate3(player)
 
 		--birthright
 		if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
-			--data.HasItemBirthright = data.HasItemBirthright or 0
-			if not savetable.HasItemBirthright then modDataLoad() end
-			savetable.HasItemBirthright[idx] = savetable.HasItemBirthright[idx] or 0
 			if not data.AbihuCostumeEquipped then
 				data.AbihuCostumeEquipped = true
 				player:AddNullCostume(EclipsedMod.AbihuData.CostumeHead)
-			end
-			--if GetItemsCount(player, CollectibleType.COLLECTIBLE_BIRTHRIGHT) ~= data.HasItemBirthright then
-			if GetItemsCount(player, CollectibleType.COLLECTIBLE_BIRTHRIGHT) ~= savetable.HasItemBirthright[idx] then
-				local numBirthright = GetItemsCount(player, CollectibleType.COLLECTIBLE_BIRTHRIGHT)
-				--if numBirthright > data.HasItemBirthright then
-				if numBirthright > savetable.HasItemBirthright[idx] then
-					player:SetFullHearts()
-				end
-				--data.HasItemBirthright = numBirthright
-				savetable.HasItemBirthright[idx] = numBirthright
-				modDataSave()
 			end
 		end
 
@@ -8650,27 +8765,6 @@ function EclipsedMod:onPEffectUpdate3(player)
 
 		if player:GetHearts() > 0 then
 			player:AddHearts(-player:GetHearts())
-		end
-
-		if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
-			--data.HasItemBirthright = data.HasItemBirthright or 0
-			if not savetable.HasItemBirthright then modDataLoad() end
-			savetable.HasItemBirthright[idx] = savetable.HasItemBirthright[idx] or 0
-			--if GetItemsCount(player, CollectibleType.COLLECTIBLE_BIRTHRIGHT) ~= data.HasItemBirthright then
-			if GetItemsCount(player, CollectibleType.COLLECTIBLE_BIRTHRIGHT) ~= savetable.HasItemBirthright[idx] then
-				local numBirthright = GetItemsCount(player, CollectibleType.COLLECTIBLE_BIRTHRIGHT)
-				--if numBirthright > data.HasItemBirthright then
-				if numBirthright > savetable.HasItemBirthright[idx] then
-					local broken = player:GetBrokenHearts()
-                    player:AddBrokenHearts(-broken)
-                    --player:AddBlackHearts(2*broken)
-					player:AddSoulHearts(2*broken)
-					AddItemFromWisp(player, true, false, false)
-				end
-				--data.HasItemBirthright = numBirthright
-				savetable.HasItemBirthright[idx] = numBirthright
-				modDataSave()
-			end
 		end
 
 		if data.NoAnimReset then
@@ -9411,11 +9505,10 @@ EclipsedMod:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, EclipsedMod.onPlayer
 function EclipsedMod:onPlayerTakeDamage(entity, _, flags) --entity, amount, flags, source, countdown
 	--- abihu drops nadab when you take damage, so set holding to -1
 	local player = entity:ToPlayer()
-	if player:GetPlayerType() == EclipsedMod.Characters.Nadab and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and (flags & DamageFlag.DAMAGE_EXPLOSION == DamageFlag.DAMAGE_EXPLOSION or flags & DamageFlag.DAMAGE_TNT == DamageFlag.DAMAGE_TNT) then
+	if player:GetPlayerType() == EclipsedMod.Characters.Nadab and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and (flags & DamageFlag.DAMAGE_FIRE == DamageFlag.DAMAGE_FIRE or flags & DamageFlag.DAMAGE_EXPLOSION == DamageFlag.DAMAGE_EXPLOSION or flags & DamageFlag.DAMAGE_TNT == DamageFlag.DAMAGE_TNT) then
 		return false
-	end
-	if player:GetPlayerType() == EclipsedMod.Characters.Abihu then
-		if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and flags & DamageFlag.DAMAGE_FIRE == DamageFlag.DAMAGE_FIRE then
+	elseif player:GetPlayerType() == EclipsedMod.Characters.Abihu then
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and (flags & DamageFlag.DAMAGE_FIRE == DamageFlag.DAMAGE_FIRE or flags & DamageFlag.DAMAGE_EXPLOSION == DamageFlag.DAMAGE_EXPLOSION or flags & DamageFlag.DAMAGE_TNT == DamageFlag.DAMAGE_TNT) then
 			return false
 		end
 		local data = entity:GetData()
@@ -9814,7 +9907,8 @@ local function AddModCurse(curse)
 		level:RemoveCurses(curse)
 		print("curse disable")
 	else
-		level:AddCurse(curse, true)
+		level:AddCurse(curse)
+		game:GetHUD():ShowFortuneText(EclipsedMod.CurseText[curse])
 		print("curse enable")
 	end
 end
@@ -9997,18 +10091,9 @@ EclipsedMod.ReplaceBeggarVariants = {
 
 --
 EclipsedMod.Slots.DeliriumBeggar = Isaac.GetEntityVariantByName("Delirious Bum")
-EclipsedMod.DeliriumBeggar = {}
-EclipsedMod.DeliriumBeggar.ReplaceChance = 0.1
-EclipsedMod.DeliriumBeggar.PityCounter = 6
-EclipsedMod.DeliriumBeggar.ActivateChance = 0.2 --activation chance - charmed enemy (chance to activate)
-EclipsedMod.DeliriumBeggar.PrizeChance = 0.05 --reward chance - charmed boss (chance after activation)
-EclipsedMod.DeliriumBeggar.DeliPickupChance = 0.05 --delirium pickup chance (chance after activation)
-EclipsedMod.DeliriumBeggar.Enemies = {
-{EntityType.ENTITY_GAPER, 0}
-}
-EclipsedMod.DeliriumBeggar.Enable = {
-[tostring(EntityType.ENTITY_GAPER..0)] = true
-}
+
+
+
 
 
 --
@@ -10056,6 +10141,7 @@ local function BeggarWasBombed(beggar)
 		beggar:Kill()
 		beggar:Remove()
 		level:SetStateFlag(LevelStateFlag.STATE_BUM_KILLED, true)
+		return true
 	elseif #explosions > 0 then
 		for _, explos in pairs(explosions) do
 			local frame = explos:GetSprite():GetFrame()
@@ -10064,10 +10150,12 @@ local function BeggarWasBombed(beggar)
 					beggar:Kill()
 					beggar:Remove()
 					level:SetStateFlag(LevelStateFlag.STATE_BUM_KILLED, true)
+					return true
 				end
 			end
 		end
 	end
+	return false
 end
 --[[
 local function GlitchBeggarState(beggarData, sprite, rng)
@@ -10100,7 +10188,7 @@ function EclipsedMod:peffectUpdateBeggars(player)
 	--local glitchBeggars = Isaac.FindByType(EntityType.ENTITY_SLOT, EclipsedMod.Slots.GlitchBeggar)
 	local deliriumBeggars = Isaac.FindByType(EntityType.ENTITY_SLOT, EclipsedMod.Slots.DeliriumBeggar)
 
---[[
+	--[[
 	if #glitchBeggars > 0 then
 		for _, beggar in pairs(glitchBeggars) do
 			local sprite = beggar:GetSprite()
@@ -10169,7 +10257,7 @@ function EclipsedMod:peffectUpdateBeggars(player)
 			local rng = beggar:GetDropRNG()
 			local randNum = rng:RandomFloat()
 			local beggarData = beggar:GetData()
-
+			beggar.SplatColor = Color(2,2,2,1,5,5,5)
 			beggarData.PityCounter = beggarData.PityCounter or 0
 
 			if sprite:IsFinished("PayNothing") then sprite:Play("Idle")	end
@@ -10186,12 +10274,14 @@ function EclipsedMod:peffectUpdateBeggars(player)
 					level:SetStateFlag(LevelStateFlag.STATE_BUM_LEFT, true)
 				else
 					sprite:Play("Idle")
-					if randNum <= EclipsedMod.DeliriumBeggar.DeliPickupChance then
-						DebugSpawn(300, EclipsedMod.Pickups.BannedCard, spawnpos)
+					if randNum <= 1 then --EclipsedMod.DeliriumBeggar.DeliPickupChance then
+						--DebugSpawn(300, EclipsedMod.Pickups.BannedCard, spawnpos)
+						DebugSpawn(300, EclipsedMod.DeliObject.Variants[rng:RandomInt(#EclipsedMod.DeliObject.Variants)+1], spawnpos)
 					else
 						local savedOnes = EclipsedMod.DeliriumBeggar.Enemies[rng:RandomInt(#EclipsedMod.DeliriumBeggar.Enemies)+1]
 						local npc = Isaac.Spawn(savedOnes[1], savedOnes[2], 0, spawnpos, Vector.Zero, player):ToNPC()
-						npc:AddEntityFlags(EntityFlag.FLAG_FRIENDLY | EntityFlag.FLAG_CHARM | EntityFlag.FLAG_PERSISTENT)
+						--npc:AddEntityFlags(EntityFlag.FLAG_FRIENDLY | EntityFlag.FLAG_CHARM | EntityFlag.FLAG_PERSISTENT)
+						npc:AddCharmed(EntityRef(player), -1)
 						EclipsedMod.DeliriumBeggar.Enable[tostring(npc.Type..npc.Variant)] = true
 					end
 				end
@@ -10204,6 +10294,9 @@ function EclipsedMod:peffectUpdateBeggars(player)
 					if sprite:IsPlaying("Idle") and player:GetNumCoins() > 0 then
 						player:AddCoins(-1)
 						sfx:Play(SoundEffect.SOUND_SCAMPER)
+
+						sprite:Play("PayPrize")
+						--[[
 						if beggarData.PityCounter >= EclipsedMod.DeliriumBeggar.PityCounter or rng:RandomFloat() < EclipsedMod.DeliriumBeggar.ActivateChance then --randNum == 0 then
 							sprite:Play("PayPrize")
 							beggarData.PityCounter = 0
@@ -10211,14 +10304,16 @@ function EclipsedMod:peffectUpdateBeggars(player)
 							sprite:Play("PayNothing")
 							beggarData.PityCounter = beggarData.PityCounter + 1
 						end
+						--]]
 					end
 				end
-				BeggarWasBombed(beggar)
+				if BeggarWasBombed(beggar) then
+					DebugSpawn(300, EclipsedMod.DeliObject.Variants[rng:RandomInt(#EclipsedMod.DeliObject.Variants)+1], beggar.Position, 0, RandomVector()*5)
+				end
 			end
 		end
 	end
 	--]
-
 	if #mongoBeggars > 0 then
 		for _, beggar in pairs(mongoBeggars) do
 			local sprite = beggar:GetSprite()
@@ -10281,6 +10376,7 @@ function EclipsedMod:peffectUpdateBeggars(player)
 end
 EclipsedMod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, EclipsedMod.peffectUpdateBeggars)
 
+
 function EclipsedMod:onFriendlyInit(npc)
     if EclipsedMod.DeliriousBumCharm then
 		npc:AddEntityFlags(EntityFlag.FLAG_PERSISTENT)
@@ -10293,16 +10389,6 @@ function EclipsedMod:onFriendlyInit(npc)
 end
 EclipsedMod:AddCallback(ModCallbacks.MC_POST_NPC_INIT, EclipsedMod.onFriendlyInit)
 
-
-
---[[
-function EclipsedMod:onGetCard(rng, card, includePlayingCards, includeRunes, onlyRunes)
-	if game:IsGreedMode() and card.SubType == EclipsedMod.Pickups.BannedCard then
-		return Card.CARD_RANDOM
-	end
-end
-EclipsedMod:AddCallback(ModCallbacks.MC_GET_CARD, EclipsedMod.onGetCard)
---]]
 
 
 --[[
@@ -10391,94 +10477,223 @@ EclipsedMod:AddCallback(ModCallbacks.MC_POST_RENDER, EclipsedMod.onRenderWaxHear
 --]]
 
 
---- SECRET LOVE LETTER
-EclipsedMod.Items.SecretLoveLetter = Isaac.GetItemIdByName("Secret Love Letter")
-
-EclipsedMod.SecretLoveLetter = {}
-EclipsedMod.SecretLoveLetter.TearVariant = TearVariant.CHAOS_CARD
-EclipsedMod.SecretLoveLetter.SpritePath = "gfx/LoveLetterTear.png"
-EclipsedMod.SecretLoveLetter.AffectedEnemies = {} -- type, variant
-EclipsedMod.SecretLoveLetter.BannedEnemies = {
-[260] = true,
-}
-
-
-function EclipsedMod:onNewRoom456()
-	for playerNum = 0, game:GetNumPlayers()-1 do
-		local player = game:GetPlayer(playerNum)
-		local data = player:GetData()
-		if data.UsedSecretLoveLetter then data.UsedSecretLoveLetter = false end
-	end
-end
-EclipsedMod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, EclipsedMod.onNewRoom456)
-
-function EclipsedMod:onPEffectUpdate44(player)
-	local data = player:GetData()
-	--local tempEffects = player:GetEffects()
-	--print(tempEffects:HasCollectibleEffect(EclipsedMod.Items.SecretLoveLetter))
-	if data.UsedSecretLoveLetter and player:GetFireDirection() ~= Direction.NO_DIRECTION and player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == EclipsedMod.Items.SecretLoveLetter and player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY) >= Isaac.GetItemConfig():GetCollectible(EclipsedMod.Items.SecretLoveLetter).MaxCharges then--and player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == EclipsedMod.Items.SecretLoveLetter and tempEffects:HasCollectibleEffect(EclipsedMod.Items.SecretLoveLetter) then
-		local tear = player:FireTear(player.Position, player:GetAimDirection() * 14, false, true, false, nil, 0):ToTear()
-		tear:ChangeVariant(EclipsedMod.SecretLoveLetter.TearVariant)
-		local tearData = tear:GetData()
-		tearData.SecretLoveLetter = true
-		local sprite = tear:GetSprite()
-		sprite:ReplaceSpritesheet(0, EclipsedMod.SecretLoveLetter.SpritePath)
-		sprite:LoadGraphics() -- replace sprite
-		sfx:Play(SoundEffect.SOUND_SHELLGAME)
-		player:AnimateCollectible(EclipsedMod.Items.SecretLoveLetter, "HideItem")
-		player:DischargeActiveItem(ActiveSlot.SLOT_PRIMARY)
-		data.UsedSecretLoveLetter = false
-		--tempEffects:RemoveCollectibleEffect(EclipsedMod.Items.SecretLoveLetter)
-	end
-end
-EclipsedMod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, EclipsedMod.onPEffectUpdate44)
-
-
-
----love letter
-function EclipsedMod:onSecretLoveLetter(item, _, player, useFlag) --item, rng, player, useFlag, activeSlot, customVarData
-
-	if useFlag & UseFlag.USE_CARBATTERY == 0 then
-		local data = player:GetData()
-		player:AnimateCollectible(item, player:IsHoldingItem() and "HideItem" or "LiftItem")
-		if data.UsedSecretLoveLetter then
-			data.UsedSecretLoveLetter = false
-		else
-			data.UsedSecretLoveLetter = true
+function EclipsedMod:useDeliObject(card, player) -- card, player, useFlag
+	if EclipsedMod.DeliObject.CheckGetCard[card] then
+		local rng = player:GetCardRNG(card)
+		if rng:RandomFloat() >= EclipsedMod.DeliObject.Chance then
+			player:SetCard(0, EclipsedMod.DeliObject.Variants[rng:RandomInt(#EclipsedMod.DeliObject.Variants)+1])
 		end
-	end
-	return {ShowAnim = false, Remove = false, Discharge = false}
-end
-EclipsedMod:AddCallback(ModCallbacks.MC_USE_ITEM, EclipsedMod.onSecretLoveLetter, EclipsedMod.Items.SecretLoveLetter)
 
+		--- cell
+		if card == EclipsedMod.Pickups.DeliObjectCell then
+			local spawnpos = Isaac.GetFreeNearPosition(player.Position, 35)
+			local savedOnes = EclipsedMod.DeliriumBeggar.Enemies[rng:RandomInt(#EclipsedMod.DeliriumBeggar.Enemies)+1]
+			local npc = Isaac.Spawn(savedOnes[1], savedOnes[2], 0, spawnpos, Vector.Zero, player):ToNPC()
+			npc:AddCharmed(EntityRef(player), -1)
+			EclipsedMod.DeliriumBeggar.Enable[tostring(npc.Type..npc.Variant)] = true
+			Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, beggar.Position, Vector.Zero, nil) --.Color = Color(1,1,1,1)
+		--- bomb
+		elseif card == EclipsedMod.Pickups.DeliObjectBomb then
+			local bombVar = BombVariant.BOMB_NORMAL
+			local randNum = rng:RandomInt(4) -- 0 ~ 3
+			if rng:RandomFloat() < EclipsedMod.DeliObject.TrollCBombChance then
+				if randNum == 1 then
+					bombVar = BombVariant.BOMB_SUPERTROLL
+				elseif randNum == 2 then
+					bombVar = BombVariant.BOMB_GOLDENTROLL
+				else
+					bombVar = BombVariant.BOMB_TROLL
+				end
+				Isaac.Spawn(EntityType.ENTITY_BOMB, bombVar, 0, player.Position, Vector.Zero, nil):ToBomb()
+			else
+				local bombFlags = TearFlags.TEAR_NORMAL
+				for _ = 0, randNum do
+					bombFlags = bombFlags | EclipsedMod.DeliObject.BombFlags[rng:RandomInt(#EclipsedMod.DeliObject.BombFlags)+1]
+				end
 
---- SECRET LOVE LETTER TEAR COLLISION --
-function EclipsedMod:onLoveLetterCollision(tear, collider) --tear, collider, low
-	tear = tear:ToTear()
-	local tearData = tear:GetData()
-	if tearData.SecretLoveLetter then
-		if collider:ToNPC() and collider:IsActiveEnemy() and collider:IsVulnerableEnemy() and not collider:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
-			tear:ChangeVariant(0)
-			tear:Remove()
-			local player = tear.SpawnerEntity:ToPlayer()
-			local enemy = collider:ToNPC()
-			sfx:Play(SoundEffect.SOUND_KISS_LIPS1)
-			if not enemy:IsBoss() and not EclipsedMod.SecretLoveLetter.BannedEnemies[enemy.Type] then
-				EclipsedMod.SecretLoveLetter.AffectedEnemies[1] = enemy.Type
-				EclipsedMod.SecretLoveLetter.AffectedEnemies[2] = enemy.Variant
-				--table.insert(EclipsedMod.SecretLoveLetter.AffectedEnemies, {enemy.Type, enemy.Variant})
-				for _, entity in pairs(Isaac.FindInRadius(player.Position, 5000, EntityPartition.ENEMY)) do -- get monsters in room
-					if entity.Type == enemy.Type and entity.Variant == enemy.Variant then
-						Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, entity.Position, Vector.Zero, nil):SetColor(EclipsedMod.PinkColor,50,1, false, false)
-						--entity:AddEntityFlags(EntityFlag.FLAG_FRIENDLY | EntityFlag.FLAG_CHARM | EntityFlag.FLAG_PERSISTENT)
-						entity:AddCharmed(EntityRef(player), -1) -- makes the effect permanent and the enemy will follow you even to different rooms.
+				local bomb = Isaac.Spawn(EntityType.ENTITY_BOMB, BombVariant.BOMB_NORMAL, 0, player.Position, Vector.Zero, player):ToBomb()
+				bomb:AddTearFlags(bombFlags)
+			end
+		--- key
+		elseif card == EclipsedMod.Pickups.DeliObjectKey then
+			local nearestChest = 5000
+			local nearestDoor = 5000
+			local room = game:GetRoom()
+			local door
+			local chest
+			local pickups = Isaac.FindInRadius(player.Position, 5000, EntityPartition.PICKUP)
+			if #pickups > 0 then
+				for _, pickup in pairs(pickups) do
+					if pickup.Type == EntityType.ENTITY_PICKUP then
+						if pickup.Variant == PickupVariant.PICKUP_ETERNALCHEST or pickup.Variant == PickupVariant.PICKUP_MEGACHEST or pickup.Variant == PickupVariant.PICKUP_LOCKEDCHEST then
+							print(pickup.Variant, pickup.SubType)
+							if player.Position:Distance(pickup.Position) < nearestChest and pickup.SubType > 0 then
+								nearestChest = player.Position:Distance(pickup.Position)
+								chest = pickup
+							end
+						end
 					end
 				end
-			else
-				enemy:AddCharmed(EntityRef(player), 150)
 			end
-			return true
+			for slot = 0, DoorSlot.NUM_DOOR_SLOTS do
+				if room:GetDoor(slot) then
+					local grid = room:GetDoor(slot)
+					local doorVar = grid:GetVariant()
+					if doorVar == DoorVariant.DOOR_LOCKED or doorVar == DoorVariant.DOOR_LOCKED_DOUBLE then
+						if player.Position:Distance(grid.Position) < nearestDoor then
+							nearestDoor = player.Position:Distance(grid.Position)
+							door = grid
+						end
+					end
+				end
+			end
+			if nearestChest < nearestDoor and chest then
+				chest:ToPickup():TryOpenChest()
+				sfx:Play(SoundEffect.SOUND_UNLOCK00, 1, 0, false, 1, 0)
+			elseif nearestDoor <= nearestChest and door then
+				door:TryUnlock(player, true)
+				sfx:Play(SoundEffect.SOUND_UNLOCK00, 1, 0, false, 1, 0)
+			else
+
+				local level= game:GetLevel()
+				for slot = 0, DoorSlot.NUM_DOOR_SLOTS do
+					if level:MakeRedRoomDoor(level:GetCurrentRoomIndex(), slot) then break end
+				end
+			end
+		--- card
+		elseif card == EclipsedMod.Pickups.DeliObjectCard then
+			local randCard = itemPool:GetCard(rng:GetSeed(), true, false, false)
+			player:UseCard(randCard, myUseFlags2)
+		--- pill
+		elseif card == EclipsedMod.Pickups.DeliObjectPill then
+			local randPill = rng:RandomInt(PillEffect.NUM_PILL_EFFECTS)
+			player:UsePill(randPill, 0, myUseFlags2)
+			player:AnimateCard(card)
+		--- rune
+		elseif card == EclipsedMod.Pickups.DeliObjectRune then
+			local randCard = itemPool:GetCard(rng:GetSeed(), false, false, true)
+			player:UseCard(randCard, myUseFlags2)
+		--- heart
+		elseif card == EclipsedMod.Pickups.DeliObjectHeart then
+			local randNum = rng:RandomInt(9)
+			if randNum == 1 then
+				player:AddHearts(2)
+				sfx:Play(SoundEffect.SOUND_VAMP_GULP, 1, 0, false, 1, 0)
+			elseif randNum == 2 then
+				player:AddBlackHearts(2)
+				sfx:Play(SoundEffect.SOUND_HOLY, 1, 0, false, 1, 0)
+			elseif randNum == 3 then
+				player:AddBoneHearts(1)
+				sfx:Play(SoundEffect.SOUND_BONE_HEART, 1, 0, false, 1, 0)
+			elseif randNum == 4 then
+				player:AddBrokenHearts(1)
+				sfx:Play(SoundEffect.SOUND_POISON_HURT, 1, 0, false, 1, 0)
+			elseif randNum == 5 then
+				player:AddEternalHearts(1)
+				sfx:Play(SoundEffect.SOUND_SUPERHOLY, 1, 0, false, 1, 0)
+			elseif randNum == 6 then
+				player:AddMaxHearts(1)
+				sfx:Play(SoundEffect.SOUND_1UP, 1, 0, false, 1, 0)
+			elseif randNum == 7 then
+				player:AddRottenHearts(1)
+				sfx:Play(SoundEffect.SOUND_ROTTEN_HEART, 1, 0, false, 1, 0)
+			elseif randNum == 8 then
+				player:AddSoulHearts(2)
+				sfx:Play(SoundEffect.SOUND_HOLY, 1, 0, false, 1, 0)
+			else
+				player:AddGoldenHearts(1)
+				sfx:Play(SoundEffect.SOUND_GOLD_HEART, 1, 0, false, 1, 0)
+			end
+		--- coin
+		elseif card == EclipsedMod.Pickups.DeliObjectCoin then
+			local randNum = rng:RandomInt(4)
+			if randNum == 1 then
+				player:AddCoins (1)
+				sfx:Play(SoundEffect.SOUND_PENNYPICKUP, 1, 0, false, 1, 0)
+			elseif randNum == 2 then
+				player:AddCoins (5)
+				sfx:Play(SoundEffect.SOUND_NICKELPICKUP, 1, 0, false, 1, 0)
+			elseif randNum == 3 then
+				player:AddCoins (10)
+				sfx:Play(SoundEffect.SOUND_DIMEPICKUP, 1, 0, false, 1, 0)
+			else
+				player:AddCoins (1)
+				player:DonateLuck (1)
+				sfx:Play(SoundEffect.SOUND_LUCKYPICKUP, 1, 0, false, 1, 0)
+			end
+		--- battery
+		elseif card == EclipsedMod.Pickups.DeliObjectBattery then
+			local randNum = rng:RandomInt(3) -- 0 is 2 charges, 1 is full charge, 2 - overcharge
+			local charge = 2 -- if randNum = 0
+			local overCharge = false
+			if randNum == 2 or player:HasCollectible(CollectibleType.COLLECTIBLE_BATTERY) then overCharge = true end
+			for slot = 0, 3 do
+				local activeItem = player:GetActiveItem(slot)
+				if activeItem ~= 0 then
+					if randNum > 1 then
+						charge = Isaac.GetItemConfig():GetCollectible(activeItem).MaxCharges
+					end
+					if overCharge and player:GetBatteryCharge(slot) < charge then
+						player:SetActiveCharge(charge*2, slot)
+						Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BATTERY, 0, Vector(player.Position.X, player.Position.Y-70), Vector.Zero, nil)
+						sfx:Play(SoundEffect.SOUND_BATTERYCHARGE, 1, 0, false, 1, 0)
+						break
+					elseif player:GetActiveCharge(slot) < charge then
+						player:SetActiveCharge(charge, slot)
+						Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BATTERY, 0, Vector(player.Position.X, player.Position.Y-70), Vector.Zero, nil) --i'm too lazy to adjust right position with spritescale (и так сойдет!)
+						sfx:Play(SoundEffect.SOUND_BATTERYCHARGE, 1, 0, false, 1, 0)
+						break
+					end
+				end
+			end
 		end
 	end
 end
-EclipsedMod:AddCallback(ModCallbacks.MC_PRE_TEAR_COLLISION, EclipsedMod.onLoveLetterCollision, EclipsedMod.SecretLoveLetter.TearVariant)
+EclipsedMod:AddCallback(ModCallbacks.MC_USE_CARD, EclipsedMod.useDeliObject)
+
+function EclipsedMod:onDellCollision(pickup, collider) --pickup, collider, low
+	if EclipsedMod.DeliObject.CheckGetCard[pickup.SubType] and collider:ToPlayer() then
+		local player = collider:ToPlayer()
+		if EclipsedMod.DeliObject.AnimationCheck[player:GetSprite():GetAnimation()] then
+			for slot = 0, 1 do
+				if EclipsedMod.DeliObject.CheckGetCard[player:GetCard(slot)] then
+					player:SetCard(0, 0) --EclipsedMod.DeliObject.Variants[rng:RandomInt(#EclipsedMod.DeliObject.Variants)+1])
+					sfx:Play(SoundEffect.SOUND_EDEN_GLITCH, 1, 0, false, 1, 0)
+					break
+				end
+			end
+		end
+	end
+end
+EclipsedMod:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, EclipsedMod.onDellCollision, PickupVariant.PICKUP_TAROTCARD)
+
+--- check if game would reroll them
+function EclipsedMod:onGetCard(rng, card) --, includePlayingCards, includeRunes, onlyRunes)
+	if card == EclipsedMod.Pickups.BannedCard then
+		if rng:RandomFloat() <= EclipsedMod.BannedCard.Chance then
+			game:GetHUD():ShowFortuneText("Banned card!")
+		else
+			return EclipsedMod.Pickups.DeliObjectCell
+		end
+	end
+end
+EclipsedMod:AddCallback(ModCallbacks.MC_GET_CARD, EclipsedMod.onGetCard)
+
+
+EclipsedMod.DeliObject.CycleTimer = 150 -- 30 frames ~ 1 second
+
+-- deli pickups update
+function EclipsedMod:CollectibleUpdate(pickup)
+	if EclipsedMod.DeliObject.CheckGetCard[pickup.SubType] then
+		local rng = pickup:GetDropRNG()
+		local dataDeli = pickup:GetData()
+		dataDeli.CycleTimer = dataDeli.CycleTimer or rng:RandomInt(EclipsedMod.DeliObject.CycleTimer) + EclipsedMod.DeliObject.CycleTimer
+		dataDeli.CycleTimer = dataDeli.CycleTimer - 1
+		if dataDeli.CycleTimer <= 0 then
+			local newDeli = EclipsedMod.DeliObject.Variants[rng:RandomInt(#EclipsedMod.DeliObject.Variants)+1]
+			pickup = pickup:ToPickup():Morph(pickup.Type, pickup.Variant, newDeli, true, false, true)
+			dataDeli.CycleTimer = rng:RandomInt(EclipsedMod.DeliObject.CycleTimer) + EclipsedMod.DeliObject.CycleTimer
+		end
+	end
+end
+EclipsedMod:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, EclipsedMod.CollectibleUpdate, PickupVariant.PICKUP_TAROTCARD)

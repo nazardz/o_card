@@ -127,7 +127,8 @@
 	<wisp id="24" count="0" /> <!-- book of memory  echo used item-->
 	<wisp id="25" count="0" /> <!-- space jam 		lemmegeton-->
 	<wisp id="48" count="0" /> <!-- elder sign -->
-	 <!-- witch's pot -->
+	<wisp id="50" count="0" /> <!-- witch's pot -->
+	<wisp id="51" count="0" /> <!-- pandora's jar -->
+	<wisp id="52" count="0" /> <!-- secret love letter -->
 	 <!-- eyekey -->
-	 <!-- pandora's jar -->
 </wisps>

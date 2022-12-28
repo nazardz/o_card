@@ -7,7 +7,7 @@
 	<active  id="6" quality="2" craftquality="1" description="Exchanger" gfx="Moonlighter_Mirror.png" name="Moonlighter" maxcharges="4"/>
 	<active  id="7" quality="2" craftquality="2" description="Flight + temporary badass" gfx="Mini-Pony.png" name="Unicorn" cache="speed flying" maxcharges="4"/>
 	<active  id="8" quality="3" craftquality="4" description="Shift options" gfx="Strange_Box.png" name="Strange Box" maxcharges="6"/>
-	<!-- pizza -->
+	<!-- <active  id="9" quality="1" craftquality="1" description="Pizza time" gfx="pizza_pepper.png" name="Pizza Pepperoni" maxcharges="120" chargetype="timed"/> -->
 	<active  id="10" quality="0" craftquality="1" description="Through the looking glass" gfx="Lost_Mirror.png" name="Lost Mirror" maxcharges="1"/>
 	<active  id="11" quality="2" craftquality="2" description="I bleed pixels" gfx="Bleeding_Grimoire.png" name="Bleeding Grimoire"  devilprice="1" maxcharges="3" tags="book"/>
 	<active  id="12" quality="2" craftquality="1" description="Lord of the Words" gfx="Black_Book.png" name="Black Book" maxcharges="2" tags="book"/>
@@ -45,8 +45,7 @@
 	<familiar id="42" quality="2" craftquality="2" description="Profane" gfx="abihu_fam.png" name="Abihu" cache="familiars" tags="uniquefamiliar"/>
 	<familiar id="43" quality="1" craftquality="1" description="Heavy thoughts" gfx="nadab_brain.png" name="Nadab's Brain" cache="familiars" tags="monstermanual summonable"/>
 	<passive id="44" quality="3" craftquality="3" description="Profane" gfx="nadab_body.png" name="Nadab's Body" />
-	<!--Lost Flower trinket-->
-
+	<!--id="45" Lost Flower trinket-->
 	<passive id="46" quality="2" craftquality="2" description="Dis Manibus" gfx="DMS.png" name="Death's Sickle" />
 	<passive id="47" quality="3" craftquality="3" description="Mewolution!" gfx="mewgen.png" name="Mew-Gen" cache="flying" /> 
 	<active  id="48" quality="1" craftquality="1" description="The Seal" gfx="eldersign.png" name="Elder Sign" shopprice="10" maxcharges="210" chargetype="timed"/>
@@ -55,10 +54,16 @@
 	<active  id="51" quality="1" craftquality="1" description="Deceptive expectations" gfx="pandora_jar.png" name="Pandora's Jar" maxcharges="1"/>
 	<active  id="52" quality="1" craftquality="1" description="Hidden affections" gfx="secret_love_letter.png" name="Secret Love Letter" maxcharges="6"/>
 	<passive id="53" quality="3" craftquality="3" description="Reroll blast +5 bombs" gfx="dice_bombs.png" name="Dice Bombs" bombs="5"/>
+
 	<!--
-	
+	<active quality="2" craftquality="2" description="Chest friend" gfx="eyekey_open.png" name="Eyekeye" maxcharges="0"/>
+	<active quality="2" craftquality="2" description="Chest friend" gfx="eyekey_close.png" name="Eyekeye " maxcharges="0" hidden="true" />
 	<familiar quality="1" craftquality="1" description="Giga bombs generator!" gfx="Little_Gagger.png" name="Little Gagger" devilprice="2" cache="familiars"/>
-	<familiar quality="1" craftquality="1" description="Ballistic friend" gfx="Stone_toad.png" name="Zooma" cache="familiars"/>
+	<familiar quality="2" craftquality="2" description="Ballistic friend" gfx="Stone_toad.png" name="Zooma" cache="familiars" tags="monstermanual"/>
+	<familiar quality="2" craftquality="2" description="Royal seat" gfx="basement_throne.png" name="Basement Throne" cache="familiars" />
+	<familiar quality="2" craftquality="2" description="Still delirious" gfx="delirium_jr.png" name="Delirium Jr." cache="familiars" />
+	<passive quality="3" craftquality="3" description="A.T.F." gfx="angel_core.png" name="Angel's Core" cache="familiars" />
+	<passive quality="2" craftquality="2" description="I fear no man. But that thing, it scares me" gfx="agony_box.png" name="Agony box" />
 	-->
 	
 	<trinket id="45" description="Eternal blessing" gfx="Lost_Flower.png" name="Lost Flower" cache="color"/>
@@ -77,4 +82,6 @@
 	<trinket description="Revenge from blast" gfx="dead_egg.png" name="Dead Egg" />
 	<trinket description="From evil to good" gfx="red_cross.png" name="Penance" />
 	<trinket description="Boon of Underworld" gfx="pom_fruit.png" name="Pomegranate" />
+	<!--trinket description="Dead or Alive" gfx="bounty_poster.png" name="Bounty Poster" -->
+	<!--trinket description="Dear Satan.." gfx="xmas_letter.png" name="Xmas Letter"-->
 </items>

@@ -240,6 +240,177 @@
 		subtype="9723">
 	</entity>
 	
+	<entity 
+		anm2path="delirious_object.anm2" 
+		baseHP="0" 
+		boss="0"
+		champion="0" 
+		collisionDamage="0" 
+		collisionMass="3" 
+		collisionRadius="12" 
+		friction="1" 
+		id="5" 
+		name="delirious_object" 
+		numGridCollisionPoints="24" 
+		shadowSize="16" 
+		stageHP="0" 
+		variant="300" 
+		subtype="9724">
+		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+	</entity>
+	
+	<entity 
+		anm2path="delirious_rune.anm2" 
+		baseHP="0" 
+		boss="0"
+		champion="0" 
+		collisionDamage="0" 
+		collisionMass="3" 
+		collisionRadius="12" 
+		friction="1" 
+		id="5" 
+		name="delirious_rune" 
+		numGridCollisionPoints="24" 
+		shadowSize="16" 
+		stageHP="0" 
+		variant="300" 
+		subtype="9725">
+		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+	</entity>
+	
+	<entity 
+		anm2path="delirious_key.anm2" 
+		baseHP="0" 
+		boss="0"
+		champion="0" 
+		collisionDamage="0" 
+		collisionMass="3" 
+		collisionRadius="12" 
+		friction="1" 
+		id="5" 
+		name="delirious_key" 
+		numGridCollisionPoints="24" 
+		shadowSize="16" 
+		stageHP="0" 
+		variant="300" 
+		subtype="9726">
+		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+	</entity>
+	
+	<entity 
+		anm2path="delirious_heart.anm2" 
+		baseHP="0" 
+		boss="0"
+		champion="0" 
+		collisionDamage="0" 
+		collisionMass="3" 
+		collisionRadius="12" 
+		friction="1" 
+		id="5" 
+		name="delirious_heart" 
+		numGridCollisionPoints="24" 
+		shadowSize="16" 
+		stageHP="0" 
+		variant="300" 
+		subtype="9727">
+		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+	</entity>
+	
+	<entity 
+		anm2path="delirious_coin.anm2" 
+		baseHP="0" 
+		boss="0"
+		champion="0" 
+		collisionDamage="0" 
+		collisionMass="3" 
+		collisionRadius="12" 
+		friction="1" 
+		id="5" 
+		name="delirious_coin" 
+		numGridCollisionPoints="24" 
+		shadowSize="16" 
+		stageHP="0" 
+		variant="300" 
+		subtype="9728">
+		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+	</entity>
+	
+	<entity 
+		anm2path="delirious_bomb.anm2" 
+		baseHP="0" 
+		boss="0"
+		champion="0" 
+		collisionDamage="0" 
+		collisionMass="3" 
+		collisionRadius="12" 
+		friction="1" 
+		id="5" 
+		name="delirious_bomb" 
+		numGridCollisionPoints="24" 
+		shadowSize="16" 
+		stageHP="0" 
+		variant="300" 
+		subtype="9729">
+		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+	</entity>
+	
+	<entity 
+		anm2path="delirious_card.anm2" 
+		baseHP="0" 
+		boss="0"
+		champion="0" 
+		collisionDamage="0" 
+		collisionMass="3" 
+		collisionRadius="12" 
+		friction="1" 
+		id="5" 
+		name="delirious_card" 
+		numGridCollisionPoints="24" 
+		shadowSize="16" 
+		stageHP="0" 
+		variant="300" 
+		subtype="9730">
+		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+	</entity>
+	
+	<entity 
+		anm2path="delirious_battery.anm2" 
+		baseHP="0" 
+		boss="0"
+		champion="0" 
+		collisionDamage="0" 
+		collisionMass="3" 
+		collisionRadius="12" 
+		friction="1" 
+		id="5" 
+		name="delirious_battery" 
+		numGridCollisionPoints="24" 
+		shadowSize="16" 
+		stageHP="0" 
+		variant="300" 
+		subtype="9731">
+		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+	</entity>
+	
+	<entity 
+		anm2path="delirious_pill.anm2" 
+		baseHP="0" 
+		boss="0"
+		champion="0" 
+		collisionDamage="0" 
+		collisionMass="3" 
+		collisionRadius="12" 
+		friction="1" 
+		id="5" 
+		name="delirious_pill" 
+		numGridCollisionPoints="24" 
+		shadowSize="16" 
+		stageHP="0" 
+		variant="300" 
+		subtype="9732">
+		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+	</entity>
+	
 	<!-- EFFECTS -->
 	<entity 
 		anm2path="kTarget.anm2" 

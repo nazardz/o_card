@@ -1,0 +1,23 @@
+So what I get from this is that it properly changes door variant (code below)
+
+but don't load ExtraSprite which is double locked chains sprite.
+and it loads only when reentering room
+
+what I wanted to do - is funiction similar to SetLocked() or Bar() from GridDoor class
+
+```lua
+for gridIndex = 1, room:GetGridSize() do -- get room size
+    local grid = room:GetGridEntity(gridIndex)
+    if grid and grid:ToDoor() then
+        local door = grid:ToDoor()
+        if door:GetVariant() == DoorVariant.DOOR_LOCKED then
+            door:SetVariant(DoorVariant.DOOR_LOCKED_DOUBLE)
+           	
+            --door.ExtraSprite  -- do something with this
+            --already checked Reset, Reload, LoadGraphics and etc. I can't make it work
+        end
+    end
+end
+```
+
+

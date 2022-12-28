@@ -346,6 +346,90 @@
 		name="Domino Tile 0 | 0" 
 		mimiccharge="1"
 	/>
+	
+	<card 
+		type="object" 
+		id="3"
+		pickup="9724"
+		description="???" 
+		hud="Dell_Object" 
+		name="Delirious Cell" 
+		mimiccharge="3"
+	/>
+	<card 
+		type="object" 
+		id="3"
+		pickup="9725"
+		description="???" 
+		hud="Dell_Rune" 
+		name="Delirious Rune " 
+		mimiccharge="3"
+	/>
+	<card 
+		type="object" 
+		id="3"
+		pickup="9726"
+		description="???" 
+		hud="Dell_Key" 
+		name="Delirious Key" 
+		mimiccharge="3"
+	/>
+	<card 
+		type="object" 
+		id="3"
+		pickup="9727"
+		description="???" 
+		hud="Dell_Heart" 
+		name="Delirious Heart" 
+		mimiccharge="3"
+	/>
+	<card 
+		type="object" 
+		id="3"
+		pickup="9728"
+		description="???" 
+		hud="Dell_Coin" 
+		name="Delirious Coin" 
+		mimiccharge="3"
+	/>
+	<card 
+		type="object" 
+		id="3"
+		pickup="9729"
+		description="???" 
+		hud="Dell_Bomb" 
+		name="Delirious Bomb" 
+		mimiccharge="3"
+	/>
+	<card 
+		type="object" 
+		id="3"
+		pickup="9730"
+		description="???" 
+		hud="Dell_Card" 
+		name="Delirious Card" 
+		mimiccharge="3"
+	/>
+	<card 
+		type="object" 
+		id="3"
+		pickup="9731"
+		description="???" 
+		hud="Dell_Battery" 
+		name="Delirious Battery" 
+		mimiccharge="3"
+	/>
+	<card 
+		type="object" 
+		id="3"
+		pickup="9732"
+		description="???" 
+		hud="Dell_Pill" 
+		name="Delirious Pill" 
+		mimiccharge="3"
+	/>
+	
+	
 	<!--
 	<pilleffect
 		id = "8"
