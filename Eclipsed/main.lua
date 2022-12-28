@@ -1054,16 +1054,6 @@ EclipsedMod.DeliObject.Variants = {
 	EclipsedMod.Pickups.DeliObjectCoin,
 	EclipsedMod.Pickups.DeliObjectBattery,
 }
-EclipsedMod.DeliObject.AnimationCheck = {
-['WalkLeft'] = true,
-['WalkUp'] = true,
-['WalkRight'] = true,
-['WalkDown'] = true,
---['HeadLeft'] = true,
---['HeadUp'] = true,
---['HeadRight'] = true,
---['HeadDown'] = true,
-}
 EclipsedMod.DeliObject.TrollCBombChance = 0.1
 EclipsedMod.DeliObject.BombFlags = {
 TearFlags.TEAR_HOMING,
@@ -2641,40 +2631,44 @@ EclipsedMod.QueueItemsCheck = {
 [EclipsedMod.Items.MidasCurse] = true,
 [EclipsedMod.Items.RubberDuck] = true,
 [CollectibleType.COLLECTIBLE_BIRTHRIGHT] = true,
-
 }
 
+
+
+--From Retribution mod (Xalum)--
 local function CheckPickupAbuse(player)
 	local queueData = player.QueuedItem
-	if queueData.Item and queueData.Item:IsCollectible() and EclipsedMod.QueueItemsCheck[queueData.Item.ID] and not queueData.Touched then
-		local itemId = queueData.Item.ID
-		local data = player:GetData()
+	local data = player:GetData()
+	local cachedData = data.CheckLastQueuedData
+	local cachedItem = cachedData and cachedData.Item
+	if cachedItem and cachedItem:IsCollectible() and (not queueData.Item or (cachedItem and cachedItem.ID ~= queueData.Item.ID)) then
+		local itemId = cachedData.Item.ID
 		local rng = player:GetCollectibleRNG(itemId)
 
-		if itemId == EclipsedMod.Items.GravityBombs then
-			player:AddGigaBombs(EclipsedMod.GravityBombs.GigaBombs)
-		elseif itemId == EclipsedMod.Items.MidasCurse then
-			player:AddGoldenHearts(3)
-		elseif itemId == EclipsedMod.Items.RubberDuck then
-			data.DuckCurrentLuck = data.DuckCurrentLuck or 0
-			data.DuckCurrentLuck = data.DuckCurrentLuck + EclipsedMod.RubberDuck.MaxLuck
-			EvaluateDuckLuck(player, data.DuckCurrentLuck)
-		elseif itemId == CollectibleType.COLLECTIBLE_BIRTHRIGHT then
-			if player:GetPlayerType() == EclipsedMod.Characters.Nadab then
-				SpawnOptionItems(ItemPoolType.POOL_BOMB_BUM, rng:RandomInt(Random())+1, player.Position)
-			elseif player:GetPlayerType() == EclipsedMod.Characters.Abihu then
-				player:SetFullHearts()
-			elseif player:GetPlayerType() == EclipsedMod.Characters.Unbidden then
-				local broken = player:GetBrokenHearts()
-                player:AddBrokenHearts(-broken)
-				player:AddSoulHearts(2*broken)
-				AddItemFromWisp(player, true, false, false)
-			elseif player:GetPlayerType() == EclipsedMod.Characters.Oblivious then
-
+		if not cachedData.Touched then
+			if itemId == EclipsedMod.Items.GravityBombs then
+				player:AddGigaBombs(EclipsedMod.GravityBombs.GigaBombs)
+			elseif itemId == EclipsedMod.Items.MidasCurse then
+				player:AddGoldenHearts(3)
+			elseif itemId == EclipsedMod.Items.RubberDuck then
+				data.DuckCurrentLuck = data.DuckCurrentLuck or 0
+				data.DuckCurrentLuck = data.DuckCurrentLuck + EclipsedMod.RubberDuck.MaxLuck
+				EvaluateDuckLuck(player, data.DuckCurrentLuck)
+			elseif itemId == CollectibleType.COLLECTIBLE_BIRTHRIGHT then
+				if player:GetPlayerType() == EclipsedMod.Characters.Nadab then
+					SpawnOptionItems(ItemPoolType.POOL_BOMB_BUM, rng:RandomInt(Random())+1, player.Position)
+				elseif player:GetPlayerType() == EclipsedMod.Characters.Abihu then
+					player:SetFullHearts()
+				elseif player:GetPlayerType() == EclipsedMod.Characters.Unbidden then
+					local broken = player:GetBrokenHearts()
+					player:AddBrokenHearts(-broken)
+					player:AddSoulHearts(2*broken)
+					AddItemFromWisp(player, true, false, false)
+				end
 			end
-
 		end
 	end
+	data.CheckLastQueuedData = queueData
 end
 --- LOCAL FUNCTIONS --
 
@@ -4265,8 +4259,7 @@ function EclipsedMod:onNewRoom()
 				for _, trinket in pairs(trinkets) do
 					trinket:ToPickup():Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, CollectibleType.COLLECTIBLE_MYSTERY_GIFT)
 				end
-				sfx:Play(SoundEffect.SOUND_SATAN_GROW)
-				--sfx:Play(SoundEffect.SOUND_SATAN_GROW, Volume, 2, false, Pitch)
+				sfx:Play(SoundEffect.SOUND_SATAN_GROW, 1, 2, false, 1.7)
 			end
 		end
 		--curses
@@ -4354,6 +4347,7 @@ function EclipsedMod:onNewRoom()
 		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
 			if room:IsFirstVisit() and player:HasTrinket(EclipsedMod.Trinkets.XmasLetter) then
 				player:UseActiveItem(CollectibleType.COLLECTIBLE_FORTUNE_COOKIE, myUseFlags)
+
 			end
 			--penance
 			if not room:IsClear() and player:HasTrinket(EclipsedMod.Trinkets.Penance) then
@@ -6121,7 +6115,7 @@ function EclipsedMod:onWitchPot(_, rng, player) --item, rng, player, useFlag, ac
 		sfx:Play(SoundEffect.SOUND_SLOTSPAWN)
 	end
 
-	game:GetHUD():ShowFortuneText(hudText)
+	--game:GetHUD():ShowFortuneText(hudText)
 	return true
 end
 EclipsedMod:AddCallback(ModCallbacks.MC_USE_ITEM, EclipsedMod.onWitchPot, EclipsedMod.Items.WitchPot)
@@ -9405,10 +9399,11 @@ function EclipsedMod:onItemCollision2(pickup, collider) --add --PickupVariant.PI
 	--- unbidden item collision
 	local level = game:GetLevel()
 	local room = game:GetRoom()
-	if collider:ToPlayer() and GetCurrentDimension() ~= 2 and level:GetCurrentRoomIndex() ~= GridRooms.ROOM_GENESIS_IDX and room:GetType() ~= RoomType.ROOM_CHALLENGE and room:GetType() ~= RoomType.ROOM_BOSSRUSH then --
+	if collider:ToPlayer() and GetCurrentDimension() ~= 2 and level:GetCurrentRoomIndex() ~= GridRooms.ROOM_GENESIS_IDX and room:GetType() ~= RoomType.ROOM_BOSSRUSH then --and room:GetType() ~= RoomType.ROOM_CHALLENGE  then --
 		local player = collider:ToPlayer()
 		if player:GetPlayerType() == EclipsedMod.Characters.Unbidden or player:GetPlayerType() == EclipsedMod.Characters.Oblivious then
 			local wispIt = true
+
 			if pickup:IsShopItem() then
 				if pickup.Price >= 0 then
 					if player:GetNumCoins() >= pickup.Price then
@@ -9433,10 +9428,9 @@ function EclipsedMod:onItemCollision2(pickup, collider) --add --PickupVariant.PI
 				if pickup.SubType == 0 or CheckItemTags(pickup.SubType, ItemConfig.TAG_QUEST) or pickup.SubType == CollectibleType.COLLECTIBLE_BIRTHRIGHT or pickup.SubType == CollectibleType.COLLECTIBLE_DEATH_CERTIFICATE then
 					return
 				else
-					--pickup.Touched = true
-					pickup:Remove()
 					player:AddItemWisp(pickup.SubType, pickup.Position):ToFamiliar()
 					sfx:Play(SoundEffect.SOUND_SOUL_PICKUP)
+					pickup:Remove()
 					return true
 				end
 			end
@@ -10502,7 +10496,6 @@ function EclipsedMod:useDeliObject(card, player) -- card, player, useFlag
 			local npc = Isaac.Spawn(savedOnes[1], savedOnes[2], 0, spawnpos, Vector.Zero, player):ToNPC()
 			npc:AddCharmed(EntityRef(player), -1)
 			EclipsedMod.DeliriumBeggar.Enable[tostring(npc.Type..npc.Variant)] = true
-			Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, beggar.Position, Vector.Zero, nil) --.Color = Color(1,1,1,1)
 		--- bomb
 		elseif card == EclipsedMod.Pickups.DeliObjectBomb then
 			local bombVar = BombVariant.BOMB_NORMAL
@@ -10665,15 +10658,17 @@ EclipsedMod:AddCallback(ModCallbacks.MC_USE_CARD, EclipsedMod.useDeliObject)
 function EclipsedMod:onDellCollision(pickup, collider) --pickup, collider, low
 	if EclipsedMod.DeliObject.CheckGetCard[pickup.SubType] and collider:ToPlayer() then
 		local player = collider:ToPlayer()
-		if EclipsedMod.DeliObject.AnimationCheck[player:GetSprite():GetAnimation()] then
-			for slot = 0, 1 do
-				if EclipsedMod.DeliObject.CheckGetCard[player:GetCard(slot)] then
-					player:SetCard(0, 0) --EclipsedMod.DeliObject.Variants[rng:RandomInt(#EclipsedMod.DeliObject.Variants)+1])
-					sfx:Play(SoundEffect.SOUND_EDEN_GLITCH, 1, 0, false, 1, 0)
-					break
-				end
+		print(player:GetSprite():GetAnimation())
+
+		for slot = 0, 1 do
+			if EclipsedMod.DeliObject.CheckGetCard[player:GetCard(slot)] then
+				pickup:Remove()
+				player:SetCard(slot, pickup.SubType) --EclipsedMod.DeliObject.Variants[rng:RandomInt(#EclipsedMod.DeliObject.Variants)+1])
+				sfx:Play(SoundEffect.SOUND_EDEN_GLITCH, 1, 0, false, 1, 0)
+				return true
 			end
 		end
+		--end
 	end
 end
 EclipsedMod:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, EclipsedMod.onDellCollision, PickupVariant.PICKUP_TAROTCARD)
