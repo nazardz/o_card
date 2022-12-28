@@ -18,16 +18,16 @@ local function modDataLoad()
 	if EclipsedMod:HasData() then
 		local localtable = json.decode(EclipsedMod:LoadData())
 		savetable.FloppyDiskItems = localtable.FloppyDiskItems
-		savetable.NadabCompletionMarks = localtable.NadabCompletionMarks
-		savetable.AbihuCompletionMarks = localtable.AbihuCompletionMarks
-		savetable.UnbiddenCompletionMarks = localtable.UnbiddenCompletionMarks
-		savetable.ObliviousCompletionMarks = localtable.ObliviousCompletionMarks
+		--savetable.NadabCompletionMarks = localtable.NadabCompletionMarks
+		--savetable.AbihuCompletionMarks = localtable.AbihuCompletionMarks
+		--savetable.UnbiddenCompletionMarks = localtable.UnbiddenCompletionMarks
+		--savetable.ObliviousCompletionMarks = localtable.ObliviousCompletionMarks
 	else
 		savetable.FloppyDiskItems = savetable.FloppyDiskItems or {}
-		savetable.NadabCompletionMarks = savetable.NadabCompletionMarks or {0,0,0,0,0,0,0,0,0,0,0,0,0}
-		savetable.AbihuCompletionMarks = savetable.AbihuCompletionMarks or {0,0,0,0,0,0,0,0,0,0,0,0,0}
-		savetable.UnbiddenCompletionMarks = savetable.UnbiddenCompletionMarks or {0,0,0,0,0,0,0,0,0,0,0,0,0}
-		savetable.ObliviousCompletionMarks = savetable.ObliviousCompletionMarks or {0,0,0,0,0,0,0,0,0,0,0,0,0}
+		--savetable.NadabCompletionMarks = savetable.NadabCompletionMarks or {0,0,0,0,0,0,0,0,0,0,0,0,0}
+		--savetable.AbihuCompletionMarks = savetable.AbihuCompletionMarks or {0,0,0,0,0,0,0,0,0,0,0,0,0}
+		--savetable.UnbiddenCompletionMarks = savetable.UnbiddenCompletionMarks or {0,0,0,0,0,0,0,0,0,0,0,0,0}
+		--savetable.ObliviousCompletionMarks = savetable.ObliviousCompletionMarks or {0,0,0,0,0,0,0,0,0,0,0,0,0}
 	end
 end
 
@@ -124,6 +124,7 @@ EclipsedMod.Trinkets.TeaFungus = Isaac.GetTrinketIdByName("Tea Fungus")
 EclipsedMod.Trinkets.DeadEgg = Isaac.GetTrinketIdByName("Dead Egg") -- chance to spawn dead bird effect when bomb explodes (soul of eve birds)
 EclipsedMod.Trinkets.Penance = Isaac.GetTrinketIdByName("Penance")
 EclipsedMod.Trinkets.Pompom = Isaac.GetTrinketIdByName("Pomegranate") -- turn red hearts into random red wisps when try pick
+EclipsedMod.Trinkets.XmasLetter = Isaac.GetTrinketIdByName("Xmas Letter") -- use fortune cookie when entering new room
 end
 --- PICKUPS --
 do
@@ -1789,8 +1790,6 @@ local function LililithReset()
 	if #Isaac.FindByType(EntityType.ENTITY_FAMILIAR, EclipsedMod.Lililith.Variant) > 0 then
 		for _, fam in pairs(Isaac.FindByType(EntityType.ENTITY_FAMILIAR, EclipsedMod.Lililith.Variant)) do
 			fam = fam:ToFamiliar()
-			--if fam:GetData().GenPickup then fam:GetData().GenPickup = false end
-			--fam.RoomClearCount = 0
 			local player = fam.Player:ToPlayer()
 			local data = player:GetData()
 			local tempEffects = player:GetEffects()
@@ -3110,6 +3109,7 @@ function EclipsedMod:onPEffectUpdate(player)
 		else
 			Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, CoinSubType.COIN_PENNY, data.KeeperMirror.Position, Vector.Zero, player)
 			Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, data.KeeperMirror.Position, Vector.Zero, nil):SetColor(Color(0,1.5,1.3,1,0,0,0), 50, 1, false, false)
+			sfx:Play(SoundEffect.SOUND_CASH_REGISTER)
 			data.KeeperMirror:Remove()
 			data.KeeperMirror = nil
 		end
@@ -4257,11 +4257,17 @@ function EclipsedMod:onNewRoom()
  	local level = game:GetLevel()
 	if EclipsedMod.NoJamming then EclipsedMod.NoJamming = nil end
 	EclipsedMod.PreRoomState = room:IsClear()
-	--familiars
-	--red bag
 	if not room:HasCurseMist() then
-		for _, fam in pairs(Isaac.FindByType(EntityType.ENTITY_FAMILIAR, EclipsedMod.RedBag.Variant)) do
-			if fam:GetData().GenPickup then fam:GetData().GenPickup = false end
+
+		if room:GetType() == RoomType.ROOM_DEVIL then
+			local trinkets = Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, EclipsedMod.Trinkets.XmasLetter)
+			if #trinkets > 0 then
+				for _, trinket in pairs(trinkets) do
+					trinket:ToPickup():Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, CollectibleType.COLLECTIBLE_MYSTERY_GIFT)
+				end
+				sfx:Play(SoundEffect.SOUND_SATAN_GROW)
+				--sfx:Play(SoundEffect.SOUND_SATAN_GROW, Volume, 2, false, Pitch)
+			end
 		end
 		--curses
 		--EclipsedMod.Curses.Warden
@@ -4346,7 +4352,9 @@ function EclipsedMod:onNewRoom()
 		if data.UsedSecretLoveLetter then data.UsedSecretLoveLetter = false end
 
 		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
-
+			if room:IsFirstVisit() and player:HasTrinket(EclipsedMod.Trinkets.XmasLetter) then
+				player:UseActiveItem(CollectibleType.COLLECTIBLE_FORTUNE_COOKIE, myUseFlags)
+			end
 			--penance
 			if not room:IsClear() and player:HasTrinket(EclipsedMod.Trinkets.Penance) then
 				local rngTrinket = player:GetTrinketRNG(EclipsedMod.Trinkets.Penance)
@@ -5033,7 +5041,7 @@ function EclipsedMod:onLoveLetterCollision(tear, collider) --tear, collider, low
 	local tearData = tear:GetData()
 	if tearData.SecretLoveLetter then
 		if collider:ToNPC() and collider:IsActiveEnemy() and collider:IsVulnerableEnemy() and not collider:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
-			tear:ChangeVariant(0)
+			tear:ChangeVariant(TearVariant.BLUE)
 			tear:Remove()
 			local player = tear.SpawnerEntity:ToPlayer()
 			local enemy = collider:ToNPC()
@@ -5901,8 +5909,6 @@ function EclipsedMod:onLililithUpdate(fam)
 	CheckForParent(fam)
 	fam:FollowParent()
 
-	--print(fam.RoomClearCount)
-
 	if famSprite:IsFinished("Spawn") and famData.GenIndex then
 		tempEffects:AddCollectibleEffect(data.LililithDemonSpawn[famData.GenIndex][1], false, 1)
 		data.LililithDemonSpawn[famData.GenIndex][3] = data.LililithDemonSpawn[famData.GenIndex][3] + 1
@@ -6012,8 +6018,10 @@ function EclipsedMod:onSecretLoveLetter(item, _, player, useFlag) --item, rng, p
 		player:AnimateCollectible(item, player:IsHoldingItem() and "HideItem" or "LiftItem")
 		if data.UsedSecretLoveLetter then
 			data.UsedSecretLoveLetter = false
+			sfx:Play(SoundEffect.SOUND_PAPER_OUT)
 		else
 			data.UsedSecretLoveLetter = true
+			sfx:Play(SoundEffect.SOUND_PAPER_IN)
 		end
 	end
 	return {ShowAnim = false, Remove = false, Discharge = false}
@@ -6064,9 +6072,11 @@ function EclipsedMod:onWitchPot(_, rng, player) --item, rng, player, useFlag, ac
 		if chance <= EclipsedMod.WitchPot.KillThreshold then
 			RemoveThrowTrinket(player, pocketTrinket, EclipsedMod.TrinketDespawnTimer)
 			hudText = "Cantripped!"
+			sfx:Play(SoundEffect.SOUND_SLOTSPAWN)
 		elseif chance <= EclipsedMod.WitchPot.GulpThreshold then
 			player:UseActiveItem(CollectibleType.COLLECTIBLE_SMELTER, myUseFlags)
 			hudText = "Gulp!"
+			sfx:Play(SoundEffect.SOUND_VAMP_GULP)
 		elseif chance <= EclipsedMod.WitchPot.SpitThreshold then
 			local hastrinkets = {}
 			for gulpedTrinket = 1, TrinketType.NUM_TRINKETS do
@@ -6079,12 +6089,14 @@ function EclipsedMod:onWitchPot(_, rng, player) --item, rng, player, useFlag, ac
 				player:TryRemoveTrinket(removeTrinket)
 				DebugSpawn(PickupVariant.PICKUP_TRINKET, removeTrinket, player.Position, 0, RandomVector()*5)
 				hudText = "Spit out!"
+				sfx:Play(SoundEffect.SOUND_ULTRA_GREED_SPIT)
 			end
 		else
 			local newTrinket = rng:RandomInt(TrinketType.NUM_TRINKETS)+1
 			player:TryRemoveTrinket(pocketTrinket)
 			player:AddTrinket(newTrinket, true)
 			hudText = "Can trip?"
+			sfx:Play(SoundEffect.SOUND_BIRD_FLAP)
 		end
 	else
 		if chance <= EclipsedMod.WitchPot.SpitChance then
@@ -6099,12 +6111,14 @@ function EclipsedMod:onWitchPot(_, rng, player) --item, rng, player, useFlag, ac
 				player:TryRemoveTrinket(removeTrinket)
 				DebugSpawn(PickupVariant.PICKUP_TRINKET, removeTrinket, player.Position, 0, RandomVector()*5)
 				hudText = "Spit out!"
+				sfx:Play(SoundEffect.SOUND_ULTRA_GREED_SPIT)
 			end
 		end
 	end
 
 	if hudText == "Cantrip!" then
 		player:UseActiveItem(CollectibleType.COLLECTIBLE_MOMS_BOX, myUseFlags)
+		sfx:Play(SoundEffect.SOUND_SLOTSPAWN)
 	end
 
 	game:GetHUD():ShowFortuneText(hudText)
@@ -9387,7 +9401,7 @@ function EclipsedMod:onThreshold(_, _, player) --item, rng, player, useFlag, act
 end
 EclipsedMod:AddCallback(ModCallbacks.MC_USE_ITEM, EclipsedMod.onThreshold, EclipsedMod.Items.Threshold)
 
-function EclipsedMod:onItemCollision2(pickup, collider, _) --add --PickupVariant.PICKUP_SHOPITEM
+function EclipsedMod:onItemCollision2(pickup, collider) --add --PickupVariant.PICKUP_SHOPITEM
 	--- unbidden item collision
 	local level = game:GetLevel()
 	local room = game:GetRoom()
@@ -9416,9 +9430,10 @@ function EclipsedMod:onItemCollision2(pickup, collider, _) --add --PickupVariant
 			end
 
 			if wispIt then
-				if CheckItemTags(pickup.SubType, ItemConfig.TAG_QUEST) or pickup.SubType == 0 or pickup.SubType == CollectibleType.COLLECTIBLE_BIRTHRIGHT or pickup.SubType == CollectibleType.COLLECTIBLE_DEATH_CERTIFICATE then
+				if pickup.SubType == 0 or CheckItemTags(pickup.SubType, ItemConfig.TAG_QUEST) or pickup.SubType == CollectibleType.COLLECTIBLE_BIRTHRIGHT or pickup.SubType == CollectibleType.COLLECTIBLE_DEATH_CERTIFICATE then
 					return
 				else
+					--pickup.Touched = true
 					pickup:Remove()
 					player:AddItemWisp(pickup.SubType, pickup.Position):ToFamiliar()
 					sfx:Play(SoundEffect.SOUND_SOUL_PICKUP)
@@ -10335,7 +10350,7 @@ function EclipsedMod:peffectUpdateBeggars(player)
 				else -- from all cards
 
 					player:UseActiveItem(CollectibleType.COLLECTIBLE_MONSTER_MANUAL, myUseFlags)
-					if sfx:IsPlaying(241) then sfx:Stop(241) end
+					if sfx:IsPlaying(SoundEffect.SOUND_SATAN_GROW) then sfx:Stop(SoundEffect.SOUND_SATAN_GROW) end -- devil laughs
 
 					sprite:Play("Idle")
 					--sfx:Play(SoundEffect.SOUND_SLOTSPAWN)

@@ -83,5 +83,5 @@
 	<trinket description="From evil to good" gfx="red_cross.png" name="Penance" />
 	<trinket description="Boon of Underworld" gfx="pom_fruit.png" name="Pomegranate" />
 	<!--trinket description="Dead or Alive" gfx="bounty_poster.png" name="Bounty Poster" -->
-	<!--trinket description="Dear Satan.." gfx="xmas_letter.png" name="Xmas Letter"-->
+	<trinket description="Dear Satan.." gfx="xmas_letter.png" name="Xmas Letter" />
 </items>
