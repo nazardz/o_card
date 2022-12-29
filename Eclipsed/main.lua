@@ -749,6 +749,12 @@ EclipsedMod.RedBag.RedPickups = { -- possible items
 end
 --- TRINKETS --
 do
+EclipsedMod.QueenSpades = {}
+EclipsedMod.QueenSpades.Chance = 0.33
+
+EclipsedMod.XmasLetter = {}
+EclipsedMod.XmasLetter.Chance = 0.5
+
 EclipsedMod.AbyssCart = {}
 EclipsedMod.AbyssCart.NoRemoveChance = 0.5 --this value * (trinket multiplier-1)
 EclipsedMod.AbyssCart.SacrificeBabies = {
@@ -1794,6 +1800,7 @@ local function LililithReset()
 	end
 end
 ---Queen of Spades
+--[[
 local function SesameOpen(room, level, player)
 	--- open all doors in boss room
 	if room:GetType() == RoomType.ROOM_BOSS and room:IsClear() then
@@ -1820,6 +1827,7 @@ local function SesameOpen(room, level, player)
 		end
 	end
 end
+--]]
 ---White Knight
 local function GetNearestEnemy(basePos, distance)
 	--- get near enemy's position, else return basePos position
@@ -2490,7 +2498,11 @@ local function AddItemFromWisp(player, add, kill, stop)
 			if witem.Variant == FamiliarVariant.ITEM_WISP then
 				if add then
 					sfx:Play(SoundEffect.SOUND_THUMBSUP)
-					player:AddCollectible(witem.SubType)
+					--player:AddCollectible(witem.SubType)
+					--player:QueueItem(Item, Charge, Touched, Golden, VarData)
+					player:QueueItem(witem.SubType, Isaac.GetItemConfig():GetCollectible(witem.SubType).InitCharge)
+					player:FlushQueueItem()
+					player:AnimateCollectible(witem.SubType)
 				end
 				if kill then
 					witem:Remove()
@@ -2503,6 +2515,7 @@ local function AddItemFromWisp(player, add, kill, stop)
 			end
 		end
 	end
+	return
 end
 ---Soul of Unbidden
 local function SpawnItemWisps(player)
@@ -2633,10 +2646,40 @@ EclipsedMod.QueueItemsCheck = {
 [CollectibleType.COLLECTIBLE_BIRTHRIGHT] = true,
 }
 
-
-
---From Retribution mod (Xalum)--
+--From Xalum (I guess)--
 local function CheckPickupAbuse(player)
+	local data = player:GetData()
+	local queuedItem = player.QueuedItem
+	data.EclipsedHeldItem = queuedItem.Item or data.EclipsedHeldItem
+	if not (not queuedItem.Item and data.EclipsedHeldItem) then return end
+	local itemId = data.EclipsedHeldItem.ID
+	local touched = data.EclipsedHeldItem.Touched
+	data.EclipsedHeldItem = nil
+	if EclipsedMod.QueueItemsCheck[itemId] and not touched then
+		local rng = player:GetCollectibleRNG(itemId)
+		if itemId == EclipsedMod.Items.GravityBombs then
+			player:AddGigaBombs(EclipsedMod.GravityBombs.GigaBombs)
+		elseif itemId == EclipsedMod.Items.MidasCurse then
+			player:AddGoldenHearts(3)
+		elseif itemId == EclipsedMod.Items.RubberDuck then
+			data.DuckCurrentLuck = data.DuckCurrentLuck or 0
+			data.DuckCurrentLuck = data.DuckCurrentLuck + EclipsedMod.RubberDuck.MaxLuck
+			EvaluateDuckLuck(player, data.DuckCurrentLuck)
+		elseif itemId == CollectibleType.COLLECTIBLE_BIRTHRIGHT then
+			if player:GetPlayerType() == EclipsedMod.Characters.Nadab then
+				SpawnOptionItems(ItemPoolType.POOL_BOMB_BUM, rng:RandomInt(Random())+1, player.Position)
+			elseif player:GetPlayerType() == EclipsedMod.Characters.Abihu then
+				player:SetFullHearts()
+			elseif player:GetPlayerType() == EclipsedMod.Characters.Unbidden then
+				local broken = player:GetBrokenHearts()
+				player:AddBrokenHearts(-broken)
+				player:AddSoulHearts(2*broken)
+				AddItemFromWisp(player, true, false, false)
+			end
+		end
+	end
+
+	--[[
 	local queueData = player.QueuedItem
 	local data = player:GetData()
 	local cachedData = data.CheckLastQueuedData
@@ -2644,7 +2687,6 @@ local function CheckPickupAbuse(player)
 	if cachedItem and cachedItem:IsCollectible() and (not queueData.Item or (cachedItem and cachedItem.ID ~= queueData.Item.ID)) then
 		local itemId = cachedData.Item.ID
 		local rng = player:GetCollectibleRNG(itemId)
-
 		if not cachedData.Touched then
 			if itemId == EclipsedMod.Items.GravityBombs then
 				player:AddGigaBombs(EclipsedMod.GravityBombs.GigaBombs)
@@ -2669,6 +2711,7 @@ local function CheckPickupAbuse(player)
 		end
 	end
 	data.CheckLastQueuedData = queueData
+	--]]
 end
 --- LOCAL FUNCTIONS --
 
@@ -2743,10 +2786,11 @@ function EclipsedMod:onExit(isContinue)
 				savetable.MemoryBoolPool[idx] = data.MemoryBoolPool
 			end
 			--]]
-
+			--[
 			if data.WaxHeartsCount then
 				savetable.WaxHeartsCount[idx] = data.WaxHeartsCount
 			end
+			--]
 		end
 	end
 	modDataSave()
@@ -3204,7 +3248,6 @@ function EclipsedMod:onPEffectUpdate(player)
 	end
 
 	if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
-
 
 		CheckPickupAbuse(player)
 
@@ -4297,7 +4340,7 @@ function EclipsedMod:onNewRoom()
 		end
 
 		-- fool curse
-		if level:GetCurses() & EclipsedMod.Curses.Fool > 0 and room:GetType() == RoomType.ROOM_DEFAULT then --~= RoomType.ROOM_BOSS then
+		if level:GetCurses() & EclipsedMod.Curses.Fool > 0 and room:GetType() == RoomType.ROOM_DEFAULT then
 			if not room:IsFirstVisit() and myrng:RandomFloat() < EclipsedMod.FoolThreshold then
 				room:RespawnEnemies()
 				for gridIndex = 1, room:GetGridSize() do -- get room size
@@ -4320,11 +4363,10 @@ function EclipsedMod:onNewRoom()
 			end
 		end
 		--[ curse Emperor
-		if level:GetCurses() & EclipsedMod.Curses.Emperor > 0 and not level:IsAscent() and room:GetType() == RoomType.ROOM_BOSS and level:GetStage() ~= LevelStage.STAGE3_2 and level:GetStage() ~= LevelStage.STAGE7 and level:GetStage() ~= LevelStage.STAGE7_GREED then
-			for gridIndex = 1, room:GetGridSize() do -- get room size
-				local grid = room:GetGridEntity(gridIndex)
-				if grid and grid:ToDoor() and grid:ToDoor().TargetRoomType == RoomType.ROOM_DEFAULT then
-					room:RemoveDoor(grid:ToDoor().Slot)
+		if level:GetCurses() & EclipsedMod.Curses.Emperor > 0 and not level:IsAscent() and room:GetType() == RoomType.ROOM_BOSS and level:GetStage() ~= LevelStage.STAGE7 then -- level:GetStage() ~= LevelStage.STAGE3_2 and level:GetStage() ~= LevelStage.STAGE7_GREED then
+			for slot = 0, DoorSlot.NUM_DOOR_SLOTS do
+				if room:GetDoor(slot) and room:GetDoor(slot):ToDoor().TargetRoomType == RoomType.ROOM_DEFAULT then
+					room:RemoveDoor(slot)
 				end
 			end
 		end
@@ -4346,8 +4388,12 @@ function EclipsedMod:onNewRoom()
 
 		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
 			if room:IsFirstVisit() and player:HasTrinket(EclipsedMod.Trinkets.XmasLetter) then
-				player:UseActiveItem(CollectibleType.COLLECTIBLE_FORTUNE_COOKIE, myUseFlags)
-
+				if player:GetTrinketRNG(EclipsedMod.Trinkets.XmasLetter) <= EclipsedMod.XmasLetter.Chance * player:GetTrinketMultiplier(EclipsedMod.Trinkets.XmasLetter) then
+					player:UseActiveItem(CollectibleType.COLLECTIBLE_FORTUNE_COOKIE, myUseFlags)
+					if sfx:IsPlaying(SoundEffect.SOUND_FORTUNE_COOKIE) then
+						sfx:Stop(SoundEffect.SOUND_FORTUNE_COOKIE)
+					end
+				end
 			end
 			--penance
 			if not room:IsClear() and player:HasTrinket(EclipsedMod.Trinkets.Penance) then
@@ -4380,10 +4426,6 @@ function EclipsedMod:onNewRoom()
 			-- limb
 			if data.LimbActive then
 				tempEffects:AddNullEffect(NullItemID.ID_LOST_CURSE, true, 1)
-			end
-			--- queen of spades
-			if player:HasTrinket(EclipsedMod.Trinkets.QueenSpades) then
-				SesameOpen(room, level, player)
 			end
 			--red button
 			if player:HasCollectible(EclipsedMod.Items.RedButton) and not EclipsedMod.PreRoomState then
@@ -4498,7 +4540,13 @@ function EclipsedMod:onNewRoom()
 		end
 		-- maze memory
 		if data.MazeMemoryUsed then
-			--player.Position = room:GetCenterPos()
+			--[[
+			for slot = 0, DoorSlot.NUM_DOOR_SLOTS do
+				if room:GetDoor(slot) and room:GetDoor(slot):ToDoor().TargetRoomType == RoomType.ROOM_DEFAULT then
+					room:RemoveDoor(slot)
+				end
+			end
+			--]]
 			for gridIndex = 1, room:GetGridSize() do
 				local egrid = room:GetGridEntity(gridIndex)
 				if egrid and (egrid:ToRock() or egrid:ToSpikes() or egrid:GetType() == 1) then --  or egrid:ToDoor()
@@ -4507,11 +4555,11 @@ function EclipsedMod:onNewRoom()
 					room:RemoveDoor(egrid:ToDoor().Slot)
 				end
 			end
-			local rent = room:GetEntities()
-			for ient = 0, #rent-1 do
-				local ent = rent:Get(ient)
-				if ent and ent:ToPickup() then
-					ent:Remove()
+
+			local items = Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE)
+			if #items > 0 then
+				for _, item in pairs(items) do
+					item:Remove()
 				end
 			end
 		end
@@ -4582,7 +4630,9 @@ function EclipsedMod:onRoomClear() --rng, spawnPosition
 
 	if EclipsedMod.FoolCurseNoRewards then
 		EclipsedMod.FoolCurseNoRewards = nil
-		return true
+		if room:GetType() ~= RoomType.ROOM_BOSS then
+			return true
+		end
 	end
 
 	---players
@@ -4592,7 +4642,11 @@ function EclipsedMod:onRoomClear() --rng, spawnPosition
 		--queen of spades
 		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
 			if player:HasTrinket(EclipsedMod.Trinkets.QueenSpades) then
-				SesameOpen(room, level, player)
+				local rng = player:GetTrinketRNG(EclipsedMod.Trinkets.QueenSpades)
+				local numTrinket = player:GetTrinketMultiplier(EclipsedMod.Trinkets.QueenSpades)
+				if rng:RandomFloat() < EclipsedMod.QueenSpades.Chance * numTrinket then
+					Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PORTAL_TELEPORT)
+				end
 			end
 		end
 	end
@@ -6387,16 +6441,13 @@ function EclipsedMod:onRubikDiceScrambled(item, _, player) --item, rng, player, 
 end
 EclipsedMod:AddCallback(ModCallbacks.MC_USE_ITEM, EclipsedMod.onRubikDiceScrambled) -- called for all items
 ---rubik's dice
-function EclipsedMod:onRubikDice(_, rng, player) --item, rng, player, useFlag, activeSlot, customVarData
+function EclipsedMod:onRubikDice(item, rng, player, useFlag) --item, rng, player, useFlag, activeSlot, customVarData
 	--- player use rubik's dice
 	player:UseActiveItem(CollectibleType.COLLECTIBLE_D6, myUseFlags)
-	if rng:RandomFloat() < EclipsedMod.RubikDice.GlitchReroll then -- and (useFlag & UseFlag.USE_OWNED == 0) and (useFlag & UseFlag.USE_MIMIC == 0) then
-		--player:RemoveCollectible(EclipsedMod.Items.RubikDice)
+	if useFlag & UseFlag.USE_OWNED == UseFlag.USE_OWNED and rng:RandomFloat() < EclipsedMod.RubikDice.GlitchReroll then -- and  (useFlag & UseFlag.USE_MIMIC == 0) then
+		player:RemoveCollectible(item)
 		local Newdice = EclipsedMod.RubikDice.ScrambledDicesList[rng:RandomInt(#EclipsedMod.RubikDice.ScrambledDicesList)+1]
 		player:AddCollectible(Newdice) --Newdice / EclipsedMod.Items.RubikDiceScrambled
-		--RerollTMTRAINER(player, Newdice) -- Newdice / EclipsedMod.Items.RubikDiceScrambled
-	--else
-		--player:UseActiveItem(CollectibleType.COLLECTIBLE_D6, myUseFlags)
 	end
 	return true
 end
@@ -6980,7 +7031,7 @@ if EID then -- External Item Description
 	EID:addCollectible(EclipsedMod.Items.MidasCurse,
 			"Add 3 {{GoldenHeart}} golden hearts. #10% chance to get golden pickups. #When you lose golden heart turn everything into gold. #{{Warning}} Curse effect: # {{Warning}} 100% chance to get golden pickups. # {{Warning}} All food-related items turn into coins if you try to pick them up. #Curse effect can be removed by {{Collectible260}} Black Candle.")
 	EID:addCollectible(EclipsedMod.Items.RubberDuck,
-			"↑ {{Luck}} +20 temporary luck up when picked up. #↑{{Luck}} +1 luck up when entering unvisited room. #↓{{Luck}} -1 luck down when entering visited room. #Temporary luck can't go below player's original luck.")
+			"↑ {{Luck}} +20 temporary luck up when picked up. #↑ {{Luck}} +1 luck up when entering unvisited room. #↓ {{Luck}} -1 luck down when entering visited room. #Temporary luck can't go below player's original luck.")
 	EID:addCollectible(EclipsedMod.Items.IvoryOil,
 			"Charge active items when entering an uncleared room for the first time.")
 	EID:addCollectible(EclipsedMod.Items.BlackKnight,
@@ -7061,12 +7112,15 @@ if EID then -- External Item Description
 	EID:addCollectible(EclipsedMod.Items.WitchPot,
 			"Spawn new trinket. #40% chance to smelt current trinket. #40% chance to spit out smelted trinket. #10% Chance to reroll your current trinket. #{{Warning}} 10% Chance to destroy your current trinket.")
 	EID:addCollectible(EclipsedMod.Items.PandoraJar,
-			"Add Glass Cannon wisp. #{{Warning}} 15% chance to add curse. #If all curses was added, triggers Mystery Gift. This effect can be triggered only once per level.")
+			"Add Glass Cannon wisp. #{{Warning}} 15% chance to add curse. #If all curses was added, grants {{Collectible515}} Mystery Gift. This effect can be triggered only once per level.")
+	--EID:addCollectible(EclipsedMod.Items.AgonyBox,
+	--		"Prevents next incoming non self-damage and removes one point of charge. #Can be charged by taking damage from spikes in {{SacrificeRoom}} Sacrifice Room. #Entering a new floor fully recharges the box.")
 
 	EID:addTrinket(EclipsedMod.Trinkets.WitchPaper,
 			"{{Collectible422}} Turn back time when you die. #Destroys itself after triggering.")
 	EID:addTrinket(EclipsedMod.Trinkets.QueenSpades,
-			"Opens Alt.path, Boss Rush and Blue Womb doors while you holding this trinket.")
+			"33% chance to spawn portal to starting room after clearing room. #Leaving room removes portal.")
+			--"Opens Alt.path, Boss Rush and Blue Womb doors while you holding this trinket.")
 			--"Opens all alternative doors while you holding this trinket. #Removes after triggering.")
 	EID:addTrinket(EclipsedMod.Trinkets.RedScissors,
 			"Turn troll-bombs into red throwable bombs.") -- inferior scissors, nah
@@ -7096,6 +7150,10 @@ if EID then -- External Item Description
 			"16% chance to apply Red Cross indicator to enemies upon entering a room. #When marked enemies die, they shoot beams of light in 4 directions.")
 	EID:addTrinket(EclipsedMod.Trinkets.Pompom,
 			"Picking up {{Heart}} red hearts can convert them into random red wisps.")
+	EID:addTrinket(EclipsedMod.Trinkets.XmasLetter,
+			"50% chance when entering room for the first time activate {{Collectible557}} Fortune Cookie. #Leaving this trinket in {{DevilRoom}} devil deal turn it into {{Collectible515}} Mystery Gift on next enter.")
+	--EID:addTrinket(EclipsedMod.Trinkets.BountyPoster,
+	--		"Grants 15 coins at the start of next run, if you end game with this trinket. #It doesn't matter if you lose or win previous run.")
 
 	EID:addCard(EclipsedMod.Pickups.OblivionCard,
 			"Throwable eraser card. #Erase enemies for current level.")
@@ -9388,7 +9446,6 @@ function EclipsedMod:onThreshold(_, _, player) --item, rng, player, useFlag, act
 	--player:UseCard(Card.RUNE_BLACK, myUseFlags)
 	local wisp = AddItemFromWisp(player, true, true, true)  --priority on a top left wisp (seemingly)
 	if wisp then
-		player:AnimateCollectible(wisp)
 		return false
 	end
 	return true
