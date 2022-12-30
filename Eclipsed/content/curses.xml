@@ -3,29 +3,25 @@
 	<curse name="Curse of the Jamming!" />
 	<curse name="Curse of the Emperor!" />
 	<curse name="Curse of the Magician!" />
-	<curse name="Curse of Champions!" />
+	<curse name="Curse of the Pride!" />
 	<curse name="Curse of the Bell!" />
 	<curse name="Curse of the Envy!" />
 	<curse name="Curse of Carrion!" />
 	<curse name="Curse of the Bishop!" />
 	<curse name="Curse of Montezuma!" />
 	<curse name="Curse of Misfortune!" />
-	<curse name="Curse of Hanged Man!" />
+	<curse name="Curse of Poverty!" />
 	<curse name="Curse of the Fool!" />
 	<curse name="Curse of Secrets!" />
 	<curse name="Curse of the Warden!" />
-	<curse name="Curse of the Lemegeton!" />
+	<curse name="Curse of the Desolation!" />
 
 	<!--
 	<curse name="Curse of the Reaper!" />
-
-
 	<curse name="Curse of the Devil!" />
 	<curse name="Curse of the Oblivion!" />
-
-	<curse name="Curse of the High Priestess!!" />
-	<curse name="Curse of the Lovers!" />
+	<curse name="Curse of the Pain" />
+	<curse name="Curse of the Broken Heart!" />
 	<curse name="Curse of Justice!" />
-	<curse name="Curse of the Sun!" />
 	-->
 </curses>

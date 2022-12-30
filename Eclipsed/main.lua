@@ -183,10 +183,10 @@ EclipsedMod.Pickups.Domino00 = Isaac.GetCardIdByName("X_Domino00")
 end
 --- CHALLENGES --
 do
-EclipsedMod.Challenges.Potatoes = Isaac.GetChallengeIdByName("When life gives you Potatoes!") -- unlock
+EclipsedMod.Challenges.Potatoes = Isaac.GetChallengeIdByName("When life gives you Potatoes!") -- unlock mongo beggar
 EclipsedMod.Challenges.Magician = Isaac.GetChallengeIdByName("Curse of The Magician") -- unlock Mew-Gen
-EclipsedMod.Challenges.Lobotomy = Isaac.GetChallengeIdByName("Lobotomy")
---EclipsedMod.Challenges.IsaacIO = Isaac.GetChallengeIdByName("Isaac.io")
+EclipsedMod.Challenges.Lobotomy = Isaac.GetChallengeIdByName("Lobotomy") -- delirious beggar and pickups
+--EclipsedMod.Challenges.IsaacIO = Isaac.GetChallengeIdByName("Isaac.io") -- kill - size up, take damage - size down
 end
 --- CURSES --
 do
@@ -194,36 +194,42 @@ EclipsedMod.Curses.Void = 1 << (Isaac.GetCurseIdByName("Curse of the Void!")-1) 
 EclipsedMod.Curses.Jamming = 1 << (Isaac.GetCurseIdByName("Curse of the Jamming!")-1) -- respawn enemies in room after clearing
 EclipsedMod.Curses.Emperor = 1 << (Isaac.GetCurseIdByName("Curse of the Emperor!")-1) -- no exit door from boss room
 EclipsedMod.Curses.Magician = 1 << (Isaac.GetCurseIdByName("Curse of the Magician!")-1) -- homing enemy tears (except boss)
-EclipsedMod.Curses.Strength = 1 << (Isaac.GetCurseIdByName("Curse of Champions!")-1) -- all enemies is champion (except boss) - without health buff
+EclipsedMod.Curses.Pride = 1 << (Isaac.GetCurseIdByName("Curse of the Pride!")-1) -- all enemies is champion (except boss) - without health buff
 EclipsedMod.Curses.Bell = 1 << (Isaac.GetCurseIdByName("Curse of the Bell!")-1) -- all troll bombs is golden
 EclipsedMod.Curses.Envy = 1 << (Isaac.GetCurseIdByName("Curse of the Envy!")-1) -- other shop items disappear when you buy one
 EclipsedMod.Curses.Carrion = 1 << (Isaac.GetCurseIdByName("Curse of Carrion!")-1) -- turn normal poops into red
 EclipsedMod.Curses.Bishop = 1 << (Isaac.GetCurseIdByName("Curse of the Bishop!")-1) -- 16% cahance to enemies prevent damage
 EclipsedMod.Curses.Montezuma = 1 << (Isaac.GetCurseIdByName("Curse of Montezuma!")-1) -- slippery ground
 EclipsedMod.Curses.Misfortune = 1 << (Isaac.GetCurseIdByName("Curse of Misfortune!")-1) -- -5 luck
-EclipsedMod.Curses.HangedMan = 1 << (Isaac.GetCurseIdByName("Curse of Hanged Man!")-1) -- greed enemy tears
+EclipsedMod.Curses.Poverty = 1 << (Isaac.GetCurseIdByName("Curse of Poverty!")-1) -- greed enemy tears
 EclipsedMod.Curses.Fool = 1 << (Isaac.GetCurseIdByName("Curse of the Fool!")-1) -- 16% chance to respawn enemies in cleared rooms, don't close doors (except boss)
 EclipsedMod.Curses.Secrets = 1 << (Isaac.GetCurseIdByName("Curse of Secrets!")-1) -- hide secret/supersecret room doors
 EclipsedMod.Curses.Warden = 1 << (Isaac.GetCurseIdByName("Curse of the Warden!")-1) -- all locked doors need 2 keys
-EclipsedMod.Curses.Lemegeton = 1 << (Isaac.GetCurseIdByName("Curse of the Lemegeton!")-1) -- 16% chance to turn item into Item Wisp when picked up. Add wisped item after clearing room
+EclipsedMod.Curses.Desolation = 1 << (Isaac.GetCurseIdByName("Curse of the Desolation!")-1) -- 16% chance to turn item into Item Wisp when picked up. Add wisped item after clearing room
+--EclipsedMod.Curses.Reaper
+--EclipsedMod.Curses.BrokenHeart
+--EclipsedMod.Curses.Pain
+--EclipsedMod.Curses.Devil
+--EclipsedMod.Curses.Justice
+--EclipsedMod.Curses.Oblivion
 
-EclipsedMod.CurseText = {}
+EclipsedMod.CurseText = {} -- idk, dumb idea actually
 EclipsedMod.CurseText[EclipsedMod.Curses.Void] = "Curse of the Void!"
 EclipsedMod.CurseText[EclipsedMod.Curses.Jamming] = "Curse of the Jamming!"
 EclipsedMod.CurseText[EclipsedMod.Curses.Emperor] = "Curse of the Emperor!"
 EclipsedMod.CurseText[EclipsedMod.Curses.Magician] = "Curse of the Magician!"
-EclipsedMod.CurseText[EclipsedMod.Curses.Strength] = "Curse of Champions!"
+EclipsedMod.CurseText[EclipsedMod.Curses.Pride] = "Curse of the Pride!"
 EclipsedMod.CurseText[EclipsedMod.Curses.Bell] = "Curse of the Bell!"
 EclipsedMod.CurseText[EclipsedMod.Curses.Envy] = "Curse of the Envy!"
 EclipsedMod.CurseText[EclipsedMod.Curses.Carrion] = "Curse of Carrion!"
 EclipsedMod.CurseText[EclipsedMod.Curses.Bishop] = "Curse of the Bishop!"
 EclipsedMod.CurseText[EclipsedMod.Curses.Montezuma] = "Curse of Montezuma!"
 EclipsedMod.CurseText[EclipsedMod.Curses.Misfortune] = "Curse of Misfortune!"
-EclipsedMod.CurseText[EclipsedMod.Curses.HangedMan] = "Curse of Hanged Man!"
+EclipsedMod.CurseText[EclipsedMod.Curses.Poverty] = "Curse of Poverty!"
 EclipsedMod.CurseText[EclipsedMod.Curses.Fool] = "Curse of the Fool!"
 EclipsedMod.CurseText[EclipsedMod.Curses.Secrets] = "Curse of Secrets!"
 EclipsedMod.CurseText[EclipsedMod.Curses.Warden] = "Curse of the Warden!"
-EclipsedMod.CurseText[EclipsedMod.Curses.Lemegeton] = "Curse of the Lemegeton!"
+EclipsedMod.CurseText[EclipsedMod.Curses.Desolation] = "Curse of the Desolation!"
 
 
 --EclipsedMod.Curses.Reaper = 1 << (Isaac.GetCurseIdByName("Curse of the Reaper!")-1) -- death's scythe will follow you
@@ -238,11 +244,11 @@ EclipsedMod.TrinketDespawnTimer = 35 -- x>25; x=35 -- it will be removed
 EclipsedMod.CurseChance = 0.5 -- chances to mod curses to apply
 EclipsedMod.VoidThreshold = 0.15  -- chance to trigger void curse when entering room
 EclipsedMod.JammingThreshold = 0.15 -- chance to trigger jamming curse after clearing room
-EclipsedMod.StrengthThreshold = 0.5 -- chance to become champion
+EclipsedMod.PrideThreshold = 0.5 -- chance to become champion
 EclipsedMod.BishopThreshold = 0.15 -- chance to trigger damage immunity
 EclipsedMod.MisfortuneLuck = -5 -- -5 luck
 EclipsedMod.FoolThreshold = 0.15 -- chance to trigger fool when entering room
-EclipsedMod.LemegetonThreshold = 0.15 -- chance to turn item into ItemWisp
+EclipsedMod.DesolationThreshold = 0.15 -- chance to turn item into ItemWisp
 
 EclipsedMod.NadabData = {}
 --EclipsedMod.NadabData.CompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0} --1:Isaac, 2:BlueBaby, 3:Satan, 4:Lamb, 5:BossRush, 6:Hush, 7:MegaSatan, 8:Delirium, 9:Mother, 10:Beast, 11:Greed/Greedier, 12:Heart, 13:AllMarksHard
@@ -345,7 +351,6 @@ EclipsedMod.DeliriumBeggar.PityCounter = 6
 EclipsedMod.DeliriumBeggar.ActivateChance = 0.33 --activation chance - charmed enemy (chance to activate)
 EclipsedMod.DeliriumBeggar.PrizeChance = 0.05 --reward chance - charmed boss (chance after activation)
 EclipsedMod.DeliriumBeggar.DeliPickupChance = 0.25 --delirium pickup chance (chance after activation)
-
 ------------PASSIVE------------
 --[[
 lil gish
@@ -4792,9 +4797,9 @@ function EclipsedMod:onEnemyInit(entity)
 	end
 
 	if not room:HasCurseMist() then
-		-- curse of strength
-		if level:GetCurses() & EclipsedMod.Curses.Strength > 0  then
-			if entity:IsActiveEnemy() and entity:IsVulnerableEnemy() and not entity:IsBoss() and not entity:IsChampion() and entity:GetDropRNG():RandomFloat() < EclipsedMod.StrengthThreshold then
+		-- curse of Pride
+		if level:GetCurses() & EclipsedMod.Curses.Pride > 0  then
+			if entity:IsActiveEnemy() and entity:IsVulnerableEnemy() and not entity:IsBoss() and not entity:IsChampion() and entity:GetDropRNG():RandomFloat() < EclipsedMod.PrideThreshold then
 				--entity:Morph(entity.Type, entity.Variant, entity.SubType, bomb:GetDropRNG():RandomInt(26))
 				--print(entity.InitSeed)
 				entity:MakeChampion(Random()+1, -1, true)
@@ -5125,7 +5130,7 @@ function EclipsedMod:onProjectileInit(projectile)
 				projectile:AddProjectileFlags(ProjectileFlags.SMART)
 			end
 		end
-		if level:GetCurses() & EclipsedMod.Curses.HangedMan > 0 then
+		if level:GetCurses() & EclipsedMod.Curses.Poverty > 0 then
 			projectile:AddProjectileFlags(ProjectileFlags.GREED)
 		end
 	end
@@ -5255,8 +5260,8 @@ function EclipsedMod:onItemCollision(pickup, collider)
 		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
 			local room = game:GetRoom()
 			local level = game:GetLevel()
-			--EclipsedMod.Curses.Lemegeton
-			if level:GetCurses() & EclipsedMod.Curses.Lemegeton > 0 and pickup:GetDropRNG():RandomFloat() < EclipsedMod.LemegetonThreshold and pickup.SubType ~= 0 and GetCurrentDimension() ~= 2 and level:GetCurrentRoomIndex() ~= GridRooms.ROOM_GENESIS_IDX and room:GetType() ~= RoomType.ROOM_CHALLENGE and room:GetType() ~= RoomType.ROOM_BOSSRUSH and not pickup:IsShopItem() and not CheckItemTags(pickup.SubType, ItemConfig.TAG_QUEST) then
+			--EclipsedMod.Curses.Desolation
+			if level:GetCurses() & EclipsedMod.Curses.Desolation > 0 and pickup:GetDropRNG():RandomFloat() < EclipsedMod.DesolationThreshold and pickup.SubType ~= 0 and GetCurrentDimension() ~= 2 and level:GetCurrentRoomIndex() ~= GridRooms.ROOM_GENESIS_IDX and room:GetType() ~= RoomType.ROOM_CHALLENGE and room:GetType() ~= RoomType.ROOM_BOSSRUSH and not pickup:IsShopItem() and not CheckItemTags(pickup.SubType, ItemConfig.TAG_QUEST) then
 				pickup:Remove()
 				local wispItem = player:AddItemWisp(pickup.SubType, pickup.Position):ToFamiliar()
 				--wispItem:GetData().AddAfterOneRoom = level:GetCurrentRoomIndex()
@@ -5786,7 +5791,7 @@ EclipsedMod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, EclipsedMod.onElderS
 
 
 
---- FAMILIAR UPDATE --lemegeton curse
+--- FAMILIAR UPDATE --Desolation curse
 --[[
 function EclipsedMod:onWispo(fam)
 	print(fam.Varitant, fam.SubType)
@@ -9971,11 +9976,11 @@ local function AddModCurse(curse)
 	local level = game:GetLevel()
 	if level:GetCurses() & curse > 0 then
 		level:RemoveCurses(curse)
-		print("curse disable")
+		print("eclipsed curse Disable")
 	else
-		level:AddCurse(curse)
+		level:AddCurse(curse, false)
 		game:GetHUD():ShowFortuneText(EclipsedMod.CurseText[curse])
-		print("curse enable")
+		print("eclipsed curse Enable")
 	end
 end
 
@@ -9984,74 +9989,117 @@ function EclipsedMod:onExecuteCommand(command, args)
 	--- console commands ---
 	if command == "eclipsed" then
 		if args == "help" or args == "" then
-			print('eclipsed todo -> list of thing to complete/implement/change')
-			print('eclipsed curse [curse number or name] -> enable/disable mod curses')
+			print('disabled unlocks and curses by default')
+			print('eclipsed todo -> list of bugs and things to complete/implement/change')
+			print('eclipsed curse [curse number | name] -> enable/disable mod curses')
+			print('eclipsed curse -> list of curses')
 			--print('eclipsed reset [all, nadab, abihu, unbid, tunbid]')
 			--print('eclipsed unlock [all, nadab, abihu, unbid, tunbid]')
 		elseif args == "todo" then
 			print('pondara jar somehow broken')
+			print("Torn Spades - may be bugged")
 			print('Lil Gagger sprite')
-			print("finish Wax Hearts")
+			print("finish Wax Hearts and UI")
 			print("finish curses UI")
-			print("Abihu flame synergy")
-			print("Mongo Cells effects full desc")
-			print("Oblivious bug sunergy Marked + Monstro Lung")
+			print("Abihu flame attack - not finished")
+			print("Mongo Cells add full desc, indicator to familiars which can be copied")
+			print("Domino 0|0 rework")
+			print("dice bombs - bombcostumes")
+			print("Glitched Beggar - logic and sprites")
+			print("oblivious lasers + chocko milk damage up don't work")
+			print("oblivious epic fetus + marked don't work")
+			print("oblivious familiars aura attack - not implemented (fate rewards, incubus, splinker, twisted pair?)")
 		elseif args == "debug" then
 			if debug then
 				debug = false
 			else
 				debug = true
 			end
-			print('debug:', debug)
-		elseif args == "curse" or args == "curse 1" or args == "curse void" then
+			print("eclipsed debug is "..(debug and "Enable" or "Disable"))
+			print("!!! please Disable debug !!!")
+		elseif args == "curse" then
+			print('eclipsed curse [curse number or name] -> enable/disable mod curses')
+			print("eclipsed curse [1 | void]")
+			print("eclipsed curse [2 | jam | jamming]")
+			print("eclipsed curse [3 | emperor]")
+			print("eclipsed curse [4 | mage | magician]")
+			print("eclipsed curse [5 | pride]")
+			print("eclipsed curse [6 | bell]")
+			print("eclipsed curse [7 | envy]")
+			print("eclipsed curse [8 | carrion]")
+			print("eclipsed curse [9 | bishop]")
+			print("eclipsed curse [10 | montezuma | zuma]")
+			print("eclipsed curse [11 | misfortune]")
+			print("eclipsed curse [12 | poverty]")
+			print("eclipsed curse [13 | fool]")
+			print("eclipsed curse [14 | secret | secrets]")
+			print("eclipsed curse [15 | warden]")
+			print("eclipsed curse [16 | desolation | wisp]")
+		elseif args == "curse 1" or args == "curse void" then
 			AddModCurse(EclipsedMod.Curses.Void)
 			print("Curse of the Void! - 16% chance to reroll enemies and grid upon entering room")
+			print("eclipsed curse [1 | void]")
 		elseif args == "curse 2" or args == "curse jam" or args == "curse jamming" then
 			AddModCurse(EclipsedMod.Curses.Jamming)
 			print("Curse of the Jamming! - 16% chance to respawn enemies after clearing room")
+			print("eclipsed curse [2 | jam | jamming]")
 		elseif args == "curse 3" or args == "curse emperor" then
 			AddModCurse(EclipsedMod.Curses.Emperor)
-			print("Curse of the Emperor! - remove exit door from boss room")
+			print("Curse of the Emperor! - remove exit door from boss room (similar to mom boss room)")
+			print("eclipsed curse [3 | emperor]")
 		elseif args == "curse 4" or args == "curse mage" or args == "curse magician" then
 			AddModCurse(EclipsedMod.Curses.Magician)
 			print("Curse of the Magician! - homing enemy tears (except boss)")
-		elseif args == "curse 5" or args == "curse strength" or args == "curse champion" or args == "curse champions" then
-			AddModCurse(EclipsedMod.Curses.Strength)
-			print("Curse of Champions! - 50% chance to enemies become champion (except boss)")
+			print("eclipsed curse [4 | mage | magician]")
+		elseif args == "curse 5" or args == "curse pride" then
+			AddModCurse(EclipsedMod.Curses.Pride)
+			print("Curse of the Pride! - 50% chance to enemies become champion (except boss)")
+			print("eclipsed curse [5 | pride]")
 		elseif args == "curse 6" or args == "curse bell" then
 			AddModCurse(EclipsedMod.Curses.Bell)
 			print("Curse of the Bell! - all troll bombs is golden")
+			print("eclipsed curse [6 | bell]")
 		elseif args == "curse 7" or args == "curse envy" then
 			AddModCurse(EclipsedMod.Curses.Envy)
-			print("Curse of the Envy! - other shop items disappear when you buy one [shop, black market, member card, devil deal]")
+			print("Curse of the Envy! - other shop items disappear when you buy one [shop, black market, member card, devil deal, angel shop]")
+			print("eclipsed curse [7 | envy]")
 		elseif args == "curse 8" or args == "curse carrion" then
 			AddModCurse(EclipsedMod.Curses.Carrion)
 			print("Curse of Carrion! - turn normal poops into red")
+			print("eclipsed curse [8 | carrion]")
 		elseif args == "curse 9" or args == "curse bishop" then
 			AddModCurse(EclipsedMod.Curses.Bishop)
-			print("Curse of the Bishop! - 16% chance to prevent enemy taking damage")
-		elseif args == "curse 10" or args == "curse montezuma" then
+			print("Curse of the Bishop! - 16% chance to prevent enemy from taking damage. enemy will flash blue")
+			print("eclipsed curse [9 | bishop]")
+		elseif args == "curse 10" or args == "curse zuma" or args == "curse montezuma" then
 			AddModCurse(EclipsedMod.Curses.Montezuma)
-			print("Curse of Montezuma! - slippery floor")
+			print("Curse of Montezuma! - slippery floor, works only in battles")
+			print("eclipsed curse [10 | montezuma | zuma]")
 		elseif args == "curse 11" or args == "curse misfortune" then
 			AddModCurse(EclipsedMod.Curses.Misfortune)
-			print("Curse of Misfortune! - -5 luck for floor")
-		elseif args == "curse 12" or args == "curse hanged man" or args == "curse hanged" then
-			AddModCurse(EclipsedMod.Curses.HangedMan)
-			print("Curse of Hanged Man! - greed enemy tears")
+			print("Curse of Misfortune! - -5 luck while curse is applyed")
+			print("eclipsed curse [11 | misfortune]")
+		elseif args == "curse 12" or args == "curse poverty" then
+			AddModCurse(EclipsedMod.Curses.Poverty)
+			print("Curse of Poverty! - greed enemy tears. drop your coins when enemy tear hit you")
+			print("eclipsed curse [12 | poverty]")
 		elseif args == "curse 13" or args == "curse fool" then
 			AddModCurse(EclipsedMod.Curses.Fool)
 			print("Curse of the Fool! - 16% chance to respawn enemies in cleared rooms (except boss room), don't close doors")
+			print("eclipsed curse [13 | fool]")
 		elseif args == "curse 14" or args == "curse secret" or args == "curse secrets" then
 			AddModCurse(EclipsedMod.Curses.Secrets)
 			print("Curse of Secrets! - hide secret/supersecret room doors")
+			print("eclipsed curse [14 | secret | secrets]")
 		elseif args == "curse 15" or args == "curse warden" then
 			AddModCurse(EclipsedMod.Curses.Warden)
 			print("Curse of the Warden! - all locked doors need 2 keys")
-		elseif args == "curse 16" or args == "curse wisp" or args == "curse lemegeton" then
-			AddModCurse(EclipsedMod.Curses.Lemegeton)
-			print("Curse of the Lemegeton! - 16% chance to turn item into Item Wisp when collided. Add wisped item on next floor")
-
+			print("Visual bug with door not applying chains on first door encounter. Door stil require 2 keys")
+			print("eclipsed curse [15 | warden]")
+		elseif args == "curse 16" or args == "curse wisp" or args == "curse desolation" then
+			AddModCurse(EclipsedMod.Curses.Desolation)
+			print("Curse of the Desolation! - 16% chance to turn item into Item Wisp when touched. Add wisped item on next floor")
+			print("eclipsed curse [16 | desolation | wisp]")
 		--[[
 		elseif args == "reset" or args == "reset all" then
 		    savetable.NadabCompletionMarks = {0,0,0,0,0,0,0,0,0,0,0,0,0}
@@ -10344,11 +10392,12 @@ function EclipsedMod:peffectUpdateBeggars(player)
 						--DebugSpawn(300, EclipsedMod.Pickups.BannedCard, spawnpos)
 						DebugSpawn(300, EclipsedMod.DeliObject.Variants[rng:RandomInt(#EclipsedMod.DeliObject.Variants)+1], spawnpos)
 					else
+						EclipsedMod.DeliriumBeggar.Enemies = EclipsedMod.DeliriumBeggar.Enemies or {EntityType.ENTITY_GAPER, 0}
 						local savedOnes = EclipsedMod.DeliriumBeggar.Enemies[rng:RandomInt(#EclipsedMod.DeliriumBeggar.Enemies)+1]
 						local npc = Isaac.Spawn(savedOnes[1], savedOnes[2], 0, spawnpos, Vector.Zero, player):ToNPC()
 						--npc:AddEntityFlags(EntityFlag.FLAG_FRIENDLY | EntityFlag.FLAG_CHARM | EntityFlag.FLAG_PERSISTENT)
 						npc:AddCharmed(EntityRef(player), -1)
-						EclipsedMod.DeliriumBeggar.Enable[tostring(npc.Type..npc.Variant)] = true
+						--EclipsedMod.DeliriumBeggar.Enable[tostring(npc.Type..npc.Variant)] = true
 					end
 				end
 			end
@@ -10444,6 +10493,7 @@ function EclipsedMod:onFriendlyInit(npc)
 		npc:AddEntityFlags(EntityFlag.FLAG_PERSISTENT)
 		EclipsedMod.DeliriousBumCharm = nil
     end
+	EclipsedMod.DeliriumBeggar.Enable = EclipsedMod.DeliriumBeggar.Enable or {}
 	if npc:IsActiveEnemy() and npc:IsVulnerableEnemy() and not npc:IsBoss() and not EclipsedMod.DeliriumBeggar.Enable[tostring(npc.Type..npc.Variant)] then
 		EclipsedMod.DeliriumBeggar.Enable[tostring(npc.Type..npc.Variant)] = true
 		table.insert(EclipsedMod.DeliriumBeggar.Enemies, {npc.Type, npc.Variant})
@@ -10549,10 +10599,11 @@ function EclipsedMod:useDeliObject(card, player) -- card, player, useFlag
 		--- cell
 		if card == EclipsedMod.Pickups.DeliObjectCell then
 			local spawnpos = Isaac.GetFreeNearPosition(player.Position, 35)
+			EclipsedMod.DeliriumBeggar.Enemies = EclipsedMod.DeliriumBeggar.Enemies or {EntityType.ENTITY_GAPER, 0}
 			local savedOnes = EclipsedMod.DeliriumBeggar.Enemies[rng:RandomInt(#EclipsedMod.DeliriumBeggar.Enemies)+1]
 			local npc = Isaac.Spawn(savedOnes[1], savedOnes[2], 0, spawnpos, Vector.Zero, player):ToNPC()
 			npc:AddCharmed(EntityRef(player), -1)
-			EclipsedMod.DeliriumBeggar.Enable[tostring(npc.Type..npc.Variant)] = true
+			--EclipsedMod.DeliriumBeggar.Enable[tostring(npc.Type..npc.Variant)] = true
 		--- bomb
 		elseif card == EclipsedMod.Pickups.DeliObjectBomb then
 			local bombVar = BombVariant.BOMB_NORMAL

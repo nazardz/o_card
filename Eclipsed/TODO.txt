@@ -2,26 +2,24 @@ TODO:
 Lil Gagger - sprites
 Domino00 - rework
 Torn Spades - not tested yet (may be bugged)
-Pandora's Jar - somehow broken if apply all curses
+Pandora's Jar - somehow broken if apply all curses (I guess I fixed it, but still idk)
 Dice bombs - bomb costumes
-Glitched Beggar - logic/sprite
-Abihu flame attack
+Glitched Beggar - logic and sprites
+Abihu flame attack - not finished
 Wax hearts - ui
 Curse Icons - UI icons
 oblivious lasers + chocko milk damage up don't work
 oblivious epic fetus + marked don't work
-oblivious familiars aura attack
-
-Zooma			
-Basement Throne	
-Eyekey		
-Pizza Pepperoni
-Wax Hearts
-Domino tile 1/2
+oblivious familiars aura attack - not implemented (fate rewards, incubus, splinker, twisted pair?)
+Mongo Cells		add full desc, indicator to familiars which can be copied
 
 SECONDS HAND	synergy with effects timer
 
-Mongo Cells		add full desc, indicator to familiars which can be copied
+Zooma			- not implemented
+Basement Throne	- not implemented
+Eyekey			- not implemented
+Pizza Pepperoni - not implemented
+Domino tile 1/2 - not implemented
 
 Nadab's brain	add fire to sprites
 Black Knight	add proper costume
