@@ -28,7 +28,7 @@
 		collisionRadius="7"
 		friction="1"
 		id="2"
-		name="Chaos Card Tear"
+		name="Oblivion Card Tear"
 		numGridCollisionPoints="8"
 		shadowSize="8"
 		stageHP="0"
@@ -45,7 +45,7 @@
 		collisionRadius="7"
 		friction="1"
 		id="2"
-		name="Chaos Card Tear"
+		name="Love Letter Tear"
 		numGridCollisionPoints="8"
 		shadowSize="8"
 		stageHP="0"
@@ -626,5 +626,7 @@
 		subtype="5757">
 		<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
-
+	
+	
+	
 </entities>

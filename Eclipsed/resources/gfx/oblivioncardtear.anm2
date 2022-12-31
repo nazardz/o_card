@@ -1,5 +1,5 @@
 <AnimatedActor>
-	<Info CreatedBy="Adrian" CreatedOn="03.05.2014 03:26:45" Version="7" Fps="30"/>
+	<Info CreatedBy="Adrian" CreatedOn="31.12.2022 22:44:31" Version="8" Fps="30"/>
 	<Content>
 		<Spritesheets>
 			<Spritesheet Path="OblivionCardTear.png" Id="0"/>
