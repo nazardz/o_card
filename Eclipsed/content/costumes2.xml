@@ -14,7 +14,7 @@
 	<costume id="35" anm2path="costumegravitybombs.anm2" type="passive"/>
 	<costume id="5" anm2path="whiteknight.anm2" type="none"/>
 	<costume id="38" anm2path="costumekarma.anm2" type="passive"/>
-	<costume id="47" anm2path="mew_gen.anm2" type="passive" isFlying="true"/>
+	<costume id="47" anm2path="mew_gen.anm2" type="passive" isFlying="true" hasSkinAlt="true"/>
 	<costume anm2path="nadab_head.anm2" type="none" />
 	<costume anm2path="corruptionhead.anm2" type="none" />
 	<costume anm2path="abihu_costume.anm2" type="none" />

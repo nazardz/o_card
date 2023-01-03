@@ -1,7 +1,6 @@
 TODO:
 Lil Gagger - sprites
 Domino00 - rework
-Dice bombs - bomb costumes
 Glitched Beggar - logic and sprites
 Abihu flame attack - not finished
 Wax hearts - ui

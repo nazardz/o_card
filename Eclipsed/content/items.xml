@@ -61,8 +61,8 @@
 	<familiar quality="1" craftquality="1" description="Giga bombs generator!" gfx="Little_Gagger.png" name="Little Gagger" devilprice="2" cache="familiars"/>
 	<familiar quality="2" craftquality="2" description="Ballistic friend" gfx="Stone_toad.png" name="Zooma" cache="familiars" tags="monstermanual"/>
 	<familiar quality="2" craftquality="2" description="Royal seat" gfx="basement_throne.png" name="Basement Throne" cache="familiars" />
-	<familiar quality="2" craftquality="2" description="Still delirious" gfx="delirium_jr.png" name="Delirium Jr." cache="familiars" />
-	<passive quality="3" craftquality="3" description="A.T.F." gfx="angel_core.png" name="Angel's Core" cache="familiars" />
+	<familiar quality="1" craftquality="2" description="Still delirious" gfx="delirium_jr.png" name="Delirium Jr." />
+	<passive quality="3" craftquality="3" description="A.T.F." gfx="angel_core.png" name="Angel's Core" />
 	<passive quality="2" craftquality="2" description="I fear no man. But that thing, it scares me" gfx="agony_box.png" name="Agony box" />
 	-->
 	
