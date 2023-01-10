@@ -2592,11 +2592,8 @@ function EclipsedMod:onPlayerTakeDamage(entity, _, flags) --entity, amount, flag
 			local numTrinket = player:GetTrinketMultiplier(EclipsedMod.Trinkets.RubikCubelet)
 			if player:GetTrinketRNG(EclipsedMod.Trinkets.RubikCubelet):RandomFloat() < EclipsedMod.RubikCubelet.TriggerChance * numTrinket then
 				RerollTMTRAINER(player)
-				--sfx:Play(SoundEffect.SOUND_DICE_SHARD)
 			end
 		end
-
-
 	end
 end
 EclipsedMod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, EclipsedMod.onPlayerTakeDamage, EntityType.ENTITY_PLAYER)
@@ -2755,7 +2752,7 @@ function EclipsedMod:onPEffectUpdate(player)
 	end
 
 	--- secret love letter
-	if data.UsedSecretLoveLetter and player:GetFireDirection() ~= Direction.NO_DIRECTION then
+	if data.UsedSecretLoveLetter and player:GetFireDirection() ~= Direction.NO_DIRECTION then -- player:GetAimDirection():Length() > 0.3 (if marked)
 		if player:IsHoldingItem() then 
 			if player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == EclipsedMod.Items.SecretLoveLetter then
 				if player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY) >= Isaac.GetItemConfig():GetCollectible(EclipsedMod.Items.SecretLoveLetter).MaxCharges then--and player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == EclipsedMod.Items.SecretLoveLetter and tempEffects:HasCollectibleEffect(EclipsedMod.Items.SecretLoveLetter) then
@@ -2842,12 +2839,6 @@ function EclipsedMod:onPEffectUpdate(player)
 			if not data.HasMewGen then
 				--add costume
 			end
-			--[[
-			if not player.CanFly then
-				player:AddCacheFlags(CacheFlag.CACHE_FLYING)
-				player:EvaluateItems()
-			end
-			--]]
 			MewGenManager(player)
 		else
 			if data.HasMewGen then
@@ -2898,14 +2889,12 @@ function EclipsedMod:onPEffectUpdate(player)
 
 		--long elk
 		if player:HasCollectible(EclipsedMod.Items.LongElk) then
-			--[
 			if not data.HasLongElk then
 				data.HasLongElk = true
 				player:AddNullCostume(EclipsedMod.LongElk.Costume)
 				player:AddCacheFlags(CacheFlag.CACHE_FLYING)
 				player:EvaluateItems()
 			end
-			--]
 
 			if data.ElkKiller and not tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_MARS) then
 				data.ElkKiller = false
@@ -2922,7 +2911,6 @@ function EclipsedMod:onPEffectUpdate(player)
 				Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BONE_SPUR, 0, player.Position, Vector.Zero, player):ToFamiliar():GetData().RemoveTimer = EclipsedMod.LongElk.BoneSpurTimer * EclipsedMod.LongElk.NumSpur
 				data.BoneSpurTimer = EclipsedMod.LongElk.BoneSpurTimer
 			end
-		--
 		else
 			if data.HasLongElk then
 				data.HasLongElk = nil
@@ -2930,10 +2918,8 @@ function EclipsedMod:onPEffectUpdate(player)
 				player:AddCacheFlags(CacheFlag.CACHE_FLYING)
 				player:EvaluateItems()
 			end
-			--
 		end
 		--mini-pony
-		--[
 		if player:HasCollectible(EclipsedMod.Items.MiniPony) then
 			if not data.HasMiniPony then
 				data.HasMiniPony = true
@@ -2956,7 +2942,6 @@ function EclipsedMod:onPEffectUpdate(player)
 				player:EvaluateItems()
 			end
 		end
-		--]
 		--- duotine
 		if player:HasTrinket(EclipsedMod.Trinkets.Duotine) then
 			for slot = 0, 3 do
@@ -2968,9 +2953,9 @@ function EclipsedMod:onPEffectUpdate(player)
 						player:SetCard(slot, EclipsedMod.Pickups.RedPill)
 					end
 				end
-			end			
+			end
 		end
-		
+
 		---red pills
 		if data.RedPillDamageUp then --and game:GetFrameCount()%2 == 0 then
 			data.RedPillDamageUp = data.RedPillDamageUp - data.RedPillDamageDown
@@ -3115,17 +3100,6 @@ function EclipsedMod:onPEffectUpdate(player)
 						if ((data.KnightTarget.Position - Vector(110, 135)):Length() or (data.KnightTarget.Position - Vector(595, 272)):Length() or (data.KnightTarget.Position - Vector(595, 385)):Length()) <= 35 then
 							player.Position = data.KnightTarget.Position + UnitVector(data.KnightTarget.Velocity):Resized(25)
 							player:SetColor(Color(1, 1, 1, 0, 0, 0, 0), 2, 999, false, true)
-							--[[
-							if (data.KnightTarget.Position - Vector(110, 135)):Length() <= 35 then
-								player.Position = data.KnightTarget.Position + UnitVector(data.KnightTarget.Velocity):Resized(25)
-								player:SetColor(Color(1, 1, 1, 0, 0, 0, 0), 2, 999, false, true)
-							elseif (data.KnightTarget.Position - Vector(595, 272)):Length() <= 35 then
-								player.Position = data.KnightTarget.Position + UnitVector(data.KnightTarget.Velocity):Resized(25)
-								player:SetColor(Color(1, 1, 1, 0, 0, 0, 0), 2, 999, false, true)
-							elseif (data.KnightTarget.Position - Vector(595, 385)):Length() <= 35 then
-								player.Position = data.KnightTarget.Position + UnitVector(data.KnightTarget.Velocity):Resized(25)
-								player:SetColor(Color(1, 1, 1, 0, 0, 0, 0), 2, 999, false, true)
-							--]]
 						end
 					end
 				end
@@ -3559,22 +3533,6 @@ function EclipsedMod:onUpdate()
 		end
 	end
 
-	--[[
-	if EclipsedMod.FoolCurseActive then
-		EclipsedMod.FoolCurseActive = EclipsedMod.FoolCurseActive - 1
-		if EclipsedMod.FoolCurseActive <= 0 then
-			EclipsedMod.FoolCurseActive = nil
-			EclipsedMod.FoolCurseNoRewards = true
-			room:SetAmbushDone(false)
-			for _, enemy in pairs(Isaac.FindInRadius(room:GetCenterPos(), 5000, EntityPartition.ENEMY)) do
-				if enemy:ToNPC() then
-					enemy:ToNPC().CanShutDoors = false
-				end
-			end
-		end
-	end
-	--]]
-
 	--curse void reroll countdown
 	if not room:HasCurseMist() then
 		if EclipsedMod.VoidCurseReroll then
@@ -3597,9 +3555,21 @@ function EclipsedMod:onUpdate()
 		local data = player:GetData()
 		--local tempEffects = player:GetEffects()
 		--local pType = player:GetPlayerType()
+
+		--FloppyDisk
+		--if player:HasCollectible(EclipsedMod.Items.FloppyDisk) and #EclipsedMod.FloppyDisk.Items > 0 then
+		if not savetable.FloppyDiskItems then modDataLoad() end
+		if player:HasCollectible(EclipsedMod.Items.FloppyDisk) and #savetable.FloppyDiskItems > 0 then
+			player:RemoveCollectible(EclipsedMod.Items.FloppyDisk)
+			player:AddCollectible(EclipsedMod.Items.FloppyDiskFull)
+			--elseif player:HasCollectible(EclipsedMod.Items.FloppyDiskFull) and #EclipsedMod.FloppyDisk.Items == 0 then
+		elseif player:HasCollectible(EclipsedMod.Items.FloppyDiskFull) and #savetable.FloppyDiskItems == 0 then
+			player:RemoveCollectible(EclipsedMod.Items.FloppyDiskFull)
+			player:AddCollectible(EclipsedMod.Items.FloppyDisk)
+		end
+
 		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
 			-- tea fungus
-			--
 			if player:HasTrinket(EclipsedMod.Trinkets.TeaFungus) and not room:HasWater() and not room:IsClear() and room:GetFrameCount() <= 2  then
 				if room:GetFrameCount() == 1 then
 					local enemies = Isaac.FindInRadius(player.Position, 5000, EntityPartition.ENEMY)
@@ -3628,7 +3598,6 @@ function EclipsedMod:onUpdate()
 					end
 				end
 			end
-			--
 
 			--- abyss cartridge
 			if player:HasTrinket(EclipsedMod.Trinkets.AbyssCart) and player:IsDead() and player:GetExtraLives() == 0 then
@@ -3661,7 +3630,6 @@ function EclipsedMod:onUpdate()
 			if data.LimbActive then --- make it so this effect saved until next floor and if you don't get any health kill you
 				game:Darken(1, 1)
 			end
-			--]]
 
 			if player:IsDead() then
 				if player:GetExtraLives() == 0 and player:HasCollectible(EclipsedMod.Items.Limb) and not data.LimbActive then -- and player:GetBrokenHearts() < 12 then -- and not player:WillPlayerRevive()
@@ -3671,24 +3639,10 @@ function EclipsedMod:onUpdate()
 					player:UseCard(Card.CARD_SOUL_LOST, myUseFlags)
 					game:Darken(1, 3)
 				end
-				--
 				if player:HasCollectible(EclipsedMod.Items.CharonObol) then
 					player:RemoveCollectible(EclipsedMod.Items.CharonObol)
 				end
-				--
 			end
-		end
-
-		--FloppyDisk
-		--if player:HasCollectible(EclipsedMod.Items.FloppyDisk) and #EclipsedMod.FloppyDisk.Items > 0 then
-		if not savetable.FloppyDiskItems then modDataLoad() end
-		if player:HasCollectible(EclipsedMod.Items.FloppyDisk) and #savetable.FloppyDiskItems > 0 then
-			player:RemoveCollectible(EclipsedMod.Items.FloppyDisk)
-			player:AddCollectible(EclipsedMod.Items.FloppyDiskFull)
-			--elseif player:HasCollectible(EclipsedMod.Items.FloppyDiskFull) and #EclipsedMod.FloppyDisk.Items == 0 then
-		elseif player:HasCollectible(EclipsedMod.Items.FloppyDiskFull) and #savetable.FloppyDiskItems == 0 then
-			player:RemoveCollectible(EclipsedMod.Items.FloppyDiskFull)
-			player:AddCollectible(EclipsedMod.Items.FloppyDisk)
 		end
 	end
 end
@@ -3889,7 +3843,7 @@ function EclipsedMod:onNewRoom()
 				game:GetPlayer(0):UseActiveItem(CollectibleType.COLLECTIBLE_D12, myUseFlags)
 			end
 		end
-		--[ curse Emperor
+		-- curse Emperor
 		if level:GetCurses() & EclipsedMod.Curses.Emperor > 0 and not level:IsAscent() and room:GetType() == RoomType.ROOM_BOSS and level:GetStage() ~= LevelStage.STAGE7 then -- level:GetStage() ~= LevelStage.STAGE3_2 and level:GetStage() ~= LevelStage.STAGE7_GREED then
 			for slot = 0, DoorSlot.NUM_DOOR_SLOTS do
 				if room:GetDoor(slot) and room:GetDoor(slot):ToDoor().TargetRoomType == RoomType.ROOM_DEFAULT then
@@ -3897,7 +3851,6 @@ function EclipsedMod:onNewRoom()
 				end
 			end
 		end
-		--]]
 	end
 	-- Apocalypse card
 	if EclipsedMod.Apocalypse.Room then
@@ -3912,6 +3865,72 @@ function EclipsedMod:onNewRoom()
 		local tempEffects = player:GetEffects()
 
 		if data.UsedSecretLoveLetter then data.UsedSecretLoveLetter = false end
+
+		--ancestral crypt
+		if data.CryptUsed then
+			player.Position = Vector(120, 165)
+			data.CryptUsed = nil
+		end
+		-- maze memory
+		if data.MazeMemoryUsed then
+			for gridIndex = 1, room:GetGridSize() do
+				local egrid = room:GetGridEntity(gridIndex)
+				if egrid and (egrid:ToRock() or egrid:ToSpikes() or egrid:GetType() == 1) then --  or egrid:ToDoor()
+					room:RemoveGridEntity(gridIndex, 0, false)
+				elseif egrid and egrid:ToDoor() then
+					room:RemoveDoor(egrid:ToDoor().Slot)
+				end
+			end
+
+			local items = Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE)
+			if #items > 0 then
+				for _, item in pairs(items) do
+					item:Remove()
+				end
+			end
+		end
+		-- zero milestone
+		if level:GetCurrentRoomIndex() == GridRooms.ROOM_GENESIS_IDX and EclipsedMod.ZeroStoneUsed then
+			EclipsedMod.ZeroStoneUsed = false
+			if game:IsGreedMode() then
+				level:SetStage(LevelStage.STAGE7_GREED, 0)
+			else
+				level:SetStage(LevelStage.STAGE8, 0)
+			end
+		end
+		-- decay
+		if data.DecayLevel then
+			TrinketRemove(player, TrinketType.TRINKET_APPLE_OF_SODOM)
+			data.DecayLevel = nil
+		end
+		-- Corruption
+		if data.CorruptionIsActive then
+			data.CorruptionIsActive = nil
+			player:TryRemoveNullCostume(EclipsedMod.Corruption.CostumeHead)
+			local activeItem = player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)
+			if activeItem ~= 0 then
+				player:RemoveCollectible(activeItem)
+			end
+		end
+		-- soul nadab and abihu
+		if data.UsedSoulNadabAbihu then
+			data.UsedSoulNadabAbihu = nil
+		end
+		-- deus ex card
+		if data.DeuxExLuck then
+			data.DeuxExLuck = nil
+			player:AddCacheFlags(CacheFlag.CACHE_LUCK) -- remove luck effect
+			player:EvaluateItems()
+		end
+		-- long elk
+		if data.ElkKiller then data.ElkKiller = false end
+		-- bleeding grimoire
+		if data.UsedBG then
+			if not player:HasEntityFlags(EntityFlag.FLAG_BLEED_OUT) then
+				player:TryRemoveNullCostume(EclipsedMod.BG.Costume)
+				data.UsedBG = false
+			end
+		end
 
 		if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
 			if room:IsFirstVisit() and player:HasTrinket(EclipsedMod.Trinkets.XmasLetter) then
@@ -4048,81 +4067,7 @@ function EclipsedMod:onNewRoom()
 				if chargingEffect then
 					data.IvoryOilBatteryEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BATTERY, 0, Vector(player.Position.X, player.Position.Y-70), Vector.Zero, nil)
 					sfx:Play(SoundEffect.SOUND_BATTERYCHARGE, 1, 0, false, 1, 0)
-					--game:GetHUD():FlashChargeBar(player, chargingEffect)
 				end
-			end
-		end
-		--ancestral crypt
-		if data.CryptUsed then
-			player.Position = Vector(120, 165)
-			data.CryptUsed = nil
-		end
-		-- maze memory
-		if data.MazeMemoryUsed then
-			--[[
-			for slot = 0, DoorSlot.NUM_DOOR_SLOTS do
-				if room:GetDoor(slot) and room:GetDoor(slot):ToDoor().TargetRoomType == RoomType.ROOM_DEFAULT then
-					room:RemoveDoor(slot)
-				end
-			end
-			--]]
-			for gridIndex = 1, room:GetGridSize() do
-				local egrid = room:GetGridEntity(gridIndex)
-				if egrid and (egrid:ToRock() or egrid:ToSpikes() or egrid:GetType() == 1) then --  or egrid:ToDoor()
-					room:RemoveGridEntity(gridIndex, 0, false)
-				elseif egrid and egrid:ToDoor() then
-					room:RemoveDoor(egrid:ToDoor().Slot)
-				end
-			end
-
-			local items = Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE)
-			if #items > 0 then
-				for _, item in pairs(items) do
-					item:Remove()
-				end
-			end
-		end
-		-- zero milestone
-		if level:GetCurrentRoomIndex() == GridRooms.ROOM_GENESIS_IDX and EclipsedMod.ZeroStoneUsed then
-			EclipsedMod.ZeroStoneUsed = false
-			if game:IsGreedMode() then
-				level:SetStage(LevelStage.STAGE7_GREED, 0)
-			else
-				level:SetStage(LevelStage.STAGE8, 0)
-			end
-		end
-		-- decay
-		if data.DecayLevel then
-			TrinketRemove(player, TrinketType.TRINKET_APPLE_OF_SODOM)
-			data.DecayLevel = nil
-		end
-		-- Corruption
-		if data.CorruptionIsActive then
-			data.CorruptionIsActive = nil
-			player:TryRemoveNullCostume(EclipsedMod.Corruption.CostumeHead)
-			local activeItem = player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)
-			if activeItem ~= 0 then
-				player:RemoveCollectible(activeItem)
-			end
-		end
-		-- soul nadab and abihu
-		if data.UsedSoulNadabAbihu then
-			data.UsedSoulNadabAbihu = nil
-		end
-		-- deus ex card
-		if data.DeuxExLuck then
-			data.DeuxExLuck = nil
-			player:AddCacheFlags(CacheFlag.CACHE_LUCK) -- remove luck effect
-			player:EvaluateItems()
-		end
-		-- long elk
-		if data.ElkKiller then data.ElkKiller = false end
-		-- bleeding grimoire
-		if data.UsedBG then
-			--player.FireDelay = player.MaxFireDelay-1
-			if not player:HasEntityFlags(EntityFlag.FLAG_BLEED_OUT) then
-				player:TryRemoveNullCostume(EclipsedMod.BG.Costume)
-				data.UsedBG = false
 			end
 		end
 	end
@@ -4164,9 +4109,6 @@ function EclipsedMod:onRoomClear() --rng, spawnPosition
 				local rng = player:GetTrinketRNG(EclipsedMod.Trinkets.QueenSpades)
 				local numTrinket = player:GetTrinketMultiplier(EclipsedMod.Trinkets.QueenSpades)
 				if rng:RandomFloat() < EclipsedMod.QueenSpades.Chance * numTrinket then
-					--print(EntityType.ENTITY_EFFECT, EffectVariant.PORTAL_TELEPORT)
-					--Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PORTAL_TELEPORT, 0)
-					--for i = 0, 5 do
 					local num = 3
 					local chance = rng:RandomFloat()
 					if chance < 0.05 then num = 0 
@@ -4186,8 +4128,6 @@ EclipsedMod:AddCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, EclipsedMod.onRoo
 function EclipsedMod:onCurseEval(curseFlags)
 	local newCurse = LevelCurse.CURSE_NONE
 	--local level = game:GetLevel()
-
-	--curseFlags = EclipsedMod.Curses.Warden
 
 	--[[
 	if curseFlags == LevelCurse.CURSE_NONE then
@@ -4209,8 +4149,6 @@ function EclipsedMod:onCurseEval(curseFlags)
 			EclipsedMod.VoidThreshold = 0.15
 		end
 	end
-
-
 
 	local player = game:GetPlayer(0)
 	if player:GetPlayerType() == EclipsedMod.Characters.Oblivious and not player:HasCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE) and not player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
@@ -4303,9 +4241,6 @@ function EclipsedMod:onUpdateNPC(entityNPC)
 		PenanceShootLaser(270, timeout, entityNPC.Position, ppl)
 		entityNPC:GetData().PenanceRedCross = false
 	end
-	
-	
-	
 end
 EclipsedMod:AddCallback(ModCallbacks.MC_PRE_NPC_UPDATE, EclipsedMod.onUpdateNPC)
 
@@ -4351,8 +4286,6 @@ function EclipsedMod:onEnemyInit(entity)
 		-- curse of Pride
 		if level:GetCurses() & EclipsedMod.Curses.Pride > 0  then
 			if entity:IsActiveEnemy() and entity:IsVulnerableEnemy() and not entity:IsBoss() and not entity:IsChampion() and entity:GetDropRNG():RandomFloat() < EclipsedMod.PrideThreshold then
-				--entity:Morph(entity.Type, entity.Variant, entity.SubType, bomb:GetDropRNG():RandomInt(26))
-				--print(entity.InitSeed)
 				entity:MakeChampion(Random()+1, -1, true)
 			end
 		end
@@ -6208,7 +6141,7 @@ function EclipsedMod:onDomino25(_, player) -- card, player, useflag
 	game:ShakeScreen(10)
 end
 EclipsedMod:AddCallback(ModCallbacks.MC_USE_CARD, EclipsedMod.onDomino25, EclipsedMod.Pickups.Domino25)
----domino 0|0
+---domino 0|0 -- rework it
 function EclipsedMod:onDomino00(_, player) -- card, player, useflag
 	local enemies = Isaac.FindInRadius(player.Position, 5000, EntityPartition.ENEMY)
 	if #enemies > 0 then
