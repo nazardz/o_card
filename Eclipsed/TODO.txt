@@ -1,4 +1,12 @@
 TODO:
+BUGS:
+Marked + love letter
+Maze card
+My attempt at item pickup callback - discord resources
+
+
+
+NEW:
 Lil Gagger - sprites
 Domino00 - rework
 Glitched Beggar - logic and sprites
