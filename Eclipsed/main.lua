@@ -4080,21 +4080,21 @@ function EclipsedMod:onRoomClear() --rng, spawnPosition
 	--red button
 	RemoveRedButton(room)
 	-- jamming curse
-	if level:GetCurses() & EclipsedMod.Curses.Jamming > 0 and not room:HasCurseMist() and room:GetType() ~= RoomType.ROOM_BOSS then --room:GetType() ~= RoomType.ROOM_BOSSRUSH
-		if myrng:RandomFloat() < EclipsedMod.JammingThreshold and not EclipsedMod.NoJamming then
-			game:ShowHallucination(5, 0)
-			room:RespawnEnemies()
-			EclipsedMod.NoJamming = true
-			for _, ppl in pairs(Isaac.FindInRadius(room:GetCenterPos(), 5000, EntityPartition.PLAYER)) do
-				ppl:ToPlayer():SetMinDamageCooldown(60)
+	if room:GetType() ~= RoomType.ROOM_BOSS then
+		if level:GetCurses() & EclipsedMod.Curses.Jamming > 0 and not room:HasCurseMist() then --room:GetType() ~= RoomType.ROOM_BOSSRUSH
+			if myrng:RandomFloat() < EclipsedMod.JammingThreshold and not EclipsedMod.NoJamming then
+				game:ShowHallucination(5, 0)
+				room:RespawnEnemies()
+				EclipsedMod.NoJamming = true
+				for _, ppl in pairs(Isaac.FindInRadius(room:GetCenterPos(), 5000, EntityPartition.PLAYER)) do
+					ppl:ToPlayer():SetMinDamageCooldown(60)
+				end
+				return true
 			end
-			return true
 		end
-	end
 
-	if EclipsedMod.FoolCurseNoRewards then
-		EclipsedMod.FoolCurseNoRewards = nil
-		if room:GetType() ~= RoomType.ROOM_BOSS then
+		if EclipsedMod.FoolCurseNoRewards then
+			EclipsedMod.FoolCurseNoRewards = nil
 			return true
 		end
 	end
@@ -6141,15 +6141,46 @@ function EclipsedMod:onDomino25(_, player) -- card, player, useflag
 	game:ShakeScreen(10)
 end
 EclipsedMod:AddCallback(ModCallbacks.MC_USE_CARD, EclipsedMod.onDomino25, EclipsedMod.Pickups.Domino25)
----domino 0|0 -- rework it
-function EclipsedMod:onDomino00(_, player) -- card, player, useflag
-	local enemies = Isaac.FindInRadius(player.Position, 5000, EntityPartition.ENEMY)
-	if #enemies > 0 then
-		for _, entity in pairs(enemies) do
-			if entity:IsVulnerableEnemy() and entity:IsActiveEnemy() and not  entity:IsBoss() then
-				entity:AddEntityFlags(EntityFlag.FLAG_SHRINK)
+---domino 0|0 -- Crooked penny?
+function EclipsedMod:onDomino00(card, player) -- card, player, useflag
+	local rng = player:GetCardRNG(card)
+	local pickups = Isaac.FindByType(EntityType.ENTITY_PICKUP)
+
+	--- kill/remove
+	if rng:RandomFloat() < 0.5 then
+		if #pickups > 0 then
+			for _, pickup in pairs(pickups) do
+				Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, pickup.Position, Vector.Zero, nil)
+				pickup:Remove()
 			end
 		end
+		local enemies = Isaac.FindInRadius(player.Position, 5000, EntityPartition.ENEMY)
+		if #enemies > 0 then
+			for _, enemy in pairs(enemies) do
+				if not enemy:IsBoss() then --false
+					enemy:Kill()
+					--enemy:Remove()
+				end
+			end
+		end
+	--- double
+	else
+		if #pickups > 0 then
+			for _, pickup in pairs(pickups) do
+				local doubleIt = true
+				if pickup.SubType == 0 then
+					if pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+						doubleIt = false
+					elseif EclipsedMod.BlackKnight.ChestVariant[pickup.Variant] then
+						doubleIt = false
+					end
+				end
+				if doubleIt then
+					Isaac.Spawn(pickup.Type, pickup.Variant, pickup.SubType, Isaac.GetFreeNearPosition(pickup.Position, 40), Vector.Zero, nil)
+				end
+			end
+		end
+		player:UseActiveItem(CollectibleType.COLLECTIBLE_MEAT_CLEAVER, myUseFlags)
 	end
 	game:ShakeScreen(10)
 end
@@ -6174,7 +6205,16 @@ end
 EclipsedMod:AddCallback(ModCallbacks.MC_USE_CARD, EclipsedMod.onSoulNadabAbihu, EclipsedMod.Pickups.SoulNadabAbihu)
 ---ascender bane
 function EclipsedMod:onAscenderBane(_, player) -- card, player, useflag
-	--- remove 1 broken heart
+	--- remove 1 broken heart and add curse
+	if not player:HasCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE) then
+		local level = game:GetLevel()
+		local ascenderCurseList = PandoraJarManager(level:GetCurses())
+		if #ascenderCurseList > 0 then
+			local addCurse = ascenderCurseList[rng:RandomInt(#ascenderCurseList)+1]
+			--game:GetHUD():ShowFortuneText(EclipsedMod.CurseText[addCurse])
+			level:AddCurse(addCurse, true) -- false
+		end
+	end
 	if player:GetBrokenHearts() > 0 then
 		player:AddBrokenHearts(-1)
 	end
@@ -6781,7 +6821,7 @@ if EID then -- External Item Description
 			"Grants flight. #Flip player's sprite.")
 	EID:addCollectible(EclipsedMod.Items.BookMemory,
 			"Erase all enemies in room from current run. #Can't erase bosses. #Add {{BrokenHeart}} broken heart when used.")
-	--"Use to activate random effect from saved effects pool. #Saved effects pool - set of used active items, cards, runes or pills in current run. #Activated effect will be removed from saved effects pool. #Reuse item, card or pill to return it to saved effects pool. #If there isn't any saved effect, spawn Oblivion Card and turn into Memory Fragment trinket.")
+			--"Use to activate random effect from saved effects pool. #Saved effects pool - set of used active items, cards, runes or pills in current run. #Activated effect will be removed from saved effects pool. #Reuse item, card or pill to return it to saved effects pool. #If there isn't any saved effect, spawn Oblivion Card and turn into Memory Fragment trinket.")
 	EID:addCollectible(EclipsedMod.Items.MongoCells,
 			"Copy your familiars.")
 	EID:addCollectible(EclipsedMod.Items.CosmicJam,
@@ -6799,7 +6839,7 @@ if EID then -- External Item Description
 	EID:addCollectible(EclipsedMod.Items.WitchPot,
 			"Spawn new trinket. #40% chance to smelt current trinket. #40% chance to spit out smelted trinket. #10% Chance to reroll your current trinket. #{{Warning}} 10% Chance to destroy your current trinket.")
 	EID:addCollectible(EclipsedMod.Items.PandoraJar,
-			"Add Glass Cannon wisp. #{{Warning}} 15% chance to add curse. #If all curses was added, grants {{Collectible515}} Mystery Gift. This effect can be triggered only once per level.")
+			"Add Glass Cannon wisp. #{{Warning}} 15% chance to add special curse. #If all curses was added, grants {{Collectible515}} Mystery Gift. This effect can be triggered only once per level.")
 	EID:addCollectible(EclipsedMod.Items.DiceBombs,
 			"+5 bombs when picked up. #The placed bomb will reroll pickups, chests and items within explosion range. #Devolve enemies.")
 	
@@ -6847,63 +6887,12 @@ if EID then -- External Item Description
 
 	EID:addCard(EclipsedMod.Pickups.OblivionCard,
 			"Throwable eraser card. #Erase enemies for current level.")
-	EID:addCard(EclipsedMod.Pickups.Apocalypse,
-			"Fills the whole room with red poop.")
-	EID:addCard(EclipsedMod.Pickups.KingChess,
-			"Poop around you.")
-	EID:addCard(EclipsedMod.Pickups.KingChessW,
-			"Poop around you.")
-	EID:addCard(EclipsedMod.Pickups.Trapezohedron,
-			"Turn all {{Trinket}} trinkets into {{Card78}} cracked keys.")
-	EID:addCard(EclipsedMod.Pickups.Domino34,
-			"Reroll items and pickups on current level.")
-	EID:addCard(EclipsedMod.Pickups.Domino25,
-			"Respawn and reroll enemies in current room.")
-	EID:addCard(EclipsedMod.Pickups.SoulUnbidden,
-			"Add items from all item wisps to player.")
-
-	EID:addCard(EclipsedMod.Pickups.SoulNadabAbihu,
-			"Fire and Explosion immunity. #{{Collectible257}} Fire Mind and {{Collectible256}} Hot Bombs effect for current room.")
-	EID:addCard(EclipsedMod.Pickups.AscenderBane,
-			"Remove one {{BrokenHeart}} broken heart.")
-	EID:addCard(EclipsedMod.Pickups.MultiCast,
-			"Spawn 3 wisps based on your active item. #Spawn regular wisps if you don't have an active item.")
-	EID:addCard(EclipsedMod.Pickups.Wish,
-			"{{Collectible515}} Mystery Gift effect.")
-	EID:addCard(EclipsedMod.Pickups.Offering,
-			"{{Collectible536}} Sacrificial Altar effect.")
-	EID:addCard(EclipsedMod.Pickups.InfiniteBlades,
-			"Shoot 28 knives in firing direction.")
-
-	EID:addCard(EclipsedMod.Pickups.Transmutation,
-			"Reroll pickups and enemies into random pickups.")
-	EID:addCard(EclipsedMod.Pickups.RitualDagger,
-			"{{Collectible114}} Mom's Knife for current room.")
-	EID:addCard(EclipsedMod.Pickups.Fusion,
-			"{{Collectible512}} Throw a Black Hole.")
-	EID:addCard(EclipsedMod.Pickups.DeuxEx,
-			"↑ {{Luck}} +100 luck up for current room.")
-	EID:addCard(EclipsedMod.Pickups.Adrenaline,
-			"Turn all your {{Heart}} red health into {{Battery}} batteries. #{{Collectible493}} Adrenaline effect for current room.")
-	EID:addCard(EclipsedMod.Pickups.Corruption,
-			"You can use your active item unlimited times in current room. #{{Warning}} Remove your active item on next room. #{{Warning}} Doesn't affect pocket active item.") --{{Active1}}
-
-	EID:addCard(EclipsedMod.Pickups.GhostGem,
-			"Spawn 4 {{Collectible634}} purgatory souls.")
-	EID:addCard(EclipsedMod.Pickups.BannedCard,
-			--"Spawn 2 {{Card}} cards or {{Rune}} runes.")
-			"Spawn 2 copy of this card.")
-
-	EID:addCard(EclipsedMod.Pickups.Domino16,
-			"Spawn 6 pickups of same type.")
 	EID:addCard(EclipsedMod.Pickups.BattlefieldCard,
 			"Teleport to out of map {{ChallengeRoom}} Boss Challenge.")
 	EID:addCard(EclipsedMod.Pickups.TreasuryCard,
 			"Teleport to out of map {{TreasureRoom}} Treasury.")
 	EID:addCard(EclipsedMod.Pickups.BookeryCard,
 			"Teleport to out of map {{Library}} Library.")
-	EID:addCard(EclipsedMod.Pickups.Decay,
-			"Turn your {{Heart}} red hearts into {{RottenHeart}} rotten hearts. #{{Trinket140}} Apple of Sodom effect for current room.")
 	EID:addCard(EclipsedMod.Pickups.BloodGroveCard,
 			"Teleport to out of map {{CursedRoom}} Curse Room.")
 	EID:addCard(EclipsedMod.Pickups.StormTempleCard,
@@ -6918,6 +6907,60 @@ if EID then -- External Item Description
 			"Teleport to out of map {{TreasureRoom}} room with 18 items from random pools. #Only one can be taken. #Apply {{CurseBlind}} Curse of Blind for current level.")
 	EID:addCard(EclipsedMod.Pickups.ZeroMilestoneCard,
 			"{{Collectible622}} Genesis effect. #Next level is Home.")
+
+	EID:addCard(EclipsedMod.Pickups.Apocalypse,
+			"Fills the whole room with red poop.")
+	EID:addCard(EclipsedMod.Pickups.BannedCard,
+			--"Spawn 2 {{Card}} cards or {{Rune}} runes.")
+			"Spawn 2 copy of this card.")
+
+	EID:addCard(EclipsedMod.Pickups.KingChess,
+			"Poop around you.")
+	EID:addCard(EclipsedMod.Pickups.KingChessW,
+			"Poop around you.")
+
+	EID:addCard(EclipsedMod.Pickups.GhostGem,
+			"Spawn 4 {{Collectible634}} purgatory souls.")
+	EID:addCard(EclipsedMod.Pickups.Trapezohedron,
+			"Turn all {{Trinket}} trinkets into {{Card78}} cracked keys.")
+	EID:addCard(EclipsedMod.Pickups.SoulUnbidden,
+			"Add items from all item wisps to player.")
+	EID:addCard(EclipsedMod.Pickups.SoulNadabAbihu,
+			"Fire and Explosion immunity. #{{Collectible257}} Fire Mind and {{Collectible256}} Hot Bombs effect for current room.")
+
+	EID:addCard(EclipsedMod.Pickups.Domino34,
+			"Reroll items and pickups on current level.")
+	EID:addCard(EclipsedMod.Pickups.Domino25,
+			"Respawn and reroll enemies in current room.")
+	EID:addCard(EclipsedMod.Pickups.Domino16,
+			"Spawn 6 pickups of same type.")
+	EID:addCard(EclipsedMod.Pickups.Domino00,
+			"50/50 chance to remove or double items, pickups and enemies")
+
+	EID:addCard(EclipsedMod.Pickups.AscenderBane,
+			"Remove one {{BrokenHeart}} broken heart. #Add random special curse.")
+	EID:addCard(EclipsedMod.Pickups.Decay,
+			"Turn your {{Heart}} red hearts into {{RottenHeart}} rotten hearts. #{{Trinket140}} Apple of Sodom effect for current room.")
+	EID:addCard(EclipsedMod.Pickups.MultiCast,
+			"Spawn 3 wisps based on your active item. #Spawn regular wisps if you don't have an active item.")
+	EID:addCard(EclipsedMod.Pickups.Wish,
+			"{{Collectible515}} Mystery Gift effect.")
+	EID:addCard(EclipsedMod.Pickups.Offering,
+			"{{Collectible536}} Sacrificial Altar effect.")
+	EID:addCard(EclipsedMod.Pickups.InfiniteBlades,
+			"Shoot 28 knives in firing direction.")
+	EID:addCard(EclipsedMod.Pickups.Transmutation,
+			"Reroll pickups and enemies into random pickups.")
+	EID:addCard(EclipsedMod.Pickups.RitualDagger,
+			"{{Collectible114}} Mom's Knife for current room.")
+	EID:addCard(EclipsedMod.Pickups.Fusion,
+			"{{Collectible512}} Throw a Black Hole.")
+	EID:addCard(EclipsedMod.Pickups.DeuxEx,
+			"↑ {{Luck}} +100 luck up for current room.")
+	EID:addCard(EclipsedMod.Pickups.Adrenaline,
+			"Turn all your {{Heart}} red health into {{Battery}} batteries. #{{Collectible493}} Adrenaline effect for current room.")
+	EID:addCard(EclipsedMod.Pickups.Corruption,
+			"You can use your active item unlimited times in current room. #{{Warning}} Remove your active item on next room. #{{Warning}} Doesn't affect pocket active item.") --{{Active1}}
 
 	EID:addCard(EclipsedMod.Pickups.RedPill,
 			"Temporary ↑ {{Damage}} +10.8 Damage up. #Damage up slowly fades away similarly to {{Collectible621}} Red Stew. #Apply 2 layers of {{Collectible582}} Wavy Cap effect.")
