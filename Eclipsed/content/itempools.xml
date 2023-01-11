@@ -89,6 +89,7 @@
 		<Item Name="VHS Cassette" Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05"/>
 		<Item Name="Charon's Obol" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<Item Name="Witch's Pot" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Battery Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="devil">
 		<Item Name="Black Knight" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
@@ -144,6 +145,9 @@
 	</Pool>
 	<Pool Name="keyMaster">
 		<!--<Item Name="Eye Key" Weight="1" DecreaseBy="0.5" RemoveOn="0.1"/> -->
+	</Pool>
+	<Pool Name="batteryBum">
+		<Item Name="Battery Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="greedTreasure">
 		<Item Name="Unicorn" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
@@ -217,6 +221,7 @@
 		<Item Name="Ice Cube Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 		<!--<Item Name="Little Gagger" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>-->
 		<Item Name="Dice Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+		<Item Name="Battery Bombs" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
 	</Pool>
 	<Pool Name="babyShop">
 		<Item Name="Nadab's Brain" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>

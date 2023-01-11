@@ -103,6 +103,8 @@ EclipsedMod.Items.WitchPot = Isaac.GetItemIdByName("Witch's Pot")
 EclipsedMod.Items.PandoraJar = Isaac.GetItemIdByName("Pandora's Jar")
 EclipsedMod.Items.SecretLoveLetter = Isaac.GetItemIdByName("Secret Love Letter")
 
+EclipsedMod.Items.BatteryBombs = Isaac.GetItemIdByName("Battery Bombs")
+
 EclipsedMod.Items.DiceBombs = Isaac.GetItemIdByName("Dice Bombs") -- "Reroll blast +5 bombs"
 --EclipsedMod.Items.Pizza = Isaac.GetItemIdByName("Pizza Pepperoni") -- active 12 seconds. Shoot Pizza boomerang
 
@@ -498,10 +500,6 @@ EclipsedMod.FrostyBombs = {} -- sprite:ReplaceSpritesheet ( int LayerId, string 
 EclipsedMod.FrostyBombs.NancyChance = 0.1 -- chance to add bomb effect if you have nancy bombs
 EclipsedMod.FrostyBombs.FetusChance = 0.25 -- chance to add bomb effect to fetus bombs + player.Luck
 EclipsedMod.FrostyBombs.Flags = TearFlags.TEAR_SLOW | TearFlags.TEAR_ICE
-EclipsedMod.FrostyBombs.IgnoreSprite = { -- don't replace sprite
-	[BombVariant.BOMB_BIG]= true,
-	[BombVariant.BOMB_DECOY]= true,
-}
 EclipsedMod.FrostyBombs.Ban = { -- don't affect next bombs (not used)
 	[BombVariant.BOMB_TROLL]= true,
 	[BombVariant.BOMB_SUPERTROLL]= true,
@@ -523,10 +521,6 @@ EclipsedMod.GravityBombs.IterForce = 0.5 -- increase attraction force
 EclipsedMod.GravityBombs.IterGrid = 2.5 -- increase grid destroy range
 EclipsedMod.GravityBombs.NancyChance = 0.1 -- chance to add bomb effect if you have Nancy bombs
 EclipsedMod.GravityBombs.FetusChance = 0.25
-EclipsedMod.GravityBombs.IgnoreSprite = { -- ignore this bombs sprite
-	[BombVariant.BOMB_BIG]= true,
-	[BombVariant.BOMB_DECOY]= true,
-}
 EclipsedMod.GravityBombs.Ban = { -- don't affect this bombs (not used)
 	[BombVariant.BOMB_TROLL]= true,
 	[BombVariant.BOMB_SUPERTROLL]= true,
@@ -539,14 +533,17 @@ EclipsedMod.DiceBombs.PickupsTable = {10, 20, 30, 40, 50, 69, 70, 90, 300, 350}
 EclipsedMod.DiceBombs.AreaRadius = 80
 EclipsedMod.DiceBombs.NancyChance = 0.05
 EclipsedMod.DiceBombs.FetusChance = 0.25
-EclipsedMod.DiceBombs.IgnoreSprite = { -- ignore this bombs sprite
-	[BombVariant.BOMB_BIG]= true,
-	[BombVariant.BOMB_DECOY]= true,
-	--[BombVariant.BOMB_BRIMSTONE] = true,
-	
-}
-
 EclipsedMod.DiceBombs.Ban = { -- don't affect this bombs (not used)
+	[BombVariant.BOMB_TROLL]= true,
+	[BombVariant.BOMB_SUPERTROLL]= true,
+	[BombVariant.BOMB_GOLDENTROLL]= true,
+	[BombVariant.BOMB_THROWABLE] = true,
+}
+EclipsedMod.BatteryBombs = {}
+EclipsedMod.BatteryBombs.AreaRadius = 80
+EclipsedMod.BatteryBombs.NancyChance = 0.1
+EclipsedMod.BatteryBombs.FetusChance = 0.25
+EclipsedMod.BatteryBombs.Ban = { -- don't affect this bombs (not used?)
 	[BombVariant.BOMB_TROLL]= true,
 	[BombVariant.BOMB_SUPERTROLL]= true,
 	[BombVariant.BOMB_GOLDENTROLL]= true,
@@ -1759,6 +1756,83 @@ local function SetBombEXCountdown(player, bomb)
 		bomb:SetExplosionCountdown(EclipsedMod.CompoBombs.FetusCountdown/2) -- short fuse shortens countdown to half
 	end
 end
+--Batter Bombs
+local function InitBatteryBomb(bomb, bombData)
+	bombData.Charged = true
+	bomb:AddTearFlags(TearFlags.TEAR_JACOBS)
+end
+local function ChargedBlast(bombPos, radius, damage) 
+	local players = Isaac.FindInRadius(bombPos, radius, EntityPartition.PLAYER)
+	if #players == 0 then return end
+	
+	local init_charge = 2
+	if  damage >= 175.0 then
+		init_charge = 4
+	elseif damage >= 100 then
+		init_charge = 3
+	end
+
+	
+	for _, player in pairs(players) do
+		player = player:ToPlayer()
+		local chargingEffect = false -- leave it as nil
+		for slot = 0, 2 do
+			if player:GetActiveItem(slot) ~= 0 then --and chargingActive then
+				
+				local activeItem = player:GetActiveItem(slot) -- active item on given slot
+				local activeCharge = player:GetActiveCharge(slot) -- item charge
+				local batteryCharge = player:GetBatteryCharge(slot) -- extra charge (battery item)
+				local activeMaxCharge = Isaac.GetItemConfig():GetCollectible(activeItem).MaxCharges -- max charge of item
+				local activeChargeType = Isaac.GetItemConfig():GetCollectible(activeItem).ChargeType -- get charge type (normal, timed, special)
+				--print(activeChargeType)
+				local charge = 2
+				if init_charge == 4 then 
+					charge = activeMaxCharge *2 
+				elseif init_charge == 3 then 
+					charge = activeMaxCharge
+				end
+				if activeChargeType == 0 then -- if normal
+					if player:NeedsCharge(slot) then
+						if activeCharge >= activeMaxCharge and player:HasCollectible(CollectibleType.COLLECTIBLE_BATTERY) and batteryCharge < activeMaxCharge then
+							batteryCharge = batteryCharge + charge
+							player:SetActiveCharge(batteryCharge+activeCharge, slot)
+						else
+							if activeMaxCharge - activeCharge == 1 then charge = 1 end
+							activeCharge = activeCharge + charge 
+							player:SetActiveCharge(activeCharge, slot)
+						end
+						chargingEffect = slot
+						break
+					elseif activeCharge >= activeMaxCharge and player:HasCollectible(CollectibleType.COLLECTIBLE_BATTERY) and batteryCharge < activeMaxCharge then
+						batteryCharge = batteryCharge + charge
+						player:SetActiveCharge(batteryCharge+activeCharge, slot)
+						chargingEffect = slot
+						break
+					end
+				elseif activeChargeType == 1 then -- if timed
+					if player:NeedsCharge(slot) then
+						if activeCharge >= activeMaxCharge and player:HasCollectible(CollectibleType.COLLECTIBLE_BATTERY) and batteryCharge < activeMaxCharge then
+							player:SetActiveCharge(2*activeMaxCharge, slot)
+						else
+							player:SetActiveCharge(activeMaxCharge, slot)
+						end
+						chargingEffect = slot
+						break
+					elseif activeCharge >= activeMaxCharge and player:HasCollectible(CollectibleType.COLLECTIBLE_BATTERY) and batteryCharge < activeMaxCharge then
+						player:SetActiveCharge(2*activeMaxCharge, slot)
+						chargingEffect = slot
+						break
+					end
+				end
+
+			end
+		end
+		if chargingEffect then
+			player:GetData().IvoryOilBatteryEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BATTERY, 0, Vector(player.Position.X, player.Position.Y-70), Vector.Zero, nil)
+			sfx:Play(SoundEffect.SOUND_BATTERYCHARGE, 1, 0, false, 1, 0)
+		end
+	end
+end
 ---Dice Bombs
 local function InitDiceyBomb(bomb, bombData)
 	bombData.Dicey = true
@@ -1785,7 +1859,6 @@ local function DiceyReroll(rng, bombPos, radius)
 						end
 					end
 					if reroll then
-						
 						local var = EclipsedMod.DiceBombs.PickupsTable [rng:RandomInt(#EclipsedMod.DiceBombs.PickupsTable )+1]
 						if var == PickupVariant.PICKUP_CHEST then --and pickup.SubType == 0 then -- if chest
 							var = EclipsedMod.DiceBombs.ChestsTable[rng:RandomInt(#EclipsedMod.DiceBombs.ChestsTable)+1]
@@ -2155,10 +2228,12 @@ local function PandoraJarManager(currentCurses)
 end
 -- get bomb damage radius
 local function GetBombRadiusFromDamage(damage)
-	if 175.0 <= damage then
-		return 105.0
+	if damage >= 175.0  then
+		return 110.0
 	else
-		if damage <= 140.0 then
+		if damage < 100 then
+			return 50.0
+		elseif damage <= 140.0 then
 			return 75.0
 		else
 			return 90.0
@@ -2866,6 +2941,10 @@ function EclipsedMod:onPEffectUpdate(player)
 					--print(radius)
 					DiceyReroll(player:GetCollectibleRNG(EclipsedMod.Items.DiceBombs), bomb.Position, radius)
 				end
+				if bomb:GetData().Charged then
+					local radius = GetBombRadiusFromDamage(bomb.ExplosionDamage)
+					ChargedBlast(bomb.Position, radius, bomb.ExplosionDamage)
+				end	
 				if bomb:GetData().DeadEgg then
 					DeadEggEffect(player, bomb.Position, EclipsedMod.DeadEgg.Timeout)
 				end
@@ -2884,6 +2963,7 @@ function EclipsedMod:onPEffectUpdate(player)
 						end
 					end
 				end
+							
 			end
 		end
 
@@ -3894,8 +3974,10 @@ function EclipsedMod:onNewRoom()
 			EclipsedMod.ZeroStoneUsed = false
 			if game:IsGreedMode() then
 				level:SetStage(LevelStage.STAGE7_GREED, 0)
-			else
+			elseif level:IsAscent() then
 				level:SetStage(LevelStage.STAGE8, 0)
+			else
+				level:SetStage(LevelStage.STAGE7, 0)
 			end
 		end
 		-- decay
@@ -4286,7 +4368,8 @@ function EclipsedMod:onEnemyInit(entity)
 		-- curse of Pride
 		if level:GetCurses() & EclipsedMod.Curses.Pride > 0  then
 			if entity:IsActiveEnemy() and entity:IsVulnerableEnemy() and not entity:IsBoss() and not entity:IsChampion() and entity:GetDropRNG():RandomFloat() < EclipsedMod.PrideThreshold then
-				entity:MakeChampion(Random()+1, -1, true)
+				--entity:MakeChampion(Random()+1, -1, true) -- have buggy behaviour related to enemies which can't become champion becoming champion
+				entity:Morph(entity.Type, entity.Variant, entity.SubType, myrng:RandomInt(26))
 			end
 		end
 	end
@@ -4958,6 +5041,7 @@ function EclipsedMod:onBombUpdate(bomb)
 						if cacheData.DeadEgg then bombData.DeadEgg = true else bombData.DeadEgg = false end
 						if cacheData.Dicey then bombData.Dicey = true else bombData.Dicey = false end
 						if cacheData.BobTongue then bombData.BobTongue = true else bombData.BobTongue = false end
+						if cacheData.Charged then bombData.Charged = true else bombData.Charged = false end
 					end
 				end
 				
@@ -4979,6 +5063,9 @@ function EclipsedMod:onBombUpdate(bomb)
 					end
 					if bombData.Frosty == nil and bomb:GetDropRNG():RandomFloat() < EclipsedMod.FrostyBombs.NancyChance then
 						InitFrostyBomb(bomb, bombData)
+					end
+					if bombData.Charged == nil and bomb:GetDropRNG():RandomFloat() < EclipsedMod.BatteryBombs.NancyChance then
+						InitBatteryBomb(bomb, bombData)
 					end
 				end
 				
@@ -5012,6 +5099,18 @@ function EclipsedMod:onBombUpdate(bomb)
 						SetBombEXCountdown(player, redBomb)
 					end
 					if bomb.IsFetus then redBomb.IsFetus = true end
+				end
+				
+				-- charged
+				if player:HasCollectible(EclipsedMod.Items.BatteryBombs) and not EclipsedMod.BatteryBombs.Ban[bomb.Variant] and bombData.Charged ~= false then
+					local initTrue = true
+					if bomb.FrameCount == 1 and bomb.IsFetus and bomb:GetDropRNG():RandomFloat() > EclipsedMod.BatteryBombs.FetusChance + player.Luck/100 then
+						initTrue = false
+						--scatter bombs from dr.fetus has chance to not get parent bomb effects. it sucks
+					end
+					if initTrue then
+						InitBatteryBomb(bomb, bombData)
+					end
 				end
 				
 				-- dicey
@@ -5093,6 +5192,7 @@ function EclipsedMod:onBombUpdate(bomb)
 				--bomb:Remove()
 			end
 		end
+		
 		--compo bombs
 		if bombData.RedBomb then
 			if bomb.Parent then
@@ -5120,6 +5220,17 @@ function EclipsedMod:onBombUpdate(bomb)
 				end
 			end
 		end
+		
+		--[[
+		if bombData.Charged then
+			if bomb.FrameCount%8 == 0 then 
+				local player = bomb.SpawnerEntity:ToPlayer()
+				local laser = player:FireTechLaser(Vector(bomb.Position.X+3, bomb.Position.Y +5) , 0, RandomVector(), true, false, nil, 1):ToLaser()
+				laser.Color = Color(1, 1, 0, 1, 2,1,0)
+				laser:SetMaxDistance(40)
+			end
+		end
+		--]]
 		
 		--red scissors
 		if EclipsedMod.RedScissorsMod and EclipsedMod.RedScissors.TrollBombs[bomb.Variant] then -- if player has red scissors and bombs is trollbombs
@@ -5150,6 +5261,7 @@ function EclipsedMod:onBombUpdate(bomb)
 					['DeadEgg'] = bombData.DeadEgg,
 					['Dicey'] = bombData.Dicey,
 					['BobTongue'] = bombData.BobTongue,
+					['Charged'] = bombData.Charged,
 				}
 			end
 		end
@@ -6204,15 +6316,16 @@ function EclipsedMod:onSoulNadabAbihu(_, player) -- card, player, useflag
 end
 EclipsedMod:AddCallback(ModCallbacks.MC_USE_CARD, EclipsedMod.onSoulNadabAbihu, EclipsedMod.Pickups.SoulNadabAbihu)
 ---ascender bane
-function EclipsedMod:onAscenderBane(_, player) -- card, player, useflag
+function EclipsedMod:onAscenderBane(card, player) -- card, player, useflag
 	--- remove 1 broken heart and add curse
 	if not player:HasCollectible(CollectibleType.COLLECTIBLE_BLACK_CANDLE) then
+		local rng = player:GetCardRNG(card)
 		local level = game:GetLevel()
 		local ascenderCurseList = PandoraJarManager(level:GetCurses())
 		if #ascenderCurseList > 0 then
 			local addCurse = ascenderCurseList[rng:RandomInt(#ascenderCurseList)+1]
-			--game:GetHUD():ShowFortuneText(EclipsedMod.CurseText[addCurse])
-			level:AddCurse(addCurse, true) -- false
+			game:GetHUD():ShowFortuneText(EclipsedMod.CurseText[addCurse])
+			level:AddCurse(addCurse, false) --(shitty isaac modding)
 		end
 	end
 	if player:GetBrokenHearts() > 0 then
@@ -6842,6 +6955,10 @@ if EID then -- External Item Description
 			"Add Glass Cannon wisp. #{{Warning}} 15% chance to add special curse. #If all curses was added, grants {{Collectible515}} Mystery Gift. This effect can be triggered only once per level.")
 	EID:addCollectible(EclipsedMod.Items.DiceBombs,
 			"+5 bombs when picked up. #The placed bomb will reroll pickups, chests and items within explosion range. #Devolve enemies.")
+	EID:addCollectible(EclipsedMod.Items.BatteryBombs,
+			"+5 bombs when picked up. #Recharges active item if player caught in explosion. #Charge point based on bomb damage.")
+	
+	
 	
 	--EID:addCollectible(EclipsedMod.Items.AgonyBox,
 	--		"Prevents next incoming non self-damage and removes one point of charge. #Can be charged by taking damage from spikes in {{SacrificeRoom}} Sacrifice Room. #Entering a new floor fully recharges the box.")
@@ -7036,12 +7153,15 @@ local function ExplosionEffect(player, bombPos, bombDamage, bombFlags, damageSou
 		holeData.GravityGridRange = EclipsedMod.GravityBombs.AttractorGridRange
 	end
 
-	--[
 	if player:HasCollectible(EclipsedMod.Items.DiceBombs) then
 		local radius = GetBombRadiusFromDamage(bombDamage)
 		DiceyReroll(player:GetCollectibleRNG(EclipsedMod.Items.DiceBombs), bombPos, radius)
 	end
-	--]
+	
+	if player:HasCollectible(EclipsedMod.Items.BatteryBombs) then
+		local radius = GetBombRadiusFromDamage(bombDamage)
+		ChargedBlast(bombPos, radius, bombDamage)
+	end	
 end
 
 

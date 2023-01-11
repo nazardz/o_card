@@ -1,11 +1,7 @@
 TODO:
 BUGS:
-Marked + love letter
-Maze card
 My attempt at item pickup callback - discord resources
-Domino00 - reworked
-curse Fool and Jamming on boss room - possible bug?
-ascender's bane rework
+
 
 NEW:
 Lil Gagger - sprites

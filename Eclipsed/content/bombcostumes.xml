@@ -22,6 +22,9 @@
 		<!-- hole(_poison)[_cube][_gold] -->
 		<!-- <rule includeFlags="125" suffix2="_gold" /> -->
 		
+		<!-- BATTERY BOMB -->
+		<rule includeFlags="55" overlay="charged_sparkle.anm2" />
+		
 		<!-- DICE BOMB -->
 		<rule includeFlags="118" body="dicey.anm2" />
 		
