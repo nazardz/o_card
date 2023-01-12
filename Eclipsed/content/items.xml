@@ -56,9 +56,9 @@
 	<passive id="53" quality="4" craftquality="4" description="Reroll blast +5 bombs" gfx="dice_bombs.png" name="Dice Bombs" bombs="5"/>
 	<passive id="54" quality="2" craftquality="2" description="Charged blast +5 bombs" gfx="battary_bomb.png" name="Battery Bombs" bombs="5"/>
 	<passive id="55" quality="1" craftquality="1" description="It hurts them so good" gfx="pyrophilia.png" name="Pyrophilia"/>
-	<passive id="56" quality="1" craftquality="1" description="Angry boy" gfx="spike_colar.png" name="Spike Сollar"/>
+	<passive id="56" quality="1" craftquality="1" description="Angry boy" gfx="spike_colar.png" name="Spike Collar"/>
 	<passive id="57" quality="2" craftquality="2" description="Necroblast +5 bombs" gfx="skull_bomb.png" name="Dead Bombs" bombs="5"/>
-	<passive id="58" quality="3" craftquality="3" description="I must not fear" gfx="agony_box.png" name="Agony Box" maxcharges="4" chargetype="special" />
+	<active id="58" quality="3" craftquality="3" description="I must not fear" gfx="agony_box.png" name="Agony Box" maxcharges="4" chargetype="special" />
 	<!--
 	<passive quality="1" craftquality="1" description="Nitroblast +5 dynamites" gfx="dynamite.png" name="Dynamite" bombs="5"/>
 	<passive quality="2" craftquality="2" description="Rainbow blast +5 bombs" gfx="bath_bomb.png" name="Bath Bombs" bombs="5"/>

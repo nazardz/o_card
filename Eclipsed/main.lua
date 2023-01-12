@@ -107,6 +107,7 @@ EclipsedMod.Items.DiceBombs = Isaac.GetItemIdByName("Dice Bombs") -- "Reroll bla
 EclipsedMod.Items.Pyrophilia = Isaac.GetItemIdByName("Pyrophilia") --
 EclipsedMod.Items.SpikedCollar = Isaac.GetItemIdByName("Spike Collar") --
 EclipsedMod.Items.DeadBombs = Isaac.GetItemIdByName("Dead Bombs") --
+EclipsedMod.Items.AgonyBox = Isaac.GetItemIdByName("Agony Box") --
 --EclipsedMod.Items.Pizza = Isaac.GetItemIdByName("Pizza Pepperoni") -- active 12 seconds. Shoot Pizza boomerang
 --EclipsedMod.Items.Gagger = Isaac.GetItemIdByName("Little Gagger") -- punching bag subtype ?
 end
@@ -548,7 +549,7 @@ EclipsedMod.BatteryBombs.Ban = { -- don't affect this bombs (not used?)
 	[BombVariant.BOMB_THROWABLE] = true,
 }
 EclipsedMod.DeadBombs = {}
-EclipsedMod.DeadBombs.ChanceBony = 0.33 -- chance to spawn friendly monster
+EclipsedMod.DeadBombs.ChanceBony = 0.16 -- chance to spawn friendly monster
 EclipsedMod.DeadBombs.NancyChance = 0.1
 EclipsedMod.DeadBombs.FetusChance = 0.25
 EclipsedMod.DeadBombs.Ban = { -- don't affect this bombs (not used)
@@ -1771,15 +1772,8 @@ local function InitDeadBomb(bomb, bombData)
 end
 local function BonnyBlast(rng, bombPos, radius, player)
 	local enemies = Isaac.FindInRadius(bombPos, radius, EntityPartition.ENEMY)
-
-	--- test
-	local boney = Isaac.Spawn(EntityType.ENTITY_BONE_WORM, 0, 0, bombPos, Vector.Zero, player):ToNPC()
-	boney:AddCharmed(EntityRef(player), -1)
-	--- test
-
 	if #enemies > 0 then
 		for _, enemy in pairs(enemies) do
-			print(enemy:HasMortalDamage())
 			if enemy:ToNPC() and enemy:IsVulnerableEnemy() and enemy:IsActiveEnemy() and enemy:HasMortalDamage() then
 				if rng:RandomFloat() < EclipsedMod.DeadBombs.ChanceBony then
 					local boneChance = rng:RandomFloat()
@@ -1802,7 +1796,7 @@ local function BonnyBlast(rng, bombPos, radius, player)
 					local boney = Isaac.Spawn(boneType, boneVariant, 0, enemy.Position, Vector.Zero, player):ToNPC()
 					boney:AddCharmed(EntityRef(player), -1)
 				else
-					Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BONE_SPUR, 0, enemy.Position, (enemy.Position - bombPos):Resized(2), player)
+					Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BONE_ORBITAL, 0, enemy.Position, Vector.Zero, player) --(enemy.Position - bombPos):Resized(5)
 				end
 			end
 		end
@@ -1818,12 +1812,11 @@ local function ChargedBlast(bombPos, radius, damage, spawner)
 	-- shoot lasers
 	if spawner and spawner:ToPlayer() then
 		local player = spawner:ToPlayer()
-		--local pos = Vector(bombPos.X+3, bombPos.Y +5)
 		for i = 1, 5 do
 			local laser = player:FireTechLaser(bombPos, 0, RandomVector(), true, false, nil, 1):ToLaser()
 			laser.Variant = LaserVariant.ELECTRIC
-			laser.Color = Color(1, 1, 0, 1, 2, 1, 0)
-			laser:SetMaxDistance(radius)
+			laser.Color = Color(1, 1, 0.5, 1, 2, 1, 0)
+			--laser:SetMaxDistance(radius)
 		end
 	end
 
@@ -2696,20 +2689,15 @@ function EclipsedMod:onPlayerTakeDamage(entity, _, flags) --entity, amount, flag
 	--- agony box
 	if player:HasCollectible(EclipsedMod.Items.AgonyBox, true) and flags & DamageFlag.DAMAGE_FAKE == 0 then
 		for slot = 0, 2 do
-			if player:GetActiveItem(slot) ~= EclipsedMod.Items.AgonyBox then
+			if player:GetActiveItem(slot) == EclipsedMod.Items.AgonyBox then
 				local activeCharge = player:GetActiveCharge(slot) -- item charge
 				local batteryCharge = player:GetBatteryCharge(slot) -- extra charge (battery item)
 				local newCharge = batteryCharge + activeCharge - 1
 				if activeCharge > 0 then -- batteryCharge > 0
 					player:SetActiveCharge(newCharge, slot)
 					sfx:Play(SoundEffect.SOUND_BATTERYDISCHARGE)
-					---opt 1
-					flags = flags | DamageFlag.DAMAGE_FAKE
-					break
-
-					---opt2
-					--player:SetMinDamageCooldown(30)
-					--return false
+					player:SetMinDamageCooldown(120)
+					return false
 				end
 			end
 		end
@@ -2763,8 +2751,8 @@ function EclipsedMod:onPlayerTakeDamage(entity, _, flags) --entity, amount, flag
 		end
 	end
 	--- spike collar
-	if player:HasCollectible(EclipsedMod.Items.SpikedCollar) and flags & DamageFlag.DAMAGE_FAKE == 0 then
-		player:UseActiveItem(CollectibleType.COLLECTIBLE_RAZOR_BLADE, myUseFlags)
+	if player:HasCollectible(EclipsedMod.Items.SpikedCollar) and flags & DamageFlag.DAMAGE_FAKE == 0 and flags & DamageFlag.DAMAGE_INVINCIBLE == 0 then
+		player:UseActiveItem(CollectibleType.COLLECTIBLE_RAZOR_BLADE, myUseFlags | UseFlag.USE_NOCOSTUME)
 		return false
 	end
 end
@@ -3870,7 +3858,7 @@ function EclipsedMod:onNewLevel()
 		--- agony box
 		if player:HasCollectible(EclipsedMod.Items.AgonyBox, true) then
 			for slot = 0, 2 do
-				if player:GetActiveItem(slot) ~= EclipsedMod.Items.AgonyBox then
+				if player:GetActiveItem(slot) == EclipsedMod.Items.AgonyBox then
 					local activeMaxCharge = Isaac.GetItemConfig():GetCollectible(EclipsedMod.Items.AgonyBox).MaxCharges -- max charge of item
 					local activeCharge = player:GetActiveCharge(slot) -- item charge
 					local batteryCharge = player:GetBatteryCharge(slot) -- extra charge (battery item)
@@ -5835,6 +5823,11 @@ function EclipsedMod:onSecretLoveLetter(item, _, player, useFlag) --item, rng, p
 	return {ShowAnim = false, Remove = false, Discharge = false}
 end
 EclipsedMod:AddCallback(ModCallbacks.MC_USE_ITEM, EclipsedMod.onSecretLoveLetter, EclipsedMod.Items.SecretLoveLetter)
+---Agony Box
+function EclipsedMod:onAgonyBox(item, _, player, useFlag) --item, rng, player, useFlag, activeSlot, customVarData
+	return {ShowAnim = false, Remove = false, Discharge = false}
+end
+EclipsedMod:AddCallback(ModCallbacks.MC_USE_ITEM, EclipsedMod.onAgonyBox, EclipsedMod.Items.AgonyBox)
 ---Pandora's Jar
 function EclipsedMod:onPandoraJar(_, rng, player) --item, rng, player, useFlag, activeSlot, customVarData
 	local wisp

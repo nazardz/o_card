@@ -28,7 +28,7 @@
 		<!-- <rule includeFlags="121" body="rainbow_bombs.anm2" /> -->
 
 		<!-- DEAD BOMB TearFlags.TEAR_BONE-->
-		<rule includeFlags="51" body="boney.anm2" />
+		<rule includeFlags="51" body="skull.anm2" />
 
 		<!-- DICE BOMB TearFlags.TEAR_REROLL_ENEMY-->
 		<rule includeFlags="118" body="dicey.anm2" />
@@ -159,11 +159,13 @@
 	</bomb>
 
 	<bomb variant="19"> <!-- Rocket (for Rocket in a Jar) -->
-		<!-- BATTERY BOMB -->
+		<!-- BATTERY BOMB buggy visuals-->
+		<!-- <rule includeFlags="55" overlay="charged_sparkle.anm2" /> -->
 
 		<!-- BATH BOMB -->
 
 		<!-- DEAD BOMB -->
+		<rule includeFlags="118" suffix="_skull" />
 
 		<!-- DICE BOMB -->
 		<rule includeFlags="118" suffix="_dice" />
