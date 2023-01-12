@@ -102,12 +102,12 @@ EclipsedMod.Items.Eclipse = Isaac.GetItemIdByName("Eclipse") -- "Darkest Basemen
 EclipsedMod.Items.WitchPot = Isaac.GetItemIdByName("Witch's Pot")
 EclipsedMod.Items.PandoraJar = Isaac.GetItemIdByName("Pandora's Jar")
 EclipsedMod.Items.SecretLoveLetter = Isaac.GetItemIdByName("Secret Love Letter")
-
 EclipsedMod.Items.BatteryBombs = Isaac.GetItemIdByName("Battery Bombs")
-
 EclipsedMod.Items.DiceBombs = Isaac.GetItemIdByName("Dice Bombs") -- "Reroll blast +5 bombs"
+EclipsedMod.Items.Pyrophilia = Isaac.GetItemIdByName("Pyrophilia") --
+EclipsedMod.Items.SpikedCollar = Isaac.GetItemIdByName("Spike Collar") --
+EclipsedMod.Items.DeadBombs = Isaac.GetItemIdByName("Dead Bombs") --
 --EclipsedMod.Items.Pizza = Isaac.GetItemIdByName("Pizza Pepperoni") -- active 12 seconds. Shoot Pizza boomerang
-
 --EclipsedMod.Items.Gagger = Isaac.GetItemIdByName("Little Gagger") -- punching bag subtype ?
 end
 --- TRINKETS --
@@ -530,7 +530,6 @@ EclipsedMod.GravityBombs.Ban = { -- don't affect this bombs (not used)
 EclipsedMod.DiceBombs = {}
 EclipsedMod.DiceBombs.ChestsTable = {50,51,52,53,54,55,56,57,58,60}
 EclipsedMod.DiceBombs.PickupsTable = {10, 20, 30, 40, 50, 69, 70, 90, 300, 350}
-EclipsedMod.DiceBombs.AreaRadius = 80
 EclipsedMod.DiceBombs.NancyChance = 0.05
 EclipsedMod.DiceBombs.FetusChance = 0.25
 EclipsedMod.DiceBombs.Ban = { -- don't affect this bombs (not used)
@@ -540,10 +539,19 @@ EclipsedMod.DiceBombs.Ban = { -- don't affect this bombs (not used)
 	[BombVariant.BOMB_THROWABLE] = true,
 }
 EclipsedMod.BatteryBombs = {}
-EclipsedMod.BatteryBombs.AreaRadius = 80
 EclipsedMod.BatteryBombs.NancyChance = 0.1
 EclipsedMod.BatteryBombs.FetusChance = 0.25
 EclipsedMod.BatteryBombs.Ban = { -- don't affect this bombs (not used?)
+	[BombVariant.BOMB_TROLL]= true,
+	[BombVariant.BOMB_SUPERTROLL]= true,
+	[BombVariant.BOMB_GOLDENTROLL]= true,
+	[BombVariant.BOMB_THROWABLE] = true,
+}
+EclipsedMod.DeadBombs = {}
+EclipsedMod.DeadBombs.ChanceBony = 0.33 -- chance to spawn friendly monster
+EclipsedMod.DeadBombs.NancyChance = 0.1
+EclipsedMod.DeadBombs.FetusChance = 0.25
+EclipsedMod.DeadBombs.Ban = { -- don't affect this bombs (not used)
 	[BombVariant.BOMB_TROLL]= true,
 	[BombVariant.BOMB_SUPERTROLL]= true,
 	[BombVariant.BOMB_GOLDENTROLL]= true,
@@ -1756,12 +1764,69 @@ local function SetBombEXCountdown(player, bomb)
 		bomb:SetExplosionCountdown(EclipsedMod.CompoBombs.FetusCountdown/2) -- short fuse shortens countdown to half
 	end
 end
+--dead bombs
+local function InitDeadBomb(bomb, bombData)
+	bombData.Bonny = true
+	bomb:AddTearFlags(TearFlags.TEAR_BONE)
+end
+local function BonnyBlast(rng, bombPos, radius, player)
+	local enemies = Isaac.FindInRadius(bombPos, radius, EntityPartition.ENEMY)
+
+	--- test
+	local boney = Isaac.Spawn(EntityType.ENTITY_BONE_WORM, 0, 0, bombPos, Vector.Zero, player):ToNPC()
+	boney:AddCharmed(EntityRef(player), -1)
+	--- test
+
+	if #enemies > 0 then
+		for _, enemy in pairs(enemies) do
+			print(enemy:HasMortalDamage())
+			if enemy:ToNPC() and enemy:IsVulnerableEnemy() and enemy:IsActiveEnemy() and enemy:HasMortalDamage() then
+				if rng:RandomFloat() < EclipsedMod.DeadBombs.ChanceBony then
+					local boneChance = rng:RandomFloat()
+					local boneType = EntityType.ENTITY_REVENANT -- revenant -- 0.3
+					local boneVariant = 0
+					if boneChance < 0.5 then -- bony -- 0.5
+						boneType = EntityType.ENTITY_BONY
+					elseif boneChance < 0.65 then -- bone worm --0.15
+						--boneType = EntityType.ENTITY_BONE_WORM
+						boneType = EntityType.ENTITY_NEEDLE
+						boneVariant = 1
+					elseif boneChance < 0.77 then -- bone fly --0.12
+						boneType = EntityType.ENTITY_BOOMFLY
+						boneVariant = 4
+					elseif boneChance < 0.87 then -- big bony --0.1
+						boneType = EntityType.ENTITY_BIG_BONY
+					elseif boneChance < 0.97 then -- black bony --0.1
+						boneType = EntityType.ENTITY_BLACK_BONY
+					end
+					local boney = Isaac.Spawn(boneType, boneVariant, 0, enemy.Position, Vector.Zero, player):ToNPC()
+					boney:AddCharmed(EntityRef(player), -1)
+				else
+					Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BONE_SPUR, 0, enemy.Position, (enemy.Position - bombPos):Resized(2), player)
+				end
+			end
+		end
+	end
+end
 --Batter Bombs
 local function InitBatteryBomb(bomb, bombData)
 	bombData.Charged = true
 	bomb:AddTearFlags(TearFlags.TEAR_JACOBS)
 end
-local function ChargedBlast(bombPos, radius, damage) 
+local function ChargedBlast(bombPos, radius, damage, spawner)
+
+	-- shoot lasers
+	if spawner and spawner:ToPlayer() then
+		local player = spawner:ToPlayer()
+		--local pos = Vector(bombPos.X+3, bombPos.Y +5)
+		for i = 1, 5 do
+			local laser = player:FireTechLaser(bombPos, 0, RandomVector(), true, false, nil, 1):ToLaser()
+			laser.Variant = LaserVariant.ELECTRIC
+			laser.Color = Color(1, 1, 0, 1, 2, 1, 0)
+			laser:SetMaxDistance(radius)
+		end
+	end
+
 	local players = Isaac.FindInRadius(bombPos, radius, EntityPartition.PLAYER)
 	if #players == 0 then return end
 	
@@ -1772,7 +1837,6 @@ local function ChargedBlast(bombPos, radius, damage)
 		init_charge = 3
 	end
 
-	
 	for _, player in pairs(players) do
 		player = player:ToPlayer()
 		local chargingEffect = false -- leave it as nil
@@ -2617,58 +2681,91 @@ EclipsedMod:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, EclipsedMod.onCache)
 function EclipsedMod:onPlayerTakeDamage(entity, _, flags) --entity, amount, flags, source, countdown
 	local player = entity:ToPlayer()
 	local data = player:GetData()
+
+	if player:HasCurseMistEffect() or player:IsCoopGhost() then return end
+
 	--- soul of nadab and abihu
-	if data.UsedSoulNadabAbihu then
-		if (flags & DamageFlag.DAMAGE_FIRE ~= 0) or (flags & DamageFlag.DAMAGE_EXPLOSION ~= 0) then return false end
+	if data.UsedSoulNadabAbihu and (
+			flags & DamageFlag.DAMAGE_FIRE == DamageFlag.DAMAGE_FIRE or
+			flags & DamageFlag.DAMAGE_EXPLOSION == DamageFlag.DAMAGE_EXPLOSION or
+			flags & DamageFlag.DAMAGE_TNT == DamageFlag.DAMAGE_TNT
+	) then
+		return false
 	end
-	if not player:HasCurseMistEffect() and not player:IsCoopGhost() then
-		--- mongo cells
-		if player:HasCollectible(EclipsedMod.Items.MongoCells) and flags & DamageFlag.DAMAGE_NO_PENALTIES == 0 then
-			local rng = player:GetCollectibleRNG(EclipsedMod.Items.MongoCells)
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_DRY_BABY) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_DRY_BABY) then
-				if rng:RandomFloat() < EclipsedMod.MongoCells.DryBabyChance then
-					player:UseActiveItem(CollectibleType.COLLECTIBLE_NECRONOMICON, myUseFlags)
+
+	--- agony box
+	if player:HasCollectible(EclipsedMod.Items.AgonyBox, true) and flags & DamageFlag.DAMAGE_FAKE == 0 then
+		for slot = 0, 2 do
+			if player:GetActiveItem(slot) ~= EclipsedMod.Items.AgonyBox then
+				local activeCharge = player:GetActiveCharge(slot) -- item charge
+				local batteryCharge = player:GetBatteryCharge(slot) -- extra charge (battery item)
+				local newCharge = batteryCharge + activeCharge - 1
+				if activeCharge > 0 then -- batteryCharge > 0
+					player:SetActiveCharge(newCharge, slot)
+					sfx:Play(SoundEffect.SOUND_BATTERYDISCHARGE)
+					---opt 1
+					flags = flags | DamageFlag.DAMAGE_FAKE
+					break
+
+					---opt2
+					--player:SetMinDamageCooldown(30)
+					--return false
 				end
 			end
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_FARTING_BABY) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_FARTING_BABY) then
-				if rng:RandomFloat() < EclipsedMod.MongoCells.DryBabyChance then
-					local bean = EclipsedMod.MongoCells.FartBabyBeans[rng:RandomInt(#EclipsedMod.MongoCells.FartBabyBeans)+1]
-					player:UseActiveItem(bean, myUseFlags)
-				end
-			end
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_BBF) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_BBF) then
-				game:BombExplosionEffects(player.Position, EclipsedMod.MongoCells.BBFDamage, player:GetBombFlags(), Color.Default, player, 1, true, false, DamageFlag.DAMAGE_EXPLOSION)
-			end
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_BOBS_BRAIN) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_BOBS_BRAIN) then
-				game:BombExplosionEffects(player.Position, EclipsedMod.MongoCells.BBFDamage, player:GetBombFlags(), Color.Default, player, 1, true, false, DamageFlag.DAMAGE_EXPLOSION)
-				local cloud = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.SMOKE_CLOUD, 0, player.Position, Vector.Zero, player):ToEffect()
-				cloud:SetTimeout(150)
-			end
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_HOLY_WATER) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_WATER) then
-				Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_HOLYWATER, 0, player.Position, Vector.Zero, player):SetColor(Color(1,1,1,0), 5, 1, false, false)
-			end
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_DEPRESSION) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_DEPRESSION) then
-				if rng:RandomFloat() < EclipsedMod.MongoCells.DepressionLightChance then
-					Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 0, player.Position, Vector.Zero, player)
-				end
-			end
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_RAZOR) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_MOMS_RAZOR) then
-				player:AddEntityFlags(EntityFlag.FLAG_BLEED_OUT)
+		end
+	end
+
+	--- mongo cells
+	if player:HasCollectible(EclipsedMod.Items.MongoCells) and flags & DamageFlag.DAMAGE_NO_PENALTIES == 0 then
+		local rng = player:GetCollectibleRNG(EclipsedMod.Items.MongoCells)
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_DRY_BABY) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_DRY_BABY) then
+			if rng:RandomFloat() < EclipsedMod.MongoCells.DryBabyChance then
+				player:UseActiveItem(CollectibleType.COLLECTIBLE_NECRONOMICON, myUseFlags)
 			end
 		end
-		--- lost flower
-		if player:HasTrinket(EclipsedMod.Trinkets.LostFlower) then -- remove lost flower if get hit
-			if (flags & DamageFlag.DAMAGE_NO_PENALTIES == 0) and (flags & DamageFlag.DAMAGE_RED_HEARTS == 0) then
-				RemoveThrowTrinket(player, EclipsedMod.Trinkets.LostFlower, EclipsedMod.LostFlower.DespawnTimer)
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_FARTING_BABY) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_FARTING_BABY) then
+			if rng:RandomFloat() < EclipsedMod.MongoCells.DryBabyChance then
+				local bean = EclipsedMod.MongoCells.FartBabyBeans[rng:RandomInt(#EclipsedMod.MongoCells.FartBabyBeans)+1]
+				player:UseActiveItem(bean, myUseFlags)
 			end
 		end
-		--- RubikCubelet: TMTRAINER + D6
-		if player:HasTrinket(EclipsedMod.Trinkets.RubikCubelet) then
-			local numTrinket = player:GetTrinketMultiplier(EclipsedMod.Trinkets.RubikCubelet)
-			if player:GetTrinketRNG(EclipsedMod.Trinkets.RubikCubelet):RandomFloat() < EclipsedMod.RubikCubelet.TriggerChance * numTrinket then
-				RerollTMTRAINER(player)
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_BBF) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_BBF) then
+			game:BombExplosionEffects(player.Position, EclipsedMod.MongoCells.BBFDamage, player:GetBombFlags(), Color.Default, player, 1, true, false, DamageFlag.DAMAGE_EXPLOSION)
+		end
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_BOBS_BRAIN) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_BOBS_BRAIN) then
+			game:BombExplosionEffects(player.Position, EclipsedMod.MongoCells.BBFDamage, player:GetBombFlags(), Color.Default, player, 1, true, false, DamageFlag.DAMAGE_EXPLOSION)
+			local cloud = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.SMOKE_CLOUD, 0, player.Position, Vector.Zero, player):ToEffect()
+			cloud:SetTimeout(150)
+		end
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_HOLY_WATER) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_HOLY_WATER) then
+			Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_HOLYWATER, 0, player.Position, Vector.Zero, player):SetColor(Color(1,1,1,0), 5, 1, false, false)
+		end
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_DEPRESSION) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_DEPRESSION) then
+			if rng:RandomFloat() < EclipsedMod.MongoCells.DepressionLightChance then
+				Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 0, player.Position, Vector.Zero, player)
 			end
 		end
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_RAZOR) or tempEffects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_MOMS_RAZOR) then
+			player:AddEntityFlags(EntityFlag.FLAG_BLEED_OUT)
+		end
+	end
+	--- lost flower
+	if player:HasTrinket(EclipsedMod.Trinkets.LostFlower) then -- remove lost flower if get hit
+		if (flags & DamageFlag.DAMAGE_NO_PENALTIES == 0) and (flags & DamageFlag.DAMAGE_RED_HEARTS == 0) then
+			RemoveThrowTrinket(player, EclipsedMod.Trinkets.LostFlower, EclipsedMod.LostFlower.DespawnTimer)
+		end
+	end
+	--- RubikCubelet: TMTRAINER + D6
+	if player:HasTrinket(EclipsedMod.Trinkets.RubikCubelet) then
+		local numTrinket = player:GetTrinketMultiplier(EclipsedMod.Trinkets.RubikCubelet)
+		if player:GetTrinketRNG(EclipsedMod.Trinkets.RubikCubelet):RandomFloat() < EclipsedMod.RubikCubelet.TriggerChance * numTrinket then
+			RerollTMTRAINER(player)
+		end
+	end
+	--- spike collar
+	if player:HasCollectible(EclipsedMod.Items.SpikedCollar) and flags & DamageFlag.DAMAGE_FAKE == 0 then
+		player:UseActiveItem(CollectibleType.COLLECTIBLE_RAZOR_BLADE, myUseFlags)
+		return false
 	end
 end
 EclipsedMod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, EclipsedMod.onPlayerTakeDamage, EntityType.ENTITY_PLAYER)
@@ -2935,16 +3032,27 @@ function EclipsedMod:onPEffectUpdate(player)
 		for _, bomb in pairs(Isaac.FindByType(4)) do -- bombs == 4
 			bomb = bomb:ToBomb()
 			if bomb:GetSprite():GetAnimation() == "Explode" then -- not EclipsedMod.MirrorBombs.Ban[bomb.Variant]
+				local radius = GetBombRadiusFromDamage(bomb.ExplosionDamage)
 				if bomb:GetData().Dicey then
-					local radius = GetBombRadiusFromDamage(bomb.ExplosionDamage)
-					--if bomb:HasTearFlags(TearFlags.TEAR_GIGA_BOMB) then radius = 120 end
-					--print(radius)
 					DiceyReroll(player:GetCollectibleRNG(EclipsedMod.Items.DiceBombs), bomb.Position, radius)
 				end
+				if bomb:GetData().Bonny then
+					BonnyBlast(player:GetCollectibleRNG(EclipsedMod.Items.DeadBombs), bomb.Position, radius, player)
+				end
+				if player:HasCollectible(EclipsedMod.Items.Pyrophilia) then
+					for _, enemy in pairs(Isaac.FindInRadius(bomb.Position, radius, EntityPartition.ENEMY)) do
+						if enemy:IsVulnerableEnemy() and enemy:IsActiveEnemy() then
+							player:AddHearts(1)
+							sfx:Play(SoundEffect.SOUND_VAMP_GULP)
+							local effect = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.HEART, 0, Vector(player.Position.X, player.Position.Y-70), Vector.Zero, nil):ToEffect()
+							--effect:SetTimeout(3)
+							break
+						end
+					end
+				end
 				if bomb:GetData().Charged then
-					local radius = GetBombRadiusFromDamage(bomb.ExplosionDamage)
-					ChargedBlast(bomb.Position, radius, bomb.ExplosionDamage)
-				end	
+					ChargedBlast(bomb.Position, radius, bomb.ExplosionDamage, bomb.SpawnerEntity)
+				end
 				if bomb:GetData().DeadEgg then
 					DeadEggEffect(player, bomb.Position, EclipsedMod.DeadEgg.Timeout)
 				end
@@ -2963,7 +3071,7 @@ function EclipsedMod:onPEffectUpdate(player)
 						end
 					end
 				end
-							
+
 			end
 		end
 
@@ -3735,7 +3843,6 @@ function EclipsedMod:onNewLevel()
 	EclipsedMod.OblivionCard.ErasedEntities = {}
 	--EclipsedMod.Lobotomy.ErasedEntities = {}
 
-
 	for _, fam in pairs(Isaac.FindByType(EntityType.ENTITY_FAMILIAR)) do
 		-- add wisped items
 		if fam.Variant == FamiliarVariant.ITEM_WISP and fam:GetData().AddNextFloor then
@@ -3759,6 +3866,29 @@ function EclipsedMod:onNewLevel()
 		local player = game:GetPlayer(playerNum)
 		local data = player:GetData()
 		local tempEffects = player:GetEffects()
+
+		--- agony box
+		if player:HasCollectible(EclipsedMod.Items.AgonyBox, true) then
+			for slot = 0, 2 do
+				if player:GetActiveItem(slot) ~= EclipsedMod.Items.AgonyBox then
+					local activeMaxCharge = Isaac.GetItemConfig():GetCollectible(EclipsedMod.Items.AgonyBox).MaxCharges -- max charge of item
+					local activeCharge = player:GetActiveCharge(slot) -- item charge
+					local batteryCharge = player:GetBatteryCharge(slot) -- extra charge (battery item)
+					local newCharge = 0
+					if activeCharge == activeMaxCharge and player:HasCollectible(CollectibleType.COLLECTIBLE_BATTERY) and batteryCharge < activeMaxCharge then -- battery charge
+						newCharge = activeCharge + batteryCharge + 1
+					elseif activeCharge < activeMaxCharge then
+						newCharge = activeCharge + 1
+					end
+					if newCharge > 0 then
+						player:SetActiveCharge(newCharge, slot)
+						if not sfx:IsPlaying(SoundEffect.SOUND_ITEMRECHARGE) then
+							sfx:Play(SoundEffect.SOUND_ITEMRECHARGE)
+						end
+					end
+				end
+			end
+		end
 
 		--lililith
 		if data.LililithDemonSpawn then
@@ -5042,6 +5172,7 @@ function EclipsedMod:onBombUpdate(bomb)
 						if cacheData.Dicey then bombData.Dicey = true else bombData.Dicey = false end
 						if cacheData.BobTongue then bombData.BobTongue = true else bombData.BobTongue = false end
 						if cacheData.Charged then bombData.Charged = true else bombData.Charged = false end
+						if cacheData.Bonny then bombData.Bonny = true else bombData.Bonny = false end
 					end
 				end
 				
@@ -5066,6 +5197,9 @@ function EclipsedMod:onBombUpdate(bomb)
 					end
 					if bombData.Charged == nil and bomb:GetDropRNG():RandomFloat() < EclipsedMod.BatteryBombs.NancyChance then
 						InitBatteryBomb(bomb, bombData)
+					end
+					if bombData.Bonny == nil and bomb:GetDropRNG():RandomFloat() < EclipsedMod.DeadBombs.NancyChance then
+						InitDeadBomb(bomb, bombData)
 					end
 				end
 				
@@ -5112,13 +5246,23 @@ function EclipsedMod:onBombUpdate(bomb)
 						InitBatteryBomb(bomb, bombData)
 					end
 				end
-				
+
+				-- bonny
+				if player:HasCollectible(EclipsedMod.Items.DeadBombs) and not EclipsedMod.DeadBombs.Ban[bomb.Variant] and bombData.Bonny ~= false then
+					local initTrue = true
+					if bomb.FrameCount == 1 and bomb.IsFetus and bomb:GetDropRNG():RandomFloat() > EclipsedMod.DeadBombs.FetusChance + player.Luck/100 then
+						initTrue = false
+					end
+					if initTrue then
+						InitDeadBomb(bomb, bombData)
+					end
+				end
+
 				-- dicey
 				if player:HasCollectible(EclipsedMod.Items.DiceBombs) and not EclipsedMod.DiceBombs.Ban[bomb.Variant] and bombData.Dicey ~= false then
 					local initTrue = true
 					if bomb.FrameCount == 1 and bomb.IsFetus and bomb:GetDropRNG():RandomFloat() > EclipsedMod.DiceBombs.FetusChance + player.Luck/100 then
 						initTrue = false
-						--scatter bombs from dr.fetus has chance to not get parent bomb effects. it sucks
 					end
 					if initTrue then
 						InitDiceyBomb(bomb, bombData)
@@ -5220,18 +5364,7 @@ function EclipsedMod:onBombUpdate(bomb)
 				end
 			end
 		end
-		
-		--[[
-		if bombData.Charged then
-			if bomb.FrameCount%8 == 0 then 
-				local player = bomb.SpawnerEntity:ToPlayer()
-				local laser = player:FireTechLaser(Vector(bomb.Position.X+3, bomb.Position.Y +5) , 0, RandomVector(), true, false, nil, 1):ToLaser()
-				laser.Color = Color(1, 1, 0, 1, 2,1,0)
-				laser:SetMaxDistance(40)
-			end
-		end
-		--]]
-		
+
 		--red scissors
 		if EclipsedMod.RedScissorsMod and EclipsedMod.RedScissors.TrollBombs[bomb.Variant] then -- if player has red scissors and bombs is trollbombs
 			if not bombData.ReplaceFrame then
@@ -5262,6 +5395,7 @@ function EclipsedMod:onBombUpdate(bomb)
 					['Dicey'] = bombData.Dicey,
 					['BobTongue'] = bombData.BobTongue,
 					['Charged'] = bombData.Charged,
+					['Bonny'] = bombData.Bonny,
 				}
 			end
 		end
@@ -5710,7 +5844,7 @@ function EclipsedMod:onPandoraJar(_, rng, player) --item, rng, player, useFlag, 
 		wisp = player:AddWisp(CollectibleType.COLLECTIBLE_MYSTERY_GIFT, player.Position, true)
 		EclipsedMod.PandoraJarGift = 2
 	else
-		wisp = player:AddWisp(CollectibleType.COLLECTIBLE_GLASS_CANNON, player.Position, true)
+		wisp = player:AddWisp(1, player.Position, true)
 	end
 	if wisp then
 		sfx:Play(471)
@@ -5725,14 +5859,15 @@ function EclipsedMod:onPandoraJar(_, rng, player) --item, rng, player, useFlag, 
 					level:AddCurse(addCurse, false)
 				else
 					EclipsedMod.PandoraJarGift = 1
-					return {ShowAnim = true, Remove = false, Discharge = false}
+					--return {ShowAnim = true, Remove = false, Discharge = false}
 				end
 			end
 		end
 	end
-	if EclipsedMod.PandoraJarGift and EclipsedMod.PandoraJarGift == 2 then
-		return {ShowAnim = true, Remove = false, Discharge = false}
-	end
+	--if EclipsedMod.PandoraJarGift and EclipsedMod.PandoraJarGift == 2 then
+	--	return {ShowAnim = true, Remove = false, Discharge = false}
+	--end
+	return true
 end
 EclipsedMod:AddCallback(ModCallbacks.MC_USE_ITEM, EclipsedMod.onPandoraJar, EclipsedMod.Items.PandoraJar)
 ---Witch's Pot
@@ -6952,16 +7087,20 @@ if EID then -- External Item Description
 	EID:addCollectible(EclipsedMod.Items.WitchPot,
 			"Spawn new trinket. #40% chance to smelt current trinket. #40% chance to spit out smelted trinket. #10% Chance to reroll your current trinket. #{{Warning}} 10% Chance to destroy your current trinket.")
 	EID:addCollectible(EclipsedMod.Items.PandoraJar,
-			"Add Glass Cannon wisp. #{{Warning}} 15% chance to add special curse. #If all curses was added, grants {{Collectible515}} Mystery Gift. This effect can be triggered only once per level.")
+			"Add blue wisp. #{{Warning}} 15% chance to add special curse. #If all curses was added, grants {{Collectible515}} Mystery Gift. This effect can be triggered only once per level.")
 	EID:addCollectible(EclipsedMod.Items.DiceBombs,
-			"+5 bombs when picked up. #The placed bomb will reroll pickups, chests and items within explosion range. #Devolve enemies.")
+			"+5 bombs when picked up. #The placed bomb will reroll pickups, chests and items within explosion range. #Devolve enemies hit by an explosion.")
 	EID:addCollectible(EclipsedMod.Items.BatteryBombs,
-			"+5 bombs when picked up. #Recharges active item if player caught in explosion. #Charge point based on bomb damage.")
-	
-	
-	
-	--EID:addCollectible(EclipsedMod.Items.AgonyBox,
-	--		"Prevents next incoming non self-damage and removes one point of charge. #Can be charged by taking damage from spikes in {{SacrificeRoom}} Sacrifice Room. #Entering a new floor fully recharges the box.")
+			"+5 bombs when picked up. #Bombs zap 5 electrical bolts in random directions. #Recharges active item when player is hit by an explosion. #Charge point based on bomb damage.")
+	EID:addCollectible(EclipsedMod.Items.Pyrophilia,
+			"Heal half heart when an enemy hit by a bomb explosion ")
+	EID:addCollectible(EclipsedMod.Items.SpikedCollar,
+			"Instead taking damage activates {{Collectible126}} Razor Blade effect.")
+	EID:addCollectible(EclipsedMod.Items.DeadBombs,
+			"+5 bombs when picked up. #Spawn {{Collectible683}} Bone Spurs for each killed enemy by explosion. #33% chance to spawn frinedly Bony, Pasty, Bone Fly, Big Bony, Black Bony or Revenant.")
+
+	EID:addCollectible(EclipsedMod.Items.AgonyBox,
+			"Prevents next incoming damage and removes one point of charge. #Entering a new floor recharges one point.") -- #Charges 1 point when you take damage from spikes in {{SacrificeRoom}} Sacrifice Room.
 
 	EID:addTrinket(EclipsedMod.Trinkets.WitchPaper,
 			"{{Collectible422}} Turn back time when you die. #Destroys itself after triggering.")
@@ -7029,7 +7168,7 @@ if EID then -- External Item Description
 			"Fills the whole room with red poop.")
 	EID:addCard(EclipsedMod.Pickups.BannedCard,
 			--"Spawn 2 {{Card}} cards or {{Rune}} runes.")
-			"Spawn 2 copy of this card.")
+			"Spawn 2 copies of this card.")
 
 	EID:addCard(EclipsedMod.Pickups.KingChess,
 			"Poop around you.")
@@ -7160,8 +7299,12 @@ local function ExplosionEffect(player, bombPos, bombDamage, bombFlags, damageSou
 	
 	if player:HasCollectible(EclipsedMod.Items.BatteryBombs) then
 		local radius = GetBombRadiusFromDamage(bombDamage)
-		ChargedBlast(bombPos, radius, bombDamage)
-	end	
+		ChargedBlast(bombPos, radius, bombDamage, player)
+	end
+
+	if player:HasCollectible(EclipsedMod.Items.DeadBombs) then
+		BonnyBlast(player:GetCollectibleRNG(EclipsedMod.Items.DeadBombs), bombPos, radius, player)
+	end
 end
 
 

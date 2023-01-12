@@ -1,7 +1,10 @@
 TODO:
 BUGS:
 My attempt at item pickup callback - discord resources
-
+spike collar - new item (TODO costume)
+dead bombs - new item (TEST bone worm)
+battery bombs - shoot 5 lasers in random directions
+agony box - new item
 
 NEW:
 Lil Gagger - sprites
